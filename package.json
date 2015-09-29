@@ -1,0 +1,26 @@
+{
+  "name": "tabletop.js",
+  "version": "1.0.0",
+  "description": "A simple framework for making board games",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewjmeier/TableTop.JS.git"
+  },
+  "author": "Andrew Meier <booyankees13@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrewjmeier/TableTop.JS/issues"
+  },
+  "homepage": "https://github.com/andrewjmeier/TableTop.JS#readme",
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  }
+}
