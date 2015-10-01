@@ -1,4 +1,6 @@
-module.exports = {
+console.log("hello there")
+
+var test = {
 	escape: function(html) {
 		return String(html)
 			.replace(/&/g, '&amp;')
@@ -17,3 +19,5 @@ module.exports = {
 			.replace(/&gt;/g, '>');
 	}
 };
+
+module.exports = test;
