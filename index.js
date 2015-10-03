@@ -114,6 +114,18 @@ function build_spaces(board) {
     new Go()
   ];
 } 
+
+// indices correlate to order in below function properties_list()
+function property_for_index(index, props) { 
+  if (index <= 21) { 
+    return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
+  } else if (index <= 25) { 
+    return new UtilityProperty(props[index][0], props[index][2], props[index][3]);
+  } else { 
+    return new UtilityProperty(props[index][0], props[index][2], NULL);
+  } 
+} 
+
 /* housing properties: [name, color, cost, house cost, [rent, 1, 2, 3, 4, hotel]]
  railroads: [name, "Railroad", cost, [1, 2, 3, 4]]
  utilities: [name, "Utility", cost] 
