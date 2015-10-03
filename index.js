@@ -108,10 +108,25 @@ function build_board() {
 } 
 
 // order is important
-// todo: fill in all the board spaces w/ data
+// todo: finish filling in all the board spaces w/ data
 function build_spaces(board) { 
+  var props = properties_list();
   board.spaces = [ 
-    new Go()
+
+    // first row 
+    new Go(),
+    new property_for_index(0, props),
+    new CommunityChest(),
+    new property_for_index(1, props),
+    new IncomeTax(),
+    new property_for_index(22, props),
+    new property_for_index(2, props),
+    new Chance(), 
+    property_for_index(3, props),
+    property_for_index(4, props),
+    new Jail()
+
+    // todo: rows 2-4
   ];
 } 
 
@@ -172,3 +187,7 @@ function properties_list() {
   ];
 
 }
+
+window.onload = function() { 
+  build_board();
+};
