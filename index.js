@@ -17,9 +17,10 @@ Space.prototype.perform_landing_action = function(){
   console.log("You landed on " + this.name);
 }; 
 
-function Property(name, mortgage_cost, property_group) { 
+function Property(name, cost, property_group) { 
   Space.call(this, name);
-  this.mortgage = mortgage_cost;
+  this.cost = cost;
+  this.mortage = .5*cost;
   this.property_group = property_group; // "red", "blue", "railroad", etc.
   this.owner = null;
 }
@@ -27,9 +28,9 @@ Property.prototype = Object.create(Space.prototype); // subclassing space
 
 // rent should be array with following format: 
 // [1 owned, 2 owned ... (3 owned, 4 owned)]
-function UtilityProperty(name, mortgage_cost, property_group, rent) { 
+function UtilityProperty(name, cost, property_group, rent) { 
   this.rent = rent;
-  Property.call(this, this.name, this.mortage_cost, this.property_group);
+  Property.call(this, this.name, this.cost, this.property_group);
 }
 UtilityProperty.prototype = Object.create(Property.prototype);
 UtilityProperty.prototype.perform_landing_action = function(player) { 
@@ -37,9 +38,9 @@ UtilityProperty.prototype.perform_landing_action = function(player) {
 
 // rent should be array with following format: 
 // [rent, 1 house, 2 houses, 3 houses, 4 houses, hotel] 
-function HousingProperty(name, mortgage_cost, property_group, rent) { 
+function HousingProperty(name, cost, property_group, rent) { 
   this.rent = rent;
-  Property.call(this, this.name, this.mortage_cost, this.property_group);
+  Property.call(this, this.name, this.cost, this.property_group);
 }
 HousingProperty.prototype = Object.create(Property.prototype);
 HousingProperty.prototype.perform_landing_action = function(player) { 
