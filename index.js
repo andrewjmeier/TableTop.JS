@@ -10,6 +10,7 @@ function Board(players) {
 // properties, utilities, free parking, go, etc. 
 function Space(name) { 
   this.name = name; 
+  this.occupier = null;
 }
 // every space needs a landing action
 Space.prototype.perform_landing_action = function(){
