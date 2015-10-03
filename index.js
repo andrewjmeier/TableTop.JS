@@ -17,7 +17,7 @@ var Player = {
 	getOutOfJailFree: function() {
 		this.releaseFromJail();
 		this.hasGetOutFreeCard = false;
-	}
+	},
 
 	releaseFromJail: function() {
 		this.inJail = false;
@@ -358,8 +358,8 @@ var Game = {
 
 	movePlayer: function() {
 		this.rollDice(2);
-		this.players[this.currentPlayer].turnsInJail += 1;
 		if (this.players[this.currentPlayer].inJail) {
+			this.players[this.currentPlayer].turnsInJail += 1;
 			if (this.isDoubles(this.dice)) {
 				this.players[this.currentPlayer].releaseFromJail();
 				this.move();
@@ -383,7 +383,7 @@ var Game = {
 			this.players[this.currentPlayer].money += 200;
 		}
 		this.players[this.currentPlayer].position = nextPosition;
-	}
+	},
 
 	isDoubles: function(dice) {
 		return dice[0] === dice[1];
