@@ -114,3 +114,49 @@ function build_spaces(board) {
     new Go()
   ];
 } 
+/* housing properties: [name, color, cost, house cost, [rent, 1, 2, 3, 4, hotel]]
+ railroads: [name, "Railroad", cost, [1, 2, 3, 4]]
+ utilities: [name, "Utility", cost] 
+*/
+function properties_list() { 
+  return [ 
+    ["Mediterranean Ave", "Dark Purple", 60, 50, [2, 10, 30, 90, 160, 250]], 
+    ["Baltic Ave", "Dark Purple", 60, 50, [4, 20, 60, 180, 320, 450]],
+
+    ["Oriental Ave", "Light Blue", 100, 50, [6, 30, 90, 270, 400, 550]], 
+    ["Vermont Ave", "Light Blue", 100, 50, [6, 30, 90, 270, 400, 550]], 
+    ["Connecticut Ave", "Light Blue", 120, 50, [8, 40, 100, 300, 450, 600]], 
+
+    ["St. Charles Place", "Pink", 140, 100, [10, 50, 150, 450, 625, 750]], // 5
+    ["States Ave", "Pink", 140, 100, [10, 50, 150, 450, 625, 750]], 
+    ["Virginia Ave", "Pink", 160, 100 [12, 60, 180, 500, 700, 900]], 
+
+    ["St. James Place", "Orange", 180, 100, [14, 70, 200, 550, 750, 950]], 
+    ["Tennessee Ave", "Orange", 180, 100, [14, 70, 200, 550, 750, 950]], 
+    ["New York Ave", "Orange", 200, 100, [16, 80, 220, 600, 800, 1000]], // 10
+
+    ["Kentucky Ave", "Red", 220, 150, [18, 90, 250, 700, 875, 1050]], 
+    ["Indiana Ave", "Red", 220, 150, [18, 90, 250, 700, 875, 1050]], 
+    ["Illinois Ave", "Red", 240, 150, [20, 100, 300, 750, 925, 1100]], 
+
+    ["Atlantic Ave", "Yellow", 260, 150, [22, 110, 330, 800, 975, 1150]], 
+    ["Ventnor Ave", "Yellow", 260, 150, [22, 110, 330, 800, 975, 1150]], // 15
+    ["Marvin Gardens", "Yellow", 280, 150, [24, 120, 360, 850, 1025, 1200]], 
+
+    ["Pacific Ave", "Green", 300, 200, [26, 130, 390, 900, 1100, 1275]], 
+    ["North Carolina Ave", "Green", 300, 200, [26, 130, 390, 900, 1100, 1275]], 
+    ["Pennsylvaniva Ave", "Green", 320, 200, [28, 150, 450, 1000, 1200, 1400]], 
+
+    ["Park Place", "Blue", 350, 200, [35, 175, 500, 1100, 1300, 1500]], // 20
+    ["Boardwalk", "Blue", 400, 200, [50, 200, 600, 1400, 1700, 2000]], 
+
+    ["Reading Railroad", "Railroad", 200, [25, 50, 100, 200]],
+    ["Pennsylvania Railroad", "Railroad", 200, [25, 50, 100, 200]],
+    ["B. & O. Railroad", "Railroad", 200, [25, 50, 100, 200]],
+    ["Shortline Railroad", "Railroad", 200, [25, 50, 100, 200]], // 25
+
+    ["Electric Company", "Utility", 150],
+    ["WaterWorks", "Utility", 150]
+  ];
+
+}
