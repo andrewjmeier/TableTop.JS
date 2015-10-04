@@ -68,9 +68,16 @@ function Property(name, cost, property_group) {
 Property.prototype = Object.create(Space.prototype); // subclassing space
 
 // rent should be array with following format: 
-// [1 owned, 2 owned ... (3 owned, 4 owned)]
-function UtilityProperty(name, cost, property_group, rent) { 
+// [1 owned, 2 owned, 3 owned, 4 owned]
+function RailroadProperty(name, cost, property_group, rent) { 
   this.rent = rent;
+  Property.call(this, this.name, this.cost, this.property_group);
+}
+RailroadProperty.prototype = Object.create(Property.prototype);
+RailroadProperty.prototype.perform_landing_action = function(player) { 
+}; 
+
+function UtilityProperty(name, cost, property_group) { 
   Property.call(this, this.name, this.cost, this.property_group);
 }
 UtilityProperty.prototype = Object.create(Property.prototype);
@@ -209,9 +216,9 @@ function property_for_index(index, props) {
   if (index <= 21) { 
     return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
   } else if (index <= 25) { 
-    return new UtilityProperty(props[index][0], props[index][2], props[index][3]);
+    return new RailroadProperty(props[index][0], props[index][2], props[index][3]);
   } else { 
-    return new UtilityProperty(props[index][0], props[index][2], NULL);
+    return new UtilityProperty(props[index][0], props[index][2]);
   } 
 } 
 
