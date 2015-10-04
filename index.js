@@ -109,10 +109,15 @@ Tax.prototype.perform_landing_action = function(player) {
   this.player.money -= this.tax_amount;
 }; 
 
-function IncomeTax() { 
-  this.tax_amount = 200;
+function IncomeTax() {
+  this.tax_amount = 200; // flat tax - will give user option later
 }
 IncomeTax.prototype = Object.create(Tax.prototype);
+IncomeTax.prototype.perform_landing_action = function(player) { 
+  // todo: prompt user for choice here
+  // if (userWantsFlatTax) this.tax_amount = 200; 
+  // else this.tax_amount = playerAssetValue(player)*.10;
+}; 
 
 function LuxuryTax() { 
   this.tax_amount = 75;
