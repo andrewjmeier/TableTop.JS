@@ -54,92 +54,108 @@ function Space(name) {
   this.occupier = null;
 }
 // every space needs a landing action
-Space.prototype.perform_landing_action = function(){
+Space.prototype.performLandingAction = function(){
   console.log("You landed on " + this.name);
 }; 
 
-function Property(name, cost, property_group) { 
+function Property(name, cost, propertyGroup) { 
   Space.call(this, name);
   this.cost = cost;
   this.mortage = .5*cost;
-  this.property_group = property_group; // "red", "blue", "railroad", etc.
+  this.propertyGroup = propertyGroup; // see PG_X constants 
   this.owner = null;
 }
 Property.prototype = Object.create(Space.prototype); // subclassing space
+Property.prototype.performLandingAction = function(player) { 
 
-// rent should be array with following format: 
-// [1 owned, 2 owned, 3 owned, 4 owned]
-function RailroadProperty(name, cost, property_group, rent) { 
-  this.rent = rent;
-  Property.call(this, this.name, this.cost, this.property_group);
-}
-RailroadProperty.prototype = Object.create(Property.prototype);
-RailroadProperty.prototype.perform_landing_action = function(player) { 
+  if (self.owner == player) return; 
+
+  // todo  - finish hashing this out 
+
 }; 
 
-function UtilityProperty(name, cost, property_group) { 
-  Property.call(this, this.name, this.cost, this.property_group);
+// rent should be array with following format: 
+// [1 owned (rent), 2 owned, 3 owned, 4 owned]
+function RailroadProperty(name, cost, propertyGroup, rent) { 
+  this.rent = rent;
+  Property.call(this, this.name, this.cost, this.propertyGroup);
+}
+RailroadProperty.prototype = Object.create(Property.prototype);
+RailroadProperty.prototype.performLandingAction = function(player) { 
+  // todo 
+}; 
+
+// rent is assumed here (4x, 10x) 
+function UtilityProperty(name, cost, propertyGroup) { 
+  Property.call(this, this.name, this.cost, this.propertyGroup);
 }
 UtilityProperty.prototype = Object.create(Property.prototype);
-UtilityProperty.prototype.perform_landing_action = function(player) { 
+UtilityProperty.prototype.performLandingAction = function(player) { 
+  // todo - need dice access here
 }; 
 
 // rent should be array with following format: 
 // [rent, 1 house, 2 houses, 3 houses, 4 houses, hotel] 
-function HousingProperty(name, cost, property_group, rent) { 
+function HousingProperty(name, cost, propertyGroup, rent) { 
   this.rent = rent;
-  Property.call(this, this.name, this.cost, this.property_group);
+  this.numHouses = 0;
+  Property.call(this, this.name, this.cost, this.propertyGroup);
 }
 HousingProperty.prototype = Object.create(Property.prototype);
-HousingProperty.prototype.perform_landing_action = function(player) { 
+HousingProperty.prototype.performLandingAction = function(player) { 
+  // todo... gonna need to figure out housing logic (where are houses stored?)
 };
 
 
 function Chance() {} 
 Chance.prototype = Object.create(Space.prototype);
-Chance.prototype.perform_landing_action = function(player) { 
+Chance.prototype.performLandingAction = function(player) { 
+  // todo 
 }; 
 
 function CommunityChest() {}
 CommunityChest.prototype = Object.create(Space.prototype);
-Chance.prototype.perform_landing_action = function(player) { 
+CommunityChest.prototype.performLandingAction = function(player) { 
+  // todo 
 }; 
 
 function FreeParking() {}
 FreeParking.prototype = Object.create(Space.prototype);
-FreeParking.prototype.perform_landing_action = function(player) { 
+FreeParking.prototype.performLandingAction = function(player) { 
+  // nothing! 
 }; 
 
 function Jail() {}
 GoToJail.prototype = Object.create(Space.prototype);
-GoToJail.prototype.perform_landing_action = function(player) { 
+GoToJail.prototype.performLandingAction = function(player) { 
+  //  player.go_to_jail(); todo: make this fn in player
 }; 
 
 function GoToJail() {}
 GoToJail.prototype = Object.create(Space.prototype);
-GoToJail.prototype.perform_landing_action = function(player) { 
+GoToJail.prototype.performLandingAction = function(player) { 
 }; 
 
 function Tax() { 
-  this.tax_amount = 0; // give default value of 0, should be overridden 
+  this.taxAmount = 0; // give default value of 0, should be overridden 
 }
 Tax.prototype = Object.create(Space.prototype);
-Tax.prototype.perform_landing_action = function(player) { 
-  this.player.money -= this.tax_amount;
+Tax.prototype.performLandingAction = function(player) { 
+  this.player.money -= this.taxAmount;
 }; 
 
 function IncomeTax() {
-  this.tax_amount = 200; // flat tax - will give user option later
+  this.taxAmount = 200; // flat tax - will give user option later
 }
 IncomeTax.prototype = Object.create(Tax.prototype);
-IncomeTax.prototype.perform_landing_action = function(player) { 
+IncomeTax.prototype.performLandingAction = function(player) { 
   // todo: prompt user for choice here
-  // if (userWantsFlatTax) this.tax_amount = 200; 
-  // else this.tax_amount = playerAssetValue(player)*.10;
+  // if (userWantsFlatTax) this.taxAmount = 200; 
+  // else this.taxAmount = playerAssetValue(player)*.10;
 }; 
 
 function LuxuryTax() { 
-  this.tax_amount = 75;
+  this.taxAmount = 75;
 }
 LuxuryTax.prototype = Object.create(Tax.prototype);
 
@@ -151,68 +167,68 @@ Go.prototype = Object.create(Space.prototype);
 
 // now let's build the board 
 var board; 
-function build_board() { 
+function buildBoard() { 
   board = new Board();
-  build_spaces(board);
+  buildSpaces(board);
 } 
 
-function build_spaces(board) { 
-  var props = properties_list();
+function buildSpaces(board) { 
+  var props = propertiesList();
   board.spaces = [ 
 
     // first row 
     new Go(),
-    property_for_index(MEDITERRANEAN_AVE, props),
+    propertyForIndex(MEDITERRANEAN_AVE, props),
     new CommunityChest(),
-    property_for_index(BALTIC_AVE, props),
+    propertyForIndex(BALTIC_AVE, props),
     new IncomeTax(),
-    property_for_index(READING_RR, props),
-    property_for_index(ORIENTAL_AVE, props),
+    propertyForIndex(READING_RR, props),
+    propertyForIndex(ORIENTAL_AVE, props),
     new Chance(), 
-    property_for_index(VERMONT_AVE, props),
-    property_for_index(CONNECTICUT_AVE, props),
+    propertyForIndex(VERMONT_AVE, props),
+    propertyForIndex(CONNECTICUT_AVE, props),
     new Jail(), 
 
     // second row
-    property_for_index(ST_CHARLES_PLACE, props),
-    property_for_index(ELECTRIC_CO, props),
-    property_for_index(STATES_AVE, props),
-    property_for_index(VIRGINIA_AVE, props),
-    property_for_index(PENN_RR, props),
-    property_for_index(ST_JAMES_PLACE, props),
+    propertyForIndex(ST_CHARLES_PLACE, props),
+    propertyForIndex(ELECTRIC_CO, props),
+    propertyForIndex(STATES_AVE, props),
+    propertyForIndex(VIRGINIA_AVE, props),
+    propertyForIndex(PENN_RR, props),
+    propertyForIndex(ST_JAMES_PLACE, props),
     new CommunityChest(),
-    property_for_index(TENNESSEE_AVE, props),
-    property_for_index(NEW_YORK_AVE, props),
+    propertyForIndex(TENNESSEE_AVE, props),
+    propertyForIndex(NEW_YORK_AVE, props),
     new FreeParking(),
 
-    // third
-    property_for_index(KENTUCKY_AVE, props),
+    // third row
+    propertyForIndex(KENTUCKY_AVE, props),
     new Chance(),
-    property_for_index(INDIANA_AVE, props),
-    property_for_index(ILLINOIS_AVE, props),
-    property_for_index(BO_RR, props),
-    property_for_index(ATLANTIC_AVE, props),
-    property_for_index(VENTNOR_AVE, props),
-    property_for_index(WATERWORKS, props),
-    property_for_index(MARVIN_GARDENS, props),
+    propertyForIndex(INDIANA_AVE, props),
+    propertyForIndex(ILLINOIS_AVE, props),
+    propertyForIndex(BO_RR, props),
+    propertyForIndex(ATLANTIC_AVE, props),
+    propertyForIndex(VENTNOR_AVE, props),
+    propertyForIndex(WATERWORKS, props),
+    propertyForIndex(MARVIN_GARDENS, props),
     new GoToJail(),
     
-    // fourth
-    property_for_index(PACIFIC_AVE, props),
-    property_for_index(NORTH_CAROLINA_AVE, props),
+    // fourth row
+    propertyForIndex(PACIFIC_AVE, props),
+    propertyForIndex(NORTH_CAROLINA_AVE, props),
     new CommunityChest(),
-    property_for_index(PENNSYLVANIA_AVE, props),
-    property_for_index(SHORTLINE_RR, props),
+    propertyForIndex(PENNSYLVANIA_AVE, props),
+    propertyForIndex(SHORTLINE_RR, props),
     new Chance(), 
-    property_for_index(PARK_PLACE, props),
+    propertyForIndex(PARK_PLACE, props),
     new LuxuryTax(), 
-    property_for_index(BOARDWALK, props),
-    
+    propertyForIndex(BOARDWALK, props),
+
   ];
 } 
 
-// indices correlate to order in below function properties_list()
-function property_for_index(index, props) { 
+// indices correlate to order in below function propertiesList()
+function propertyForIndex(index, props) { 
   if (index <= 21) { 
     return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
   } else if (index <= 25) { 
@@ -226,7 +242,8 @@ function property_for_index(index, props) {
  railroads: [name, "Railroad", cost, [1, 2, 3, 4]]
  utilities: [name, "Utility", cost] 
 */
-function properties_list() { 
+
+function propertiesList() { 
   return [ 
     ["Mediterranean Ave", PG_BROWN, 60, 50, [2, 10, 30, 90, 160, 250]], 
     ["Baltic Ave", PG_BROWN, 60, 50, [4, 20, 60, 180, 320, 450]],
@@ -270,5 +287,5 @@ function properties_list() {
 }
 
 window.onload = function() { 
-  build_board();
+  buildBoard();
 };
