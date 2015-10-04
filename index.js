@@ -78,7 +78,7 @@ Property.prototype.performLandingAction = function(player) {
 // [1 owned (rent), 2 owned, 3 owned, 4 owned]
 function RailroadProperty(name, cost, propertyGroup, rent) { 
   this.rent = rent;
-  Property.call(this, this.name, this.cost, this.propertyGroup);
+  Property.call(this, name, cost, propertyGroup);
 }
 RailroadProperty.prototype = Object.create(Property.prototype);
 RailroadProperty.prototype.performLandingAction = function(player) { 
@@ -87,7 +87,7 @@ RailroadProperty.prototype.performLandingAction = function(player) {
 
 // rent is assumed here (4x, 10x) 
 function UtilityProperty(name, cost, propertyGroup) { 
-  Property.call(this, this.name, this.cost, this.propertyGroup);
+  Property.call(this, name, cost, propertyGroup);
 }
 UtilityProperty.prototype = Object.create(Property.prototype);
 UtilityProperty.prototype.performLandingAction = function(player) { 
@@ -99,7 +99,7 @@ UtilityProperty.prototype.performLandingAction = function(player) {
 function HousingProperty(name, cost, propertyGroup, rent) { 
   this.rent = rent;
   this.numHouses = 0;
-  Property.call(this, this.name, this.cost, this.propertyGroup);
+  Property.call(this, name, cost, propertyGroup);
 }
 HousingProperty.prototype = Object.create(Property.prototype);
 HousingProperty.prototype.performLandingAction = function(player) { 
