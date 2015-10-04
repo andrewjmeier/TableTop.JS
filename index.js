@@ -1,3 +1,32 @@
+// index constants for properties 
+var MEDITERRANEAN_AVE = 0;
+var BALTIC_AVE = 1;
+var ORIENTAL_AVE = 2;
+var VERMONT_AVE = 3;
+var CONNECTICUT_AVE = 4;
+var ST_CHARLES_PLACE = 5;
+var STATES_AVE = 6;
+var VIRGINIA_AVE = 7;
+var ST_JAMES_PLACE = 8;
+var TENNESSEE_AVE = 9; 
+var NEW_YORK_AVE = 10;
+var KENTUCKY_AVE = 11;
+var INDIANA_AVE = 12;
+var ILLINOIS_AVE = 13;
+var ATLANTIC_AVE = 14;
+var VENTNOR_AVE = 15;
+var MARVIN_GARDENS = 16;
+var PACIFIC_AVE = 17;
+var NORTH_CAROLINA_AVE = 18;
+var PENNSYLVANIA_AVE = 19;
+var PARK_PLACE = 20;
+var BOARDWALK = 21;
+var READING_RR = 22;
+var PENN_RR = 23;
+var BO_RR = 24;
+var SHORTLINE_RR = 25;
+var ELECTRIC_CO = 26;
+var WATERWORKS = 27;
 
 // placeholder for now - should talk when merged to properly integrate this with 
 // existing "board" and "players" implementations
@@ -111,18 +140,52 @@ function build_spaces(board) {
 
     // first row 
     new Go(),
-    new property_for_index(0, props),
+    property_for_index(MEDITERRANEAN_AVE, props),
     new CommunityChest(),
-    new property_for_index(1, props),
+    property_for_index(BALTIC_AVE, props),
     new IncomeTax(),
-    new property_for_index(22, props),
-    new property_for_index(2, props),
+    property_for_index(READING_RR, props),
+    property_for_index(ORIENTAL_AVE, props),
     new Chance(), 
-    property_for_index(3, props),
-    property_for_index(4, props),
-    new Jail()
+    property_for_index(VERMONT_AVE, props),
+    property_for_index(CONNECTICUT_AVE, props),
+    new Jail(), 
 
-    // todo: rows 2-4
+    // second row
+    property_for_index(ST_CHARLES_PLACE, props),
+    property_for_index(ELECTRIC_CO, props),
+    property_for_index(STATES_AVE, props),
+    property_for_index(VIRGINIA_AVE, props),
+    property_for_index(PENN_RR, props),
+    property_for_index(ST_JAMES_PLACE, props),
+    new CommunityChest(),
+    property_for_index(TENNESSEE_AVE, props),
+    property_for_index(NEW_YORK_AVE, props),
+    new FreeParking(),
+
+    // third
+    property_for_index(KENTUCKY_AVE, props),
+    new Chance(),
+    property_for_index(INDIANA_AVE, props),
+    property_for_index(ILLINOIS_AVE, props),
+    property_for_index(BO_RR, props),
+    property_for_index(ATLANTIC_AVE, props),
+    property_for_index(VENTNOR_AVE, props),
+    property_for_index(WATERWORKS, props),
+    property_for_index(MARVIN_GARDENS, props),
+    new GoToJail(),
+    
+    // fourth
+    property_for_index(PACIFIC_AVE, props),
+    property_for_index(NORTH_CAROLINA_AVE, props),
+    new CommunityChest(),
+    property_for_index(PENNSYLVANIA_AVE, props),
+    property_for_index(SHORTLINE_RR, props),
+    new Chance(), 
+    property_for_index(PARK_PLACE, props),
+    new LuxuryTax(), 
+    property_for_index(BOARDWALK, props),
+    
   ];
 } 
 
