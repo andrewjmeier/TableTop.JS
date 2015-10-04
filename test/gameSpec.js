@@ -1,5 +1,5 @@
 should = require('chai').should(),
-    Game = require('../index'),
+    Game = require('../src/game'),
 
 Game.players = [{name: "Joe", inJail: true, turnsInJail: 0, position: 5, releaseFromJail: function() {this.inJail = false}, payBail: function() {this.inJail = false}}, {name: "Bill"}, {name: "Steve"}];
 

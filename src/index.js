@@ -1,31 +1,6 @@
-console.log("hello there")
-
-var Player = {
-	name: "",
-	money: 500,
-	properties: [],
-	position: 0,
-	hasGetOutFreeCard: false,
-	inJail: false,
-	turnsInJail: 0,
-
-	payBail: function() {
-		this.releaseFromJail();
-		this.money -= 50;
-	},
-
-	getOutOfJailFree: function() {
-		this.releaseFromJail();
-		this.hasGetOutFreeCard = false;
-	},
-
-	releaseFromJail: function() {
-		this.inJail = false;
-		this.turnsInJail = 0;
-	},
-
-
-};
+var Player = require("./player.js");
+var Card = require("./card.js");
+var Game = require("./game.js");
 
 var john = Object.create(Player);
 john.name = "John";
@@ -38,10 +13,6 @@ sam.name = "Sam";
 
 var players = [john, steve, sam];
 
-var Card = {
-	text: "",
-	action: null
-};
 
 var card1 = Object.create(Card);
 card1.text = "Advance to Go (Collect $200)";
@@ -332,80 +303,7 @@ chance17.action = function(player) {
 var chanceDeck = [chance1, chance2, chance3, chance4, chance5, chance6, chance7, chance8, chance9, chance10, chance11, chance12, chance13, chance14, chance15, chance16, chance17];
 
 
-var Game = {
-	players: [],
-	currentPlayer: 0,
-	board: {},
-	dice: [],
-	chanceCards: [],
-	communityChestCards: [],
-	doublesCount: 0,
 
-	randomizeCurrentPlayer: function() {
-		this.currentPlayer = Math.floor(Math.random() * this.players.length);
-	},
-
-	rollDice: function(numberOfDice, sides) {
-		if (!sides) {
-			sides = 6;
-		}
-		this.dice = [];
-		for (i = 0; i < numberOfDice; i++) {
-			roll = Math.floor(Math.random() * sides) + 1;
-			this.dice.push(roll);
-		}
-	},
-
-	movePlayer: function() {
-		this.rollDice(2);
-		if (this.players[this.currentPlayer].inJail) {
-			this.players[this.currentPlayer].turnsInJail += 1;
-			if (this.isDoubles(this.dice)) {
-				this.players[this.currentPlayer].releaseFromJail();
-				this.move();
-			} else if (this.players[this.currentPlayer].turnsInJail === 3) {
-				this.players[this.currentPlayer].payBail();
-				this.move();
-			}
-		} else {
-			this.move();
-		}
-	},
-
-	move: function() {
-		var spacesToMove = 0;
-		for (index in this.dice) {
-			spacesToMove += this.dice[index];
-		}
-		nextPosition = this.players[this.currentPlayer].position + spacesToMove;
-		if (nextPosition >= 40) {
-			nextPosition = nextPosition % 40;
-			this.players[this.currentPlayer].money += 200;
-		}
-		this.players[this.currentPlayer].position = nextPosition;
-	},
-
-	isDoubles: function(dice) {
-		return dice[0] === dice[1];
-	},
-
-	nextPlayer: function() {
-		if (!this.isDoubles(this.dice)) {
-			this.doublesCount = 0;
-			this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
-		} else {
-			this.doublesCount += 1;
-			if (this.doublesCount === 3) {
-				this.doublesCount = 0;
-				this.players[this.currentPlayer].inJail = true;
-				this.players[this.currentPlayer].position = 10;
-				this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
-			}
-		}
-	}
-};
-
-module.exports = Game;
 
 // http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
 function shuffle(o){
@@ -430,5 +328,3 @@ while (n < 100) {
 	monopoly.nextPlayer();
 	n += 1;
 }
-
-
