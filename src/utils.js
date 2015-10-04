@@ -1,4 +1,4 @@
-var Card = require("card");
+var Card = require("./card.js");
 
 var Utils = {
     buildChanceDeck: function() {
