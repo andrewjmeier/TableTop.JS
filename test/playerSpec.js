@@ -6,6 +6,7 @@ describe('jail methods', function() {
     Player.money = 500;
     Player.inJail = true;
     Player.turnsInJail = 1;
+    Player.getOutOfJailFreeCards = 1;
   });
 
   describe('#payBail', function() {
@@ -23,6 +24,7 @@ describe('jail methods', function() {
       Player.inJail.should.eql(false);
       Player.turnsInJail.should.eql(0);
       Player.money.should.eql(500);
+      Player.getOutOfJailFreeCards.should.eql(0);
     });
   });
 });

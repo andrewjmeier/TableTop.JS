@@ -1,7 +1,7 @@
 should = require('chai').should(),
     Game = require('../src/game'),
 
-Game.players = [{name: "Joe", inJail: true, turnsInJail: 0, position: 5, releaseFromJail: function() {this.inJail = false}, payBail: function() {this.inJail = false}}, {name: "Bill"}, {name: "Steve"}];
+Game.players = [{name: "Joe", inJail: true, turnsInJail: 0, position: 5, moveTo: function(n) {this.position = n}, releaseFromJail: function() {this.inJail = false}, payBail: function() {this.inJail = false}}, {name: "Bill"}, {name: "Steve"}];
 
 describe('#randomizeCurrentPlayer', function() {
   it('picks a number between 0 and the length of the player array', function() {

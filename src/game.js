@@ -48,7 +48,7 @@ var Game = {
             nextPosition = nextPosition % 40;
             this.players[this.currentPlayer].money += 200;
         }
-        this.players[this.currentPlayer].position = nextPosition;
+        this.players[this.currentPlayer].moveTo(nextPosition);
     },
 
     isDoubles: function(dice) {
