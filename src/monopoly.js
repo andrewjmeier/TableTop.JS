@@ -1,7 +1,7 @@
 var Player = require("./player.js");
 var Card = require("./card.js");
 var Game = require("./game.js");
-var Utils = require("utils");
+var Utils = require("./utils.js");
 
 var john = Object.create(Player);
 john.name = "John";
@@ -14,9 +14,9 @@ sam.name = "Sam";
 
 var players = [john, steve, sam];
 
-var communityChestDeck = utils.buildCommunityChestDeck();
+var communityChestDeck = Utils.buildCommunityChestDeck();
 
-var chanceDeck = utils.buildChanceDeck();
+var chanceDeck = Utils.buildChanceDeck();
 
 
 var monopoly = Object.create(Game);
@@ -24,8 +24,8 @@ var monopoly = Object.create(Game);
 monopoly.players = players;
 monopoly.chanceCards = chanceDeck;
 monopoly.communityChestCards = communityChestDeck;
-utils.shuffle(monopoly.chanceCards);
-utils.shuffle(monopoly.communityChestCards);
+Utils.shuffle(monopoly.chanceCards);
+Utils.shuffle(monopoly.communityChestCards);
 monopoly.randomizeCurrentPlayer();
 
 n = 0;
