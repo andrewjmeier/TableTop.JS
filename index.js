@@ -149,8 +149,6 @@ function build_board() {
   build_spaces(board);
 } 
 
-// order is important
-// todo: finish filling in all the board spaces w/ data
 function build_spaces(board) { 
   var props = properties_list();
   board.spaces = [ 
