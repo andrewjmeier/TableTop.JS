@@ -92,10 +92,6 @@ SuperTax.prototype = Object.create(Tax.prototype);
 
 function Go() {}
 Go.prototype = Object.create(Space.prototype);
-Go.prototype.perform_landing_action = function(player) { 
-  this.player.money += 400;
-}; 
-
 
 // end of space class definitions
 
