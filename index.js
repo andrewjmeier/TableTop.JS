@@ -85,10 +85,10 @@ function IncomeTax() {
 }
 IncomeTax.prototype = Object.create(Tax.prototype);
 
-function SuperTax() { 
-  this.tax_amount = 100;
+function LuxuryTax() { 
+  this.tax_amount = 75;
 }
-SuperTax.prototype = Object.create(Tax.prototype);
+LuxuryTax.prototype = Object.create(Tax.prototype);
 
 function Go() {}
 Go.prototype = Object.create(Space.prototype);
