@@ -1,6 +1,7 @@
 var Player = require("./player.js");
 var Card = require("./card.js");
 var Game = require("./game.js");
+var Board = require("./board/board_util.js");
 
 var john = Object.create(Player);
 john.name = "John";
