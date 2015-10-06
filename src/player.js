@@ -7,6 +7,11 @@ var Player = {
     inJail: false,
     turnsInJail: 0,
 
+    sendToJail: function() { 
+        this.moveTo(10);
+        this.inJail = true;
+    },
+  
     payBail: function() {
         this.releaseFromJail();
         this.money -= 50;

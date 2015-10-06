@@ -201,8 +201,7 @@ var Utils = {
         var card5 = Object.create(Card);
         card5.text = "Go to jail - go directly to jail - Do not pass Go, do not collect $200";
         card5.action = function(player) {
-            player.moveTo(10);
-            player.inJail = true;
+            player.sendToJail();
         };
 
         var card6 = Object.create(Card);

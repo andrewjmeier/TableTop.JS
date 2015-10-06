@@ -6,7 +6,7 @@ function GoToJail() {}
 inherits(GoToJail, Space);
 
 GoToJail.prototype.performLandingAction = function(player) { 
-  // send player to jail
+  player.sendToJail();
 }; 
 
 module.exports = GoToJail;
