@@ -2,13 +2,14 @@ var Go = require('./other/go'),
     CommunityChest = require('./other/communityChest'),
     IncomeTax = require('./taxes/incomeTax'),
     Chance = require('./other/chance'),
-    Jail = require('./other/jail'), 
-    GoToJail = require('./other/goToJail'), 
+    Jail = require('./jail/jail'), 
+    GoToJail = require('./jail/goToJail'), 
     LuxuryTax = require('./taxes/luxuryTax'),
     FreeParking = require('./other/freeParking'),
     UtilityProperty = require('./properties/utilityProperty'),
     HousingProperty = require('./properties/housingProperty'),
-    RailroadProperty = require('./properties/railroadProperty');
+    RailroadProperty = require('./properties/railroadProperty'),
+    Board = require('./board/board');
 
 // index constants for properties 
 var MEDITERRANEAN_AVE = 0;
@@ -60,6 +61,7 @@ var board;
 function buildBoard() { 
   board = new Board();
   buildSpaces(board);
+  return board;
 } 
 
 function buildSpaces(board) { 
@@ -176,3 +178,4 @@ function propertiesList() {
 
 }
 
+module.exports = buildBoard;
