@@ -81,8 +81,10 @@ function RailroadProperty(name, cost, propertyGroup, rent) {
   Property.call(this, name, cost, propertyGroup);
 }
 RailroadProperty.prototype = Object.create(Property.prototype);
-RailroadProperty.prototype.performLandingAction = function(player) { 
-  // todo 
+RailroadProperty.prototype.performLandingAction = function(player) {
+  // todo
+  // probably call something like: 
+  // handlePropertyLanding(name, cost, rent, player, multiplier);
 }; 
 
 // rent is assumed here (4x, 10x) 
@@ -90,7 +92,7 @@ function UtilityProperty(name, cost, propertyGroup) {
   Property.call(this, name, cost, propertyGroup);
 }
 UtilityProperty.prototype = Object.create(Property.prototype);
-UtilityProperty.prototype.performLandingAction = function(player) { 
+UtilityProperty.prototype.performLandingAction = function(player, dice) { 
   // todo - need dice access here
 }; 
 
@@ -103,7 +105,8 @@ function HousingProperty(name, cost, propertyGroup, rent) {
 }
 HousingProperty.prototype = Object.create(Property.prototype);
 HousingProperty.prototype.performLandingAction = function(player) { 
-  // todo... gonna need to figure out housing logic (where are houses stored?)
+  // todo
+  // see above railroad property fn comments
 };
 
 
@@ -111,12 +114,14 @@ function Chance() {}
 Chance.prototype = Object.create(Space.prototype);
 Chance.prototype.performLandingAction = function(player) { 
   // todo 
+  // call andrew's function relating to chance cards
 }; 
 
 function CommunityChest() {}
 CommunityChest.prototype = Object.create(Space.prototype);
 CommunityChest.prototype.performLandingAction = function(player) { 
   // todo 
+  // see above chance() 
 }; 
 
 function FreeParking() {}
@@ -141,6 +146,9 @@ function Tax() {
 }
 Tax.prototype = Object.create(Space.prototype);
 Tax.prototype.performLandingAction = function(player) { 
+  // should probably refactor this into a fn
+  // that checks balance, prompts player to mortage/sell
+  // before declaring him bankrupt
   this.player.money -= this.taxAmount;
 }; 
 
@@ -158,6 +166,9 @@ function LuxuryTax() {
   this.taxAmount = 75;
 }
 LuxuryTax.prototype = Object.create(Tax.prototype);
+IncomeTax.prototype.performLandingAction = function(player) { 
+  // todo
+}; 
 
 function Go() {}
 Go.prototype = Object.create(Space.prototype);
