@@ -297,5 +297,3 @@ function propertiesList() {
 
 }
 
-
-
