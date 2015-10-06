@@ -12,7 +12,7 @@ var Utils = {
         });
 
         var chance3 = new Card("Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total of ten times the amount thrown.", function(player) {
-            if (player.position > 11) {
+            if (player.position > 11 && player.position < 28) {
                 // move to water works
                 player.moveTo(28);
             } else {
@@ -24,27 +24,6 @@ var Utils = {
         });
 
         var chance4 = new Card("Advance token to the nearest Railroad and pay owner twice the rental to which he/she is otherwise entitled. If Railroad is unowned, you may buy it from the Bank.", function(player) {
-            if (player.position >= 35) {
-                // Reading RR
-                player.moveTo(5);
-                player.makeDeposit(200);
-            } else if (player.position >= 25) {
-                // Short Line
-                player.moveTo(35);
-            } else if (player.position >= 15) {
-                // B & O
-                player.moveTo(25);
-            } else if (player.position >= 5) {
-                // Penn RR
-                player.moveTo(15);
-            } else {
-                // Reading RR w/out $200 for passing go
-                player.moveTo(5);
-            }
-            // TODO - pay owner twice rent
-        });
-
-        var chance5 = new Card("Advance token to the nearest Railroad and pay owner twice the rental to which he/she is otherwise entitled. If Railroad is unowned, you may buy it from the Bank.", function(player) {
             if (player.position >= 35) {
                 // Reading RR
                 player.moveTo(5);
@@ -77,7 +56,7 @@ var Utils = {
             player.makeDeposit(50);
         });
 
-        var chance8 = new Card("Get out of Jail free - this card may be kept until needed, or traded/sold", function() {
+        var chance8 = new Card("Get out of Jail free - this card may be kept until needed, or traded/sold", function(player) {
             player.getOutOfJailFreeCards += 1;
         });
 
@@ -135,7 +114,7 @@ var Utils = {
             player.makeDeposit(100);
         });
 
-        return [chance1, chance2, chance3, chance4, chance5, chance6, chance7, chance8, chance9, chance10, chance11, chance12, chance13, chance14, chance15, chance16, chance17];
+        return [chance1, chance2, chance3, chance4, chance4, chance6, chance7, chance8, chance9, chance10, chance11, chance12, chance13, chance14, chance15, chance16, chance17];
     },
 
     buildCommunityChestDeck: function() {
