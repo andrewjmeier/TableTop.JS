@@ -297,6 +297,5 @@ function propertiesList() {
 
 }
 
-window.onload = function() { 
-  buildBoard();
-};
+
+
