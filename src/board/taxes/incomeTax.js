@@ -2,15 +2,15 @@ var Tax = require('./tax'),
     inherits = require('util').inherits;
 
 function IncomeTax() {
-  this.taxAmount = 200; // flat tax - will give user option later
+  // flat tax as default will handle 10% option on landing action
+  this.taxAmount = 200;
 }
 
 inherits(IncomeTax, Tax);
 
 IncomeTax.prototype.performLandingAction = function(player) { 
-  // todo: prompt user for choice here
-  // if (userWantsFlatTax) this.taxAmount = 200; 
-  // else this.taxAmount = playerAssetValue(player)*.10;
+  // todo: this.taxAmount = min(200, player.playerAssetValues*.10);
+  IncomeTax.super_.prototype.performLandingAction.apply(this);
 }; 
 
 module.exports = IncomeTax;
