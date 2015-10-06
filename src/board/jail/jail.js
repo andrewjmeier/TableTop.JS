@@ -1,5 +1,11 @@
+var Space = require('../board/space'), 
+    inherits = require('util').inherits;
+
 function Jail() {}
-GoToJail.prototype = Object.create(Space.prototype);
-GoToJail.prototype.performLandingAction = function(player) { 
-  //  player.go_to_jail(); todo: make this fn in player
+
+inherits(Jail, Space);
+
+Jail.prototype.performLandingAction = function(player) { 
 }; 
+
+module.exports = Jail;

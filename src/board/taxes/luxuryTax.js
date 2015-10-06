@@ -1,7 +1,14 @@
+var Tax = require('./tax'), 
+    inherits = require('util').inherits;
+
 function LuxuryTax() { 
   this.taxAmount = 75;
 }
-LuxuryTax.prototype = Object.create(Tax.prototype);
-IncomeTax.prototype.performLandingAction = function(player) { 
+
+inherits(LuxuryTax, Tax);
+
+LuxuryTax.prototype.performLandingAction = function(player) { 
   // todo
 }; 
+
+module.exports = LuxuryTax;

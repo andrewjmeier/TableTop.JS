@@ -1,5 +1,12 @@
+var Space = require('../board/space'), 
+    inherits = require('util').inherits;
+
 function FreeParking() {}
-FreeParking.prototype = Object.create(Space.prototype);
+
+inherits(FreeParking, Space);
+
 FreeParking.prototype.performLandingAction = function(player) { 
   // nothing! 
 }; 
+
+module.exports = FreeParking;

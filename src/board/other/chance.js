@@ -1,6 +1,13 @@
+var Space = require('../board/space'), 
+    inherits = require('util').inherits;
+
 function Chance() {} 
-Chance.prototype = Object.create(Space.prototype);
+
+inherits(Chance, Space);
+
 Chance.prototype.performLandingAction = function(player) { 
   // todo 
-  // call andrew's function relating to chance cards
+  // call function relating to chance cards
 }; 
+
+module.exports = Chance;

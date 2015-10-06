@@ -1,3 +1,15 @@
+var Go = require('./other/go'), 
+    CommunityChest = require('./other/communityChest'),
+    IncomeTax = require('./taxes/incomeTax'),
+    Chance = require('./other/chance'),
+    Jail = require('./other/jail'), 
+    GoToJail = require('./other/goToJail'), 
+    LuxuryTax = require('./taxes/luxuryTax'),
+    FreeParking = require('./other/freeParking'),
+    UtilityProperty = require('./properties/utilityProperty'),
+    HousingProperty = require('./properties/housingProperty'),
+    RailroadProperty = require('./properties/railroadProperty');
+
 // index constants for properties 
 var MEDITERRANEAN_AVE = 0;
 var BALTIC_AVE = 1;
