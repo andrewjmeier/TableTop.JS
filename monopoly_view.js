@@ -1,142 +1,69 @@
-var renderer = PIXI.autoDetectRenderer(800, 600);
+var renderer = PIXI.autoDetectRenderer(800, 800, {backgroundColor : 0x1099bb});
 document.body.appendChild(renderer.view);
 
 // create the root of the scene graph
 var stage = new PIXI.Container();
+var graphics = new PIXI.Graphics();
 
-// create a background...
-var background = PIXI.Sprite.fromImage('assets/diamond.png');
-background.width = renderer.width;
-background.height = renderer.height;
+// create a texture from an image path
+var texture = PIXI.Texture.fromImage('assets/monopoly_logo.png');
 
-// add background to stage...
-stage.addChild(background);
+// create a new Sprite using the texture
+var logo = new PIXI.Sprite(texture);
 
-// create some textures from an image path
-var textureButton = PIXI.Texture.fromImage('diamond.png');
-var textureButtonDown = PIXI.Texture.fromImage('diamond.png');
-var textureButtonOver = PIXI.Texture.fromImage('diamond.png');
+logo.position.x = 400;
+logo.position.y = 400;
 
-var buttons = [];
+ // set a fill and a line style again and draw a rectangle
+graphics.lineStyle(1, 0x000000, 1);
+graphics.beginFill(0xC2E2BF, 1);
 
-var buttonPositions = [
-    175, 75,
-    655, 75,
-    410, 325,
-    150, 465,
-    685, 445
-];
+// draw center & corner rectangles
+graphics.drawRect(0, 0, 125, 125);
+graphics.drawRect(0, 675, 125, 125);
+graphics.drawRect(675, 0, 125, 125);
+graphics.drawRect(125, 125, 550, 550);
+graphics.drawRect(675, 675, 125, 125);
 
-var noop = function () {
-    console.log('click');
-};
-
-for (var i = 0; i < 5; i++)
-{
-    var button = new PIXI.Sprite(textureButton);
-    button.buttonMode = true;
-
-    button.anchor.set(0.5);
-
-    button.position.x = buttonPositions[i*2];
-    button.position.y = buttonPositions[i*2 + 1];
-
-    // make the button interactive...
-    button.interactive = true;
-    
-    
-
-    button
-        // set the mousedown and touchstart callback...
-        .on('mousedown', onButtonDown)
-        .on('touchstart', onButtonDown)
-
-        // set the mouseup and touchend callback...
-        .on('mouseup', onButtonUp)
-        .on('touchend', onButtonUp)
-        .on('mouseupoutside', onButtonUp)
-        .on('touchendoutside', onButtonUp)
-
-        // set the mouseover callback...
-        .on('mouseover', onButtonOver)
-
-        // set the mouseout callback...
-        .on('mouseout', onButtonOut)
-
-
-        // you can also listen to click and tap events :
-        //.on('click', noop)
-        
-    button.tap = noop;
-    button.click = noop;
-    // add it to the stage
-    stage.addChild(button);
-
-    // add button to array
-    buttons.push(button);
+// draw rectangles on the top side
+var x = 125;
+var dx = 68.75;
+for (var i = 1; i <= 8; i++){
+	graphics.drawRect(x, 0, dx, 125);
+	x += dx;
 }
 
-// set some silly values...
-buttons[0].scale.set(1.2);
+// draw rectangles on the bottom side
+x = 125;
+dx = 68.75;
+for (var i = 1; i <= 8; i++){
+	graphics.drawRect(x, 675, dx, 125);
+	x += dx;
+}
 
-buttons[2].rotation = Math.PI / 10;
+// draw rectangles on the left side
+var y = 125;
+var dy = 68.75;
+for (var i = 1; i <= 8; i++){
+	graphics.drawRect(0, y, 125, dy);
+	y += dy;
+}
 
-buttons[3].scale.set(0.8);
+// draw rectangles on the right side
+var y = 125;
+var dy = 68.75;
+for (var i = 1; i <= 8; i++){
+	graphics.drawRect(675, y, 125, dy);
+	y += dy;
+}
 
-buttons[4].scale.set(0.8,1.2);
-buttons[4].rotation = Math.PI;
+stage.addChild(graphics);
+stage.addChild(logo);
 
-
+// run the render loop
 animate();
 
 function animate() {
-    // render the stage
-    renderer.render(stage);
-
     requestAnimationFrame(animate);
-}
-
-function onButtonDown()
-{
-    this.isdown = true;
-    this.texture = textureButtonDown;
-    this.alpha = 1;
-}
-
-function onButtonUp()
-{
-    this.isdown = false;
-
-    if (this.isOver)
-    {
-        this.texture = textureButtonOver;
-    }
-    else
-    {
-        this.texture = textureButton;
-    }
-}
-
-function onButtonOver()
-{
-    this.isOver = true;
-
-    if (this.isdown)
-    {
-        return;
-    }
-
-    this.texture = textureButtonOver;
-}
-
-function onButtonOut()
-{
-    this.isOver = false;
-
-    if (this.isdown)
-    {
-        return;
-    }
-
-    this.texture = textureButton;
+	renderer.render(stage);
 }
