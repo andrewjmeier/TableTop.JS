@@ -1,15 +1,15 @@
-var Go = require('./other/go'), 
-    CommunityChest = require('./other/communityChest'),
-    IncomeTax = require('./taxes/incomeTax'),
-    Chance = require('./other/chance'),
-    Jail = require('./jail/jail'), 
-    GoToJail = require('./jail/goToJail'), 
-    LuxuryTax = require('./taxes/luxuryTax'),
-    FreeParking = require('./other/freeParking'),
-    UtilityProperty = require('./properties/utilityProperty'),
-    HousingProperty = require('./properties/housingProperty'),
-    RailroadProperty = require('./properties/railroadProperty'),
-    Board = require('./board/board');
+var Go = require('./board/other/go'), 
+    CommunityChest = require('./board/other/communityChest'),
+    IncomeTax = require('./board/taxes/incomeTax'),
+    Chance = require('./board/other/chance'),
+    Jail = require('./board/jail/jail'), 
+    GoToJail = require('./board/jail/goToJail'), 
+    LuxuryTax = require('./board/taxes/luxuryTax'),
+    FreeParking = require('./board/other/freeParking'),
+    UtilityProperty = require('./board/properties/utilityProperty'),
+    HousingProperty = require('./board/properties/housingProperty'),
+    RailroadProperty = require('./board/properties/railroadProperty'),
+    Board = require('./board/board/board'); // looks ugly, maybe think of better naming pattern
 
 // index constants for properties 
 var MEDITERRANEAN_AVE = 0;
