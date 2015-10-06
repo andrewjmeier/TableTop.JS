@@ -1,6 +1,6 @@
-var Card = {
-    text: "",
-    action: null
+function Card(text, action) {
+    this.text = text;
+    this.action = action;
 };
 
 module.exports = Card;
