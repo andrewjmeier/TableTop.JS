@@ -1,3 +1,9 @@
+var Space = require('../board/space'), 
+    inherits = require('util').inherits;
+
 function Go() {}
-Go.prototype = Object.create(Space.prototype);
+
+inherits(Go, Space);
+
+module.exports = Go;
 
