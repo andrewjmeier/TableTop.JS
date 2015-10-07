@@ -1,44 +1,43 @@
-var Player = {
-    name: "",
-    money: 500,
-    properties: [],
-    position: 0,
-    getOutOfJailFreeCards: 0,
-    inJail: false,
-    turnsInJail: 0,
 
-    payBail: function() {
-        this.releaseFromJail();
-        this.money -= 50;
-    },
+function Player(name) {
+    this.name = name;
+    this.money = 500;
+    this.properties = [];
+    this.position = 0;
+    this.getOutOfJailFreeCards = 0;
+    this.inJail = false;
+    this.turnsInJail = 0;
+};
 
-    getOutOfJailFree: function() {
-        this.releaseFromJail();
-        this.getOutOfJailFreeCards -= 1;
-    },
+Player.prototype.payBail = function() {
+    this.releaseFromJail();
+    this.money -= 50;
+};
 
-    releaseFromJail: function() {
-        this.inJail = false;
-        this.turnsInJail = 0;
-    },
+Player.prototype.getOutOfJailFree = function() {
+    this.releaseFromJail();
+    this.getOutOfJailFreeCards -= 1;
+};
 
-    makePayment: function(amount) {
-        // TODO - introduce handleing for if they don't have enough money
-        this.money -= amount;
-    },
+Player.prototype.releaseFromJail = function() {
+    this.inJail = false;
+    this.turnsInJail = 0;
+};
 
-    makeDeposit: function(amount) {
-        this.money += amount;
-    },
+Player.prototype.makePayment = function(amount) {
+    this.money -= amount;
+};
 
-    moveTo: function(position) {
-        this.position = position;
-    },
+Player.prototype.makeDeposit = function(amount) {
+    this.money += amount;
+};
 
-    move: function(spacesToMove) {
-        this.position += spacesToMove;
-    },
+Player.prototype.moveTo = function(position) {
+    this.position = position;
+};
 
+Player.prototype.move = function(spacesToMove) {
+    this.position += spacesToMove;
 };
 
 module.exports = Player;
