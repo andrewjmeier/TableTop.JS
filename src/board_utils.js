@@ -1,3 +1,4 @@
+require('./board/boardConstants');
 var Go = require('./board/other/go'), 
     CommunityChest = require('./board/other/communityChest'),
     IncomeTax = require('./board/taxes/incomeTax'),
@@ -11,47 +12,6 @@ var Go = require('./board/other/go'),
     RailroadProperty = require('./board/properties/railroadProperty'),
     Board = require('./board/board/board'); // looks ugly, maybe think of better naming pattern
 
-// index constants for properties 
-var MEDITERRANEAN_AVE = 0;
-var BALTIC_AVE = 1;
-var ORIENTAL_AVE = 2;
-var VERMONT_AVE = 3;
-var CONNECTICUT_AVE = 4;
-var ST_CHARLES_PLACE = 5;
-var STATES_AVE = 6;
-var VIRGINIA_AVE = 7;
-var ST_JAMES_PLACE = 8;
-var TENNESSEE_AVE = 9; 
-var NEW_YORK_AVE = 10;
-var KENTUCKY_AVE = 11;
-var INDIANA_AVE = 12;
-var ILLINOIS_AVE = 13;
-var ATLANTIC_AVE = 14;
-var VENTNOR_AVE = 15;
-var MARVIN_GARDENS = 16;
-var PACIFIC_AVE = 17;
-var NORTH_CAROLINA_AVE = 18;
-var PENNSYLVANIA_AVE = 19;
-var PARK_PLACE = 20;
-var BOARDWALK = 21;
-var READING_RR = 22;
-var PENN_RR = 23;
-var BO_RR = 24;
-var SHORTLINE_RR = 25;
-var ELECTRIC_CO = 26;
-var WATERWORKS = 27;
-
-// property groups
-var PG_BROWN = 0;
-var PG_LIGHT_BLUE = 1;
-var PG_PINK = 2;
-var PG_ORANGE = 3;
-var PG_RED = 4;
-var PG_YELLOW = 5;
-var PG_GREEN = 6;
-var PG_BLUE = 7;
-var PG_RR = 8;
-var PG_UTIL = 9;
 
 // end of space class definitions
 
@@ -124,7 +84,7 @@ function propertyForIndex(index, props) {
   if (index <= 21) { 
     return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
   } else if (index <= 25) { 
-    return new RailroadProperty(props[index][0], props[index][2], props[index][3]);
+    return new RailroadProperty(props[index][0], props[index][2], props[index][1]);
   } else { 
     return new UtilityProperty(props[index][0], props[index][2]);
   } 
@@ -167,13 +127,13 @@ function propertiesList() {
     ["Park Place", PG_BLUE, 350, 200, [35, 175, 500, 1100, 1300, 1500]], // 20
     ["Boardwalk", PG_BLUE, 400, 200, [50, 200, 600, 1400, 1700, 2000]], 
 
-    ["Reading Railroad", PG_RR, 200, [25, 50, 100, 200]],
-    ["Pennsylvania Railroad", PG_RR, 200, [25, 50, 100, 200]],
-    ["B. & O. Railroad", PG_RR, 200, [25, 50, 100, 200]],
-    ["Shortline Railroad", PG_RR, 200, [25, 50, 100, 200]], // 25
+    ["Reading Railroad"],
+    ["Pennsylvania Railroad"],
+    ["B. & O. Railroad"],
+    ["Shortline Railroad"],
 
-    ["Electric Company", PG_UTIL, 150],
-    ["WaterWorks", PG_UTIL, 150]
+    ["Electric Company"],
+    ["WaterWorks"],
   ];
 
 }
