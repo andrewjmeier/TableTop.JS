@@ -135,8 +135,7 @@ var Utils = {
         });
 
         var card5 = new Card("Go to jail - go directly to jail - Do not pass Go, do not collect $200", function(player) {
-            player.moveTo(10);
-            player.inJail = true;
+            player.sendToJail();
         });
 
         var card6 = new Card("It is your birthday Collect $10 from each player", function(player) {
