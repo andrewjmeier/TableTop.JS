@@ -16,6 +16,7 @@ var communityChestDeck = Utils.buildCommunityChestDeck();
 
 var chanceDeck = Utils.buildChanceDeck();
 
+var board = new Board();
 
 var monopoly = new Game(players, chanceDeck, communityChestDeck);
 
