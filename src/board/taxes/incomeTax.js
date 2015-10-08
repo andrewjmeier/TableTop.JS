@@ -10,7 +10,7 @@ inherits(IncomeTax, Tax);
 
 IncomeTax.prototype.performLandingAction = function(player) { 
   // todo: this.taxAmount = min(200, player.playerAssetValues*.10);
-  IncomeTax.super_.prototype.performLandingAction.apply(this);
+  IncomeTax.super_.prototype.performLandingAction.call(this);
 }; 
 
 module.exports = IncomeTax;

@@ -8,7 +8,7 @@ function LuxuryTax() {
 inherits(LuxuryTax, Tax);
 
 LuxuryTax.prototype.performLandingAction = function(player) { 
-  LuxuryTax.super_.prototype.performLandingAction.apply(this);
+  LuxuryTax.super_.prototype.performLandingAction.call(this);
 }; 
 
 module.exports = LuxuryTax;
