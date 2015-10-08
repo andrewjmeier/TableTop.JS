@@ -8,6 +8,12 @@ function Player(name) {
     this.turnsInJail = 0;
 };
 
+Player.prototype.sendToJail = function() { 
+    this.moveTo(10);
+    this.inJail = true;
+};
+
+
 Player.prototype.payBail = function() {
     this.releaseFromJail();
     this.money -= 50;
