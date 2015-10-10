@@ -1,11 +1,11 @@
 should = require('chai').should(),
     Game = require('../src/game'),
-
+Player = require('../src/player');
 
 describe('Game Tests', function() {
   var game;
-  var players = [{name: "Joe", inJail: true, turnsInJail: 0, position: 5, moveTo: function(n) {this.position = n}, releaseFromJail: function() {this.inJail = false}, payBail: function() {this.inJail = false}}, {name: "Bill"}, {name: "Steve"}];
-
+  var players = [new Player("Joe"), new Player("Steve"), new Player("Bob")];
+  players[0].inJail = true;
   beforeEach(function() {
     game = new Game(players, [], []);
   });

@@ -8,7 +8,7 @@ function Player(name) {
     this.turnsInJail = 0;
 };
 
-Player.prototype.sendToJail = function() { 
+Player.prototype.sendToJail = function() {
     this.moveTo(10);
     this.inJail = true;
 };
@@ -38,11 +38,24 @@ Player.prototype.makeDeposit = function(amount) {
 };
 
 Player.prototype.moveTo = function(position) {
+    var previousPosition = this.position;
+
+    // passed go collecting $200
+    if (previousPosition > position) {
+        this.money += 200;
+    }
     this.position = position;
 };
 
 Player.prototype.move = function(spacesToMove) {
-    this.position += spacesToMove;
+    nextPosition = this.position + spacesToMove;
+
+    // passed go
+    if (nextPosition >= 40) {
+        nextPosition = nextPosition % 40;
+        this.money += 200;
+    }
+    this.position = nextPosition;
 };
 
 module.exports = Player;

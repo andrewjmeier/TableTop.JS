@@ -31,13 +31,13 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
 
 Game.prototype.movePlayer = function() {
     this.rollDice(2);
-    if (this.players[this.currentPlayer].inJail) {
-        this.players[this.currentPlayer].turnsInJail += 1;
+    if (this.getCurrentPlayer().inJail) {
+        this.getCurrentPlayer().turnsInJail += 1;
         if (this.isDoubles(this.dice)) {
-            this.players[this.currentPlayer].releaseFromJail();
+            this.getCurrentPlayer().releaseFromJail();
             this.move();
-        } else if (this.players[this.currentPlayer].turnsInJail === 3) {
-            this.players[this.currentPlayer].payBail();
+        } else if (this.getCurrentPlayer().turnsInJail === 3) {
+            this.getCurrentPlayer().payBail();
             this.move();
         }
     } else {
@@ -50,17 +50,16 @@ Game.prototype.move = function() {
     for (index in this.dice) {
         spacesToMove += this.dice[index];
     }
-    nextPosition = this.players[this.currentPlayer].position + spacesToMove;
-    if (nextPosition >= 40) {
-        nextPosition = nextPosition % 40;
-        this.players[this.currentPlayer].money += 200;
-    }
-    this.players[this.currentPlayer].moveTo(nextPosition);
+    this.getCurrentPlayer().move(spacesToMove);
 };
 
 Game.prototype.isDoubles = function(dice) {
     return dice[0] === dice[1];
 };
+
+Game.prototype.getCurrentPlayer = function() {
+    return this.players[this.currentPlayer];
+}
 
 Game.prototype.nextPlayer = function() {
     if (!this.isDoubles(this.dice)) {
@@ -70,8 +69,8 @@ Game.prototype.nextPlayer = function() {
         this.doublesCount += 1;
         if (this.doublesCount === 3) {
             this.doublesCount = 0;
-            this.players[this.currentPlayer].inJail = true;
-            this.players[this.currentPlayer].position = 10;
+            this.getCurrentPlayer().inJail = true;
+            this.getCurrentPlayer().position = 10;
             this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
         }
     }
