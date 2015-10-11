@@ -1,9 +1,9 @@
 var Utils = require("./utils.js");
 
-function Game(players, chance, communityChest) {
+function Game(players, chance, communityChest, board) {
     this.players = players,
     this.currentPlayer = 0;
-    this.board = {};
+    this.board = board;
     this.dice = [];
     this.chanceCards = chance;
     this.communityChestCards = communityChest;
@@ -51,6 +51,8 @@ Game.prototype.move = function() {
         spacesToMove += this.dice[index];
     }
     this.getCurrentPlayer().move(spacesToMove);
+    var player = this.getCurrentPlayer();
+    this.board.spaces[player.position].performLandingAction(player);
 };
 
 Game.prototype.isDoubles = function(dice) {

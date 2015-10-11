@@ -98,7 +98,7 @@ var Utils = {
         });
 
         var chance15 = new Card("You have been elected chairman of the board - pay each player $50", function(game) {
-            // TODO
+            game.getCurrentPlayer().payPlayers(50, game.players);
         });
 
         var chance16 = new Card("Your building loan matures - collect $150", function(game) {
@@ -134,11 +134,11 @@ var Utils = {
         });
 
         var card6 = new Card("It is your birthday Collect $10 from each player", function(game) {
-            // TODO
+            game.getCurrentPlayer().collectFromPlayers(10, game.players);
         });
 
         var card7 = new Card("Grand Opera Night - collect $50 from every player for opening night seats", function(game) {
-            // TODO
+            game.getCurrentPlayer().collectFromPlayers(50, game.players);
         });
 
         var card8 = new Card("Income Tax refund - collect $20", function(game) {

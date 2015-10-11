@@ -12,7 +12,10 @@ describe('chance cards', function() {
 
   beforeEach(function() {
     player = new Player("John");
-    game = new Game([player], [], []);
+    player2 = new Player("smith");
+    player3 = new Player("sam");
+    game = new Game([player, player2, player3], [], []);
+    game.currentPlayer = 0;
     player.moveTo(33);
   });
 
@@ -149,12 +152,14 @@ describe('chance cards', function() {
     });
   });
 
-  // TODO
-  // describe('#elected chairman of the board', function() {
-  //   it('pay each player $50', function() {
-  //     cards[14].action(player);
-  //   });
-  // });
+  describe('#elected chairman of the board', function() {
+    it('pay each player $50', function() {
+      cards[14].action(game);
+      player.money.should.eql(400);
+      player2.money.should.eql(550);
+      player3.money.should.eql(550);
+    });
+  });
 
   describe('#Building loan matures', function() {
     it('adds $150 to player', function() {
@@ -181,7 +186,11 @@ describe('community chest cards', function() {
 
   beforeEach(function() {
     player = new Player("John");
-    game = new Game([player], [], []);
+
+    player2 = new Player("smith");
+    player3 = new Player("sam");
+    game = new Game([player, player2, player3], [], []);
+    game.currentPlayer = 0;
     player.moveTo(33);
   });
 
@@ -221,21 +230,23 @@ describe('community chest cards', function() {
     });
   });
 
-  // TODO
-  // describe('#birthday', function() {
-  //   it('collect $10 from each player', function() {
-  //     cards[5].action(player);
-  //     player.money.should.eql(575);
-  //   });
-  // });
+  describe('#birthday', function() {
+    it('collect $10 from each player', function() {
+      cards[5].action(game);
+      player.money.should.eql(520);
+      player2.money.should.eql(490);
+      player3.money.should.eql(490);
+    });
+  });
 
-  // TODO
-  // describe('#opera night', function() {
-  //   it('collect $50 from each player', function() {
-  //     cards[6].action(player);
-  //     player.money.should.eql(575);
-  //   });
-  // });
+  describe('#opera night', function() {
+    it('collect $50 from each player', function() {
+      cards[6].action(game);
+      player.money.should.eql(600);
+      player2.money.should.eql(450);
+      player3.money.should.eql(450);
+    });
+  });
 
   describe('#income tax refund', function() {
     it('collect $20', function() {

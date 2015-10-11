@@ -18,7 +18,7 @@ var chanceDeck = Utils.buildChanceDeck();
 
 var board = new Board();
 
-var monopoly = new Game(players, chanceDeck, communityChestDeck);
+var monopoly = new Game(players, chanceDeck, communityChestDeck, board);
 
 n = 0;
 while (n < 100) {

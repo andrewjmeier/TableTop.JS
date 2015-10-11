@@ -29,6 +29,27 @@ Player.prototype.releaseFromJail = function() {
     this.turnsInJail = 0;
 };
 
+Player.prototype.payPlayers = function(amount, players) {
+    for (index in players) {
+        if (players[i] !== this) {
+            this.payPlayer(amount, players[index]);
+        }
+    }
+};
+
+Player.prototype.collectFromPlayers = function(amount, players) {
+    for (index in players) {
+        if (players[i] !== this) {
+            players[index].payPlayer(amount, this);
+        }
+    }
+};
+
+Player.prototype.payPlayer = function(amount, player) {
+    player.makeDeposit(amount);
+    this.makePayment(amount);
+};
+
 Player.prototype.makePayment = function(amount) {
     this.money -= amount;
 };
