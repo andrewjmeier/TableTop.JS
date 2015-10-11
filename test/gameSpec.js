@@ -1,13 +1,17 @@
 should = require('chai').should(),
     Game = require('../src/game'),
 Player = require('../src/player');
+Board = require("../src/board_utils.js");
+
 
 describe('Game Tests', function() {
   var game;
   var players = [new Player("Joe"), new Player("Steve"), new Player("Bob")];
   players[0].inJail = true;
+  var board = new Board();
+
   beforeEach(function() {
-    game = new Game(players, [], []);
+    game = new Game(players, [], [], board);
   });
 
   describe('#randomizeCurrentPlayer', function() {
