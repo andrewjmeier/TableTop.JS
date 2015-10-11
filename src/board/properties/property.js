@@ -13,14 +13,16 @@ inherits(Property, Space);
 
 Property.prototype.performLandingAction = function(player) {
 
-    if (this.owner === player) return;
+  if (this.owner === player) return;
 
-    if (this.owner === null && player.money > this.cost) {
-        player.makePayment(this.cost);
-        player.properties.push(this);
-        this.owner = player;
-    }
-    // todo  - finish hashing this out
+  if (this.owner === null && player.money > this.cost) {
+      player.makePayment(this.cost);
+      player.properties.push(this);
+      this.owner = player;
+  }
+  // todo  - finish hashing this out
+  Property.super_.prototype.performLandingAction.call(this, player);
+
 };
 
 module.exports = Property;

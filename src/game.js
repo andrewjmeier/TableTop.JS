@@ -1,17 +1,15 @@
-var Utils = require("./utils.js");
+var ChanceDeck = require("./chanceDeck");
+var CommunityChestDeck = require("./communityChestDeck");
 
 function Game(players, chance, communityChest, board) {
     this.players = players,
     this.currentPlayer = 0;
     this.board = board;
     this.dice = [];
-    this.chanceCards = chance;
-    this.communityChestCards = communityChest;
+    this.chanceCards = new ChanceDeck();
+    this.communityChestCards = new CommunityChestDeck();
     this.doublesCount = 0;
     this.randomizeCurrentPlayer();
-
-    Utils.shuffle(this.chanceCards);
-    Utils.shuffle(this.communityChestCards);
 };
 
 Game.prototype.randomizeCurrentPlayer = function() {
@@ -39,6 +37,8 @@ Game.prototype.movePlayer = function() {
         } else if (this.getCurrentPlayer().turnsInJail === 3) {
             this.getCurrentPlayer().payBail();
             this.move();
+        } else {
+            console.log(this.getCurrentPlayer().name + " is serving a turn in jail");
         }
     } else {
         this.move();

@@ -22,9 +22,11 @@ var monopoly = new Game(players, chanceDeck, communityChestDeck, board);
 
 n = 0;
 while (n < 100) {
-	console.log(monopoly.players[monopoly.currentPlayer]);
+    console.log(monopoly.players[monopoly.currentPlayer]);
 	monopoly.movePlayer();
 	console.log(monopoly.dice);
+    console.log(monopoly.players[monopoly.currentPlayer]);
 	monopoly.nextPlayer();
 	n += 1;
+    console.log("\n\n");
 }

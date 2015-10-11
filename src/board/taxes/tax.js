@@ -12,6 +12,8 @@ Tax.prototype.performLandingAction = function(player) {
   // that checks balance, prompts player to mortage/sell
   // before declaring him bankrupt
   player.makePayment(this.taxAmount);
+  Tax.super_.prototype.performLandingAction.call(this, player);
+
 };
 
 module.exports = Tax;
