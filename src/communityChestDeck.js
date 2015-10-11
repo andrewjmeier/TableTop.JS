@@ -4,7 +4,9 @@ var Card = require("./card.js");
 
 
 function CommunityChestDeck() {
+    Deck.call(this);
     this.cards = buildCommunityChestDeck();
+    this.shuffle();
 };
 
 inherits(CommunityChestDeck, Deck);
@@ -74,7 +76,9 @@ var buildCommunityChestDeck = function() {
             }
         }
         var total = 40 * housesCount + 115 * hotelsCount;
-        player.makePayment(total);
+
+        // TODO update this for correct value
+        player.makePayment(0);
     });
 
     var card14 = new Card("You have won second prize in a beauty contest - collect $10", function(game) {

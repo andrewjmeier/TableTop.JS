@@ -7,12 +7,12 @@ function Tax() {
 
 inherits(Tax, Space);
 
-Tax.prototype.performLandingAction = function(player) {
+Tax.prototype.performLandingAction = function(game) {
   // should probably refactor this into a fn
   // that checks balance, prompts player to mortage/sell
   // before declaring him bankrupt
-  player.makePayment(this.taxAmount);
-  Tax.super_.prototype.performLandingAction.call(this, player);
+  game.getCurrentPlayer().makePayment(this.taxAmount);
+  Tax.super_.prototype.performLandingAction.call(this, game);
 
 };
 

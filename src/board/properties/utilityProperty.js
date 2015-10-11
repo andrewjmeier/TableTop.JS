@@ -8,9 +8,9 @@ function UtilityProperty(name, cost, propertyGroup) {
 
 inherits(UtilityProperty, Property);
 
-UtilityProperty.prototype.performLandingAction = function(player, dice) {
+UtilityProperty.prototype.performLandingAction = function(game) {
 
-    UtilityProperty.super_.prototype.performLandingAction.call(this, player);
+    UtilityProperty.super_.prototype.performLandingAction.call(this, game);
 
   // todo - need dice access here
 };

@@ -9,9 +9,9 @@ function IncomeTax() {
 
 inherits(IncomeTax, Tax);
 
-IncomeTax.prototype.performLandingAction = function(player) {
+IncomeTax.prototype.performLandingAction = function(game) {
   // todo: this.taxAmount = min(200, player.playerAssetValues*.10);
-  IncomeTax.super_.prototype.performLandingAction.call(this, player);
+  IncomeTax.super_.prototype.performLandingAction.call(this, game);
 };
 
 module.exports = IncomeTax;

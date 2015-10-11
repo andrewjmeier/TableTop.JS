@@ -11,8 +11,8 @@ function Property(name, cost, propertyGroup) {
 
 inherits(Property, Space);
 
-Property.prototype.performLandingAction = function(player) {
-
+Property.prototype.performLandingAction = function(game) {
+  var player = game.getCurrentPlayer();
   if (this.owner === player) return;
 
   if (this.owner === null && player.money > this.cost) {
@@ -21,7 +21,7 @@ Property.prototype.performLandingAction = function(player) {
       this.owner = player;
   }
   // todo  - finish hashing this out
-  Property.super_.prototype.performLandingAction.call(this, player);
+  Property.super_.prototype.performLandingAction.call(this, game);
 
 };
 

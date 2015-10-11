@@ -27,6 +27,18 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     }
 };
 
+Game.prototype.drawChanceCard = function() {
+    var card = this.chanceCards.drawCard();
+    console.log("chance card drawn ", card);
+    card.action(this);
+};
+
+Game.prototype.drawCommunityChestCard = function() {
+    var card = this.communityChestCards.drawCard();
+    console.log("community chest card drawn ", card);
+    card.action(this);
+};
+
 Game.prototype.movePlayer = function() {
     this.rollDice(2);
     if (this.getCurrentPlayer().inJail) {
@@ -52,7 +64,8 @@ Game.prototype.move = function() {
     }
     this.getCurrentPlayer().move(spacesToMove);
     var player = this.getCurrentPlayer();
-    this.board.spaces[player.position].performLandingAction(player);
+    this.board.spaces[player.position].performLandingAction(this
+        );
 };
 
 Game.prototype.isDoubles = function(dice) {

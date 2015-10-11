@@ -7,9 +7,9 @@ function FreeParking() {
 
 inherits(FreeParking, Space);
 
-FreeParking.prototype.performLandingAction = function(player) {
+FreeParking.prototype.performLandingAction = function(game) {
   // nothing!
-  FreeParking.super_.prototype.performLandingAction.call(this, player);
+  FreeParking.super_.prototype.performLandingAction.call(this, game);
 
 };
 

@@ -4,7 +4,9 @@ var Card = require("./card.js");
 
 
 function ChanceDeck() {
+    Deck.call(this);
     this.cards = buildChanceDeck();
+    this.shuffle();
 };
 
 inherits(ChanceDeck, Deck);
@@ -90,7 +92,9 @@ var buildChanceDeck = function() {
             }
         }
         var total = 25 * housesCount + 100 * hotelsCount;
-        player.makePayment(total);
+
+        // TODO - update this for correct value
+        player.makePayment(0);
     });
 
     var chance12 = new Card("Pay poor tax of $15", function(game) {

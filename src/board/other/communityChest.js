@@ -7,10 +7,11 @@ function CommunityChest() {
 
 inherits(CommunityChest, Space);
 
-CommunityChest.prototype.performLandingAction = function(player) {
+CommunityChest.prototype.performLandingAction = function(game) {
   // todo
   // see above chance()
-  CommunityChest.super_.prototype.performLandingAction.call(this, player);
+  game.drawCommunityChestCard();
+  CommunityChest.super_.prototype.performLandingAction.call(this, game);
 
 };
 

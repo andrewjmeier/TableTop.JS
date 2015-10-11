@@ -13,11 +13,11 @@ Deck.prototype.shuffle = function() {
 // doesn't quite work for get out of jail, but will for everything else.
 // In the future we could build two types of decks or two different draw methods
 Deck.prototype.drawCard = function() {
-    var card = this.cards[currentPosition];
+    var card = this.cards[this.currentPosition];
     this.currentPosition++;
 
     // wrap index of the card around
-    this.currentPosition = this.currentPosition % this.cards.length();
+    this.currentPosition = this.currentPosition % this.cards.length;
     return card;
 };
 

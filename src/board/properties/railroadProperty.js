@@ -11,9 +11,9 @@ function RailroadProperty(name, cost, propertyGroup, rent) {
 
 inherits(RailroadProperty, Property);
 
-RailroadProperty.prototype.performLandingAction = function(player) {
+RailroadProperty.prototype.performLandingAction = function(game) {
 
-    RailroadProperty.super_.prototype.performLandingAction.call(this, player);
+    RailroadProperty.super_.prototype.performLandingAction.call(this, game);
 
 
   // todo
