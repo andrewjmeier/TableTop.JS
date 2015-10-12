@@ -25,8 +25,6 @@ RailroadProperty.prototype.performLandingAction = function(game) {
 };
 
 RailroadProperty.prototype.getRent = function(game) {
-    // TODO - if no houses, but has monopoly, double rent
-
     var rrCount = 0;
     for (i in this.owner.properties) {
         if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
@@ -34,7 +32,6 @@ RailroadProperty.prototype.getRent = function(game) {
         }
     }
 
-    console.log(this, rrCount);
     return this.rent[rrCount - 1];
 };
 

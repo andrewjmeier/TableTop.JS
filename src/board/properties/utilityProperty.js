@@ -1,8 +1,12 @@
 var Property = require('./property'),
     inherits = require('util').inherits;
 
+var PG_UTIL = 9;
+
 // rent is assumed here (4x, 10x)
-function UtilityProperty(name, cost, propertyGroup) {
+function UtilityProperty(name) {
+    var cost = 150;
+    var propertyGroup = PG_UTIL
   Property.call(this, name, cost, propertyGroup);
 }
 
@@ -16,7 +20,6 @@ UtilityProperty.prototype.performLandingAction = function(game) {
 };
 
 UtilityProperty.prototype.getRent = function(game) {
-    // TODO - if no houses, but has monopoly, double rent
     var utilityCount = 0;
     for (i in this.owner.properties) {
         if (this.owner.properties[i].propertyGroup === this.propertyGroup) {

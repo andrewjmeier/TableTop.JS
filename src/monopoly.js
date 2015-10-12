@@ -10,7 +10,11 @@ var steve = new Player("Steve");
 
 var sam = new Player("Sam");
 
-var players = [john, steve, sam];
+var mike = new Player("Mike");
+
+var jimmy = new Player("Jimmy");
+
+var players = [john, steve, sam, mike, jimmy];
 
 var communityChestDeck = Utils.buildCommunityChestDeck();
 

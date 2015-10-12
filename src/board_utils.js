@@ -173,8 +173,8 @@ function propertiesList() {
     ["B. & O. Railroad"],
     ["Shortline Railroad"], // 25
 
-    ["Electric Company", PG_UTIL, 150],
-    ["WaterWorks", PG_UTIL, 150]
+    ["Electric Company"],
+    ["WaterWorks"]
   ];
 
 }
