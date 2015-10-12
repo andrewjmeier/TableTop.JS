@@ -15,10 +15,15 @@ Property.prototype.performLandingAction = function(game) {
   var player = game.getCurrentPlayer();
   if (this.owner === player) return;
 
-  if (this.owner === null && player.money > this.cost) {
+  if (this.owner === null) {
+    if (player.money > this.cost) {
       player.makePayment(this.cost);
       player.properties.push(this);
       this.owner = player;
+    }
+  } else if (this.owner !== player) {
+      var rent = this.getRent(game);
+      player.payPlayer(rent, this.owner);
   }
   // todo  - finish hashing this out
   Property.super_.prototype.performLandingAction.call(this, game);
