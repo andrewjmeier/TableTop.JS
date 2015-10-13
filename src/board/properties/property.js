@@ -33,4 +33,8 @@ Property.prototype.buyProperty = function(player) {
   this.owner = player;
 };
 
+Property.prototype.hasHotel = function(player) { 
+  return false;
+};
+
 module.exports = Property;
