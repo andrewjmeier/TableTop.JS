@@ -84,7 +84,7 @@ function propertyForIndex(index, props) {
   if (index <= 21) { 
     return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
   } else if (index <= 25) { 
-    return new RailroadProperty(props[index][0], props[index][2], props[index][1]);
+    return new RailroadProperty(props[index][0], props[index][2], props[index][3]);
   } else { 
     return new UtilityProperty(props[index][0], props[index][2]);
   } 
@@ -127,13 +127,13 @@ function propertiesList() {
     ["Park Place", PG_BLUE, 350, 200, [35, 175, 500, 1100, 1300, 1500]], // 20
     ["Boardwalk", PG_BLUE, 400, 200, [50, 200, 600, 1400, 1700, 2000]], 
 
-    ["Reading Railroad"],
-    ["Pennsylvania Railroad"],
-    ["B. & O. Railroad"],
-    ["Shortline Railroad"],
+    ["Reading Railroad", PG_RR, 200, [25, 50, 100, 200]],
+    ["Pennsylvania Railroad", PG_RR, 200, [25, 50, 100, 200]],
+    ["B. & O. Railroad", PG_RR, 200, [25, 50, 100, 200]],
+    ["Shortline Railroad", PG_RR, 200, [25, 50, 100, 200]], // 25
 
-    ["Electric Company"],
-    ["WaterWorks"],
+    ["Electric Company", PG_UTIL, 150],
+    ["WaterWorks", PG_UTIL, 150]
   ];
 
 }

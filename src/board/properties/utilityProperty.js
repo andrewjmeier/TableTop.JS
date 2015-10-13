@@ -4,9 +4,7 @@ var Property = require('./property'),
 
 
 // rent is assumed here (4x, 10x) 
-function UtilityProperty(name) { 
-  this.cost = [4, 10];
-  this.propertyGroup = PG_UTIL;
+function UtilityProperty(name, cost, propertyGroup) { 
   Property.call(this, name, cost, propertyGroup);
 }
 
