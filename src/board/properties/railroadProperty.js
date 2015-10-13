@@ -1,4 +1,5 @@
-var Property = require('./property'), 
+require('../boardConstants');
+var Property = require('./property'),     
     inherits = require('util').inherits;
 
 

@@ -1,3 +1,4 @@
+require('./board/boardConstants');
 var Go = require('./board/other/go'), 
     CommunityChest = require('./board/other/communityChest'),
     IncomeTax = require('./board/taxes/incomeTax'),
@@ -11,47 +12,6 @@ var Go = require('./board/other/go'),
     RailroadProperty = require('./board/properties/railroadProperty'),
     Board = require('./board/board/board'); // looks ugly, maybe think of better naming pattern
 
-// index constants for properties 
-var MEDITERRANEAN_AVE = 0;
-var BALTIC_AVE = 1;
-var ORIENTAL_AVE = 2;
-var VERMONT_AVE = 3;
-var CONNECTICUT_AVE = 4;
-var ST_CHARLES_PLACE = 5;
-var STATES_AVE = 6;
-var VIRGINIA_AVE = 7;
-var ST_JAMES_PLACE = 8;
-var TENNESSEE_AVE = 9; 
-var NEW_YORK_AVE = 10;
-var KENTUCKY_AVE = 11;
-var INDIANA_AVE = 12;
-var ILLINOIS_AVE = 13;
-var ATLANTIC_AVE = 14;
-var VENTNOR_AVE = 15;
-var MARVIN_GARDENS = 16;
-var PACIFIC_AVE = 17;
-var NORTH_CAROLINA_AVE = 18;
-var PENNSYLVANIA_AVE = 19;
-var PARK_PLACE = 20;
-var BOARDWALK = 21;
-var READING_RR = 22;
-var PENN_RR = 23;
-var BO_RR = 24;
-var SHORTLINE_RR = 25;
-var ELECTRIC_CO = 26;
-var WATERWORKS = 27;
-
-// property groups
-var PG_BROWN = 0;
-var PG_LIGHT_BLUE = 1;
-var PG_PINK = 2;
-var PG_ORANGE = 3;
-var PG_RED = 4;
-var PG_YELLOW = 5;
-var PG_GREEN = 6;
-var PG_BLUE = 7;
-var PG_RR = 8;
-var PG_UTIL = 9;
 
 // end of space class definitions
 
@@ -79,9 +39,9 @@ function buildSpaces(board) {
     new Chance(), 
     propertyForIndex(VERMONT_AVE, props),
     propertyForIndex(CONNECTICUT_AVE, props),
-    new Jail(), 
 
     // second row
+    new Jail(), 
     propertyForIndex(ST_CHARLES_PLACE, props),
     propertyForIndex(ELECTRIC_CO, props),
     propertyForIndex(STATES_AVE, props),
@@ -91,9 +51,9 @@ function buildSpaces(board) {
     new CommunityChest(),
     propertyForIndex(TENNESSEE_AVE, props),
     propertyForIndex(NEW_YORK_AVE, props),
-    new FreeParking(),
 
     // third row
+    new FreeParking(),
     propertyForIndex(KENTUCKY_AVE, props),
     new Chance(),
     propertyForIndex(INDIANA_AVE, props),
@@ -103,9 +63,9 @@ function buildSpaces(board) {
     propertyForIndex(VENTNOR_AVE, props),
     propertyForIndex(WATERWORKS, props),
     propertyForIndex(MARVIN_GARDENS, props),
-    new GoToJail(),
     
     // fourth row
+    new GoToJail(),
     propertyForIndex(PACIFIC_AVE, props),
     propertyForIndex(NORTH_CAROLINA_AVE, props),
     new CommunityChest(),
@@ -121,12 +81,12 @@ function buildSpaces(board) {
 
 // indices correlate to order in below function propertiesList()
 function propertyForIndex(index, props) { 
-  if (index <= 21) { 
-    return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
-  } else if (index <= 25) { 
+  if (index === 5 || index === 15 || index === 25 || index === 35) { 
     return new RailroadProperty(props[index][0], props[index][2], props[index][3]);
-  } else { 
+  } else if (index === 12 || index === 28) {
     return new UtilityProperty(props[index][0], props[index][2]);
+  } else {
+    return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
   } 
 } 
 
