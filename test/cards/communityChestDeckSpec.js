@@ -1,7 +1,7 @@
 should = require('chai').should(),
-    CommunityChestDeck = require('../src/communityChestDeck'),
-Player = require('../src/player');
-Game = require('../src/game');
+    CommunityChestDeck = require('../../src/cards/communityChestDeck'),
+Player = require('../../src/player');
+Game = require('../../src/game');
 
 describe('community chest cards', function() {
   var cards;

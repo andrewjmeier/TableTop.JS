@@ -1,7 +1,7 @@
 should = require('chai').should(),
-    ChanceDeck = require('../src/chanceDeck'),
-Player = require('../src/player');
-Game = require('../src/game');
+    ChanceDeck = require('../../src/cards/chanceDeck'),
+Player = require('../../src/player');
+Game = require('../../src/game');
 
 describe('chance cards', function() {
   var cards;

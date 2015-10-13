@@ -16,18 +16,14 @@ var jimmy = new Player("Jimmy");
 
 var players = [john, steve, sam, mike, jimmy];
 
-var communityChestDeck = Utils.buildCommunityChestDeck();
-
-var chanceDeck = Utils.buildChanceDeck();
-
 var board = new Board();
 
-var monopoly = new Game(players, chanceDeck, communityChestDeck, board);
+var monopoly = new Game(players, board);
 
 n = 0;
 while (n < 100) {
     console.log(monopoly.players[monopoly.currentPlayer]);
-	monopoly.movePlayer();
+	monopoly.rollAndMovePlayer();
 	console.log(monopoly.dice);
     console.log(monopoly.players[monopoly.currentPlayer]);
 	monopoly.nextPlayer();

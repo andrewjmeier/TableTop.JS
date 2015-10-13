@@ -1,5 +1,5 @@
-var ChanceDeck = require("./chanceDeck");
-var CommunityChestDeck = require("./communityChestDeck");
+var ChanceDeck = require("./cards/chanceDeck");
+var CommunityChestDeck = require("./cards/communityChestDeck");
 
 function Game(players, board) {
     this.players = players,
@@ -45,8 +45,12 @@ Game.prototype.drawCommunityChestCard = function() {
     card.action(this);
 };
 
-Game.prototype.movePlayer = function() {
+Game.prototype.rollAndMovePlayer = function() {
     this.rollDice(2);
+    this.movePlayer();
+};
+
+Game.prototype.movePlayer = function() {
     if (this.getCurrentPlayer().inJail) {
         this.getCurrentPlayer().turnsInJail += 1;
         if (this.isDoubles(this.dice)) {

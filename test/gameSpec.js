@@ -47,6 +47,11 @@ describe('Game Tests', function() {
   });
 
   describe('#movePlayer', function() {
+
+    before(function() {
+      game.players[0].turnsInJail = 1;
+    });
+
     beforeEach(function(){
       game.dice = [-1, 5]; // invalid dice roll, should get changed
       game.currentPlayer = 0;
@@ -54,13 +59,9 @@ describe('Game Tests', function() {
 
     it('increments turns in jail', function() {
       game.movePlayer();
-      game.players[0].turnsInJail.should.eql(1);
+      game.players[0].turnsInJail.should.eql(2);
     });
 
-    it('rolls dice', function() {
-      game.movePlayer();
-      game.dice.should.not.eql([-1, 5]);
-    });
 
     it('pays bail on third roll', function() {
       game.movePlayer();
