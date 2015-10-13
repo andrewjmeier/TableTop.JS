@@ -5,7 +5,7 @@ var Property = require('./property'),
 
 // rent should be array with following format: 
 // [1 owned (rent), 2 owned, 3 owned, 4 owned]
-function RailroadProperty(name, cost, propertyGroup, rent) {
+function RailroadProperty(name, cost, propertyGroup, rent) { 
   this.rent = rent;
   Property.call(this, name, cost, propertyGroup);
 }
