@@ -1,5 +1,7 @@
+require("./board/boardConstants.js");
+
 var Player = require("./player.js");
-var Card = require("./card.js");
+var Card = require("./cards/card.js");
 var Game = require("./game.js");
 var Utils = require("./utils.js");
 var Board = require("./board_utils.js");

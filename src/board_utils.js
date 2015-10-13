@@ -1,5 +1,6 @@
-var Go = require('./board/other/go'),
 require('./board/boardConstants');
+
+var Go = require('./board/other/go'),
     CommunityChest = require('./board/other/communityChest'),
     IncomeTax = require('./board/taxes/incomeTax'),
     Chance = require('./board/other/chance'),
@@ -98,7 +99,7 @@ function propertiesList() {
   return [
     [],
     ["Mediterranean Ave", PG_BROWN, 60, 50, [2, 10, 30, 90, 160, 250]],
-    []
+    [],
     ["Baltic Ave", PG_BROWN, 60, 50, [4, 20, 60, 180, 320, 450]],
     [],
     ["Reading Railroad"],
@@ -107,7 +108,7 @@ function propertiesList() {
     ["Vermont Ave", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]],
     ["Connecticut Ave", PG_LIGHT_BLUE, 120, 50, [8, 40, 100, 300, 450, 600]],
 
-    []
+    [],
     ["St. Charles Place", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]], // 5
     ["Electric Company"],
     ["States Ave", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]],
@@ -126,7 +127,7 @@ function propertiesList() {
     ["B. & O. Railroad"],
     ["Atlantic Ave", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]],
     ["Ventnor Ave", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]], // 15
-    ["WaterWorks"]
+    ["WaterWorks"],
     ["Marvin Gardens", PG_YELLOW, 280, 150, [24, 120, 360, 850, 1025, 1200]],
 
     [],

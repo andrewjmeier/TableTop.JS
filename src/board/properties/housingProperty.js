@@ -48,7 +48,7 @@ HousingProperty.prototype.isMonopoly = function() {
     }
   }
 
-  return (this.propertyGroup === PG_BROWN || this.propertyGroup === PG__BLUE) ? groupCount === 2 : groupCount === 3;
+  return (this.propertyGroup === PG_BROWN || this.propertyGroup === PG_BLUE) ? groupCount === 2 : groupCount === 3;
 };
 
 HousingProperty.prototype.hasHotel = function() {
