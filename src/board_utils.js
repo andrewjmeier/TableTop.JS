@@ -39,9 +39,9 @@ function buildSpaces(board) {
     new Chance(), 
     propertyForIndex(VERMONT_AVE, props),
     propertyForIndex(CONNECTICUT_AVE, props),
-    new Jail(), 
 
     // second row
+    new Jail(), 
     propertyForIndex(ST_CHARLES_PLACE, props),
     propertyForIndex(ELECTRIC_CO, props),
     propertyForIndex(STATES_AVE, props),
@@ -51,9 +51,9 @@ function buildSpaces(board) {
     new CommunityChest(),
     propertyForIndex(TENNESSEE_AVE, props),
     propertyForIndex(NEW_YORK_AVE, props),
-    new FreeParking(),
 
     // third row
+    new FreeParking(),
     propertyForIndex(KENTUCKY_AVE, props),
     new Chance(),
     propertyForIndex(INDIANA_AVE, props),
@@ -63,9 +63,9 @@ function buildSpaces(board) {
     propertyForIndex(VENTNOR_AVE, props),
     propertyForIndex(WATERWORKS, props),
     propertyForIndex(MARVIN_GARDENS, props),
-    new GoToJail(),
     
     // fourth row
+    new GoToJail(),
     propertyForIndex(PACIFIC_AVE, props),
     propertyForIndex(NORTH_CAROLINA_AVE, props),
     new CommunityChest(),
@@ -81,12 +81,12 @@ function buildSpaces(board) {
 
 // indices correlate to order in below function propertiesList()
 function propertyForIndex(index, props) { 
-  if (index <= 21) { 
-    return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
-  } else if (index <= 25) { 
+  if (index === 5 || index === 15 || index === 25 || index === 35) { 
     return new RailroadProperty(props[index][0], props[index][2], props[index][3]);
-  } else { 
+  } else if (index === 12 || index === 28) {
     return new UtilityProperty(props[index][0], props[index][2]);
+  } else {
+    return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
   } 
 } 
 
