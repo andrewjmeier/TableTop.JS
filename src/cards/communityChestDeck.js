@@ -67,10 +67,10 @@ var buildCommunityChestDeck = function() {
         for (var prop in player.properties) {
             if (player.properties.hasOwnProperty(prop)) {
             // or if (Object.prototype.hasOwnProperty.call(obj,prop)) for safety...
-                // TODO - link up correctly w/ property object
-                housesCount += player.properties[prop].numberOfHouses;
-                if (player.properties[prop].hasHotel) {
+                if (player.properties[prop].hasHotel()) {
                     hotelsCount += 1;
+                } else {
+                    housesCount += player.properties[prop].numHouses;
                 }
             }
         }

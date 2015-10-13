@@ -25,14 +25,17 @@ RailroadProperty.prototype.performLandingAction = function(game) {
 };
 
 RailroadProperty.prototype.getRent = function(game) {
-    var rrCount = 0;
-    for (i in this.owner.properties) {
-        if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
-            rrCount++;
-        }
-    }
 
-    return this.rent[rrCount - 1];
+  if (this.owner === null) { return 0 };
+
+  var rrCount = 0;
+  for (i in this.owner.properties) {
+      if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
+          rrCount++;
+      }
+  }
+
+  return this.rent[rrCount - 1];
 };
 
 module.exports = RailroadProperty;

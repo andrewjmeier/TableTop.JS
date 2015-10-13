@@ -17,9 +17,7 @@ Property.prototype.performLandingAction = function(game) {
 
   if (this.owner === null) {
     if (player.money > this.cost) {
-      player.makePayment(this.cost);
-      player.properties.push(this);
-      this.owner = player;
+      this.buyProperty(player);
     }
   } else if (this.owner !== player) {
       var rent = this.getRent(game);
@@ -27,7 +25,12 @@ Property.prototype.performLandingAction = function(game) {
   }
   // todo  - finish hashing this out
   Property.super_.prototype.performLandingAction.call(this, game);
+};
 
+Property.prototype.buyProperty = function(player) {
+  player.makePayment(this.cost);
+  player.properties.push(this);
+  this.owner = player;
 };
 
 module.exports = Property;

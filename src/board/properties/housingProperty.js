@@ -47,16 +47,12 @@ HousingProperty.prototype.isMonopoly = function() {
       groupCount++;
     }
   }
-  if (this.propertyGroup === PG_BROWN || this.propertyGroup === PG_BLUE) {
-    if (groupCount === 2) {
-      return true;
-    }
-  } else {
-    if (groupCount === 3) {
-      return true;
-    }
-  }
-  return false;
+
+  return (this.propertyGroup === PG_BROWN || this.propertyGroup === PG__BLUE) ? groupCount === 2 : groupCount === 3;
+};
+
+HousingProperty.prototype.hasHotel = function() {
+  return this.numHouses === 5;
 };
 
 module.exports = HousingProperty;

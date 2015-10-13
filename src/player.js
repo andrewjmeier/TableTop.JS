@@ -9,10 +9,9 @@ function Player(name) {
 };
 
 Player.prototype.sendToJail = function() {
-    this.moveTo(10);
+    this.position = 10;
     this.inJail = true;
 };
-
 
 Player.prototype.payBail = function() {
     this.releaseFromJail();
