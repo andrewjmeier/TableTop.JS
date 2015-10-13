@@ -20,8 +20,8 @@ Property.prototype.performLandingAction = function(game) {
       this.buyProperty(player);
     }
   } else if (this.owner !== player) {
-      var rent = this.getRent(game);
-      player.payPlayer(rent, this.owner);
+    var rent = this.getRent(game);
+    player.payPlayer(rent, this.owner);
   }
   // todo  - finish hashing this out
   Property.super_.prototype.performLandingAction.call(this, game);

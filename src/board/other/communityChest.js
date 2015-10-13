@@ -12,7 +12,6 @@ CommunityChest.prototype.performLandingAction = function(game) {
   // see above chance()
   game.drawCommunityChestCard();
   CommunityChest.super_.prototype.performLandingAction.call(this, game);
-
 };
 
 module.exports = CommunityChest;

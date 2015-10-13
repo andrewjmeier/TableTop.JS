@@ -12,7 +12,6 @@ Chance.prototype.performLandingAction = function(game) {
   // call function relating to chance cards
   game.drawChanceCard();
   Chance.super_.prototype.performLandingAction.call(this, game);
-
 };
 
 module.exports = Chance;

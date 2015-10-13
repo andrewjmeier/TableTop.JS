@@ -16,7 +16,7 @@ inherits(RailroadProperty, Property);
 
 RailroadProperty.prototype.performLandingAction = function(game) {
 
-    RailroadProperty.super_.prototype.performLandingAction.call(this, game);
+  RailroadProperty.super_.prototype.performLandingAction.call(this, game);
 
 
   // todo
@@ -30,9 +30,9 @@ RailroadProperty.prototype.getRent = function(game) {
 
   var rrCount = 0;
   for (i in this.owner.properties) {
-      if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
-          rrCount++;
-      }
+    if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
+      rrCount++;
+    }
   }
 
   return this.rent[rrCount - 1];
