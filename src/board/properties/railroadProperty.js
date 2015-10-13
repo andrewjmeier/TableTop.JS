@@ -1,7 +1,6 @@
+require('../boardConstants');
 var Property = require('./property'),
     inherits = require('util').inherits;
-
-var PG_RR = 8;
 
 // rent should be array with following format:
 // [1 owned (rent), 2 owned, 3 owned, 4 owned]
