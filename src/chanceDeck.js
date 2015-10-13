@@ -6,7 +6,6 @@ var Card = require("./card.js");
 function ChanceDeck() {
     Deck.call(this);
     this.cards = buildChanceDeck();
-    this.shuffle();
 };
 
 inherits(ChanceDeck, Deck);

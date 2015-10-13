@@ -1,15 +1,21 @@
 var ChanceDeck = require("./chanceDeck");
 var CommunityChestDeck = require("./communityChestDeck");
 
-function Game(players, chance, communityChest, board) {
+function Game(players, board) {
     this.players = players,
     this.currentPlayer = 0;
     this.board = board;
     this.dice = [];
     this.chanceCards = new ChanceDeck();
     this.communityChestCards = new CommunityChestDeck();
+    this.shuffleCards();
     this.doublesCount = 0;
     this.randomizeCurrentPlayer();
+};
+
+Game.prototype.shuffleCards = function() {
+    this.chanceCards.shuffle();
+    this.communityChestCards.shuffle();
 };
 
 Game.prototype.randomizeCurrentPlayer = function() {

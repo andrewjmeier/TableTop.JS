@@ -31,7 +31,7 @@ Player.prototype.releaseFromJail = function() {
 
 Player.prototype.payPlayers = function(amount, players) {
     for (index in players) {
-        if (players[i] !== this) {
+        if (players[index] !== this) {
             this.payPlayer(amount, players[index]);
         }
     }
@@ -39,7 +39,7 @@ Player.prototype.payPlayers = function(amount, players) {
 
 Player.prototype.collectFromPlayers = function(amount, players) {
     for (index in players) {
-        if (players[i] !== this) {
+        if (players[index] !== this) {
             players[index].payPlayer(amount, this);
         }
     }

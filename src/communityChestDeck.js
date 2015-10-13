@@ -6,7 +6,6 @@ var Card = require("./card.js");
 function CommunityChestDeck() {
     Deck.call(this);
     this.cards = buildCommunityChestDeck();
-    this.shuffle();
 };
 
 inherits(CommunityChestDeck, Deck);

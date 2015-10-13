@@ -11,7 +11,7 @@ describe('Game Tests', function() {
   var board = new Board();
 
   beforeEach(function() {
-    game = new Game(players, [], [], board);
+    game = new Game(players, board);
   });
 
   describe('#randomizeCurrentPlayer', function() {
