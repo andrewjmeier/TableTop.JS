@@ -6,13 +6,66 @@ var stage = new PIXI.Container();
 var graphics = new PIXI.Graphics();
 
 // create a texture from an image path
-var texture = PIXI.Texture.fromImage('assets/monopoly_logo.png');
+var texture = PIXI.Texture.fromImage('assets/Big_D.png');
+var texture2 = PIXI.Texture.fromImage('assets/jail.png');
+var texture3 = PIXI.Texture.fromImage('assets/chance.jpg');
+var texture4 = PIXI.Texture.fromImage('assets/patch.jpg');
 
 // create a new Sprite using the texture
 var logo = new PIXI.Sprite(texture);
+var jail = new PIXI.Sprite(texture2);
+var chance_image = new PIXI.Sprite(texture3);
+var chance_image2 = new PIXI.Sprite(texture3);
+var chance_image3 = new PIXI.Sprite(texture3);
+var Hpo = new PIXI.Sprite(texture4);
 
-logo.position.x = 400;
-logo.position.y = 400;
+// rescale and place logo
+logo.scale.x = 0.37;
+logo.scale.y = 0.37;
+logo.rotation = -44.78;
+logo.position.x = 100;
+logo.position.y = 458;
+
+// rescale and place jail
+jail.scale.x = 0.265;
+jail.scale.y = 0.21;
+jail.position.x = 0;
+jail.position.y = 677;
+
+// rescale and place jail
+chance_image.scale.x = 0.428;
+chance_image.scale.y = 0.487;
+chance_image.position.x = 193.75;
+chance_image.position.y = 0;
+
+// rescale and place jail
+chance_image2.scale.x = 0.428;
+chance_image2.scale.y = 0.487;
+chance_image2.position.x = 262.5;
+chance_image2.position.y = 675;
+
+// rescale and place jail
+chance_image3.scale.x = 0.428;
+chance_image3.scale.y = 0.487;
+chance_image3.rotation = -1.5708;
+chance_image3.position.x = 675;
+chance_image3.position.y = 468.75;
+
+// rescale and place jail
+Hpo.scale.x = 0.553;
+Hpo.scale.y = 0.442;
+Hpo.position.x = 676;
+Hpo.position.y = 1;
+
+// fill bottom left box white (jail)
+graphics.beginFill(0xFFFFFF, 1);
+graphics.drawRect(0, 675, 125, 125);
+var jail_text = new PIXI.Text('IN JAIL');
+jail_text.scale.x = 1.1;
+jail_text.scale.y = 1.1;
+jail_text.x = 15;
+jail_text.y = 767;
+
 
  // set a fill and a line style again and draw a rectangle
 graphics.lineStyle(1, 0x000000, 1);
@@ -20,10 +73,39 @@ graphics.beginFill(0xC2E2BF, 1);
 
 // draw center & corner rectangles
 graphics.drawRect(0, 0, 125, 125);
-graphics.drawRect(0, 675, 125, 125);
 graphics.drawRect(675, 0, 125, 125);
 graphics.drawRect(125, 125, 550, 550);
 graphics.drawRect(675, 675, 125, 125);
+
+// draw community chest + chances box
+graphics.drawRect(135, 135, 200, 120);
+graphics.drawRect(465, 545, 200, 120);
+
+// write "community chest" & "chance"
+var chance = new PIXI.Text('CHANCE');
+chance.scale.x = 1.5;
+chance.scale.y = 1.5;
+chance.x = 479;
+chance.y = 585;
+
+var community = new PIXI.Text('COMMUNITY');
+var chest = new PIXI.Text('CHEST');
+community.scale.x = 1.1;
+community.scale.y = 1.1;
+community.x = 145;
+community.y = 160;
+chest.scale.x = 1.1;
+chest.scale.y = 1.1;
+chest.x = 185;
+chest.y = 200;
+
+var go_text = new PIXI.Text('Go');
+go_text.scale.x = 1.4;
+go_text.scale.y = 1.4;
+go_text.x = 710;
+go_text.y = 680;
+
+graphics.set
 
 // draw rectangles on the top side
 var x = 125;
@@ -59,6 +141,33 @@ for (var i = 1; i <= 8; i++){
 
 stage.addChild(graphics);
 stage.addChild(logo);
+stage.addChild(jail);
+stage.addChild(chance);
+stage.addChild(community);
+stage.addChild(chest);
+stage.addChild(jail_text);
+stage.addChild(go_text);
+stage.addChild(chance_image);
+stage.addChild(chance_image2);
+stage.addChild(chance_image3);
+stage.addChild(Hpo);
+
+// draw an arrow
+graphics.lineStyle(2, 0xFF0000, 1);
+graphics.moveTo(690, 750);
+graphics.lineTo(710, 725);
+graphics.moveTo(690, 750);
+graphics.lineTo(710, 775);
+graphics.moveTo(710, 775);
+graphics.lineTo(710, 760);
+graphics.moveTo(710, 725);
+graphics.lineTo(710, 740);
+graphics.moveTo(710, 740);
+graphics.lineTo(780, 740);
+graphics.moveTo(710, 760);
+graphics.lineTo(780, 760);
+graphics.moveTo(780, 760);
+graphics.lineTo(780, 740);
 
 // run the render loop
 animate();
