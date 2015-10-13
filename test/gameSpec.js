@@ -1,13 +1,17 @@
 should = require('chai').should(),
     Game = require('../src/game'),
+Player = require('../src/player');
+Board = require("../src/board_utils.js");
 
 
 describe('Game Tests', function() {
   var game;
-  var players = [{name: "Joe", inJail: true, turnsInJail: 0, position: 5, moveTo: function(n) {this.position = n}, releaseFromJail: function() {this.inJail = false}, payBail: function() {this.inJail = false}}, {name: "Bill"}, {name: "Steve"}];
+  var players = [new Player("Joe"), new Player("Steve"), new Player("Bob")];
+  players[0].inJail = true;
+  var board = new Board();
 
   beforeEach(function() {
-    game = new Game(players, [], []);
+    game = new Game(players, board);
   });
 
   describe('#randomizeCurrentPlayer', function() {
@@ -43,6 +47,11 @@ describe('Game Tests', function() {
   });
 
   describe('#movePlayer', function() {
+
+    before(function() {
+      game.players[0].turnsInJail = 1;
+    });
+
     beforeEach(function(){
       game.dice = [-1, 5]; // invalid dice roll, should get changed
       game.currentPlayer = 0;
@@ -50,13 +59,9 @@ describe('Game Tests', function() {
 
     it('increments turns in jail', function() {
       game.movePlayer();
-      game.players[0].turnsInJail.should.eql(1);
+      game.players[0].turnsInJail.should.eql(2);
     });
 
-    it('rolls dice', function() {
-      game.movePlayer();
-      game.dice.should.not.eql([-1, 5]);
-    });
 
     it('pays bail on third roll', function() {
       game.movePlayer();

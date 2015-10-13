@@ -1,10 +1,11 @@
 require('./board/boardConstants');
-var Go = require('./board/other/go'), 
+
+var Go = require('./board/other/go'),
     CommunityChest = require('./board/other/communityChest'),
     IncomeTax = require('./board/taxes/incomeTax'),
     Chance = require('./board/other/chance'),
-    Jail = require('./board/jail/jail'), 
-    GoToJail = require('./board/jail/goToJail'), 
+    Jail = require('./board/jail/jail'),
+    GoToJail = require('./board/jail/goToJail'),
     LuxuryTax = require('./board/taxes/luxuryTax'),
     FreeParking = require('./board/other/freeParking'),
     UtilityProperty = require('./board/properties/utilityProperty'),
@@ -12,23 +13,22 @@ var Go = require('./board/other/go'),
     RailroadProperty = require('./board/properties/railroadProperty'),
     Board = require('./board/board/board'); // looks ugly, maybe think of better naming pattern
 
-
 // end of space class definitions
 
 
-// now let's build the board 
-var board; 
-function buildBoard() { 
+// now let's build the board
+var board;
+function buildBoard() {
   board = new Board();
   buildSpaces(board);
   return board;
-} 
+}
 
-function buildSpaces(board) { 
+function buildSpaces(board) {
   var props = propertiesList();
-  board.spaces = [ 
+  board.spaces = [
 
-    // first row 
+    // first row
     new Go(),
     propertyForIndex(MEDITERRANEAN_AVE, props),
     new CommunityChest(),
@@ -36,12 +36,12 @@ function buildSpaces(board) {
     new IncomeTax(),
     propertyForIndex(READING_RR, props),
     propertyForIndex(ORIENTAL_AVE, props),
-    new Chance(), 
+    new Chance(),
     propertyForIndex(VERMONT_AVE, props),
     propertyForIndex(CONNECTICUT_AVE, props),
 
     // second row
-    new Jail(), 
+    new Jail(),
     propertyForIndex(ST_CHARLES_PLACE, props),
     propertyForIndex(ELECTRIC_CO, props),
     propertyForIndex(STATES_AVE, props),
@@ -63,7 +63,7 @@ function buildSpaces(board) {
     propertyForIndex(VENTNOR_AVE, props),
     propertyForIndex(WATERWORKS, props),
     propertyForIndex(MARVIN_GARDENS, props),
-    
+
     // fourth row
     new GoToJail(),
     propertyForIndex(PACIFIC_AVE, props),
@@ -71,69 +71,76 @@ function buildSpaces(board) {
     new CommunityChest(),
     propertyForIndex(PENNSYLVANIA_AVE, props),
     propertyForIndex(SHORTLINE_RR, props),
-    new Chance(), 
+    new Chance(),
     propertyForIndex(PARK_PLACE, props),
-    new LuxuryTax(), 
+    new LuxuryTax(),
     propertyForIndex(BOARDWALK, props),
 
   ];
-} 
+}
 
 // indices correlate to order in below function propertiesList()
-function propertyForIndex(index, props) { 
-  if (index === 5 || index === 15 || index === 25 || index === 35) { 
-    return new RailroadProperty(props[index][0], props[index][2], props[index][3]);
+function propertyForIndex(index, props) {
+  if (index === 5 || index === 15 || index === 25 || index === 35) {
+    return new RailroadProperty(props[index][0]);
   } else if (index === 12 || index === 28) {
     return new UtilityProperty(props[index][0], props[index][2]);
   } else {
     return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
-  } 
-} 
+  }
+}
 
 /* housing properties: [name, color, cost, house cost, [rent, 1, 2, 3, 4, hotel]]
  railroads: [name, "Railroad", cost, [1, 2, 3, 4]]
- utilities: [name, "Utility", cost] 
+ utilities: [name, "Utility", cost]
 */
 
-function propertiesList() { 
-  return [ 
-    ["Mediterranean Ave", PG_BROWN, 60, 50, [2, 10, 30, 90, 160, 250]], 
+function propertiesList() {
+  return [
+    [],
+    ["Mediterranean Ave", PG_BROWN, 60, 50, [2, 10, 30, 90, 160, 250]],
+    [],
     ["Baltic Ave", PG_BROWN, 60, 50, [4, 20, 60, 180, 320, 450]],
+    [],
+    ["Reading Railroad"],
+    ["Oriental Ave", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]],
+    [],
+    ["Vermont Ave", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]],
+    ["Connecticut Ave", PG_LIGHT_BLUE, 120, 50, [8, 40, 100, 300, 450, 600]],
 
-    ["Oriental Ave", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]], 
-    ["Vermont Ave", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]], 
-    ["Connecticut Ave", PG_LIGHT_BLUE, 120, 50, [8, 40, 100, 300, 450, 600]], 
-
+    [],
     ["St. Charles Place", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]], // 5
-    ["States Ave", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]], 
-    ["Virginia Ave", PG_PINK, 160, 100 [12, 60, 180, 500, 700, 900]], 
-
-    ["St. James Place", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]], 
-    ["Tennessee Ave", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]], 
+    ["Electric Company"],
+    ["States Ave", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]],
+    ["Virginia Ave", PG_PINK, 160, 100, [12, 60, 180, 500, 700, 900]],
+    ["Pennsylvania Railroad"],
+    ["St. James Place", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]],
+    [],
+    ["Tennessee Ave", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]],
     ["New York Ave", PG_ORANGE, 200, 100, [16, 80, 220, 600, 800, 1000]], // 10
 
-    ["Kentucky Ave", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]], 
-    ["Indiana Ave", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]], 
-    ["Illinois Ave", PG_RED, 240, 150, [20, 100, 300, 750, 925, 1100]], 
-
-    ["Atlantic Ave", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]], 
+    [],
+    ["Kentucky Ave", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]],
+    [],
+    ["Indiana Ave", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]],
+    ["Illinois Ave", PG_RED, 240, 150, [20, 100, 300, 750, 925, 1100]],
+    ["B. & O. Railroad"],
+    ["Atlantic Ave", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]],
     ["Ventnor Ave", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]], // 15
-    ["Marvin Gardens", PG_YELLOW, 280, 150, [24, 120, 360, 850, 1025, 1200]], 
+    ["WaterWorks"],
+    ["Marvin Gardens", PG_YELLOW, 280, 150, [24, 120, 360, 850, 1025, 1200]],
 
-    ["Pacific Ave", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]], 
-    ["North Carolina Ave", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]], 
-    ["Pennsylvaniva Ave", PG_GREEN, 320, 200, [28, 150, 450, 1000, 1200, 1400]], 
-
+    [],
+    ["Pacific Ave", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]],
+    ["North Carolina Ave", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]],
+    [],
+    ["Pennsylvaniva Ave", PG_GREEN, 320, 200, [28, 150, 450, 1000, 1200, 1400]],
+    ["Shortline Railroad"], // 25
+    [],
     ["Park Place", PG_BLUE, 350, 200, [35, 175, 500, 1100, 1300, 1500]], // 20
-    ["Boardwalk", PG_BLUE, 400, 200, [50, 200, 600, 1400, 1700, 2000]], 
+    [],
+    ["Boardwalk", PG_BLUE, 400, 200, [50, 200, 600, 1400, 1700, 2000]],
 
-    ["Reading Railroad", PG_RR, 200, [25, 50, 100, 200]],
-    ["Pennsylvania Railroad", PG_RR, 200, [25, 50, 100, 200]],
-    ["B. & O. Railroad", PG_RR, 200, [25, 50, 100, 200]],
-    ["Shortline Railroad", PG_RR, 200, [25, 50, 100, 200]], // 25
-
-    ["Electric Company", PG_UTIL, 150],
-    ["WaterWorks", PG_UTIL, 150]
   ];
 
 }
