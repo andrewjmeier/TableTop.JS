@@ -3,7 +3,7 @@ var Card = require("./card.js");
 var Game = require("./game.js");
 var Utils = require("./utils.js");
 var Board = require("./board_utils.js");
-var MonopolyView = require("./monopoly_view.js");
+var MonopolyView = require("./view/monopoly_view.js");
 
 var john = new Player("John");
 
@@ -23,7 +23,6 @@ var monopoly = new Game(players, chanceDeck, communityChestDeck);
 
 var view = new MonopolyView(monopoly);
 view.drawBoard();
-
 n = 0;
 while (n < 100) {
 	console.log(monopoly.players[monopoly.currentPlayer]);
