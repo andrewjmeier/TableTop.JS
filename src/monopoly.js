@@ -25,6 +25,8 @@ var monopoly = new Game(players, board);
 
 var view = new MonopolyView(monopoly);
 view.drawBoard();
+
+/*
 n = 0;
 while (n < 100) {
     console.log(monopoly.players[monopoly.currentPlayer]);
@@ -35,3 +37,5 @@ while (n < 100) {
 	n += 1;
     console.log("\n\n");
 }
+*/
+
