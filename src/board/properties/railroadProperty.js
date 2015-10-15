@@ -14,18 +14,14 @@ function RailroadProperty(name) {
 inherits(RailroadProperty, Property);
 
 RailroadProperty.prototype.performLandingAction = function(game) {
-
+  
   RailroadProperty.super_.prototype.performLandingAction.call(this, game);
 
-
-  // todo
-  // probably call something like:
-  // handlePropertyLanding(name, cost, rent, player, multiplier);
 };
 
 RailroadProperty.prototype.getRent = function(game) {
 
-  if (this.owner === null) { return 0 };
+  if (!this.owner) return 0;
 
   var rrCount = 0;
   for (i in this.owner.properties) {

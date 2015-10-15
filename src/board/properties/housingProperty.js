@@ -27,6 +27,7 @@ HousingProperty.prototype.performLandingAction = function(game) {
 
 HousingProperty.prototype.getRent = function(game) {
 
+  if (!this.owner) return 0;
 
   var rent = this.rent[this.numHouses];
 

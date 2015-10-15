@@ -78,4 +78,25 @@ Player.prototype.move = function(spacesToMove) {
   this.position = nextPosition;
 };
 
+
+Player.prototype.canBuy = function(property) { 
+  return this.money > property.cost && !property.owner;
+};
+
+Player.prototype.owesRent = function(property) { 
+  return property.owner && !this.owns(property);
+};
+
+Player.prototype.owns = function(property) { 
+  return property.owner === this;
+};
+
+Player.prototype.buy = function(property) { 
+  this.makePayment(property.cost);
+  this.properties.push(property);
+  property.owner = this;
+};
+
+
+
 module.exports = Player;

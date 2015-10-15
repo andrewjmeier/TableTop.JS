@@ -13,50 +13,25 @@ inherits(Property, Space);
 
 Property.prototype.performLandingAction = function(game) {
   var player = game.getCurrentPlayer();
-  if (this.own(game)) return;
+  if (this.owner === player) return;
 
-  if (this.oweRent(game)) {
-    var rent = this.getRent(game);
-    player.payPlayer(rent, this.owner);
-  }
+  // give option to buy here? 
+  if (player.owesRent(this)) { 
+    player.payPlayer(this.getRent(game), this.owner);
+  } 
+
   // todo  - finish hashing this out
   Property.super_.prototype.performLandingAction.call(this, game);
 };
 
-Property.prototype.canBuy = function(game) {
-  var player = game.getCurrentPlayer();
-  if (this.owner === null) {
-    if (player.money > this.cost) {
-      return true;
-    }
-  } 
-  return false;
+
+// overridden in subclasses
+Property.prototype.getRent = function(player) {
+  return 0;
 };
 
-Property.prototype.oweRent = function(game) {
-  var player = game.getCurrentPlayer();
-  if (this.owner !== null){
-    if (this.owner !== player) {
-        return true;
-    }
-  }
-  return false;
-};
-
-Property.prototype.own = function(game) {
-  var player = game.getCurrentPlayer();
-  if (this.owner === player) return true;
-  return false;
-};
-
-
-
-Property.prototype.buyProperty = function(player) {
-  player.makePayment(this.cost);
-  player.properties.push(this);
-  this.owner = player;
-};
-
+// default to false here, overridden in subclasses
+// where appropriate
 Property.prototype.hasHotel = function(player) { 
   return false;
 };
