@@ -30,14 +30,19 @@ var turn = new Turn();
 var yesBtn = document.getElementById('btnYes');
 yesBtn.onclick = function() { 
     console.log("yes")
-    turn.nextState(true, monopoly);
+    turn.viewState(true, monopoly);
 }
 var noBtn = document.getElementById('btnNo');
 noBtn.onclick = function() { 
     console.log("no")
-    turn.nextState(false, monopoly);
+    turn.viewState(false, monopoly);
+}
+var continueBtn = document.getElementById('btnContinue');
+continueBtn.onclick = function() { 
+    console.log("continue")
+    turn.viewState(false, monopoly);
 }
 //start running game
-turn.nextState(false, monopoly);
+turn.viewState(false, monopoly);
 
 

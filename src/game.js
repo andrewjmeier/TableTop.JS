@@ -10,6 +10,7 @@ function Game(players, board) {
   this.communityChestCards = new CommunityChestDeck();
   this.shuffleCards();
   this.doublesCount = 0;
+  this.state = 0;
   this.randomizeCurrentPlayer();
 };
 
@@ -79,6 +80,10 @@ Game.prototype.move = function() {
 
 Game.prototype.isDoubles = function(dice) {
   return dice[0] === dice[1];
+};
+
+Game.prototype.setState = function(newState) {
+  this.state = newState;
 };
 
 Game.prototype.getCurrentPlayer = function() {
