@@ -13,7 +13,6 @@ Turn.prototype.viewState = function(yesPressed, monopoly) {
             //before rolling
             console.log(monopoly.players[monopoly.currentPlayer].name);
             
-            
             var msg0 = monopoly.players[monopoly.currentPlayer].name
             msg0 = msg0.concat("'s turn to roll the dice. Click 'Continue' to roll dice.");
             ui.changeToContinue();
@@ -31,28 +30,23 @@ Turn.prototype.viewState = function(yesPressed, monopoly) {
             var thisSpace = monopoly.board.spaces[monopoly.getCurrentPlayer().position]
             var propName = thisSpace.name;
 
-            //I AM HERE TRYING TO FIND OUT IT HAVE MONEY TO BUY
             console.log(thisSpace);
             var buyMsg = "";
-            console.log(thisSpace.cost);
-            //there must be a better way to do this
-            if(thisSpace.cost != null){
-                if(thisSpace.canBuy(monopoly)){
-                    buyMsg = "Do you want to buy it?";
-                    ui.changeToYesNo();
+
+            if(thisSpace.canBuy(monopoly)){
+                buyMsg = "Do you want to buy it?";
+                ui.changeToYesNo();
+            }
+            else{
+                if(thisSpace.own(monopoly)){
+                    buyMsg = "You own it.";
+                    ui.changeToContinue();
                 }
                 else{
-                    if(thisSpace.own(monopoly)){
-                        buyMsg = "You own it.";
+                    if(thisSpace.oweRent(monopoly)){
+                        buyMsg = "You paid rent.";
                         ui.changeToContinue();
                     }
-                    else{
-                        if(thisSpace.oweRent(monopoly)){
-                            buyMsg = "You paid rent.";
-                            ui.changeToContinue();
-                        }
-                    }
-                    
                 }
             }
             msg1 = msg1.concat(monopoly.dice, ". You landed on ", propName, ". ", buyMsg);
@@ -65,13 +59,10 @@ Turn.prototype.viewState = function(yesPressed, monopoly) {
             var thisSpace = monopoly.board.spaces[monopoly.getCurrentPlayer().position]
             var propName = thisSpace.name;
             var buyMsg = "";
-            //there must be a better way to do this
-            if(thisSpace.cost != null){
-                if(thisSpace.canBuy(monopoly)){
-                    if(yesPressed){
-                        thisSpace.buyProperty(monopoly.getCurrentPlayer());
-                        buyMsg = buyMsg.concat("You bought ", propName, ". ");
-                    }
+            if(thisSpace.canBuy(monopoly)){
+                if(yesPressed){
+                    thisSpace.buyProperty(monopoly.getCurrentPlayer());
+                    buyMsg = buyMsg.concat("You bought ", propName, ". ");
                 }
             }
             //do you want to end your turn

@@ -15,10 +15,6 @@ Property.prototype.performLandingAction = function(game) {
   var player = game.getCurrentPlayer();
   if (this.own(game)) return;
 
-  if (this.canBuy(game)){
-      //this.buyProperty(player);
-  }
-
   if (this.oweRent(game)) {
     var rent = this.getRent(game);
     player.payPlayer(rent, this.owner);
