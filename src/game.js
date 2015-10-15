@@ -74,8 +74,7 @@ Game.prototype.move = function() {
     }
     this.getCurrentPlayer().move(spacesToMove);
     var player = this.getCurrentPlayer();
-    this.board.spaces[player.position].performLandingAction(this
-        );
+    this.board.spaces[player.position].performLandingAction(this);
 };
 
 Game.prototype.isDoubles = function(dice) {

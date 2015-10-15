@@ -1,8 +1,9 @@
 var Player = require("./player.js");
-var Card = require("./card.js");
+var Card = require("./cards/card.js");
 var Game = require("./game.js");
 var Utils = require("./utils.js");
 var Board = require("./board_utils.js");
+var Turn = require("./turn.js");
 
 var john = new Player("John");
 
@@ -20,13 +21,21 @@ var board = new Board();
 
 var monopoly = new Game(players, board);
 
-n = 0;
-while (n < 100) {
-    console.log(monopoly.players[monopoly.currentPlayer]);
-	monopoly.rollAndMovePlayer();
-	console.log(monopoly.dice);
-    console.log(monopoly.players[monopoly.currentPlayer]);
-	monopoly.nextPlayer();
-	n += 1;
-    console.log("\n\n");
+var turn = new Turn();
+
+
+//setup btns
+var yesBtn = document.getElementById('btnYes');
+yesBtn.onclick = function() { 
+    console.log("yes")
+    turn.nextState(true, monopoly);
 }
+var noBtn = document.getElementById('btnNo');
+noBtn.onclick = function() { 
+    console.log("no")
+    turn.nextState(false, monopoly);
+}
+//start running game
+turn.nextState(false, monopoly);
+
+
