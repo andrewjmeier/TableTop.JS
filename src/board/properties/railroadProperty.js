@@ -1,7 +1,6 @@
+require('../boardConstants');
 var Property = require('./property'),
     inherits = require('util').inherits;
-
-var PG_RR = 8;
 
 // rent should be array with following format:
 // [1 owned (rent), 2 owned, 3 owned, 4 owned]
@@ -16,7 +15,7 @@ inherits(RailroadProperty, Property);
 
 RailroadProperty.prototype.performLandingAction = function(game) {
 
-    RailroadProperty.super_.prototype.performLandingAction.call(this, game);
+  RailroadProperty.super_.prototype.performLandingAction.call(this, game);
 
 
   // todo
@@ -25,14 +24,17 @@ RailroadProperty.prototype.performLandingAction = function(game) {
 };
 
 RailroadProperty.prototype.getRent = function(game) {
-    var rrCount = 0;
-    for (i in this.owner.properties) {
-        if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
-            rrCount++;
-        }
-    }
 
-    return this.rent[rrCount - 1];
+  if (this.owner === null) { return 0 };
+
+  var rrCount = 0;
+  for (i in this.owner.properties) {
+    if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
+      rrCount++;
+    }
+  }
+
+  return this.rent[rrCount - 1];
 };
 
 module.exports = RailroadProperty;
