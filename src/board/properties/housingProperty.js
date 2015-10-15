@@ -30,14 +30,7 @@ HousingProperty.prototype.getRent = function(game) {
 
   var rent = this.rent[this.numHouses];
 
-  // if there are no houses but it's a monopoly return double rent
-  if (this.numHouses === 0) {
-    if (this.isMonopoly()) {
-      return rent * 2;
-    }
-  }
-
-  return rent;
+  return this.numHouses === 0 && this.isMonopoly() ? rent*2 : rent;
 };
 
 HousingProperty.prototype.isMonopoly = function() {
