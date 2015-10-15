@@ -3,7 +3,7 @@ function MonopolyView(game_state) {
 
     this.renderer = PIXI.autoDetectRenderer(800, 800, {backgroundColor : 0x1099bb});
     document.body.appendChild(this.renderer.view);
-    
+
     // create the root of the scene graph
     this.stage = new PIXI.Container();
     this.graphics = new PIXI.Graphics();
@@ -23,6 +23,12 @@ MonopolyView.prototype.drawBoard = function() {
     var chance_image2 = new PIXI.Sprite(texture3);
     var chance_image3 = new PIXI.Sprite(texture3);
     var Hpo = new PIXI.Sprite(texture4);
+
+    Hpo.interactive = true;
+    Hpo.click = function(mouseData){
+       console.log("CLICK!");
+    };
+
 
     // rescale and place logo
     logo.scale.x = 0.37;
