@@ -1,14 +1,15 @@
-var Tax = require('./tax'), 
+var Tax = require('./tax'),
     inherits = require('util').inherits;
 
-function LuxuryTax() { 
+function LuxuryTax() {
+  this.name = "Luxury Tax";
   this.taxAmount = 75;
-}
+};
 
 inherits(LuxuryTax, Tax);
 
-LuxuryTax.prototype.performLandingAction = function(player) { 
-  LuxuryTax.super_.prototype.performLandingAction.apply(this);
-}; 
+LuxuryTax.prototype.performLandingAction = function(game) {
+  LuxuryTax.super_.prototype.performLandingAction.call(this, game);
+};
 
 module.exports = LuxuryTax;
