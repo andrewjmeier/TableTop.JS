@@ -8,7 +8,7 @@ function MonopolyView(game_state) {
             {backgroundColor : 0x1099bb});
 
     document.body.appendChild(this.renderer.view);
-    
+
     // create the root of the scene graph
     this.stage = new PIXI.Container();
     this.graphics = new PIXI.Graphics();
@@ -26,7 +26,7 @@ MonopolyView.prototype.drawBoard = function() {
     var x_pos = constants.leftBuffer;
     var y_pos = constants.boardHeight + constants.upperBuffer - constants.tileLongSide;
     var property_index = 0;
-    
+
     // Draw Go
     var go = new PIXI.Graphics();
     go.lineStyle(1, 0, 1);
@@ -44,7 +44,7 @@ MonopolyView.prototype.drawBoard = function() {
         this.stage.addChild(property);
         property_index += 1;
     }
-    
+
     // Draw Jail
     y_pos -= constants.tileLongSide;
     jail = new PIXI.Graphics();
@@ -66,7 +66,7 @@ MonopolyView.prototype.drawBoard = function() {
         x_pos += constants.tileShortSide;
         property_index += 1;
     }
-    
+
     // Draw Free Parking
     var free_parking = new PIXI.Graphics();
     free_parking.lineStyle(1, 0, 1);
@@ -87,7 +87,7 @@ MonopolyView.prototype.drawBoard = function() {
         y_pos += constants.tileShortSide;
         property_index += 1;
     }
-    
+
     // Draw Go To Jail
     var go = new PIXI.Graphics();
     go.lineStyle(1, 0, 1);
@@ -122,7 +122,12 @@ MonopolyView.prototype.drawBoard = function() {
     var chance_image3 = new PIXI.Sprite(texture3);
     var Hpo = new PIXI.Sprite(texture4);
 
-        
+
+    Hpo.interactive = true;
+    Hpo.click = function(mouseData){
+       console.log("CLICK!");
+    };
+
     // rescale and place jail
     jail.scale.x = 0.265;
     jail.scale.y = 0.21;
@@ -175,6 +180,9 @@ MonopolyView.prototype.drawBoard = function() {
     // draw community chest + chances box
     this.graphics.drawRect(135, 135, 200, 120);
     this.graphics.drawRect(465, 545, 200, 120);
+
+    this.graphics.beginFill(0xFFFFFF, 1);
+    this.graphics.drawRect(100, 100, 300, 100);
 
     // write "community chest" & "chance"
     var chance = new PIXI.Text('CHANCE');
@@ -233,18 +241,18 @@ MonopolyView.prototype.drawBoard = function() {
         this.graphics.drawRect(675, y, 125, dy);
         y += dy;
     }
-    /*
-    this.stage.addChild(jail);
+
+    // this.stage.addChild(jail);
     this.stage.addChild(chance);
     this.stage.addChild(community);
     this.stage.addChild(chest);
-    this.stage.addChild(jail_text);
-    this.stage.addChild(go_text);
-    this.stage.addChild(chance_image);
-    this.stage.addChild(chance_image2);
-    this.stage.addChild(chance_image3);
-    this.stage.addChild(Hpo);
-*/
+    // this.stage.addChild(jail_text);
+    // this.stage.addChild(go_text);
+    // this.stage.addChild(chance_image);
+    // this.stage.addChild(chance_image2);
+    // this.stage.addChild(chance_image3);
+    // this.stage.addChild(Hpo);
+
     // rescale and place logo
     var logo = new PIXI.Sprite(texture);
 
@@ -253,7 +261,7 @@ MonopolyView.prototype.drawBoard = function() {
 
     logo.position.x = constants.logoPosX;
     logo.position.y = constants.logoPosY;
-    
+
     logo.anchor.x = .5;
     logo.anchor.y = .5;
     logo.rotation = constants.logoRotation;
@@ -284,7 +292,7 @@ MonopolyView.prototype.drawLeftProperty = function(x_pos, y_pos, property) {
     var tile = new PIXI.Graphics();
     tile.lineStyle(1, 0, 1);
     tile.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileShortSide);
-    
+
     tile.beginFill(0x0000FF, 1);
     tile.drawRect(x_pos + constants.tileLongSide - constants.tileColorLength,
             y_pos, constants.tileColorLength, constants.tileShortSide);
