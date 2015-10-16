@@ -36,10 +36,9 @@ MonopolyView.prototype.drawBoard = function() {
     property_index += 1;
 
     // Draw left properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
         y_pos -= constants.tileShortSide;
-        var property = this.drawLeftProperty(x_pos, y_pos, this.game.board.spaces[i]);
+        var property = this.drawLeftProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         property_index += 1;
@@ -56,11 +55,8 @@ MonopolyView.prototype.drawBoard = function() {
     property_index += 1;
 
     // Draw top properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
-        var property = new PIXI.Graphics();
-        property.lineStyle(1, 0, 1);
-        property.drawRect(x_pos, y_pos, constants.tileShortSide, constants.tileLongSide);
+        var property = this.drawTopProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         x_pos += constants.tileShortSide;
@@ -77,11 +73,8 @@ MonopolyView.prototype.drawBoard = function() {
     property_index += 1;
 
     // Draw right properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
-        var property = new PIXI.Graphics();
-        property.lineStyle(1, 0, 1);
-        property.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileShortSide);
+        var property = this.drawRightProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         y_pos += constants.tileShortSide;
@@ -98,11 +91,8 @@ MonopolyView.prototype.drawBoard = function() {
     property_index += 1;
 
     // Draw bottom properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
-        var property = new PIXI.Graphics();
-        property.lineStyle(1, 0, 1);
-        property.drawRect(x_pos, y_pos, constants.tileShortSide, constants.tileLongSide);
+        var property = this.drawBottomProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         x_pos -= constants.tileShortSide;
@@ -285,12 +275,174 @@ MonopolyView.prototype.drawLeftProperty = function(x_pos, y_pos, property) {
     tile.lineStyle(1, 0, 1);
     tile.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileShortSide);
     
-    tile.beginFill(0x0000FF, 1);
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
     tile.drawRect(x_pos + constants.tileLongSide - constants.tileColorLength,
             y_pos, constants.tileColorLength, constants.tileShortSide);
 
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.rotation = Math.PI * .5;
+        name.x = x_pos + constants.tileLongSide - constants.tileColorLength - constants.textPadding;
+        name.y = y_pos + constants.tileShortSide / 2;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.rotation = Math.PI * .5;
+        price.x = x_pos + constants.textPadding;
+        price.y = y_pos + constants.tileShortSide / 2;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+
+    }
+   
     return tile;
 }
+
+MonopolyView.prototype.drawTopProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.drawRect(x_pos, y_pos, constants.tileShortSide, constants.tileLongSide);
+    
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
+    tile.drawRect(x_pos,
+            y_pos + constants.tileLongSide - constants.tileColorLength,
+            constants.tileShortSide,
+            constants.tileColorLength);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.rotation = Math.PI;
+        name.x = x_pos + constants.tileShortSide / 2;
+        name.y = y_pos + constants.tileLongSide - constants.tileColorLength - constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.rotation = Math.PI;
+        price.x = x_pos + constants.tileShortSide / 2;
+        price.y = y_pos + constants.textPadding;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+
+    }
+   
+    return tile;
+}
+
+MonopolyView.prototype.drawRightProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileShortSide);
+    
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
+    tile.drawRect(x_pos,
+            y_pos, constants.tileColorLength, constants.tileShortSide);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.rotation = Math.PI * 1.5;
+        name.x = x_pos + constants.tileColorLength + constants.textPadding;
+        name.y = y_pos + constants.tileShortSide / 2;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.rotation = Math.PI * 1.5;
+        price.x = x_pos + constants.tileLongSide - constants.textPadding;
+        price.y = y_pos + constants.tileShortSide / 2;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+
+    }
+   
+    return tile;
+}
+
+MonopolyView.prototype.drawBottomProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.drawRect(x_pos, y_pos, constants.tileShortSide, constants.tileLongSide);
+    
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
+    tile.drawRect(x_pos,
+            y_pos,
+            constants.tileShortSide,
+            constants.tileColorLength);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.x = x_pos + constants.tileShortSide / 2;
+        name.y = y_pos + constants.tileColorLength + constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.x = x_pos + constants.tileShortSide / 2;
+        price.y = y_pos + constants.tileLongSide - constants.textPadding;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+    }
+   
+    return tile;
+}
+
 
 MonopolyView.prototype.animate = function() {
     requestAnimationFrame(this.animate.bind(this));

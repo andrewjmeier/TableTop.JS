@@ -5,7 +5,7 @@ var viewConstants = new Object();
 // CANVAS
 // Constants defining the canvas properties
 viewConstants.canvasWidth = 1000;
-viewConstants.canvasHeight = 1400;
+viewConstants.canvasHeight = 1200;
 
 viewConstants.leftBuffer = 50;
 viewConstants.rightBuffer = 50;
@@ -24,6 +24,19 @@ viewConstants.boardStartY = viewConstants.upperBuffer;
 viewConstants.tileLongSide = viewConstants.boardWidth / 7.0;
 viewConstants.tileShortSide = ((viewConstants.boardWidth - 2.0 * viewConstants.tileLongSide) / 9.0);
 viewConstants.tileColorLength = viewConstants.tileLongSide / 6.0;
+viewConstants.textPadding = 5;
+
+// Property Colors
+viewConstants.propertyColors = [
+    0x6F3A19,
+    0x88C8F3,
+    0xC90071,
+    0xE68900,
+    0xD20019,
+    0xE6E60F,
+    0x0AA345,
+    0x2D4A9B,
+]
 
 // DARTMOUTH LOGO
 // Constants for drawing Dartmouth logo at center of board
