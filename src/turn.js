@@ -1,101 +1,141 @@
+require("./board/boardConstants.js");
 var UI = require("./UI.js");
 var Property = require("./board/properties/property.js");
 //var Space = require('../board/space');
 
 var ui = new UI();
 
-function Turn() {};
+function Turn(game) {
+  game.state = WAITING_FOR_ROLL;
+  this.lastState = -1;
+};
 
-Turn.prototype.viewState = function(yesPressed, monopoly) {
-  console.log(monopoly.state);
-  
-  switch(monopoly.state) {
-  case 0:
-    //before rolling
-    console.log(monopoly.players[monopoly.currentPlayer].name);
-    
-    var msg0 = monopoly.players[monopoly.currentPlayer].name;
-    msg0 = msg0.concat("'s turn to roll the dice. Click 'Continue' to roll dice.");
-    ui.changeToContinue();
-    ui.displayPrompt(msg0);
-    monopoly.setState(1);
-    
-    
-    break;
-  case 1:
-    //roll dice
-    //after landing do you want to buy/you can’t buy
-    monopoly.rollAndMovePlayer();
-    console.log(monopoly.dice);
-    var msg1 = "You rolled ";
-    var thisSpace = monopoly.board.spaces[monopoly.getCurrentPlayer().position];
-    var propName = thisSpace.name;
+Turn.prototype.setState = function(state, game) { 
+  this.lastState = game.state;
+  game.state = state;
+};
 
-    console.log(thisSpace);
-    var buyMsg = "";
 
-    if(thisSpace.canBuy(monopoly)){
-      buyMsg = "Do you want to buy it?";
-      ui.changeToYesNo();
-    }
-    else{
-      if(thisSpace.own(monopoly)){
-        buyMsg = "You own it.";
-        ui.changeToContinue();
-      }
-      else{
-        if(thisSpace.oweRent(monopoly)){
-          buyMsg = "You paid rent.";
-          ui.changeToContinue();
-        }
-      }
-    }
-    msg1 = msg1.concat(monopoly.dice, ". You landed on ", propName, ". ", buyMsg);
-    ui.displayPrompt(msg1);
-    monopoly.setState(2);
+/* 
+ Couple notes on how this works: 
+ 
+ The state machine loop will run until: 
+  1) we return early (should be preceeded with a ui.displayPrompt(msg) 
+  2) the state doesn't change. 
+ This allows to us to run multiple states without waiting for user input... 
+ ie. we can run BUY_ANSWER and then POST_TURN immediately after 
+
+ The way "actions" work is that "performLandingAction" returns two values
+ in an array: 
+ actions[0] contains a message to append to the display
+ actions[1] contains the next state we should forward the user to
+
+ Most spaces/cards return "POST_TURN" as the state in actions[1], but 
+ some (like housing properties) will return something else (ie. BUY_PROMPT).
+
+ Displaying the prompt message works buy initializing displayMsg at the beginning 
+ of the fn call, and then building up the message (using .concat) during the entire 
+ state run. When we exit (either by default, or by an early return) we use 
+ ui.displayPrompt(displayMsg) to print everything to the console. We do this because
+ if we use ui.displayPrompt multiple times in a row, then previous msgs get overridden. 
+*/
+
+Turn.prototype.runStateMachine = function(yesPressed, game) {
+
+  // only changes on fn call so we call this outside the while loop
+  var player = game.getCurrentPlayer();
+
+  // this gets refreshed in ROLLED
+  var space = game.board.spaces[game.getCurrentPlayer().position];
+  var displayMsg = "";
+
+  while (this.lastState != game.state) { 
     
-    break;
-  case 2:
-    //do all things they wanted eg buy
-    var thisSpace = monopoly.board.spaces[monopoly.getCurrentPlayer().position];
-    var propName = thisSpace.name;
-    var buyMsg = "";
-    if(thisSpace.canBuy(monopoly)){
-      if(yesPressed){
-        thisSpace.buyProperty(monopoly.getCurrentPlayer());
-        buyMsg = buyMsg.concat("You bought ", propName, ". ");
-      }
-    }
-    //do you want to end your turn
-    var msg2 = "";
-    msg2 = msg2.concat(buyMsg, "Do you want to end your turn?");
-    ui.changeToYesNo();
-    ui.displayPrompt(msg2);
-    monopoly.setState(3);
-    
-    break;
-  case 3:
-    //allow them to trade etc
-    var msg3 = "";
-    if(yesPressed){
-      msg3 = msg3.concat("Your turn is over");
+    switch(game.state) {
+      
+    case WAITING_FOR_ROLL:
+
+      console.log(game.players[game.currentPlayer].name);
+
       ui.changeToContinue();
-      ui.displayPrompt(msg3);
-      monopoly.nextPlayer();
-      monopoly.setState(0);
-      console.log("\n\n");
-    }
-    else{
-      msg3 = msg3.concat("Click yes to end turn");
-      ui.displayPrompt(msg3);
-      console.log("This is where we allow trade etc");
+      displayMsg = displayMsg.concat(game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.");
+      
+      // get out of state machine early here 
+      // next time we return, we'll have rolled the dice
+      this.setState(ROLLED, game);
+      ui.displayPrompt(displayMsg);
+      return; 
+      
+    case ROLLED:
+      //roll dice
+      //after landing do you want to buy/you can’t buy
+      var actions = game.rollAndMovePlayer();
+      space = game.board.spaces[game.getCurrentPlayer().position];
+      
+      console.log(game.dice);
+      console.log(space);
+      
+      displayMsg = displayMsg.concat(actions[0]);
+      this.setState(actions[1], game);
+      break;
+      
+    case BUY_PROMPT:
+      
+      var property = space; // clarity
 
+      if(player.canBuy(property)){
+        displayMsg = displayMsg.concat("Do you want to buy it?");
+        ui.changeToYesNo();
+        this.setState(BUY_ANSWER, game);
+        ui.displayPrompt(displayMsg);
+        return;
+      } else { 
+        displayMsg = displayMsg.concat("You can't afford it. \n");
+        this.setState(POST_TURN, game);
+      } 
+      
+      break;
+
+    case BUY_ANSWER:
+      
+      if (yesPressed) { 
+        player.buy(space);
+        displayMsg = displayMsg.concat("You bought " + space.name + ". ");
+      } else { 
+        displayMsg = displayMsg.concat("You didn't buy " + space.name + ". ");
+      } 
+
+      this.setState(POST_TURN, game);
+      break;
+      
+    case POST_TURN: 
+      // ask them to trade, etc.
+      displayMsg = displayMsg.concat("\n Choose an option (trade, buy houses, etc), or click continue to end your turn");
+      ui.changeToContinue();
+      this.setState(POST_TURN_ANSWER, game);
+      ui.displayPrompt(displayMsg);
+      return;
+      
+    case POST_TURN_ANSWER:
+      // TODO: do stuff with their answer... send them to trade, mortage, etc. 
+      // ie. this.setState(TRADE, game) or this.setState(MORTAGE_CHOICES, game)
+      this.setState(ENDED_TURN, game);
+      break;
+
+    case ENDED_TURN:
+            
+      game.nextPlayer();
+      this.setState(WAITING_FOR_ROLL, game);
+      console.log("\n\n");
+      break;
+
+    default:
+      //something is broken
+      console.log("Something went very wrong");
     }
-    
-    break;
-  default:
-    //something is broken
-    console.log("Something went very wrong");
+
+    ui.displayPrompt(displayMsg);
+
   } 
   
 };

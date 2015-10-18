@@ -37,45 +37,53 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
 Game.prototype.drawChanceCard = function() {
   var card = this.chanceCards.drawCard();
   console.log("chance card drawn ", card);
-  card.action(this);
+  var actions = card.action(this);
+  return [card.text.concat(actions[0]), actions[1]];
 };
 
 Game.prototype.drawCommunityChestCard = function() {
   var card = this.communityChestCards.drawCard();
   console.log("community chest card drawn ", card);
-  card.action(this);
+  var actions = card.action(this);
+  return [card.text.concat(actions[0]), actions[1]];
 };
 
 Game.prototype.rollAndMovePlayer = function() {
   this.rollDice(2);
-  this.movePlayer();
+  return this.movePlayer();
 };
 
 Game.prototype.movePlayer = function() {
-  if (this.getCurrentPlayer().inJail) {
-    this.getCurrentPlayer().turnsInJail += 1;
-    if (this.isDoubles(this.dice)) {
-      this.getCurrentPlayer().releaseFromJail();
-      this.move();
-    } else if (this.getCurrentPlayer().turnsInJail === 3) {
-      this.getCurrentPlayer().payBail();
-      this.move();
-    } else {
-      console.log(this.getCurrentPlayer().name + " is serving a turn in jail");
-    }
+  
+  // if we're not in jail, just move 
+  if (!this.getCurrentPlayer().inJail) 
+    return this.move();
+
+  // otherwise increment turnsInJail, then handle 
+  // various circumstances surrounding getting out of 
+  // jail or staying in
+  this.getCurrentPlayer().turnsInJail += 1;
+  if (this.isDoubles(this.dice)) {
+    this.getCurrentPlayer().releaseFromJail();
+  } else if (this.getCurrentPlayer().turnsInJail === 3) {
+    this.getCurrentPlayer().payBail();
   } else {
-    this.move();
+    return [this.getCurrentPlayer().name + " is serving a turn in jail. ", POST_TURN_ANSWER];
   }
+  
+  return this.move();
 };
 
 Game.prototype.move = function() {
-    var spacesToMove = 0;
-    for (index in this.dice) {
-        spacesToMove += this.dice[index];
-    }
-    this.getCurrentPlayer().move(spacesToMove);
-    var player = this.getCurrentPlayer();
-    this.board.spaces[player.position].performLandingAction(this);
+  var spacesToMove = 0;
+  for (var index in this.dice) {
+    spacesToMove += this.dice[index];
+  }
+  this.getCurrentPlayer().move(spacesToMove);
+  var player = this.getCurrentPlayer();
+  var actions = this.board.spaces[player.position].performLandingAction(this);
+  actions[0] = ("You rolled a " + spacesToMove + ". ").concat(actions[0]);
+  return actions;
 };
 
 Game.prototype.isDoubles = function(dice) {

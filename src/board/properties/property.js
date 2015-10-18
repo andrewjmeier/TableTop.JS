@@ -1,3 +1,4 @@
+require ("../boardConstants");
 var Space = require('../board/space'),
     inherits = require('util').inherits;
 
@@ -12,16 +13,23 @@ function Property(name, cost, propertyGroup) {
 inherits(Property, Space);
 
 Property.prototype.performLandingAction = function(game) {
+  
+    // todo  - finish hashing this out
+  var actions = Property.super_.prototype.performLandingAction.call(this, game);
+  
   var player = game.getCurrentPlayer();
-  if (this.owner === player) return;
-
-  // give option to buy here? 
-  if (player.owesRent(this)) { 
-    player.payPlayer(this.getRent(game), this.owner);
+  if (this.owner === player) { 
+    actions[0] = actions[0].concat(" You own it!");
+  } else if (player.owesRent(this)) { 
+    var rent = this.getRent(game);
+    player.payPlayer(rent, this.owner);
+    actions[0] = actions[0].concat(" You payed $" + rent + " to " + this.owner.name + ". ");
+  } else if (!this.owner) { 
+    actions[0] = actions[0].concat(" It is unowned. ");
+    actions[1] = BUY_PROMPT;
   } 
 
-  // todo  - finish hashing this out
-  Property.super_.prototype.performLandingAction.call(this, game);
+  return actions;
 };
 
 
@@ -35,5 +43,10 @@ Property.prototype.getRent = function(player) {
 Property.prototype.hasHotel = function(player) { 
   return false;
 };
+
+Property.prototype.isProperty = function() { 
+  return true;
+};
+
 
 module.exports = Property;

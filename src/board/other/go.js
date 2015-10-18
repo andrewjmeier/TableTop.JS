@@ -8,8 +8,7 @@ function Go() {
 inherits(Go, Space);
 
 Go.prototype.performLandingAction = function(game) {
-  // nothing!
-  Go.super_.prototype.performLandingAction.call(this, game);
+  return Go.super_.prototype.performLandingAction.call(this, game);
 };
 
 module.exports = Go;

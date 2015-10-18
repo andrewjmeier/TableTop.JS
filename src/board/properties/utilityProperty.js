@@ -14,7 +14,7 @@ inherits(UtilityProperty, Property);
 
 UtilityProperty.prototype.performLandingAction = function(game) {
 
-  UtilityProperty.super_.prototype.performLandingAction.call(this, game);
+  return UtilityProperty.super_.prototype.performLandingAction.call(this, game);
 
 };
 

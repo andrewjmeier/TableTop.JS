@@ -23,26 +23,26 @@ var board = new Board();
 
 var monopoly = new Game(players, board);
 
-var turn = new Turn();
+var turn = new Turn(monopoly);
 
 
 //setup btns
 var yesBtn = document.getElementById('btnYes');
 yesBtn.onclick = function() { 
-  turn.viewState(true, monopoly);
+  turn.runStateMachine(true, monopoly);
 };
 
 var noBtn = document.getElementById('btnNo');
 noBtn.onclick = function() { 
-  turn.viewState(false, monopoly);
+  turn.runStateMachine(false, monopoly);
 };
 
 var continueBtn = document.getElementById('btnContinue');
 continueBtn.onclick = function() { 
-  turn.viewState(false, monopoly);
+  turn.runStateMachine(false, monopoly);
 };
 
 //start running game
-turn.viewState(false, monopoly);
+turn.runStateMachine(false, monopoly);
 
 

@@ -29,7 +29,7 @@ Player.prototype.releaseFromJail = function() {
 };
 
 Player.prototype.payPlayers = function(amount, players) {
-  for (index in players) {
+  for (var index in players) {
     if (players[index] !== this) {
       this.payPlayer(amount, players[index]);
     }
@@ -37,7 +37,7 @@ Player.prototype.payPlayers = function(amount, players) {
 };
 
 Player.prototype.collectFromPlayers = function(amount, players) {
-  for (index in players) {
+  for (var index in players) {
     if (players[index] !== this) {
       players[index].payPlayer(amount, this);
     }
@@ -68,7 +68,7 @@ Player.prototype.moveTo = function(position) {
 };
 
 Player.prototype.move = function(spacesToMove) {
-  nextPosition = this.position + spacesToMove;
+  var nextPosition = this.position + spacesToMove;
 
   // passed go
   if (nextPosition >= 40) {
@@ -80,7 +80,7 @@ Player.prototype.move = function(spacesToMove) {
 
 
 Player.prototype.canBuy = function(property) { 
-  return this.money > property.cost && !property.owner;
+  return (this.money > property.cost) && !property.owner;
 };
 
 Player.prototype.owesRent = function(property) { 
@@ -95,6 +95,19 @@ Player.prototype.buy = function(property) {
   this.makePayment(property.cost);
   this.properties.push(property);
   property.owner = this;
+};
+
+Player.prototype.assets = function() { 
+
+  var assets = 0;
+  assets += this.money;
+  for (var property in this.properties) { 
+    assets += property.cost;
+    if (property.numHouses) 
+      assets += property.numHouses*property.houseCost;
+  } 
+  
+  return assets;
 };
 
 

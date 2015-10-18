@@ -15,7 +15,7 @@ inherits(RailroadProperty, Property);
 
 RailroadProperty.prototype.performLandingAction = function(game) {
   
-  RailroadProperty.super_.prototype.performLandingAction.call(this, game);
+  return RailroadProperty.super_.prototype.performLandingAction.call(this, game);
 
 };
 
