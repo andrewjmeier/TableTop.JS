@@ -10,7 +10,7 @@ function Game(players, board) {
   this.communityChestCards = new CommunityChestDeck();
   this.shuffleCards();
   this.doublesCount = 0;
-  this.state = 0;
+  this.state = WAITING_FOR_ROLL;
   this.randomizeCurrentPlayer();
 };
 
