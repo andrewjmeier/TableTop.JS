@@ -540,24 +540,49 @@ MonopolyView.prototype.drawBottomProperty = function(x_pos, y_pos, property) {
 
 MonopolyView.prototype.drawPlayerToken = function(player) {
     var token = new PIXI.Graphics();
-    token.lineStyle(0, 0, 0);
-    token.beginFill(player.color, 1);
-    console.log(this.tiles, player.position, this.tiles[7]);
-    var tile = this.tiles[30];
-    console.log(tile.position);
-    token.drawRect(tile.x + 5, tile.y + 5, 10, 10);
+    token.lineStyle(1, 0, 1);
+    console.log(constants.propertyColors[player.color]);
+    token.beginFill(constants.propertyColors[player.color], 1);
+    var tile = this.tiles[player.position];
+    token.x = tile.x;
+    token.y = tile.y;
+    token.drawRect(45, 45, 10, 10);
 
     return token;
 };
 
 MonopolyView.prototype.drawPlayers = function() {
+    this.tokenViews = []
     for (index in this.game.players) {
-        this.stage.addChild(this.drawPlayerToken(this.game.players[index]));
+        var token = this.drawPlayerToken(this.game.players[index]);
+        this.stage.addChild(token);
+        this.tokenViews.push(token);
+    }
+};
+
+MonopolyView.prototype.updatePlayer = function(player, index) {
+    var playerView = this.tokenViews[index];
+    var tile = this.tiles[player.position];
+
+    var count = 0;
+    for (i = 0; i < index; i++) {
+        if (this.game.players[i].position == player.position) {
+            count++;
+        }
+    }
+    playerView.x = tile.x + (12 * count);
+    playerView.y = tile.y;
+}
+
+MonopolyView.prototype.updatePlayers = function() {
+    for (index in this.game.players) {
+        this.updatePlayer(this.game.players[index], index);
     }
 };
 
 
 MonopolyView.prototype.animate = function() {
+    this.updatePlayers();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 }
