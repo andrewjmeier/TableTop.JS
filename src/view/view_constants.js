@@ -55,6 +55,9 @@ viewConstants.logoPosY = viewConstants.upperBuffer + (viewConstants.boardHeight 
 
 viewConstants.logoRotation = - Math.PI * .25;
 
+viewConstants.tokenWidth = 10;
+viewConstants.tokenHeight = 10;
+
 // END CONSTANTS
 
 module.exports = viewConstants;

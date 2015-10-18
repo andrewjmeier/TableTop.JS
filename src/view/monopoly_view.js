@@ -573,37 +573,43 @@ MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_col
 MonopolyView.prototype.drawPlayerToken = function(player) {
     var token = new PIXI.Graphics();
     token.lineStyle(1, 0, 1);
-    console.log(constants.propertyColors[player.color]);
     token.beginFill(constants.propertyColors[player.color], 1);
     var tile = this.tiles[player.position];
-    token.x = tile.x;
-    token.y = tile.y;
-    token.drawRect(45, 45, 10, 10);
-
-    return token;
+    // token.x = tile.x;
+    // token.y = tile.y;
+    token.drawRect(5, 50, constants.tokenWidth, constants.tokenHeight);
+    tile.addChild(token);
+    this.tokenViews.push({token: token, tile: tile});
 };
 
 MonopolyView.prototype.drawPlayers = function() {
     this.tokenViews = []
     for (index in this.game.players) {
         var token = this.drawPlayerToken(this.game.players[index]);
-        this.stage.addChild(token);
-        this.tokenViews.push(token);
     }
 };
 
 MonopolyView.prototype.updatePlayer = function(player, index) {
     var playerView = this.tokenViews[index];
-    var tile = this.tiles[player.position];
+    var token = playerView.token;
 
+    // remove the token from the previous tile
+    var previousTile = playerView.tile;
+    previousTile.removeChild(token);
+
+    // add the token as a child to the new tile
+    var currentTile = this.tiles[player.position];
+    currentTile.addChild(token);
+    this.tokenViews[index] = {token: token, tile: currentTile};
+
+    // calculate an offset for the token if there are multiple
     var count = 0;
     for (i = 0; i < index; i++) {
         if (this.game.players[i].position == player.position) {
             count++;
         }
     }
-    playerView.x = tile.x + (12 * count);
-    playerView.y = tile.y;
+    token.x = ((constants.tokenWidth + 2) * count);
 }
 
 MonopolyView.prototype.updatePlayers = function() {
