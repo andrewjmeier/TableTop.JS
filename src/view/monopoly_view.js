@@ -16,6 +16,7 @@ function MonopolyView(game_state) {
 
 MonopolyView.prototype.drawBoard = function() {
     // Draw Board and add to stage
+
     var board = new PIXI.Graphics();
     board.lineStyle(1, 0x000000, 1);
     board.beginFill(0xC2E2BF, 1);
@@ -29,6 +30,8 @@ MonopolyView.prototype.drawBoard = function() {
 
     // Draw Go
     var go = new PIXI.Graphics();
+    go.x = x_pos;
+    go.y = y_pos;
     go.lineStyle(1, 0, 1);
     go.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileLongSide);
     this.tiles.push(go);
@@ -36,10 +39,9 @@ MonopolyView.prototype.drawBoard = function() {
     property_index += 1;
 
     // Draw left properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
         y_pos -= constants.tileShortSide;
-        var property = this.drawLeftProperty(x_pos, y_pos, this.game.board.spaces[i]);
+        var property = this.drawLeftProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         property_index += 1;
@@ -48,19 +50,18 @@ MonopolyView.prototype.drawBoard = function() {
     // Draw Jail
     y_pos -= constants.tileLongSide;
     jail = new PIXI.Graphics();
+    jail.x = x_pos;
+    jail.y = y_pos;
     jail.lineStyle(1, 0, 1);
-    jail.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileLongSide);
+    jail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
     this.tiles.push(jail);
     this.stage.addChild(jail);
     x_pos += constants.tileLongSide;
     property_index += 1;
 
     // Draw top properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
-        var property = new PIXI.Graphics();
-        property.lineStyle(1, 0, 1);
-        property.drawRect(x_pos, y_pos, constants.tileShortSide, constants.tileLongSide);
+        var property = this.drawTopProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         x_pos += constants.tileShortSide;
@@ -69,19 +70,18 @@ MonopolyView.prototype.drawBoard = function() {
 
     // Draw Free Parking
     var free_parking = new PIXI.Graphics();
+    free_parking.x = x_pos;
+    free_parking.y = y_pos;
     free_parking.lineStyle(1, 0, 1);
-    free_parking.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileLongSide);
+    free_parking.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
     this.tiles.push(free_parking);
     this.stage.addChild(free_parking);
     y_pos += constants.tileLongSide;
     property_index += 1;
 
     // Draw right properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
-        var property = new PIXI.Graphics();
-        property.lineStyle(1, 0, 1);
-        property.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileShortSide);
+        var property = this.drawRightProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         y_pos += constants.tileShortSide;
@@ -90,19 +90,18 @@ MonopolyView.prototype.drawBoard = function() {
 
     // Draw Go To Jail
     var go = new PIXI.Graphics();
+    go.x = x_pos;
+    go.y = y_pos;
     go.lineStyle(1, 0, 1);
-    go.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileLongSide);
+    go.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
     this.tiles.push(go);
     this.stage.addChild(go);
     x_pos -= constants.tileShortSide;
     property_index += 1;
 
     // Draw bottom properties
-    // TODO: Add left draw left property function that includes color data
     for (i = 0; i < 9; i++) {
-        var property = new PIXI.Graphics();
-        property.lineStyle(1, 0, 1);
-        property.drawRect(x_pos, y_pos, constants.tileShortSide, constants.tileLongSide);
+        var property = this.drawBottomProperty(x_pos, y_pos, this.game.board.spaces[property_index]);
         this.tiles.push(property);
         this.stage.addChild(property);
         x_pos -= constants.tileShortSide;
@@ -243,9 +242,9 @@ MonopolyView.prototype.drawBoard = function() {
     }
 
     // this.stage.addChild(jail);
-    this.stage.addChild(chance);
-    this.stage.addChild(community);
-    this.stage.addChild(chest);
+    // this.stage.addChild(chance);
+    // this.stage.addChild(community);
+    // this.stage.addChild(chest);
     // this.stage.addChild(jail_text);
     // this.stage.addChild(go_text);
     // this.stage.addChild(chance_image);
@@ -266,6 +265,14 @@ MonopolyView.prototype.drawBoard = function() {
     logo.anchor.y = .5;
     logo.rotation = constants.logoRotation;
     this.stage.addChild(logo);
+
+    var card = {
+        text: "Advance token to the nearest Railroad and pay owner twice the rental to which he/she is otherwise entitled. If Railroad is unowned, you may buy it from the Bank.",
+        stuff: "slkdfj"
+    };
+
+    this.stage.addChild(this.drawChanceCard(this.game.communityChestCards.drawCard()));
+    this.drawPlayers();
 
     // draw an arrow
     this.graphics.lineStyle(2, 0xFF0000, 1);
@@ -288,17 +295,267 @@ MonopolyView.prototype.drawBoard = function() {
     this.animate();
 }
 
+MonopolyView.prototype.drawChanceCard = function(chanceCard) {
+    var width = constants.boardWidth / 2;
+    var height = width * 0.6;
+    var xPos = (constants.boardWidth / 4) + constants.leftBuffer;
+    var yPos = constants.boardHeight / 2 + constants.upperBuffer - (height / 2);
+
+    var font = {
+        font: '30px cursive',
+        align : 'center',
+        wordWrap : true,
+        strokeThickness : 1,
+        wordWrapWidth : (width - 10)
+    };
+    chanceText = new PIXI.Text("Chance", font);
+    chanceText.x = 30
+    chanceText.y = 30
+    return this.drawCard(xPos, yPos, width, height, chanceCard.text, 0xE68900, chanceText);
+}
+
+MonopolyView.prototype.drawCommunityChestCard = function(chanceCard) {
+    var width = constants.boardWidth / 2;
+    var height = width * 0.6;
+    var xPos = (constants.boardWidth / 4) + constants.leftBuffer;
+    var yPos = constants.boardHeight / 2 + constants.upperBuffer - (height / 2);
+
+    var font = {
+        font: '30px cursive',
+        align : 'center',
+        wordWrap : true,
+        strokeThickness : 1,
+        wordWrapWidth : (width - 10)
+    };
+    chanceText = new PIXI.Text("Community Chest", font);
+    chanceText.x = 30
+    chanceText.y = 30
+    return this.drawCard(xPos, yPos, width, height, chanceCard.text, 0xFFFF66, chanceText);
+}
+
+MonopolyView.prototype.drawCard = function(xPos, yPos, width, height, text, color, title) {
+    var card = new PIXI.Graphics();
+    card.x = xPos;
+    card.y = yPos;
+    card.lineStyle(1, 0, 1);
+
+    card.beginFill(color, 1);
+    card.drawRect(0, 0, width, height);
+
+    card.addChild(title);
+
+
+    var cardText = new PIXI.Text(text, {font: '25px Arial',
+                                        align : 'center',
+                                        wordWrap : true,
+                                        strokeThickness : 1,
+                                        //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                        wordWrapWidth : (width - 40),
+                                        });
+    cardText.x = 20
+    cardText.y = 85
+    card.addChild(cardText);
+
+    return card;
+}
+
 MonopolyView.prototype.drawLeftProperty = function(x_pos, y_pos, property) {
     var tile = new PIXI.Graphics();
     tile.lineStyle(1, 0, 1);
-    tile.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileShortSide);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.drawRect(0, 0, constants.tileLongSide, constants.tileShortSide);
 
-    tile.beginFill(0x0000FF, 1);
-    tile.drawRect(x_pos + constants.tileLongSide - constants.tileColorLength,
-            y_pos, constants.tileColorLength, constants.tileShortSide);
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
+    tile.drawRect(constants.tileLongSide - constants.tileColorLength,
+            0, constants.tileColorLength, constants.tileShortSide);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.rotation = Math.PI * .5;
+        name.x = constants.tileLongSide - constants.tileColorLength - constants.textPadding;
+        name.y = constants.tileShortSide / 2;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.rotation = Math.PI * .5;
+        price.x = constants.textPadding;
+        price.y = constants.tileShortSide / 2;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+
+    }
 
     return tile;
 }
+
+MonopolyView.prototype.drawTopProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
+    tile.drawRect(0,
+            constants.tileLongSide - constants.tileColorLength,
+            constants.tileShortSide,
+            constants.tileColorLength);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.rotation = Math.PI;
+        name.x = constants.tileShortSide / 2;
+        name.y = constants.tileLongSide - constants.tileColorLength - constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.rotation = Math.PI;
+        price.x = constants.tileShortSide / 2;
+        price.y = constants.textPadding;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+
+    }
+
+    return tile;
+}
+
+MonopolyView.prototype.drawRightProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.drawRect(0, 0, constants.tileLongSide, constants.tileShortSide);
+
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
+    tile.drawRect(0,
+            0, constants.tileColorLength, constants.tileShortSide);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.rotation = Math.PI * 1.5;
+        name.x = constants.tileColorLength + constants.textPadding;
+        name.y = constants.tileShortSide / 2;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.rotation = Math.PI * 1.5;
+        price.x = constants.tileLongSide - constants.textPadding;
+        price.y = constants.tileShortSide / 2;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+
+    }
+    return tile;
+}
+
+MonopolyView.prototype.drawBottomProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
+    tile.drawRect(0,
+            0,
+            constants.tileShortSide,
+            constants.tileColorLength);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.x = constants.tileShortSide / 2;
+        name.y = constants.tileColorLength + constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.x =  constants.tileShortSide / 2;
+        price.y =  constants.tileLongSide - constants.textPadding;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+    }
+    return tile;
+}
+
+MonopolyView.prototype.drawPlayerToken = function(player) {
+    var token = new PIXI.Graphics();
+    token.lineStyle(0, 0, 0);
+    token.beginFill(player.color, 1);
+    console.log(this.tiles, player.position, this.tiles[7]);
+    var tile = this.tiles[30];
+    console.log(tile.position);
+    token.drawRect(tile.x + 5, tile.y + 5, 10, 10);
+
+    return token;
+};
+
+MonopolyView.prototype.drawPlayers = function() {
+    for (index in this.game.players) {
+        this.stage.addChild(this.drawPlayerToken(this.game.players[index]));
+    }
+};
+
 
 MonopolyView.prototype.animate = function() {
     requestAnimationFrame(this.animate.bind(this));
