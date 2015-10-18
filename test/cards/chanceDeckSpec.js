@@ -1,7 +1,8 @@
 should = require('chai').should(),
-    ChanceDeck = require('../../src/cards/chanceDeck'),
+ChanceDeck = require('../../src/cards/chanceDeck'),
 Player = require('../../src/player');
 Game = require('../../src/game');
+Board = require('../../src/board_utils');
 
 describe('chance cards', function() {
   var cards;
@@ -15,7 +16,8 @@ describe('chance cards', function() {
     player = new Player("John");
     player2 = new Player("smith");
     player3 = new Player("sam");
-    game = new Game([player, player2, player3]);
+    board = new Board();
+    game = new Game([player, player2, player3], board);
     game.currentPlayer = 0;
     player.moveTo(33);
   });
