@@ -6,6 +6,7 @@ var Game = require("./game.js");
 var Utils = require("./utils.js");
 var Board = require("./board_utils.js");
 var Turn = require("./turn.js");
+var MonopolyView = require("./view/monopoly_view.js");
 
 var john = new Player("John");
 
@@ -25,6 +26,8 @@ var monopoly = new Game(players, board);
 
 var turn = new Turn(monopoly);
 
+var view = new MonopolyView(monopoly);
+view.drawBoard();
 
 //setup btns
 var yesBtn = document.getElementById('btnYes');
@@ -44,5 +47,4 @@ continueBtn.onclick = function() {
 
 //start running game
 turn.runStateMachine(false, monopoly);
-
 

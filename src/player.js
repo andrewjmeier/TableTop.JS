@@ -1,4 +1,5 @@
-function Player(name) {
+function Player(name, number) {
+  number = number ? number : 0
   this.name = name;
   this.money = 500;
   this.properties = [];
@@ -6,6 +7,15 @@ function Player(name) {
   this.getOutOfJailFreeCards = 0;
   this.inJail = false;
   this.turnsInJail = 0;
+  var colors = [0x6F3A19,
+                0x88C8F3,
+                0xC90071,
+                0xE68900,
+                0xD20019,
+                0xE6E60F,
+                0x0AA345,
+                0x2D4A9B]
+  this.playerColor = colors[number];
 };
 
 Player.prototype.sendToJail = function() {
