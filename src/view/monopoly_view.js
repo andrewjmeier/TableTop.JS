@@ -18,7 +18,7 @@ MonopolyView.prototype.drawBoard = function() {
     // Draw Board and add to stage
 
     var board = new PIXI.Graphics();
-    board.lineStyle(1, 0x000000, 1);
+    //board.lineStyle(1, 0x000000, 1);
     board.beginFill(0xC2E2BF, 1);
     board.drawRect(constants.boardStartX, constants.boardStartY, constants.boardWidth, constants.boardHeight);
     this.stage.addChild(board);
@@ -33,7 +33,19 @@ MonopolyView.prototype.drawBoard = function() {
     go.x = x_pos;
     go.y = y_pos;
     go.lineStyle(1, 0, 1);
-    go.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileLongSide);
+    go.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+
+    arrow = this.drawArrow(constants.goArrowXOffset, constants.goArrowYOffset,
+            constants.goArrowXLength, constants.goArrowYLength, constants.goArrowColor);
+    arrow.rotation = Math.PI / 2;
+    go.addChild(arrow);
+
+    go_text = new PIXI.Text("GO", {font : "bold 60px Impact", align : "center"});
+    go_text.anchor.set(.5, .5);
+    go_text.position.set((constants.tileLongSide / 2), (constants.tileLongSide / 2));
+    go_text.rotation = Math.PI / 4;
+    go.addChild(go_text);
+
     this.tiles.push(go);
     this.stage.addChild(go);
     property_index += 1;
@@ -538,6 +550,26 @@ MonopolyView.prototype.drawBottomProperty = function(x_pos, y_pos, property) {
     return tile;
 }
 
+MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_color) {
+    arrow = new PIXI.Graphics();
+    arrow.x = x_pos;
+    arrow.y = y_pos;
+    arrow.lineStyle(1, 0, 1);
+    arrow.beginFill(fill_color);
+    point_divisor = 6.0;
+    thickness_divisor = 4.0;
+
+    arrow.drawPolygon(0, (y_len / 2),
+            (x_len / point_divisor), 0,
+            (x_len / point_divisor), (y_len / thickness_divisor),
+            x_len, (y_len / thickness_divisor),
+            x_len, y_len - (y_len / thickness_divisor),
+            (x_len / point_divisor), y_len - (y_len / thickness_divisor),
+            (x_len / point_divisor), y_len);
+
+    return arrow;
+}
+
 MonopolyView.prototype.drawPlayerToken = function(player) {
     var token = new PIXI.Graphics();
     token.lineStyle(1, 0, 1);
@@ -579,7 +611,6 @@ MonopolyView.prototype.updatePlayers = function() {
         this.updatePlayer(this.game.players[index], index);
     }
 };
-
 
 MonopolyView.prototype.animate = function() {
     this.updatePlayers();

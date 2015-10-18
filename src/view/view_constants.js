@@ -4,8 +4,8 @@ var viewConstants = new Object();
 
 // CANVAS
 // Constants defining the canvas properties
-viewConstants.canvasWidth = 1000;
-viewConstants.canvasHeight = 1200;
+viewConstants.canvasWidth = 900;
+viewConstants.canvasHeight = 2000;
 
 viewConstants.leftBuffer = 50;
 viewConstants.rightBuffer = 50;
@@ -25,6 +25,13 @@ viewConstants.tileLongSide = viewConstants.boardWidth / 7.0;
 viewConstants.tileShortSide = ((viewConstants.boardWidth - 2.0 * viewConstants.tileLongSide) / 9.0);
 viewConstants.tileColorLength = viewConstants.tileLongSide / 6.0;
 viewConstants.textPadding = 5;
+
+// GO SPACE
+viewConstants.goArrowXLength = .8 * viewConstants.tileLongSide;
+viewConstants.goArrowYLength = .15 * viewConstants.tileLongSide;
+viewConstants.goArrowXOffset = 1.25 * viewConstants.goArrowYLength;
+viewConstants.goArrowYOffset = (viewConstants.tileLongSide - viewConstants.goArrowXLength) / 2;
+viewConstants.goArrowColor = 0xD20019;
 
 // Property Colors
 viewConstants.propertyColors = [
