@@ -39,3 +39,12 @@ global.PG_GREEN = 6;
 global.PG_BLUE = 7;
 global.PG_RR = 8;
 global.PG_UTIL = 9;
+
+// states
+global.WAITING_FOR_ROLL = 0;
+global.ROLLED = 1;
+global.BUY_PROMPT = 2;
+global.BUY_ANSWER = 3;
+global.POST_TURN = 4;
+global.POST_TURN_ANSWER = 5;
+global.ENDED_TURN = 6;
