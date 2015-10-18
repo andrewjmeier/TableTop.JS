@@ -31,6 +31,10 @@ MonopolyView.prototype.drawBoard = function() {
     var go = new PIXI.Graphics();
     go.lineStyle(1, 0, 1);
     go.drawRect(x_pos, y_pos, constants.tileLongSide, constants.tileLongSide);
+    arrow = this.drawArrow(x_pos, y_pos, 100, 20, constants.propertyColors[4]);
+    arrow.pivot.set(0, 0);
+    arrow.rotation = .1;
+    go.addChild(arrow);
     this.tiles.push(go);
     this.stage.addChild(go);
     property_index += 1;
@@ -443,6 +447,23 @@ MonopolyView.prototype.drawBottomProperty = function(x_pos, y_pos, property) {
     return tile;
 }
 
+MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_color) {
+    arrow = new PIXI.Graphics();
+    arrow.lineStyle(1, 0, 1);
+    arrow.beginFill(fill_color);
+    point_divisor = 6.0;
+    thickness_divisor = 4.0;
+
+    arrow.drawPolygon(x_pos, y_pos + (y_len / 2),
+            x_pos + (x_len / point_divisor), y_pos,
+            x_pos + (x_len / point_divisor), y_pos + (y_len / thickness_divisor),
+            x_pos + x_len, y_pos + (y_len / thickness_divisor),
+            x_pos + x_len, y_pos + y_len - (y_len / thickness_divisor),
+            x_pos + (x_len / point_divisor), y_pos + y_len - (y_len / thickness_divisor),
+            x_pos + (x_len / point_divisor), y_pos + y_len);
+
+    return arrow;
+}
 
 MonopolyView.prototype.animate = function() {
     requestAnimationFrame(this.animate.bind(this));
