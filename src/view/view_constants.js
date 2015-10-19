@@ -4,8 +4,8 @@ var viewConstants = new Object();
 
 // CANVAS
 // Constants defining the canvas properties
-viewConstants.canvasWidth = 900;
-viewConstants.canvasHeight = 2000;
+viewConstants.canvasWidth = 1000;
+viewConstants.canvasHeight = 1200;
 
 viewConstants.leftBuffer = 50;
 viewConstants.rightBuffer = 50;

@@ -23,33 +23,91 @@ MonopolyView.prototype.drawBoard = function() {
     board.drawRect(constants.boardStartX, constants.boardStartY, constants.boardWidth, constants.boardHeight);
     this.stage.addChild(board);
 
-    // Initiate variables for drawing tiles
+    // Initialize variables for drawing tiles
     var x_pos = constants.leftBuffer;
     var y_pos = constants.boardHeight + constants.upperBuffer - constants.tileLongSide;
+    var x_inc = 0;
+    var y_inc = 0;
+    var rotation_degrees = 0;
     var property_index = 0;
 
-    // Draw Go
-    var go = new PIXI.Graphics();
-    go.x = x_pos;
-    go.y = y_pos;
-    go.lineStyle(1, 0, 1);
-    go.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+    // Draw Tiles
+    for (i = 0; i < this.game.board.spaces.length; i++) {
+        // Draw Go
+        if (i == 0) {
+            go = this.drawGo(x_pos, y_pos);
+            this.tiles.push(go);
+            this.stage.addChild(go);
 
-    arrow = this.drawArrow(constants.goArrowXOffset, constants.goArrowYOffset,
-            constants.goArrowXLength, constants.goArrowYLength, constants.goArrowColor);
-    arrow.rotation = Math.PI / 2;
-    go.addChild(arrow);
+            x_inc = 0;
+            y_inc = -constants.tileShortSide;
+            rotation = 3 * Math.PI / 2;
+        }
 
-    go_text = new PIXI.Text("GO", {font : "bold 60px Impact", align : "center"});
-    go_text.anchor.set(.5, .5);
-    go_text.position.set((constants.tileLongSide / 2), (constants.tileLongSide / 2));
-    go_text.rotation = Math.PI / 4;
-    go.addChild(go_text);
+        // Draw Jail
+        else if (i == 10) {
+            y_pos -= constants.tileLongSide;
+            jail = new PIXI.Graphics();
+            jail.x = x_pos;
+            jail.y = y_pos;
+            jail.lineStyle(1, 0, 1);
+            jail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+            this.tiles.push(jail);
+            this.stage.addChild(jail);
 
-    this.tiles.push(go);
-    this.stage.addChild(go);
+            x_pos += constants.tileLongSide;
+            x_inc = constants.tileShortSide;
+            y_inc = 0;
+            rotation = Math.PI;
+        }
+
+        // Draw Free Parking
+        else if (i == 20) {
+            var free_parking = new PIXI.Graphics();
+            free_parking.x = x_pos;
+            free_parking.y = y_pos;
+            free_parking.lineStyle(1, 0, 1);
+            free_parking.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+            this.tiles.push(free_parking);
+            this.stage.addChild(free_parking);
+
+            y_pos += constants.tileLongSide;
+            x_inc = 0;
+            y_inc = constants.tileShortSide;
+            rotation = Math.PI / 2;
+        }
+
+        // Draw Go to Jail
+        else if (i == 30) {
+            var go_jail = new PIXI.Graphics();
+            go_jail.position.set(x_pos, y_pos);
+            go_jail.lineStyle(1, 0, 1);
+            go_jail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+            this.tiles.push(go_jail);
+            this.stage.addChild(go_jail);
+
+            x_pos -= constants.tileShortSide;
+            x_inc = -constants.tileShortSide;
+            y_inc = 0;
+            rotation = 0;
+        }
+
+        // Else Draw Tile
+        else {
+            var property = this.drawTile(x_pos, y_pos, this.game.board.spaces[property_index]);
+            property.rotation = rotation;
+            this.tiles.push(property);
+            this.stage.addChild(property);
+
+            x_pos += x_inc;
+            y_pos += y_inc;
+        }
+    }
+
+    x_pos = constants.leftBuffer;
+    y_pos = constants.boardHeight + constants.upperBuffer - constants.tileLongSide;
+
     property_index += 1;
-
     // Draw left properties
     for (i = 0; i < 9; i++) {
         y_pos -= constants.tileShortSide;
@@ -60,16 +118,7 @@ MonopolyView.prototype.drawBoard = function() {
     }
 
     // Draw Jail
-    y_pos -= constants.tileLongSide;
-    jail = new PIXI.Graphics();
-    jail.x = x_pos;
-    jail.y = y_pos;
-    jail.lineStyle(1, 0, 1);
-    jail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
-    this.tiles.push(jail);
-    this.stage.addChild(jail);
-    x_pos += constants.tileLongSide;
-    property_index += 1;
+        property_index += 1;
 
     // Draw top properties
     for (i = 0; i < 9; i++) {
@@ -101,15 +150,7 @@ MonopolyView.prototype.drawBoard = function() {
     }
 
     // Draw Go To Jail
-    var go = new PIXI.Graphics();
-    go.x = x_pos;
-    go.y = y_pos;
-    go.lineStyle(1, 0, 1);
-    go.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
-    this.tiles.push(go);
-    this.stage.addChild(go);
-    x_pos -= constants.tileShortSide;
-    property_index += 1;
+        property_index += 1;
 
     // Draw bottom properties
     for (i = 0; i < 9; i++) {
@@ -212,46 +253,6 @@ MonopolyView.prototype.drawBoard = function() {
     chest.scale.y = 1.1;
     chest.x = 185;
     chest.y = 200;
-
-    var go_text = new PIXI.Text('Go');
-    go_text.scale.x = 1.4;
-    go_text.scale.y = 1.4;
-    go_text.x = 710;
-    go_text.y = 680;
-
-    // draw rectangles on the left side
-    var y = 125;
-    var dy = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.drawLeftProperty(0, y, "color", "name", 722);
-        y += dy;
-    }
-
-    this.graphics.beginFill(0xC2E2BF, 1);
-
-    // draw rectangles on the top side
-    var x = 125;
-    var dx = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.graphics.drawRect(x, 0, dx, 125);
-        x += dx;
-    }
-
-    // draw rectangles on the bottom side
-    x = 125;
-    dx = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.graphics.drawRect(x, 675, dx, 125);
-        x += dx;
-    }
-
-    // draw rectangles on the right side
-    var y = 125;
-    var dy = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.graphics.drawRect(675, y, 125, dy);
-        y += dy;
-    }
 
     // this.stage.addChild(jail);
     // this.stage.addChild(chance);
@@ -369,6 +370,14 @@ MonopolyView.prototype.drawCard = function(xPos, yPos, width, height, text, colo
     card.addChild(cardText);
 
     return card;
+}
+
+MonopolyView.prototype.drawTile = function(x_pos, y_pos, tile) {
+    console.log(tile.Prototype);
+    if (tile instanceof asdfasdfhshad.cat()) {
+        console.log("got one");
+    }
+    return new PIXI.Graphics();
 }
 
 MonopolyView.prototype.drawLeftProperty = function(x_pos, y_pos, property) {
@@ -548,6 +557,26 @@ MonopolyView.prototype.drawBottomProperty = function(x_pos, y_pos, property) {
         tile.addChild(price);
     }
     return tile;
+}
+MonopolyView.prototype.drawGo = function(x_pos, y_pos) {
+    var go = new PIXI.Graphics();
+    go.x = x_pos;
+    go.y = y_pos;
+    go.lineStyle(1, 0, 1);
+    go.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+
+    arrow = this.drawArrow(constants.goArrowXOffset, constants.goArrowYOffset,
+            constants.goArrowXLength, constants.goArrowYLength, constants.goArrowColor);
+    arrow.rotation = Math.PI / 2;
+    go.addChild(arrow);
+
+    go_text = new PIXI.Text("GO", {font : "bold 60px Impact", align : "center"});
+    go_text.anchor.set(.5, .5);
+    go_text.position.set((constants.tileLongSide / 2), (constants.tileLongSide / 2));
+    go_text.rotation = Math.PI / 4;
+    go.addChild(go_text);
+
+    return go;
 }
 
 MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_color) {
