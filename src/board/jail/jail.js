@@ -8,7 +8,7 @@ function Jail() {
 inherits(Jail, Space);
 
 Jail.prototype.performLandingAction = function(game) {
-  Jail.super_.prototype.performLandingAction.call(this, game);
+  return Jail.super_.prototype.performLandingAction.call(this, game);
 };
 
 module.exports = Jail;

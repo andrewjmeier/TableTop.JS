@@ -9,7 +9,7 @@ function LuxuryTax() {
 inherits(LuxuryTax, Tax);
 
 LuxuryTax.prototype.performLandingAction = function(game) {
-  LuxuryTax.super_.prototype.performLandingAction.call(this, game);
+  return LuxuryTax.super_.prototype.performLandingAction.call(this, game);
 };
 
 module.exports = LuxuryTax;
