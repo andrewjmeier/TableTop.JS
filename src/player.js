@@ -101,7 +101,8 @@ Player.prototype.buy = function(property) {
 Player.prototype.assets = function() {
 
   var assets = this.money;
-  for (var property in this.properties) {
+  for (var prop_idx in this.properties) {
+    var property = this.properties[prop_idx];
     assets += property.cost;
     if (property.numHouses)
       assets += property.numHouses*property.houseCost;
