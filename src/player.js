@@ -1,5 +1,5 @@
 function Player(name, number) {
-  number = number ? number : 0
+  number = number ? number : 0;
   this.name = name;
   this.money = 500;
   this.properties = [];
@@ -14,7 +14,7 @@ function Player(name, number) {
                 0xD20019,
                 0xE6E60F,
                 0x0AA345,
-                0x2D4A9B]
+                0x2D4A9B];
   this.playerColor = colors[number];
 };
 
