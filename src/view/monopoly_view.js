@@ -285,6 +285,7 @@ MonopolyView.prototype.drawBoard = function() {
 
     this.stage.addChild(this.drawChanceCard(this.game.communityChestCards.drawCard()));
     this.drawPlayers();
+    this.drawAllPlayersInfo();
 
     // draw an arrow
     this.graphics.lineStyle(2, 0xFF0000, 1);
@@ -570,23 +571,101 @@ MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_col
     return arrow;
 }
 
+MonopolyView.prototype.drawPlayerInfo = function(player) {
+    var info = new PIXI.Text('Player ' + player.color + " $" + player.money, {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : constants.canvasWidth - constants.boardWidth - (2 * constants.leftBuffer),
+                                                });
+    return info;
+}
+
+MonopolyView.prototype.drawAllPlayersInfo = function() {
+    var infoBlock = new PIXI.Graphics();
+    infoBlock.x = constants.boardWidth + constants.leftBuffer * 2;
+    infoBlock.y = constants.upperBuffer;
+    var blockSize = 150;
+    this.playerInfos = [];
+    for (var i in this.game.players) {
+        var player = this.game.players[i];
+        var info = this.drawPlayerInfo(player);
+        this.playerInfos.push(info);
+        info.y = i * blockSize;
+        infoBlock.addChild(info);
+    }
+    this.stage.addChild(infoBlock);
+}
+
+MonopolyView.prototype.updatePlayerInfo = function(player, index) {
+    var info = this.playerInfos[index];
+    var propertyNames = "";
+    for (var i in player.properties) {
+        propertyNames += player.properties[i].name;
+        propertyNames += ", ";
+    }
+    info.setText("Player " + player.color + ": $" + player.money + ", Properties: " + propertyNames);
+};
+
+MonopolyView.prototype.updateAllPlayersInfo = function() {
+    for (var i in this.game.players) {
+        var player = this.game.players[i];
+        this.updatePlayerInfo(player, i);
+    }
+}
+
 MonopolyView.prototype.drawPlayerToken = function(player) {
     var token = new PIXI.Graphics();
-    token.lineStyle(0, 0, 0);
-    token.beginFill(player.color, 1);
-    var tile = this.tiles[30];
-    token.drawRect(tile.x + 5, tile.y + 5, 10, 10);
-
-    return token;
+    token.lineStyle(1, 0, 1);
+    token.beginFill(constants.propertyColors[player.color], 1);
+    var tile = this.tiles[player.position];
+    // token.x = tile.x;
+    // token.y = tile.y;
+    token.drawRect(5, 50, constants.tokenWidth, constants.tokenHeight);
+    tile.addChild(token);
+    this.tokenViews.push({token: token, tile: tile});
 };
 
 MonopolyView.prototype.drawPlayers = function() {
+    this.tokenViews = []
     for (index in this.game.players) {
-        this.stage.addChild(this.drawPlayerToken(this.game.players[index]));
+        var token = this.drawPlayerToken(this.game.players[index]);
+    }
+};
+
+MonopolyView.prototype.updatePlayer = function(player, index) {
+    var playerView = this.tokenViews[index];
+    var token = playerView.token;
+
+    // remove the token from the previous tile
+    var previousTile = playerView.tile;
+    previousTile.removeChild(token);
+
+    // add the token as a child to the new tile
+    var currentTile = this.tiles[player.position];
+    currentTile.addChild(token);
+    this.tokenViews[index] = {token: token, tile: currentTile};
+
+    // calculate an offset for the token if there are multiple
+    var count = 0;
+    for (i = 0; i < index; i++) {
+        if (this.game.players[i].position == player.position) {
+            count++;
+        }
+    }
+    token.x = ((constants.tokenWidth + 2) * count);
+}
+
+MonopolyView.prototype.updatePlayers = function() {
+    for (index in this.game.players) {
+        this.updatePlayer(this.game.players[index], index);
     }
 };
 
 MonopolyView.prototype.animate = function() {
+    this.updatePlayers();
+    this.updateAllPlayersInfo();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 }

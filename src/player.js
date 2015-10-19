@@ -1,5 +1,4 @@
 function Player(name, number) {
-  number = number ? number : 0;
   this.name = name;
   this.money = 500;
   this.properties = [];
@@ -7,15 +6,7 @@ function Player(name, number) {
   this.getOutOfJailFreeCards = 0;
   this.inJail = false;
   this.turnsInJail = 0;
-  var colors = [0x6F3A19,
-                0x88C8F3,
-                0xC90071,
-                0xE68900,
-                0xD20019,
-                0xE6E60F,
-                0x0AA345,
-                0x2D4A9B];
-  this.playerColor = colors[number];
+  this.color = number;
 };
 
 Player.prototype.sendToJail = function() {
@@ -89,33 +80,33 @@ Player.prototype.move = function(spacesToMove) {
 };
 
 
-Player.prototype.canBuy = function(property) { 
+Player.prototype.canBuy = function(property) {
   return (this.money > property.cost) && !property.owner;
 };
 
-Player.prototype.owesRent = function(property) { 
+Player.prototype.owesRent = function(property) {
   return property.owner && !this.owns(property);
 };
 
-Player.prototype.owns = function(property) { 
+Player.prototype.owns = function(property) {
   return property.owner === this;
 };
 
-Player.prototype.buy = function(property) { 
+Player.prototype.buy = function(property) {
   this.makePayment(property.cost);
   this.properties.push(property);
   property.owner = this;
 };
 
-Player.prototype.assets = function() { 
+Player.prototype.assets = function() {
 
   var assets = this.money;
-  for (var property in this.properties) { 
+  for (var property in this.properties) {
     assets += property.cost;
-    if (property.numHouses) 
+    if (property.numHouses)
       assets += property.numHouses*property.houseCost;
-  } 
-  
+  }
+
   return assets;
 };
 

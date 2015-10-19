@@ -4,8 +4,8 @@ var viewConstants = new Object();
 
 // CANVAS
 // Constants defining the canvas properties
-viewConstants.canvasWidth = 900;
-viewConstants.canvasHeight = 2000;
+viewConstants.canvasWidth = 1500;
+viewConstants.canvasHeight = 900;
 
 viewConstants.leftBuffer = 50;
 viewConstants.rightBuffer = 50;
@@ -13,7 +13,7 @@ viewConstants.upperBuffer = 50;
 
 // BOARD
 // Constants for defining the board on top of the canvas
-viewConstants.boardWidth = viewConstants.canvasWidth - viewConstants.leftBuffer - viewConstants.rightBuffer;
+viewConstants.boardWidth = viewConstants.canvasHeight - viewConstants.leftBuffer - viewConstants.rightBuffer;
 viewConstants.boardHeight = viewConstants.boardWidth;
 
 viewConstants.boardStartX = viewConstants.leftBuffer;
@@ -54,6 +54,9 @@ viewConstants.logoPosX = viewConstants.leftBuffer + (viewConstants.boardWidth / 
 viewConstants.logoPosY = viewConstants.upperBuffer + (viewConstants.boardHeight / 2);
 
 viewConstants.logoRotation = - Math.PI * .25;
+
+viewConstants.tokenWidth = 10;
+viewConstants.tokenHeight = 10;
 
 // END CONSTANTS
 
