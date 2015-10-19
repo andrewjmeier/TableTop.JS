@@ -8,10 +8,12 @@ function Chance() {
 inherits(Chance, Space);
 
 Chance.prototype.performLandingAction = function(game) {
-  // todo
-  // call function relating to chance cards
-  game.drawChanceCard();
-  Chance.super_.prototype.performLandingAction.call(this, game);
+  var spaceActions = Chance.super_.prototype.performLandingAction.call(this, game);
+  var chanceActions = game.drawChanceCard();
+  var actions = [];
+  actions[0] = spaceActions[0].concat(" Card text: " + chanceActions[0]);
+  actions[1] = chanceActions[1];
+  return actions;
 };
 
 module.exports = Chance;

@@ -86,7 +86,7 @@ function propertyForIndex(index, props) {
   } else if (index === 12 || index === 28) {
     return new UtilityProperty(props[index][0], props[index][2]);
   } else {
-    return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4]);
+    return new HousingProperty(props[index][0], props[index][2], props[index][1], props[index][4], props[index][3]);
   }
 }
 

@@ -1,7 +1,8 @@
 should = require('chai').should(),
-    CommunityChestDeck = require('../../src/cards/communityChestDeck'),
+CommunityChestDeck = require('../../src/cards/communityChestDeck'),
 Player = require('../../src/player');
 Game = require('../../src/game');
+Board = require('../../src/board_utils');
 
 describe('community chest cards', function() {
   var cards;
@@ -13,10 +14,10 @@ describe('community chest cards', function() {
 
   beforeEach(function() {
     player = new Player("John");
-
     player2 = new Player("smith");
     player3 = new Player("sam");
-    game = new Game([player, player2, player3]);
+    board = new Board();
+    game = new Game([player, player2, player3], board);
     game.currentPlayer = 0;
     player.moveTo(33);
   });
