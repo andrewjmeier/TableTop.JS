@@ -374,9 +374,9 @@ MonopolyView.prototype.drawCard = function(xPos, yPos, width, height, text, colo
 
 MonopolyView.prototype.drawTile = function(x_pos, y_pos, tile) {
     console.log(tile.Prototype);
-    if (tile instanceof asdfasdfhshad.cat()) {
-        console.log("got one");
-    }
+    //if (tile instanceof ) {
+    //    console.log("got one");
+    //}
     return new PIXI.Graphics();
 }
 
