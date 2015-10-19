@@ -107,7 +107,7 @@ describe('chance cards', function() {
 
   describe('#Go back 3 spaces', function() {
     it('moves player back 3 spaces', function() {
-      player.position = 5;
+      player.position = 6;
       cards[8].action(game);
       player.position.should.eql(2);
     });
