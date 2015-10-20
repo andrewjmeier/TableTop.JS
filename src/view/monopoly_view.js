@@ -1,9 +1,10 @@
 var constants = require("./view_constants.js");
+var Chance = require("../board/other/chance.js");
 
 function MonopolyView(game_state) {
     this.game = game_state;
-    this.tiles = []
-
+    this.tiles = [];
+    
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
             {backgroundColor : 0x1099bb});
 
@@ -12,6 +13,7 @@ function MonopolyView(game_state) {
     // create the root of the scene graph
     this.stage = new PIXI.Container();
     this.graphics = new PIXI.Graphics();
+    this.activeCardView = null; // empty obj for later use, here for clarity
 };
 
 MonopolyView.prototype.drawBoard = function() {
@@ -130,7 +132,8 @@ MonopolyView.prototype.drawBoard = function() {
     var jail = new PIXI.Sprite(texture2);
     var chance_image = new PIXI.Sprite(texture3);
     var chance_image2 = new PIXI.Sprite(texture3);
-    var chance_image3 = new PIXI.Sprite(texture3);
+    var chance_image3 = new PIXI.Sprite(texture3); 
+
     var Hpo = new PIXI.Sprite(texture4);
 
 
@@ -145,25 +148,23 @@ MonopolyView.prototype.drawBoard = function() {
     jail.position.x = 0;
     jail.position.y = 677;
 
-    // rescale and place jail
     chance_image.scale.x = 0.428;
     chance_image.scale.y = 0.487;
-    chance_image.position.x = 193.75; chance_image.position.y = 0;
+    chance_image.position.x = 193.75; 
+    chance_image.position.y = 0;
 
-    // rescale and place jail
     chance_image2.scale.x = 0.428;
     chance_image2.scale.y = 0.487;
     chance_image2.position.x = 262.5;
     chance_image2.position.y = 675;
 
-    // rescale and place jail
     chance_image3.scale.x = 0.428;
     chance_image3.scale.y = 0.487;
     chance_image3.rotation = -1.5708;
     chance_image3.position.x = 675;
     chance_image3.position.y = 468.75;
 
-    // rescale and place jail
+
     Hpo.scale.x = 0.553;
     Hpo.scale.y = 0.442;
     Hpo.position.x = 676;
@@ -200,7 +201,7 @@ MonopolyView.prototype.drawBoard = function() {
     chance.scale.x = 1.5;
     chance.scale.y = 1.5;
     chance.x = 479;
-    chance.y = 585;
+    chance.y = 585; 
 
     var community = new PIXI.Text('COMMUNITY');
     var chest = new PIXI.Text('CHEST');
@@ -283,7 +284,6 @@ MonopolyView.prototype.drawBoard = function() {
         stuff: "slkdfj"
     };
 
-    this.stage.addChild(this.drawChanceCard(this.game.communityChestCards.drawCard()));
     this.drawPlayers();
     this.drawAllPlayersInfo();
 
@@ -321,9 +321,9 @@ MonopolyView.prototype.drawChanceCard = function(chanceCard) {
         strokeThickness : 1,
         wordWrapWidth : (width - 10)
     };
-    chanceText = new PIXI.Text("Chance", font);
-    chanceText.x = 30
-    chanceText.y = 30
+    var chanceText = new PIXI.Text("Chance", font);
+    chanceText.x = 30;
+    chanceText.y = 30;
     return this.drawCard(xPos, yPos, width, height, chanceCard.text, 0xE68900, chanceText);
 }
 
@@ -340,13 +340,14 @@ MonopolyView.prototype.drawCommunityChestCard = function(chanceCard) {
         strokeThickness : 1,
         wordWrapWidth : (width - 10)
     };
-    chanceText = new PIXI.Text("Community Chest", font);
-    chanceText.x = 30
-    chanceText.y = 30
-    return this.drawCard(xPos, yPos, width, height, chanceCard.text, 0xFFFF66, chanceText);
-}
+  var chanceText = new PIXI.Text("Community Chest", font);
+  chanceText.x = 30;
+  chanceText.y = 30;
+  return this.drawCard(xPos, yPos, width, height, chanceCard.text, 0xFFFF66, chanceText);
+};
 
 MonopolyView.prototype.drawCard = function(xPos, yPos, width, height, text, color, title) {
+
     var card = new PIXI.Graphics();
     card.x = xPos;
     card.y = yPos;
@@ -363,10 +364,10 @@ MonopolyView.prototype.drawCard = function(xPos, yPos, width, height, text, colo
                                         wordWrap : true,
                                         strokeThickness : 1,
                                         //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                        wordWrapWidth : (width - 40),
+                                        wordWrapWidth : (width - 40)
                                         });
-    cardText.x = 20
-    cardText.y = 85
+    cardText.x = 20;
+    cardText.y = 85;
     card.addChild(cardText);
 
     return card;
@@ -596,7 +597,7 @@ MonopolyView.prototype.drawAllPlayersInfo = function() {
         infoBlock.addChild(info);
     }
     this.stage.addChild(infoBlock);
-}
+};
 
 MonopolyView.prototype.updatePlayerInfo = function(player, index) {
     var info = this.playerInfos[index];
@@ -628,7 +629,7 @@ MonopolyView.prototype.drawPlayerToken = function(player) {
 };
 
 MonopolyView.prototype.drawPlayers = function() {
-    this.tokenViews = []
+    this.tokenViews = [];
     for (index in this.game.players) {
         var token = this.drawPlayerToken(this.game.players[index]);
     }
@@ -663,12 +664,30 @@ MonopolyView.prototype.updatePlayers = function() {
     }
 };
 
+MonopolyView.prototype.updateCardsDisplays = function() { 
+    if (this.game.activeCard && !this.activeCardView) { 
+
+        if (this.game.chanceCards.cards.includes(this.game.activeCard))
+            this.activeCardView = this.drawChanceCard(this.game.activeCard);
+        else
+            this.activeCardView = this.drawCommunityChestCard(this.game.activeCard);
+        
+        this.stage.addChild(this.activeCardView);
+
+    } else if (!this.game.activeCard && this.activeCardView) { 
+        this.stage.removeChild(this.activeCardView);
+        this.activeCardView = null;
+    } 
+    
+}; 
+
 MonopolyView.prototype.animate = function() {
     this.updatePlayers();
     this.updateAllPlayersInfo();
+    this.updateCardsDisplays();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
-}
+};
 
 module.exports = MonopolyView;
 

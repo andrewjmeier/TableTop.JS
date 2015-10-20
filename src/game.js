@@ -12,6 +12,7 @@ function Game(players, board) {
   this.doublesCount = 0;
   this.state = WAITING_FOR_ROLL;
   this.randomizeCurrentPlayer();
+  this.activeCard = null;
 };
 
 Game.prototype.shuffleCards = function() {
@@ -36,6 +37,7 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
 
 Game.prototype.drawChanceCard = function() {
   var card = this.chanceCards.drawCard();
+  this.activeCard = card;
   console.log("chance card drawn ", card);
   var actions = card.action(this);
   return [card.text.concat(actions[0]), actions[1]];
@@ -43,6 +45,7 @@ Game.prototype.drawChanceCard = function() {
 
 Game.prototype.drawCommunityChestCard = function() {
   var card = this.communityChestCards.drawCard();
+  this.activeCard = card;
   console.log("community chest card drawn ", card);
   var actions = card.action(this);
   return [card.text.concat(actions[0]), actions[1]];
@@ -96,7 +99,11 @@ Game.prototype.setState = function(newState) {
 
 Game.prototype.getCurrentPlayer = function() {
   return this.players[this.currentPlayer];
-}
+};
+
+Game.prototype.clearActiveCard = function() { 
+  this.activeCard = null;
+};
 
 Game.prototype.nextPlayer = function() {
   if (!this.isDoubles(this.dice)) {
