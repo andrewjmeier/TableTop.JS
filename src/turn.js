@@ -1,12 +1,12 @@
 require("./board/boardConstants.js");
-var UI = require("./UI.js");
+// var UI = require("./UI.js");
 var Property = require("./board/properties/property.js");
 //var Space = require('../board/space');
 
-var ui = new UI();
+// var ui = new UI();
 
-function Turn(game) {
-  game.state = WAITING_FOR_ROLL;
+function Turn() {
+  // game.state = WAITING_FOR_ROLL;
   this.lastState = -1;
 };
 
@@ -15,6 +15,11 @@ Turn.prototype.setState = function(state, game) {
   game.state = state;
 };
 
+// setup btns
+Turn.prototype.buttonPressed = function(yesPressed, game) {
+  console.log("here!");
+  this.runStateMachine(yesPressed, game);
+};
 
 /* 
  Couple notes on how this works: 
@@ -57,13 +62,14 @@ Turn.prototype.runStateMachine = function(yesPressed, game) {
 
       console.log(game.players[game.currentPlayer].name);
 
-      ui.changeToContinue();
+      // ui.changeToContinue();
       displayMsg = displayMsg.concat(game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.");
       
       // get out of state machine early here 
       // next time we return, we'll have rolled the dice
       this.setState(ROLLED, game);
-      ui.displayPrompt(displayMsg);
+      game.message = displayMsg;
+      // ui.displayPrompt(displayMsg);
       return; 
       
     case ROLLED:
@@ -85,9 +91,10 @@ Turn.prototype.runStateMachine = function(yesPressed, game) {
 
       if(player.canBuy(property)){
         displayMsg = displayMsg.concat("Do you want to buy it?");
-        ui.changeToYesNo();
+        // ui.changeToYesNo();
         this.setState(BUY_ANSWER, game);
-        ui.displayPrompt(displayMsg);
+        game.message = displayMsg;
+        // ui.displayPrompt(displayMsg);
         return;
       } else { 
         displayMsg = displayMsg.concat("You can't afford it. \n");
@@ -111,9 +118,10 @@ Turn.prototype.runStateMachine = function(yesPressed, game) {
     case POST_TURN: 
       // ask them to trade, etc.
       displayMsg = displayMsg.concat("\n Choose an option (trade, buy houses, etc), or click continue to end your turn");
-      ui.changeToContinue();
+      // ui.changeToContinue();
       this.setState(POST_TURN_ANSWER, game);
-      ui.displayPrompt(displayMsg);
+      game.message = displayMsg;
+      // ui.displayPrompt(displayMsg);
       return;
       
     case POST_TURN_ANSWER:
@@ -133,8 +141,8 @@ Turn.prototype.runStateMachine = function(yesPressed, game) {
       //something is broken
       console.log("Something went very wrong");
     }
-
-    ui.displayPrompt(displayMsg);
+    game.message = displayMsg;
+    // ui.displayPrompt(displayMsg);
 
   } 
   
