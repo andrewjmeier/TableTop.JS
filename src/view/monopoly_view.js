@@ -122,132 +122,132 @@ MonopolyView.prototype.drawBoard = function() {
         property_index += 1;
     }
 
-    // create a texture from an image path
+    // // create a texture from an image path
     var texture = PIXI.Texture.fromImage('assets/Big_D.png');
-    var texture2 = PIXI.Texture.fromImage('assets/jail.png');
-    var texture3 = PIXI.Texture.fromImage('assets/chance.jpg');
-    var texture4 = PIXI.Texture.fromImage('assets/patch.jpg');
+    // var texture2 = PIXI.Texture.fromImage('assets/jail.png');
+    // var texture3 = PIXI.Texture.fromImage('assets/chance.jpg');
+    // var texture4 = PIXI.Texture.fromImage('assets/patch.jpg');
 
-    // create a new Sprite using the texture
-    var jail = new PIXI.Sprite(texture2);
-    var chance_image = new PIXI.Sprite(texture3);
-    var chance_image2 = new PIXI.Sprite(texture3);
-    var chance_image3 = new PIXI.Sprite(texture3);
+    // // create a new Sprite using the texture
+    // var jail = new PIXI.Sprite(texture2);
+    // var chance_image = new PIXI.Sprite(texture3);
+    // var chance_image2 = new PIXI.Sprite(texture3);
+    // var chance_image3 = new PIXI.Sprite(texture3);
 
-    var Hpo = new PIXI.Sprite(texture4);
-
-
-    // rescale and place jail
-    jail.scale.x = 0.265;
-    jail.scale.y = 0.21;
-    jail.position.x = 0;
-    jail.position.y = 677;
-
-    chance_image.scale.x = 0.428;
-    chance_image.scale.y = 0.487;
-    chance_image.position.x = 193.75;
-    chance_image.position.y = 0;
-
-    chance_image2.scale.x = 0.428;
-    chance_image2.scale.y = 0.487;
-    chance_image2.position.x = 262.5;
-    chance_image2.position.y = 675;
-
-    chance_image3.scale.x = 0.428;
-    chance_image3.scale.y = 0.487;
-    chance_image3.rotation = -1.5708;
-    chance_image3.position.x = 675;
-    chance_image3.position.y = 468.75;
+    // var Hpo = new PIXI.Sprite(texture4);
 
 
-    Hpo.scale.x = 0.553;
-    Hpo.scale.y = 0.442;
-    Hpo.position.x = 676;
-    Hpo.position.y = 1;
+    // // rescale and place jail
+    // jail.scale.x = 0.265;
+    // jail.scale.y = 0.21;
+    // jail.position.x = 0;
+    // jail.position.y = 677;
 
-    // fill bottom left box white (jail)
-    this.graphics.beginFill(0xFFFFFF, 1);
-    this.graphics.drawRect(0, 675, 125, 125);
-    var jail_text = new PIXI.Text('IN JAIL');
-    jail_text.scale.x = 1.1;
-    jail_text.scale.y = 1.1;
-    jail_text.x = 15;
-    jail_text.y = 767;
+    // chance_image.scale.x = 0.428;
+    // chance_image.scale.y = 0.487;
+    // chance_image.position.x = 193.75;
+    // chance_image.position.y = 0;
 
-     // set a fill and a line style again and draw a rectangle
-    this.graphics.lineStyle(1, 0x000000, 1);
-    this.graphics.beginFill(0xC2E2BF, 1);
+    // chance_image2.scale.x = 0.428;
+    // chance_image2.scale.y = 0.487;
+    // chance_image2.position.x = 262.5;
+    // chance_image2.position.y = 675;
 
-    // draw center & corner rectangles
-    this.graphics.drawRect(0, 0, 125, 125);
-    this.graphics.drawRect(675, 0, 125, 125);
-    this.graphics.drawRect(125, 125, 550, 550);
-    this.graphics.drawRect(675, 675, 125, 125);
+    // chance_image3.scale.x = 0.428;
+    // chance_image3.scale.y = 0.487;
+    // chance_image3.rotation = -1.5708;
+    // chance_image3.position.x = 675;
+    // chance_image3.position.y = 468.75;
 
-    // draw community chest + chances box
-    this.graphics.drawRect(135, 135, 200, 120);
-    this.graphics.drawRect(465, 545, 200, 120);
 
-    this.graphics.beginFill(0xFFFFFF, 1);
-    this.graphics.drawRect(100, 100, 300, 100);
+    // Hpo.scale.x = 0.553;
+    // Hpo.scale.y = 0.442;
+    // Hpo.position.x = 676;
+    // Hpo.position.y = 1;
 
-    // write "community chest" & "chance"
-    var chance = new PIXI.Text('CHANCE');
-    chance.scale.x = 1.5;
-    chance.scale.y = 1.5;
-    chance.x = 479;
-    chance.y = 585;
+    // // fill bottom left box white (jail)
+    // this.graphics.beginFill(0xFFFFFF, 1);
+    // this.graphics.drawRect(0, 675, 125, 125);
+    // var jail_text = new PIXI.Text('IN JAIL');
+    // jail_text.scale.x = 1.1;
+    // jail_text.scale.y = 1.1;
+    // jail_text.x = 15;
+    // jail_text.y = 767;
 
-    var community = new PIXI.Text('COMMUNITY');
-    var chest = new PIXI.Text('CHEST');
-    community.scale.x = 1.1;
-    community.scale.y = 1.1;
-    community.x = 145;
-    community.y = 160;
-    chest.scale.x = 1.1;
-    chest.scale.y = 1.1;
-    chest.x = 185;
-    chest.y = 200;
+    //  // set a fill and a line style again and draw a rectangle
+    // this.graphics.lineStyle(1, 0x000000, 1);
+    // this.graphics.beginFill(0xC2E2BF, 1);
 
-    var go_text = new PIXI.Text('Go');
-    go_text.scale.x = 1.4;
-    go_text.scale.y = 1.4;
-    go_text.x = 710;
-    go_text.y = 680;
+    // // draw center & corner rectangles
+    // this.graphics.drawRect(0, 0, 125, 125);
+    // this.graphics.drawRect(675, 0, 125, 125);
+    // this.graphics.drawRect(125, 125, 550, 550);
+    // this.graphics.drawRect(675, 675, 125, 125);
 
-    // draw rectangles on the left side
-    var y = 125;
-    var dy = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.drawLeftProperty(0, y, "color", "name", 722);
-        y += dy;
-    }
+    // // draw community chest + chances box
+    // this.graphics.drawRect(135, 135, 200, 120);
+    // this.graphics.drawRect(465, 545, 200, 120);
 
-    this.graphics.beginFill(0xC2E2BF, 1);
+    // this.graphics.beginFill(0xFFFFFF, 1);
+    // this.graphics.drawRect(100, 100, 300, 100);
 
-    // draw rectangles on the top side
-    var x = 125;
-    var dx = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.graphics.drawRect(x, 0, dx, 125);
-        x += dx;
-    }
+    // // write "community chest" & "chance"
+    // var chance = new PIXI.Text('CHANCE');
+    // chance.scale.x = 1.5;
+    // chance.scale.y = 1.5;
+    // chance.x = 479;
+    // chance.y = 585;
 
-    // draw rectangles on the bottom side
-    x = 125;
-    dx = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.graphics.drawRect(x, 675, dx, 125);
-        x += dx;
-    }
+    // var community = new PIXI.Text('COMMUNITY');
+    // var chest = new PIXI.Text('CHEST');
+    // community.scale.x = 1.1;
+    // community.scale.y = 1.1;
+    // community.x = 145;
+    // community.y = 160;
+    // chest.scale.x = 1.1;
+    // chest.scale.y = 1.1;
+    // chest.x = 185;
+    // chest.y = 200;
 
-    // draw rectangles on the right side
-    var y = 125;
-    var dy = 68.75;
-    for (var i = 1; i < 10; i++){
-        this.graphics.drawRect(675, y, 125, dy);
-        y += dy;
-    }
+    // var go_text = new PIXI.Text('Go');
+    // go_text.scale.x = 1.4;
+    // go_text.scale.y = 1.4;
+    // go_text.x = 710;
+    // go_text.y = 680;
+
+    // // draw rectangles on the left side
+    // var y = 125;
+    // var dy = 68.75;
+    // for (var i = 1; i < 10; i++){
+    //     this.drawLeftProperty(0, y, "color", "name", 722);
+    //     y += dy;
+    // }
+
+    // this.graphics.beginFill(0xC2E2BF, 1);
+
+    // // draw rectangles on the top side
+    // var x = 125;
+    // var dx = 68.75;
+    // for (var i = 1; i < 10; i++){
+    //     this.graphics.drawRect(x, 0, dx, 125);
+    //     x += dx;
+    // }
+
+    // // draw rectangles on the bottom side
+    // x = 125;
+    // dx = 68.75;
+    // for (var i = 1; i < 10; i++){
+    //     this.graphics.drawRect(x, 675, dx, 125);
+    //     x += dx;
+    // }
+
+    // // draw rectangles on the right side
+    // var y = 125;
+    // var dy = 68.75;
+    // for (var i = 1; i < 10; i++){
+    //     this.graphics.drawRect(675, y, 125, dy);
+    //     y += dy;
+    // }
 
     // this.stage.addChild(jail);
     // this.stage.addChild(chance);
@@ -569,12 +569,12 @@ MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_col
 }
 
 MonopolyView.prototype.drawPlayerInfo = function(player) {
-    var info = new PIXI.Text('Player ' + player.color + " $" + player.money, {font: '30px Arial',
-                                                align : 'center',
+    var info = new PIXI.Text(player.name + "\nDBA: $" + player.money, {font: '20px Arial',
+                                                align : 'left',
                                                 wordWrap : true,
                                                 strokeThickness : .25,
                                                 //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                wordWrapWidth : constants.canvasWidth - constants.boardWidth - (2 * constants.leftBuffer),
+                                                wordWrapWidth : constants.canvasWidth - constants.boardWidth - (4 * constants.leftBuffer),
                                                 });
     return info;
 }
@@ -588,21 +588,45 @@ MonopolyView.prototype.drawAllPlayersInfo = function() {
     for (var i in this.game.players) {
         var player = this.game.players[i];
         var info = this.drawPlayerInfo(player);
-        this.playerInfos.push(info);
-        info.y = i * blockSize;
-        infoBlock.addChild(info);
+        info.x = constants.leftBuffer * 0.2;
+        info.y = i * blockSize + (constants.upperBuffer * 0.2);
+
+        var box = new PIXI.Graphics();
+        box.y = i * blockSize;
+
+        var outline = new PIXI.Graphics();
+        outline.y = i * blockSize;
+        outline.lineStyle(1, 0, 1);
+        outline.drawRect(0, 0, constants.canvasWidth - constants.boardWidth - (3 * constants.leftBuffer), 140);
+
+        box.lineStyle(1, 0, 1);
+        box.beginFill(0x44C0DF, 1);
+        box.drawRect(0, 0, constants.canvasWidth - constants.boardWidth - (3 * constants.leftBuffer), 140);
+        this.playerInfos.push({background: box, text: info});
+
+        infoBlock.addChild(outline);
+        infoBlock.addChild(box);
+        infoBlock.addChild(info)
+
     }
     this.stage.addChild(infoBlock);
 };
 
 MonopolyView.prototype.updatePlayerInfo = function(player, index) {
-    var info = this.playerInfos[index];
+    var info = this.playerInfos[index].text;
+    var box = this.playerInfos[index].background;
+
+    if (player === this.game.getCurrentPlayer()) {
+        box.alpha = 1;
+    } else {
+        box.alpha = 0;
+    }
     var propertyNames = "";
     for (var i in player.properties) {
         propertyNames += player.properties[i].name;
         propertyNames += ", ";
     }
-    info.text = "Player " + player.color + ": $" + player.money + ", Properties: " + propertyNames;
+    info.text = player.name + "\nDBA: $" + player.money + "\nProperties: " + propertyNames;
 };
 
 MonopolyView.prototype.updateAllPlayersInfo = function() {
@@ -739,7 +763,6 @@ MonopolyView.prototype.drawMessage = function() {
 MonopolyView.prototype.updateMessage = function() {
     this.messageText.text = this.game.message;
 
-    console.log(this.game.state);
     switch (this.game.state) {
 
       case BUY_ANSWER:
@@ -755,7 +778,6 @@ MonopolyView.prototype.updateMessage = function() {
         this.button2.alpha = 0;
         break;
     }
-
 }
 
 MonopolyView.prototype.animate = function() {
