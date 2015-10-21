@@ -1,7 +1,7 @@
 should = require('chai').should(),
 CommunityChestDeck = require('../../src/cards/communityChestDeck'),
-Player = require('../../src/player');
-Game = require('../../src/game');
+Player = require('../../src/monopoly_player');
+Game = require('../../src/monopoly_game');
 Board = require('../../src/board_utils');
 
 describe('community chest cards', function() {
@@ -20,6 +20,9 @@ describe('community chest cards', function() {
     game = new Game([player, player2, player3], board);
     game.currentPlayer = 0;
     player.moveTo(33);
+    player.money = 500;
+    player2.money = 500;
+    player3.money = 500;
   });
 
   describe('#Advance to Go (Collect $200)', function() {
