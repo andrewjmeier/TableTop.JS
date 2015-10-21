@@ -94,20 +94,6 @@ function propertyForIndex(index, props) {
  railroads: [name, "Railroad", cost, [1, 2, 3, 4]]
  utilities: [name, "Utility", cost]
 */
-// Group of 2 - French/Judge
-// group of 3 - Ripley, woodward, smith
-
-// group of 3 - Gile, streeter, lord
-// group of 3 - North, mid, south fay
-
-// group of 3 - Mass Row
-// group of 3 - Berry, Bildner, Rauner
-
-// group of 3 - Andres, Zimmerman, Morton
-// group of 2 - Fahey, Mclean
-
-// RRS - foco, collis, hop, novak
-// Utilities - ORL/FO&M
 function propertiesList() {
   return [
     [],
