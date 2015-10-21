@@ -36,6 +36,6 @@ Game.prototype.setState = function(newState) {
 
 Game.prototype.getCurrentPlayer = function() {
   return this.players[this.currentPlayer];
-}
+};
 
 module.exports = Game;
