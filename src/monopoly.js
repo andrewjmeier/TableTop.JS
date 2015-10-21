@@ -28,7 +28,6 @@ var turn = new Turn();
 var monopoly = new Game(players, board, turn);
 
 var view = new MonopolyView(monopoly);
-// view.delegate = this;
 
 view.drawBoard();
 
