@@ -1,7 +1,7 @@
 should = require('chai').should(),
     Property = require('../../src/board/properties/property'),
-Game = require("../../src/game");
-Player = require("../../src/player");
+Game = require("../../src/monopoly_game");
+Player = require("../../src/monopoly_player");
 
 describe('landing actions', function() {
   var player;
@@ -26,8 +26,8 @@ describe('landing actions', function() {
       game.currentPlayer = 0;
 
       property.performLandingAction(game);
-      player.money.should.eql(500);
-      player2.money.should.eql(500);
+      player.money.should.eql(1500);
+      player2.money.should.eql(1500);
       player.properties.length.should.eql(1);
       player2.properties.length.should.eql(0);
     });
@@ -51,8 +51,8 @@ describe('landing actions', function() {
       player.properties.push(property);
       property.getRent = function() { return 10; };
       property.performLandingAction(game);
-      player2.money.should.eql(490);
-      player.money.should.eql(510);
+      player2.money.should.eql(1490);
+      player.money.should.eql(1510);
     });
   });
 });

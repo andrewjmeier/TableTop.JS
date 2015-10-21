@@ -94,52 +94,51 @@ function propertyForIndex(index, props) {
  railroads: [name, "Railroad", cost, [1, 2, 3, 4]]
  utilities: [name, "Utility", cost]
 */
-
 function propertiesList() {
   return [
     [],
-    ["Mediterranean Ave", PG_BROWN, 60, 50, [2, 10, 30, 90, 160, 250]],
+    ["French Hall", PG_BROWN, 60, 50, [2, 10, 30, 90, 160, 250]],
     [],
-    ["Baltic Ave", PG_BROWN, 60, 50, [4, 20, 60, 180, 320, 450]],
+    ["Judge Hall", PG_BROWN, 60, 50, [4, 20, 60, 180, 320, 450]],
     [],
-    ["Reading Railroad"],
-    ["Oriental Ave", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]],
+    ["Novak Cafe"],
+    ["Ripley Hall", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]],
     [],
-    ["Vermont Ave", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]],
-    ["Connecticut Ave", PG_LIGHT_BLUE, 120, 50, [8, 40, 100, 300, 450, 600]],
+    ["Woodward Hall", PG_LIGHT_BLUE, 100, 50, [6, 30, 90, 270, 400, 550]],
+    ["Smith Hall", PG_LIGHT_BLUE, 120, 50, [8, 40, 100, 300, 450, 600]],
 
     [],
-    ["St. Charles Place", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]], // 5
-    ["Electric Company"],
-    ["States Ave", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]],
-    ["Virginia Ave", PG_PINK, 160, 100, [12, 60, 180, 500, 700, 900]],
-    ["Pennsylvania Railroad"],
-    ["St. James Place", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]],
+    ["Gile Hall", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]], // 5
+    ["ORL"],
+    ["Streeter Hall", PG_PINK, 140, 100, [10, 50, 150, 450, 625, 750]],
+    ["Lord Hall", PG_PINK, 160, 100, [12, 60, 180, 500, 700, 900]],
+    ["Collis Cafe"],
+    ["South Fayerweather Hall", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]],
     [],
-    ["Tennessee Ave", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]],
-    ["New York Ave", PG_ORANGE, 200, 100, [16, 80, 220, 600, 800, 1000]], // 10
+    ["Fayerweather Hall", PG_ORANGE, 180, 100, [14, 70, 200, 550, 750, 950]],
+    ["North Fayerweather Hall", PG_ORANGE, 200, 100, [16, 80, 220, 600, 800, 1000]], // 10
 
     [],
-    ["Kentucky Ave", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]],
+    ["South Massachusetts Hall", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]],
     [],
-    ["Indiana Ave", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]],
-    ["Illinois Ave", PG_RED, 240, 150, [20, 100, 300, 750, 925, 1100]],
-    ["B. & O. Railroad"],
-    ["Atlantic Ave", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]],
-    ["Ventnor Ave", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]], // 15
-    ["WaterWorks"],
-    ["Marvin Gardens", PG_YELLOW, 280, 150, [24, 120, 360, 850, 1025, 1200]],
+    ["Massachusetts Hall", PG_RED, 220, 150, [18, 90, 250, 700, 875, 1050]],
+    ["North Massachusetts Hall", PG_RED, 240, 150, [20, 100, 300, 750, 925, 1100]],
+    ["Courtyard Cafe"],
+    ["Berry Hall", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]],
+    ["Bildner Hall", PG_YELLOW, 260, 150, [22, 110, 330, 800, 975, 1150]], // 15
+    ["FO&M"],
+    ["Rauner Hall", PG_YELLOW, 280, 150, [24, 120, 360, 850, 1025, 1200]],
 
     [],
-    ["Pacific Ave", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]],
-    ["North Carolina Ave", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]],
+    ["Andres Hall", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]],
+    ["Zimmerman Hall", PG_GREEN, 300, 200, [26, 130, 390, 900, 1100, 1275]],
     [],
-    ["Pennsylvaniva Ave", PG_GREEN, 320, 200, [28, 150, 450, 1000, 1200, 1400]],
-    ["Shortline Railroad"], // 25
+    ["Morton Hall", PG_GREEN, 320, 200, [28, 150, 450, 1000, 1200, 1400]],
+    ["1953 Commons"], // 25
     [],
-    ["Park Place", PG_BLUE, 350, 200, [35, 175, 500, 1100, 1300, 1500]], // 20
+    ["Fahey Hall", PG_BLUE, 350, 200, [35, 175, 500, 1100, 1300, 1500]], // 20
     [],
-    ["Boardwalk", PG_BLUE, 400, 200, [50, 200, 600, 1400, 1700, 2000]],
+    ["McLane Hall", PG_BLUE, 400, 200, [50, 200, 600, 1400, 1700, 2000]],
 
   ];
 

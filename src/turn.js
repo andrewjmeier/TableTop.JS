@@ -1,43 +1,44 @@
 require("./board/boardConstants.js");
-var UI = require("./UI.js");
 var Property = require("./board/properties/property.js");
-//var Space = require('../board/space');
 
-var ui = new UI();
 
-function Turn(game) {
-  game.state = WAITING_FOR_ROLL;
+function Turn() {
   this.lastState = -1;
 };
 
-Turn.prototype.setState = function(state, game) { 
+Turn.prototype.setState = function(state, game) {
   this.lastState = game.state;
   game.state = state;
 };
 
+// setup btns
+Turn.prototype.buttonPressed = function(yesPressed, game) {
+  console.log("here!");
+  this.runStateMachine(yesPressed, game);
+};
 
-/* 
- Couple notes on how this works: 
- 
- The state machine loop will run until: 
-  1) we return early (should be preceeded with a ui.displayPrompt(msg) 
-  2) the state doesn't change. 
- This allows to us to run multiple states without waiting for user input... 
- ie. we can run BUY_ANSWER and then POST_TURN immediately after 
+/*
+ Couple notes on how this works:
+
+ The state machine loop will run until:
+  1) we return early (should be preceeded with a ui.displayPrompt(msg)
+  2) the state doesn't change.
+ This allows to us to run multiple states without waiting for user input...
+ ie. we can run BUY_ANSWER and then POST_TURN immediately after
 
  The way "actions" work is that "performLandingAction" returns two values
- in an array: 
+ in an array:
  actions[0] contains a message to append to the display
  actions[1] contains the next state we should forward the user to
 
- Most spaces/cards return "POST_TURN" as the state in actions[1], but 
+ Most spaces/cards return "POST_TURN" as the state in actions[1], but
  some (like housing properties) will return something else (ie. BUY_PROMPT).
 
- Displaying the prompt message works buy initializing displayMsg at the beginning 
- of the fn call, and then building up the message (using .concat) during the entire 
- state run. When we exit (either by default, or by an early return) we use 
+ Displaying the prompt message works buy initializing displayMsg at the beginning
+ of the fn call, and then building up the message (using .concat) during the entire
+ state run. When we exit (either by default, or by an early return) we use
  ui.displayPrompt(displayMsg) to print everything to the console. We do this because
- if we use ui.displayPrompt multiple times in a row, then previous msgs get overridden. 
+ if we use ui.displayPrompt multiple times in a row, then previous msgs get overridden.
 */
 
 Turn.prototype.runStateMachine = function(yesPressed, game) {
@@ -49,82 +50,79 @@ Turn.prototype.runStateMachine = function(yesPressed, game) {
   var space = game.board.spaces[game.getCurrentPlayer().position];
   var displayMsg = "";
 
-  while (this.lastState != game.state) { 
-    
+  while (this.lastState != game.state) {
+
     switch(game.state) {
-      
+
     case WAITING_FOR_ROLL:
 
       console.log(game.players[game.currentPlayer].name);
 
-      ui.changeToContinue();
       displayMsg = displayMsg.concat(game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.");
-      
-      // get out of state machine early here 
+
+      // get out of state machine early here
       // next time we return, we'll have rolled the dice
       this.setState(ROLLED, game);
-      ui.displayPrompt(displayMsg);
-      return; 
-      
+      game.message = displayMsg;
+      return;
+
     case ROLLED:
       //roll dice
       //after landing do you want to buy/you can’t buy
       var actions = game.rollAndMovePlayer();
       space = game.board.spaces[game.getCurrentPlayer().position];
-      
+
       console.log(game.dice);
       console.log(space);
-      
+
       displayMsg = displayMsg.concat(actions[0]);
       this.setState(actions[1], game);
       break;
-      
+
     case BUY_PROMPT:
-      
+
       var property = space; // clarity
 
       if(player.canBuy(property)){
         displayMsg = displayMsg.concat("Do you want to buy it?");
-        ui.changeToYesNo();
         this.setState(BUY_ANSWER, game);
-        ui.displayPrompt(displayMsg);
+        game.message = displayMsg;
         return;
-      } else { 
+      } else {
         displayMsg = displayMsg.concat("You can't afford it. \n");
         this.setState(POST_TURN, game);
-      } 
-      
+      }
+
       break;
 
     case BUY_ANSWER:
-      
-      if (yesPressed) { 
+
+      if (yesPressed) {
         player.buy(space);
         displayMsg = displayMsg.concat("You bought " + space.name + ". ");
-      } else { 
+      } else {
         displayMsg = displayMsg.concat("You didn't buy " + space.name + ". ");
-      } 
+      }
 
       this.setState(POST_TURN, game);
       break;
-      
-    case POST_TURN: 
+
+    case POST_TURN:
       // ask them to trade, etc.
       displayMsg = displayMsg.concat("\n Choose an option (trade, buy houses, etc), or click continue to end your turn");
-      ui.changeToContinue();
       this.setState(POST_TURN_ANSWER, game);
-      ui.displayPrompt(displayMsg);
+      game.message = displayMsg;
       return;
-      
+
     case POST_TURN_ANSWER:
-      // TODO: do stuff with their answer... send them to trade, mortage, etc. 
+      // TODO: do stuff with their answer... send them to trade, mortage, etc.
       // ie. this.setState(TRADE, game) or this.setState(MORTAGE_CHOICES, game)
       game.clearActiveCard();
       this.setState(ENDED_TURN, game);
       break;
 
     case ENDED_TURN:
-      
+
       game.nextPlayer();
       this.setState(WAITING_FOR_ROLL, game);
       console.log("\n\n");
@@ -134,11 +132,10 @@ Turn.prototype.runStateMachine = function(yesPressed, game) {
       //something is broken
       console.log("Something went very wrong");
     }
+    game.message = displayMsg;
 
-    ui.displayPrompt(displayMsg);
+  }
 
-  } 
-  
 };
 
 module.exports = Turn;
