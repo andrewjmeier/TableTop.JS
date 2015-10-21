@@ -1,6 +1,6 @@
 should = require('chai').should(),
-    Game = require('../src/game'),
-Player = require('../src/player');
+    Game = require('../src/monopoly_game'),
+Player = require('../src/monopoly_player');
 Board = require("../src/board_utils.js");
 
 
