@@ -12,32 +12,26 @@ var PG_BLUE = 7;
 
 // rent should be array with following format:
 // [rent, 1 house, 2 houses, 3 houses, 4 houses, hotel]
-function HousingProperty(name, cost, propertyGroup, rent) {
+function HousingProperty(name, cost, propertyGroup, rent, houseCost) {
   Property.call(this, name, cost, propertyGroup);
   this.rent = rent;
   this.numHouses = 0;
+  this.houseCost = houseCost;
 };
 
 inherits(HousingProperty, Property);
 
 HousingProperty.prototype.performLandingAction = function(game) {
-
-    HousingProperty.super_.prototype.performLandingAction.call(this, game);
+  return HousingProperty.super_.prototype.performLandingAction.call(this, game);
 };
 
 HousingProperty.prototype.getRent = function(game) {
 
+  if (!this.owner) return 0;
 
   var rent = this.rent[this.numHouses];
 
-  // if there are no houses but it's a monopoly return double rent
-  if (this.numHouses === 0) {
-    if (this.isMonopoly()) {
-      return rent * 2;
-    }
-  }
-
-  return rent;
+  return this.numHouses === 0 && this.isMonopoly() ? rent*2 : rent;
 };
 
 HousingProperty.prototype.isMonopoly = function() {

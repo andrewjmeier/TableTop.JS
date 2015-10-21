@@ -1,10 +1,16 @@
+require("../boardConstants");
+
 function Space(name) {
   this.name = name;
   this.occupier = null;
 }
 // every space needs a landing action
 Space.prototype.performLandingAction = function(game){
-  console.log(game.getCurrentPlayer().name + " landed on " + this.name);
+  return ["You landed on " + this.name + ". \n", POST_TURN];
+};
+
+Space.prototype.isProperty = function() { 
+  return false;
 };
 
 module.exports = Space;

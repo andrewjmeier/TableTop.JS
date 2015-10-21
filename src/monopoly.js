@@ -1,41 +1,35 @@
 require("./board/boardConstants.js");
 
-var Player = require("./player.js");
+var Player = require("./monopoly_player.js");
 var Card = require("./cards/card.js");
-var Game = require("./game.js");
+var Game = require("./monopoly_game.js");
 var Utils = require("./utils.js");
 var Board = require("./board_utils.js");
+var Turn = require("./turn.js");
 var MonopolyView = require("./view/monopoly_view.js");
 
-var john = new Player("John");
 
-var steve = new Player("Steve");
+var john = new Player("John", 1);
 
-var sam = new Player("Sam");
+var steve = new Player("Steve", 2);
 
-var mike = new Player("Mike");
+var sam = new Player("Sam", 3);
 
-var jimmy = new Player("Jimmy");
+var mike = new Player("Mike", 4);
+
+var jimmy = new Player("Jimmy", 5);
 
 var players = [john, steve, sam, mike, jimmy];
 
 var board = new Board();
 
-var monopoly = new Game(players, board);
+var turn = new Turn();
+
+var monopoly = new Game(players, board, turn);
 
 var view = new MonopolyView(monopoly);
+
 view.drawBoard();
 
-/*
-n = 0;
-while (n < 100) {
-    console.log(monopoly.players[monopoly.currentPlayer]);
-	monopoly.rollAndMovePlayer();
-	console.log(monopoly.dice);
-    console.log(monopoly.players[monopoly.currentPlayer]);
-	monopoly.nextPlayer();
-	n += 1;
-    console.log("\n\n");
-}
-*/
-
+//start running game
+turn.runStateMachine(false, monopoly);

@@ -1,7 +1,8 @@
 should = require('chai').should(),
-    ChanceDeck = require('../../src/cards/chanceDeck'),
-Player = require('../../src/player');
-Game = require('../../src/game');
+ChanceDeck = require('../../src/cards/chanceDeck'),
+Player = require('../../src/monopoly_player');
+Game = require('../../src/monopoly_game');
+Board = require('../../src/board_utils');
 
 describe('chance cards', function() {
   var cards;
@@ -15,9 +16,13 @@ describe('chance cards', function() {
     player = new Player("John");
     player2 = new Player("smith");
     player3 = new Player("sam");
-    game = new Game([player, player2, player3]);
+    board = new Board();
+    game = new Game([player, player2, player3], board);
     game.currentPlayer = 0;
     player.moveTo(33);
+    player.money = 500;
+    player2.money = 500;
+    player3.money = 500;
   });
 
   describe('#Advance to Go (Collect $200)', function() {
@@ -105,9 +110,9 @@ describe('chance cards', function() {
 
   describe('#Go back 3 spaces', function() {
     it('moves player back 3 spaces', function() {
-      player.position = 5;
+      player.position = 6;
       cards[8].action(game);
-      player.position.should.eql(2);
+      player.position.should.eql(3);
     });
 
     it('moves player back 3 spaces past go', function() {

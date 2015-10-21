@@ -5,7 +5,7 @@ var Property = require('./property'),
 // rent is assumed here (4x, 10x)
 function UtilityProperty(name) {
   var cost = 150;
-  var propertyGroup = PG_UTIL
+  var propertyGroup = PG_UTIL;
 
   Property.call(this, name, cost, propertyGroup);
 };
@@ -14,12 +14,14 @@ inherits(UtilityProperty, Property);
 
 UtilityProperty.prototype.performLandingAction = function(game) {
 
-  UtilityProperty.super_.prototype.performLandingAction.call(this, game);
+  return UtilityProperty.super_.prototype.performLandingAction.call(this, game);
 
-  // todo - need dice access here
 };
 
 UtilityProperty.prototype.getRent = function(game) {
+  
+  if (!this.owner) return 0;
+
   var utilityCount = 0;
   for (i in this.owner.properties) {
     if (this.owner.properties[i].propertyGroup === this.propertyGroup) {
