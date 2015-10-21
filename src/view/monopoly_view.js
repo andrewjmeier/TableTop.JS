@@ -2,7 +2,7 @@ var constants = require("./view_constants.js");
 
 function MonopolyView(game_state) {
     this.game = game_state;
-    this.tiles = []
+    this.tiles = [];
 
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
             {backgroundColor : 0x1099bb});
@@ -133,11 +133,6 @@ MonopolyView.prototype.drawBoard = function() {
     var chance_image3 = new PIXI.Sprite(texture3);
     var Hpo = new PIXI.Sprite(texture4);
 
-
-    Hpo.interactive = true;
-    Hpo.click = function(mouseData){
-       console.log("CLICK!");
-    };
 
     // rescale and place jail
     jail.scale.x = 0.265;
@@ -286,6 +281,7 @@ MonopolyView.prototype.drawBoard = function() {
     this.stage.addChild(this.drawChanceCard(this.game.communityChestCards.drawCard()));
     this.drawPlayers();
     this.drawAllPlayersInfo();
+    this.drawMessage();
 
     // draw an arrow
     this.graphics.lineStyle(2, 0xFF0000, 1);
@@ -605,7 +601,7 @@ MonopolyView.prototype.updatePlayerInfo = function(player, index) {
         propertyNames += player.properties[i].name;
         propertyNames += ", ";
     }
-    info.setText("Player " + player.color + ": $" + player.money + ", Properties: " + propertyNames);
+    info.text = "Player " + player.color + ": $" + player.money + ", Properties: " + propertyNames;
 };
 
 MonopolyView.prototype.updateAllPlayersInfo = function() {
@@ -620,8 +616,6 @@ MonopolyView.prototype.drawPlayerToken = function(player) {
     token.lineStyle(1, 0, 1);
     token.beginFill(constants.propertyColors[player.color], 1);
     var tile = this.tiles[player.position];
-    // token.x = tile.x;
-    // token.y = tile.y;
     token.drawRect(5, 50, constants.tokenWidth, constants.tokenHeight);
     tile.addChild(token);
     this.tokenViews.push({token: token, tile: tile});
@@ -663,9 +657,93 @@ MonopolyView.prototype.updatePlayers = function() {
     }
 };
 
+MonopolyView.prototype.drawMessage = function() {
+    var container = new PIXI.Container();
+    this.messageText = new PIXI.Text(this.game.message, {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : constants.canvasWidth - (2 * constants.leftBuffer),
+                                                });
+    container.x = constants.leftBuffer;
+    container.y = constants.boardHeight + (2 * constants.upperBuffer);
+    container.addChild(this.messageText);
+
+    button1 = new PIXI.Graphics();
+    button1.y = 180;
+    button1.beginFill(0x00FF00, 1);
+    button1.drawRect(0, 0, 200, 50);
+    container.addChild(button1);
+
+    button1.interactive = true;
+    var context = this;
+    button1.click = function(mouseData){
+       console.log("CLICK!");
+       context.game.updateState(true);
+    };
+
+    this.button1Text = new PIXI.Text("Yes", {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : 150,
+                                                });
+    this.button1Text.x = 50;
+    button1.addChild(this.button1Text);
+
+    this.button2 = new PIXI.Graphics();
+    this.button2.x = 250;
+    this.button2.y = 180;
+    this.button2.beginFill(0xFF0000, 1);
+    this.button2.drawRect(0, 0, 200, 50);
+    container.addChild(this.button2);
+
+    this.button2.interactive = true;
+    this.button2.click = function(mouseData) {
+        context.game.updateState(false);
+    }
+
+    this.button2Text = new PIXI.Text("No", {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : 150,
+                                                });
+    this.button2Text.x = 50;
+    this.button2.addChild(this.button2Text);
+
+    this.stage.addChild(container);
+}
+
+MonopolyView.prototype.updateMessage = function() {
+    this.messageText.text = this.game.message;
+
+    console.log(this.game.state);
+    switch (this.game.state) {
+
+      case BUY_ANSWER:
+
+        this.button1Text.text = "Yes";
+        this.button2Text.text = "No";
+        this.button2.alpha = 1;
+        break;
+
+      default:
+        this.button1Text.text = "Continue";
+        this.button2Text.text = "";
+        this.button2.alpha = 0;
+        break;
+    }
+
+}
+
 MonopolyView.prototype.animate = function() {
     this.updatePlayers();
     this.updateAllPlayersInfo();
+    this.updateMessage();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 }

@@ -1,7 +1,7 @@
 var ChanceDeck = require("./cards/chanceDeck");
 var CommunityChestDeck = require("./cards/communityChestDeck");
 
-function Game(players, board) {
+function Game(players, board, stateMachine) {
   this.players = players,
   this.currentPlayer = 0;
   this.board = board;
@@ -12,7 +12,13 @@ function Game(players, board) {
   this.doublesCount = 0;
   this.state = WAITING_FOR_ROLL;
   this.randomizeCurrentPlayer();
+  this.message = "";
+  this.stateMachine = stateMachine;
 };
+
+Game.prototype.updateState = function(yesPressed) {
+  this.stateMachine.buttonPressed(yesPressed, this);
+}
 
 Game.prototype.shuffleCards = function() {
   this.chanceCards.shuffle();
