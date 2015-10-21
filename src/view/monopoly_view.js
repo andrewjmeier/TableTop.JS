@@ -1,5 +1,5 @@
 var constants = require("./view_constants.js");
-var Turn = require("../turn.js");
+
 function MonopolyView(game_state) {
     this.game = game_state;
     this.tiles = [];
@@ -723,9 +723,9 @@ MonopolyView.prototype.updateMessage = function() {
 
     console.log(this.game.state);
     switch (this.game.state) {
-      
+
       case BUY_ANSWER:
-        
+
         this.button1Text.text = "Yes";
         this.button2Text.text = "No";
         this.button2.alpha = 1;
