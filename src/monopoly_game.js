@@ -12,6 +12,7 @@ function MonopolyGame(players, board, stateMachine) {
   this.doublesCount = 0;
   this.state = WAITING_FOR_ROLL;
   this.message = "";
+  this.activeCard = null;
 };
 
 inherits(MonopolyGame, Game);
@@ -24,6 +25,7 @@ MonopolyGame.prototype.shuffleCards = function() {
 
 MonopolyGame.prototype.drawChanceCard = function() {
   var card = this.chanceCards.drawCard();
+  this.activeCard = card;
   console.log("chance card drawn ", card);
   var actions = card.action(this);
   return [card.text.concat(actions[0]), actions[1]];
@@ -31,6 +33,7 @@ MonopolyGame.prototype.drawChanceCard = function() {
 
 MonopolyGame.prototype.drawCommunityChestCard = function() {
   var card = this.communityChestCards.drawCard();
+  this.activeCard = card;
   console.log("community chest card drawn ", card);
   var actions = card.action(this);
   return [card.text.concat(actions[0]), actions[1]];
@@ -87,6 +90,11 @@ MonopolyGame.prototype.nextPlayer = function() {
       this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
     }
   }
+};
+
+
+MonopolyGame.prototype.clearActiveCard = function() {
+  this.activeCard = null;
 };
 
 module.exports = MonopolyGame;

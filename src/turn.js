@@ -117,6 +117,7 @@ Turn.prototype.runStateMachine = function(yesPressed, game) {
     case POST_TURN_ANSWER:
       // TODO: do stuff with their answer... send them to trade, mortage, etc.
       // ie. this.setState(TRADE, game) or this.setState(MORTAGE_CHOICES, game)
+      game.clearActiveCard();
       this.setState(ENDED_TURN, game);
       break;
 
