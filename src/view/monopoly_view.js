@@ -667,7 +667,7 @@ MonopolyView.prototype.updatePlayers = function() {
 MonopolyView.prototype.updateCardsDisplays = function() { 
     if (this.game.activeCard && !this.activeCardView) { 
 
-        if (this.game.chanceCards.cards.includes(this.game.activeCard))
+        if (this.game.chanceCards.cards.indexOf(this.game.activeCard) >= 0)
             this.activeCardView = this.drawChanceCard(this.game.activeCard);
         else
             this.activeCardView = this.drawCommunityChestCard(this.game.activeCard);
