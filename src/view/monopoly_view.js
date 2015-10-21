@@ -210,17 +210,6 @@ MonopolyView.prototype.drawBoard = function() {
     chest.x = 185;
     chest.y = 200;
 
-    // this.stage.addChild(jail);
-    // this.stage.addChild(chance);
-    // this.stage.addChild(community);
-    // this.stage.addChild(chest);
-    // this.stage.addChild(jail_text);
-    // this.stage.addChild(go_text);
-    // this.stage.addChild(chance_image);
-    // this.stage.addChild(chance_image2);
-    // this.stage.addChild(chance_image3);
-    // this.stage.addChild(Hpo);
-
     // rescale and place logo
     var logo = new PIXI.Sprite(texture);
 
@@ -235,31 +224,8 @@ MonopolyView.prototype.drawBoard = function() {
     logo.rotation = constants.logoRotation;
     this.stage.addChild(logo);
 
-    var card = {
-        text: "Advance token to the nearest Railroad and pay owner twice the rental to which he/she is otherwise entitled. If Railroad is unowned, you may buy it from the Bank.",
-        stuff: "slkdfj"
-    };
-
     this.stage.addChild(this.drawChanceCard(this.game.communityChestCards.drawCard()));
     this.drawPlayers();
-
-    // draw an arrow
-    this.graphics.lineStyle(2, 0xFF0000, 1);
-    this.graphics.moveTo(690, 750);
-    this.graphics.lineTo(710, 725);
-    this.graphics.moveTo(690, 750);
-    this.graphics.lineTo(710, 775);
-    this.graphics.moveTo(710, 775);
-    this.graphics.lineTo(710, 760);
-    this.graphics.moveTo(710, 725);
-    this.graphics.lineTo(710, 740);
-    this.graphics.moveTo(710, 740);
-    this.graphics.lineTo(780, 740);
-    this.graphics.moveTo(710, 760);
-    this.graphics.lineTo(780, 760);
-    this.graphics.moveTo(780, 760);
-    this.graphics.lineTo(780, 740);
-
     // run the render loop
     this.animate();
 }
