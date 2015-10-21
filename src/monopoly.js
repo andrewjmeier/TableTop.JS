@@ -1,8 +1,8 @@
 require("./board/boardConstants.js");
 
-var Player = require("./player.js");
+var Player = require("./monopoly_player.js");
 var Card = require("./cards/card.js");
-var Game = require("./game.js");
+var Game = require("./monopoly_game.js");
 var Utils = require("./utils.js");
 var Board = require("./board_utils.js");
 var Turn = require("./turn.js");
