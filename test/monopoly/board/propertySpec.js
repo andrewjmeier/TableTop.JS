@@ -1,7 +1,7 @@
 should = require('chai').should(),
-    Property = require('../../src/board/properties/property'),
-Game = require("../../src/monopoly_game");
-Player = require("../../src/monopoly_player");
+    Property = require('../../../src/monopoly/board/properties/property'),
+Game = require("../../../src/monopoly/monopoly_game");
+Player = require("../../../src/monopoly/monopoly_player");
 
 describe('landing actions', function() {
   var player;
