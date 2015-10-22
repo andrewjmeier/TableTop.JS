@@ -33,6 +33,14 @@ viewConstants.goArrowXOffset = 1.25 * viewConstants.goArrowYLength;
 viewConstants.goArrowYOffset = (viewConstants.tileLongSide - viewConstants.goArrowXLength) / 2;
 viewConstants.goArrowColor = 0xD20019;
 
+// JAIL SPACE
+viewConstants.jailTexturePath = 'assets/patch.jpg';
+
+// FREE PARKING SPACE
+viewConstants.greenTexturePath = 'assets/green.jpg';
+
+// GO TO JAIL SPACE
+viewConstants.goToJailTexturePath = 'assets/jailGuy.png';
 // Property Colors
 viewConstants.propertyColors = [
     0x6F3A19,
@@ -47,6 +55,7 @@ viewConstants.propertyColors = [
 
 // DARTMOUTH LOGO
 // Constants for drawing Dartmouth logo at center of board
+viewConstants.logoTexturePath = 'assets/Big_D.png';
 viewConstants.logoSizeX = 300;
 viewConstants.logoSizeY = 200;
 
