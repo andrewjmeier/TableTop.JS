@@ -1,5 +1,5 @@
 should = require('chai').should(),
-    Player = require('../src/monopoly/monopoly_player'),
+    Player = require('../../src/monopoly/monopoly_player'),
 
 describe('jail methods', function() {
   var player;

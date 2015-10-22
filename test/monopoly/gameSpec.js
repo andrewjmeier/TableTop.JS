@@ -1,7 +1,7 @@
 should = require('chai').should(),
-    Game = require('../src/monopoly/monopoly_game'),
-Player = require('../src/monopoly/monopoly_player');
-Board = require("../src/monopoly/board_utils.js");
+    Game = require('../../src/monopoly/monopoly_game'),
+Player = require('../../src/monopoly/monopoly_player');
+Board = require("../../src/monopoly/board_utils.js");
 
 
 describe('Game Tests', function() {
