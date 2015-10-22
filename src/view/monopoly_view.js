@@ -18,7 +18,6 @@ function MonopolyView(game_state) {
 
     // create the root of the scene graph
     this.stage = new PIXI.Container();
-    this.graphics = new PIXI.Graphics();
     this.activeCardView = null; // empty obj for later use, here for clarity
 };
 
