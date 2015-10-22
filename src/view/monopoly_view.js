@@ -57,11 +57,8 @@ MonopolyView.prototype.drawBoard = function() {
         // Draw Jail
         else if (i == 10) {
             y_pos -= constants.tileLongSide;
-            jail = new PIXI.Graphics();
-            jail.x = x_pos;
-            jail.y = y_pos;
-            jail.lineStyle(1, 0, 1);
-            jail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+
+            jail = this.drawJail(x_pos, y_pos);
             this.tiles.push(jail);
             this.stage.addChild(jail);
 
@@ -75,11 +72,7 @@ MonopolyView.prototype.drawBoard = function() {
 
         // Draw Free Parking
         else if (i == 20) {
-            var free_parking = new PIXI.Graphics();
-            free_parking.x = x_pos;
-            free_parking.y = y_pos;
-            free_parking.lineStyle(1, 0, 1);
-            free_parking.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+            var free_parking = this.drawFreeParking(x_pos, y_pos);
             this.tiles.push(free_parking);
             this.stage.addChild(free_parking);
 
@@ -95,10 +88,7 @@ MonopolyView.prototype.drawBoard = function() {
         // Draw Go to Jail
         else if (i == 30) {
             x_pos -= constants.tileLongSide;
-            var go_jail = new PIXI.Graphics();
-            go_jail.position.set(x_pos, y_pos);
-            go_jail.lineStyle(1, 0, 1);
-            go_jail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+            var go_jail = this.drawGoToJail(x_pos, y_pos);
             this.tiles.push(go_jail);
             this.stage.addChild(go_jail);
 
@@ -121,24 +111,8 @@ MonopolyView.prototype.drawBoard = function() {
             y_pos += y_inc;
         }
     }
-
-    // create a texture from an image path
-    var texture = PIXI.Texture.fromImage('assets/Big_D.png');
-
-
     // rescale and place logo
-    var logo = new PIXI.Sprite(texture);
-
-    logo.width = constants.logoSizeX;
-    logo.height = constants.logoSizeY;
-
-    logo.position.x = constants.logoPosX;
-    logo.position.y = constants.logoPosY;
-
-    logo.anchor.x = .5;
-    logo.anchor.y = .5;
-    logo.rotation = constants.logoRotation;
-    this.stage.addChild(logo);
+    this.stage.addChild(this.drawLogo());
 
     this.drawPlayers();
     this.drawAllPlayersInfo();
@@ -581,6 +555,137 @@ MonopolyView.prototype.drawGo = function(x_pos, y_pos) {
 
     return go;
 }
+
+MonopolyView.prototype.drawJail = function(x_pos, y_pos) {
+    var jail = new PIXI.Graphics();
+    jail.x = x_pos;
+    jail.y = y_pos;
+    jail.lineStyle(1, 0, 1);
+
+    jail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+
+    var jail_texture = PIXI.Texture.fromImage(constants.jailTexturePath);
+    var sprt = new PIXI.Sprite(jail_texture);
+
+    sprt.width = constants.tileLongSide / 1.5;
+    sprt.height = constants.tileLongSide / 1.5;
+
+    sprt.position.x = constants.tileLongSide / 2;
+    sprt.position.y = constants.tileLongSide / 2;
+
+    sprt.anchor.x = .5;
+    sprt.anchor.y = .5;
+
+    jail.addChild(sprt);
+
+    return jail;
+}
+
+MonopolyView.prototype.drawFreeParking = function(x_pos, y_pos) {
+    var green = new PIXI.Graphics();
+    green.x = x_pos;
+    green.y = y_pos;
+    green.lineStyle(1, 0, 1);
+
+    green.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+
+    var green_texture = PIXI.Texture.fromImage(constants.greenTexturePath);
+    var sprt = new PIXI.Sprite(green_texture);
+
+    sprt.width = constants.tileLongSide / 1.5;
+    sprt.height = constants.tileLongSide / 1.5;
+
+    sprt.position.x = constants.tileLongSide / 2;
+    sprt.position.y = constants.tileLongSide / 2;
+
+    sprt.anchor.x = .5;
+    sprt.anchor.y = .5;
+
+    green.addChild(sprt);
+
+    return green;
+}
+
+MonopolyView.prototype.drawFreeParking = function(x_pos, y_pos) {
+    var green = new PIXI.Graphics();
+    green.x = x_pos;
+    green.y = y_pos;
+    green.lineStyle(1, 0, 1);
+
+    green.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+
+    var green_texture = PIXI.Texture.fromImage(constants.greenTexturePath);
+    var sprt = new PIXI.Sprite(green_texture);
+
+    sprt.width = constants.tileLongSide / 1.5;
+    sprt.height = constants.tileLongSide / 1.5;
+
+    sprt.position.x = constants.tileLongSide / 2;
+    sprt.position.y = constants.tileLongSide / 2;
+
+    sprt.anchor.x = .5;
+    sprt.anchor.y = .5;
+
+    green.addChild(sprt);
+
+    return green;
+}
+
+MonopolyView.prototype.drawGoToJail = function(x_pos, y_pos) {
+    var goToJail = new PIXI.Graphics();
+    goToJail.x = x_pos;
+    goToJail.y = y_pos;
+    goToJail.lineStyle(1, 0, 1);
+
+    goToJail.drawRect(0, 0, constants.tileLongSide, constants.tileLongSide);
+
+    var goodSam = new PIXI.Text('Get Good Sammed', {font: '16px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                wordWrapWidth : (constants.tileLongSide),
+                                                });
+
+    goodSam.x =  constants.tileLongSide / 2;
+    goodSam.y =  constants.textPadding;
+    goodSam.anchor.set(.5, 0);
+    goToJail.addChild(goodSam);
+
+    var goToJailTexture = PIXI.Texture.fromImage(constants.goToJailTexturePath);
+    var sprt = new PIXI.Sprite(goToJailTexture);
+
+    sprt.width = constants.tileLongSide / 2.0;
+    sprt.height = constants.tileLongSide / 2.0;
+
+    sprt.position.x = constants.tileLongSide / 2;
+    sprt.position.y = 2 * constants.tileLongSide / 3;
+
+    sprt.anchor.x = .5;
+    sprt.anchor.y = .5;
+
+    goToJail.addChild(sprt);
+
+    return goToJail;
+}
+
+
+MonopolyView.prototype.drawLogo = function() {
+    var dartmouth_texture = PIXI.Texture.fromImage(constants.logoTexturePath);
+    var logo = new PIXI.Sprite(dartmouth_texture);
+
+    logo.width = constants.logoSizeX;
+    logo.height = constants.logoSizeY;
+
+    logo.position.x = constants.logoPosX;
+    logo.position.y = constants.logoPosY;
+
+    logo.anchor.x = .5;
+    logo.anchor.y = .5;
+    logo.rotation = constants.logoRotation;
+
+    return logo;
+}
+
 
 MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_color) {
     arrow = new PIXI.Graphics();
