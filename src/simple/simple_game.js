@@ -1,7 +1,6 @@
 var inherits = require('util').inherits;
 var Game = require("../game.js");
 
-
 function SimpleGame(players, board, stateMachine) {
   Game.call(this, players, board, stateMachine);
   this.state = WAITING_FOR_ROLL;
@@ -11,7 +10,6 @@ function SimpleGame(players, board, stateMachine) {
 inherits(SimpleGame, Game);
 
 SimpleGame.prototype.roll = function() {
-  console.log("rolled");
   this.rollDice(1);
   return this.move();
 };
@@ -23,6 +21,8 @@ SimpleGame.prototype.move = function() {
   }
   this.getCurrentPlayer().move(spacesToMove, this.board.spaces.length - 1);
   return "You rolled a " + spacesToMove + ". ";
+
+  this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
 };
 
 SimpleGame.prototype.nextPlayer = function() {
