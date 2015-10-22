@@ -3,6 +3,9 @@ var RailroadProperty = require("../board/properties/railroadProperty.js");
 var UtilityProperty = require("../board/properties/utilityProperty.js");
 var constants = require("./view_constants.js");
 var Chance = require("../board/other/chance.js");
+var CommunityChest = require("../board/other/communityChest");
+var IncomeTax = require("../board/taxes/incomeTax");
+var LuxuryTax = require("../board/taxes/luxuryTax");
 
 function MonopolyView(game_state) {
     this.game = game_state;
@@ -108,17 +111,70 @@ MonopolyView.prototype.drawBoard = function() {
             y_pos += y_inc;
         }
     }
-    
     // rescale and place logo
     this.stage.addChild(this.drawLogo());
 
     this.drawPlayers();
     this.drawAllPlayersInfo();
     this.drawMessage();
+    this.drawChanceDeck();
+    this.drawCommunityChestDeck();
 
     // run the render loop
     this.animate();
 }
+
+MonopolyView.prototype.drawChanceDeck = function() {
+    var deck = new PIXI.Graphics();
+    deck.x = constants.leftBuffer + (constants.tileLongSide) + 30;
+    deck.y = constants.upperBuffer + (constants.tileLongSide) + 30 + 150;
+
+    deck.beginFill(0xE68900, 1);
+    deck.drawRect(0, 0, 200, 100);
+
+    var font = {
+        font: '30px cursive',
+        align : 'center',
+        wordWrap : true,
+        strokeThickness : 1,
+        wordWrapWidth : 200
+    };
+    var text = new PIXI.Text("Chance", font);
+    text.x = 50;
+    text.y = 30;
+
+    deck.addChild(text);
+
+    deck.rotation = -Math.PI / 4;
+
+    this.stage.addChild(deck);
+};
+
+MonopolyView.prototype.drawCommunityChestDeck = function() {
+    var deck = new PIXI.Graphics();
+    deck.x = (constants.boardWidth + constants.leftBuffer - 200) - ((constants.tileLongSide) + 30) + 180;
+    deck.y = constants.upperBuffer + constants.boardHeight - 100 - ((constants.tileLongSide) + 30) - 50;
+
+    deck.beginFill(0xFFFF66, 1);
+    deck.drawRect(0, 0, 200, 100);
+
+    var font = {
+        font: '30px cursive',
+        align : 'center',
+        wordWrap : true,
+        strokeThickness : 1,
+        wordWrapWidth : 200
+    };
+    var text = new PIXI.Text("Community Chest", font);
+    text.x = 25;
+    text.y = 10;
+
+    deck.addChild(text);
+
+    deck.rotation = 3 * Math.PI / 4;
+
+    this.stage.addChild(deck);
+};
 
 MonopolyView.prototype.drawChanceCard = function(chanceCard) {
     var width = constants.boardWidth / 2;
@@ -188,6 +244,18 @@ MonopolyView.prototype.drawCard = function(xPos, yPos, width, height, text, colo
 MonopolyView.prototype.drawTile = function(x_pos, y_pos, tile) {
     if (tile instanceof HousingProperty) {
         property = this.drawProperty(x_pos, y_pos, tile);
+    } else if (tile instanceof RailroadProperty) {
+        property = this.drawRailroadProperty(x_pos, y_pos, tile);
+    } else if (tile instanceof UtilityProperty) {
+        property = this.drawUtilityProperty(x_pos, y_pos, tile);
+    } else if (tile instanceof Chance) {
+        property = this.drawChanceTile(x_pos, y_pos, tile);
+    } else if (tile instanceof CommunityChest) {
+        property = this.drawCommunityChestTile(x_pos, y_pos, tile);
+    } else if (tile instanceof LuxuryTax) {
+        property = this.drawLuxuryTaxTile(x_pos, y_pos, tile);
+    } else if (tile instanceof IncomeTax) {
+        property = this.drawIncomeTaxTile(x_pos, y_pos, tile);
     }
 
     else {
@@ -197,9 +265,9 @@ MonopolyView.prototype.drawTile = function(x_pos, y_pos, tile) {
         property.y = y_pos;
         property.pivot.set(constants.tileShortSide, constants.tileLongSide);
         property.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
-    } 
+    }
 
-        property = this.drawProperty(x_pos, y_pos, tile);
+        // property = this.drawProperty(x_pos, y_pos, tile);
     return property;
 }
 
@@ -241,8 +309,231 @@ MonopolyView.prototype.drawProperty = function(x_pos, y_pos, property) {
         price.anchor.set(.5, 1);
         tile.addChild(price);
     }
+
+    return tile;
+};
+
+MonopolyView.prototype.drawChanceTile = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    // create a texture from an image path
+    var texture = PIXI.Texture.fromImage('assets/chance.jpg');
+
+
+    // rescale and place logo
+    var logo = new PIXI.Sprite(texture);
+
+    logo.width = constants.tileShortSide;
+    logo.height = constants.tileLongSide;
+
+    logo.position.x = 0;
+    logo.position.y = 0;
+
+    tile.addChild(logo);
+
+    return tile;
+};
+
+MonopolyView.prototype.drawCommunityChestTile = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    // create a texture from an image path
+    var texture = PIXI.Texture.fromImage('assets/community_chest.jpg');
+
+
+    // rescale and place logo
+    var logo = new PIXI.Sprite(texture);
+
+    logo.width = constants.tileShortSide;
+    logo.height = constants.tileLongSide;
+
+    logo.position.x = 0;
+    logo.position.y = 0;
+
+    tile.addChild(logo);
+
+    return tile;
+};
+
+MonopolyView.prototype.drawUtilityProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.x = constants.tileShortSide / 2;
+        name.y = constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.x =  constants.tileShortSide / 2;
+        price.y =  constants.tileLongSide - constants.textPadding;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+    }
+
+    var logo = new PIXI.Text(property.name, {font: '20px Arial', align : 'center', wordWrap : true, strokeThickness : 1.0});
+    logo.y = constants.tileLongSide / 2;
+    logo.x = constants.tileShortSide / 2;
+    logo.anchor.set(.5, .5);
+    tile.addChild(logo);
+
     return tile;
 }
+
+MonopolyView.prototype.drawIncomeTaxTile = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    if (property.name) {
+        var name = new PIXI.Text("Pay Tuition Bill", {font: '18px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide) - 10,
+                                                });
+        name.x = constants.tileShortSide / 2;
+        name.y = constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+
+    var price = new PIXI.Text('$200.00 or 10%', {font: '12px Arial',
+                                            align : 'center',
+                                            wordWrap : true,
+                                            strokeThickness : .25,
+                                            //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                            wordWrapWidth : (constants.tileShortSide) - 10,
+                                            });
+    price.x =  constants.tileShortSide / 2;
+    price.y =  constants.tileLongSide - constants.textPadding;
+    price.anchor.set(.5, 1);
+    tile.addChild(price);
+
+
+    return tile;
+};
+
+MonopolyView.prototype.drawLuxuryTaxTile = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    if (property.name) {
+        var name = new PIXI.Text("Pay for Green Print", {font: '18px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide) - 10,
+                                                });
+        name.x = constants.tileShortSide / 2;
+        name.y = constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+
+    var price = new PIXI.Text('$75.00', {font: '10px Arial',
+                                            align : 'center',
+                                            wordWrap : true,
+                                            strokeThickness : .25,
+                                            //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                            wordWrapWidth : (constants.tileShortSide),
+                                            });
+    price.x =  constants.tileShortSide / 2;
+    price.y =  constants.tileLongSide - constants.textPadding;
+    price.anchor.set(.5, 1);
+    tile.addChild(price);
+
+
+    return tile;
+};
+
+MonopolyView.prototype.drawRailroadProperty = function(x_pos, y_pos, property) {
+    var tile = new PIXI.Graphics();
+    tile.lineStyle(1, 0, 1);
+    tile.x = x_pos;
+    tile.y = y_pos;
+    tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
+    tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
+
+    if (property.name) {
+        var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        name.x = constants.tileShortSide / 2;
+        name.y = constants.textPadding;
+        name.anchor.set(.5, 0);
+        tile.addChild(name);
+    }
+
+    if (property.cost) {
+        var price = new PIXI.Text('$' + property.cost, {font: '10px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : (constants.tileShortSide),
+                                                });
+        price.x =  constants.tileShortSide / 2;
+        price.y =  constants.tileLongSide - constants.textPadding;
+        price.anchor.set(.5, 1);
+        tile.addChild(price);
+    }
+
+    var logo = new PIXI.Text("DDS", {font: '20px Arial', align : 'center', wordWrap : true, strokeThickness : 1.0});
+    logo.y = constants.tileLongSide / 2;
+    logo.x = constants.tileShortSide / 2;
+    logo.anchor.set(.5, .5);
+    tile.addChild(logo);
+
+    return tile;
+};
 
 MonopolyView.prototype.drawGo = function(x_pos, y_pos) {
     var go = new PIXI.Graphics();
@@ -417,12 +708,12 @@ MonopolyView.prototype.drawArrow = function(x_pos, y_pos, x_len, y_len, fill_col
 }
 
 MonopolyView.prototype.drawPlayerInfo = function(player) {
-    var info = new PIXI.Text('Player ' + player.color + " $" + player.money, {font: '30px Arial',
-                                                align : 'center',
+    var info = new PIXI.Text(player.name + "\nDBA: $" + player.money, {font: '20px Arial',
+                                                align : 'left',
                                                 wordWrap : true,
                                                 strokeThickness : .25,
                                                 //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                wordWrapWidth : constants.canvasWidth - constants.boardWidth - (2 * constants.leftBuffer),
+                                                wordWrapWidth : constants.canvasWidth - constants.boardWidth - (4 * constants.leftBuffer),
                                                 });
     return info;
 }
@@ -436,21 +727,53 @@ MonopolyView.prototype.drawAllPlayersInfo = function() {
     for (var i in this.game.players) {
         var player = this.game.players[i];
         var info = this.drawPlayerInfo(player);
-        this.playerInfos.push(info);
-        info.y = i * blockSize;
+        info.x = constants.leftBuffer * 0.2;
+        info.y = i * blockSize + (constants.upperBuffer * 0.2);
+
+        var playerColor = new PIXI.Graphics();
+        playerColor.x = constants.leftBuffer * 3;
+        playerColor.y = i * blockSize + (constants.upperBuffer * 0.2);
+        playerColor.beginFill(constants.playerColors[player.color]);
+        playerColor.drawRect(0, 0, 20, 20);
+
+        var box = new PIXI.Graphics();
+        box.y = i * blockSize;
+
+        var outline = new PIXI.Graphics();
+        outline.y = i * blockSize;
+        outline.lineStyle(1, 0, 1);
+        outline.drawRect(0, 0, constants.canvasWidth - constants.boardWidth - (3 * constants.leftBuffer), 140);
+
+        box.lineStyle(1, 0, 1);
+        box.beginFill(0x44C0DF, 1);
+        box.drawRect(0, 0, constants.canvasWidth - constants.boardWidth - (3 * constants.leftBuffer), 140);
+        this.playerInfos.push({background: box, text: info});
+
+        infoBlock.addChild(outline);
+        infoBlock.addChild(box);
         infoBlock.addChild(info);
+        infoBlock.addChild(playerColor);
+
+
     }
     this.stage.addChild(infoBlock);
 };
 
 MonopolyView.prototype.updatePlayerInfo = function(player, index) {
-    var info = this.playerInfos[index];
+    var info = this.playerInfos[index].text;
+    var box = this.playerInfos[index].background;
+
+    if (player === this.game.getCurrentPlayer()) {
+        box.alpha = 1;
+    } else {
+        box.alpha = 0;
+    }
     var propertyNames = "";
     for (var i in player.properties) {
         propertyNames += player.properties[i].name;
         propertyNames += ", ";
     }
-    info.text = "Player " + player.color + ": $" + player.money + ", Properties: " + propertyNames;
+    info.text = player.name + "\nDBA: $" + player.money + "\nProperties: " + propertyNames;
 };
 
 MonopolyView.prototype.updateAllPlayersInfo = function() {
@@ -463,7 +786,7 @@ MonopolyView.prototype.updateAllPlayersInfo = function() {
 MonopolyView.prototype.drawPlayerToken = function(player) {
     var token = new PIXI.Graphics();
     token.lineStyle(1, 0, 1);
-    token.beginFill(constants.propertyColors[player.color], 1);
+    token.beginFill(constants.playerColors[player.color], 1);
     var tile = this.tiles[player.position];
     token.drawRect(5, 50, constants.tokenWidth, constants.tokenHeight);
     tile.addChild(token);
@@ -582,7 +905,7 @@ MonopolyView.prototype.drawMessage = function() {
     this.button2.addChild(this.button2Text);
 
     this.stage.addChild(container);
-}
+};
 
 MonopolyView.prototype.updateMessage = function() {
     this.messageText.text = this.game.message;
@@ -602,7 +925,21 @@ MonopolyView.prototype.updateMessage = function() {
         this.button2.alpha = 0;
         break;
     }
+};
 
+MonopolyView.prototype.updateProperties = function() {
+    for (var i in this.tiles) {
+        var property = this.game.board.spaces[i];
+        if (property.owner) {
+            var tile = this.tiles[i];
+            var ownerTag = new PIXI.Graphics();
+            ownerTag.x = 0;
+            ownerTag.y = constants.tileLongSide - 15;
+            ownerTag.beginFill(constants.playerColors[property.owner.color], 1);
+            ownerTag.drawRect(0, 0, constants.tileShortSide, 15);
+            tile.addChild(ownerTag);
+        }
+    }
 }
 
 MonopolyView.prototype.animate = function() {
@@ -610,6 +947,7 @@ MonopolyView.prototype.animate = function() {
     this.updateAllPlayersInfo();
     this.updateCardsDisplays();
     this.updateMessage();
+    this.updateProperties();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 };
