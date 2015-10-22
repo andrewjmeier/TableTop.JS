@@ -28,7 +28,7 @@ MonopolyGame.prototype.drawChanceCard = function() {
   this.activeCard = card;
   console.log("chance card drawn ", card);
   var actions = card.action(this);
-  return [card.text.concat(actions[0]), actions[1]];
+  return [actions[0], actions[1]];
 };
 
 MonopolyGame.prototype.drawCommunityChestCard = function() {
@@ -36,7 +36,7 @@ MonopolyGame.prototype.drawCommunityChestCard = function() {
   this.activeCard = card;
   console.log("community chest card drawn ", card);
   var actions = card.action(this);
-  return [card.text.concat(actions[0]), actions[1]];
+  return [actions[0], actions[1]];
 };
 
 MonopolyGame.prototype.rollAndMovePlayer = function() {

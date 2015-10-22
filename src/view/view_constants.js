@@ -43,7 +43,16 @@ viewConstants.propertyColors = [
     0xE6E60F,
     0x0AA345,
     0x2D4A9B,
-]
+];
+
+viewConstants.playerColors = [
+    0xFF0000,
+    0x00FF00,
+    0x0000FF,
+    0xFF00FF,
+    0x00FFFF,
+    0xFFFF00,
+];
 
 // DARTMOUTH LOGO
 // Constants for drawing Dartmouth logo at center of board
