@@ -34,7 +34,7 @@ inherits(SimpleTurn, Turn);
 */
 
 SimpleTurn.prototype.runStateMachine = function(yesPressed, game) {
-  console.log("HERE");
+  console.log("HERE", game.state, yesPressed);
 
   // only changes on fn call so we call this outside the while loop
   var player = game.getCurrentPlayer();
@@ -65,12 +65,13 @@ SimpleTurn.prototype.runStateMachine = function(yesPressed, game) {
       space = game.board.spaces[game.getCurrentPlayer().position];
 
       displayMsg = displayMsg.concat(actions[0]);
-      this.setState(actions[1], game);
+      this.setState(WAITING_FOR_ROLL, game);
+      game.nextPlayer();
       break;
 
     default:
       //something is broken
-      console.log("Something went very wrong");
+      // console.log("Something went very wrong");
     }
     game.message = displayMsg;
   }

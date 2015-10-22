@@ -7,8 +7,10 @@ function SimplePlayer(name, number) {
 
 inherits(SimplePlayer, Player);
 
-SimplePlayer.prototype.move = function(spacesToMove) {
-  this.position = this.position + spacesToMove;
+SimplePlayer.prototype.move = function(spacesToMove, goal) {
+  if (this.position + spacesToMove <= goal) {
+    this.position = this.position + spacesToMove;
+  }
 };
 
 module.exports = SimplePlayer;

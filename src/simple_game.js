@@ -11,6 +11,7 @@ function SimpleGame(players, board, stateMachine) {
 inherits(SimpleGame, Game);
 
 SimpleGame.prototype.roll = function() {
+  console.log("rolled");
   this.rollDice(1);
   return this.move();
 };
@@ -20,7 +21,7 @@ SimpleGame.prototype.move = function() {
   for (var index in this.dice) {
     spacesToMove += this.dice[index];
   }
-  this.getCurrentPlayer().move(spacesToMove);
+  this.getCurrentPlayer().move(spacesToMove, this.board.spaces.length - 1);
   return "You rolled a " + spacesToMove + ". ";
 };
 

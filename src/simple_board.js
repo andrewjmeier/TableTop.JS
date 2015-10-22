@@ -8,6 +8,7 @@ function SimpleBoard(numberOfSpaces) {
     var space = new Space("Space Number " + i);
     this.spaces.push(space);
   }
+  console.log(this.spaces);
 }
 
 inherits(SimpleBoard, Board);

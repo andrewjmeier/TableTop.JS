@@ -38,6 +38,7 @@ var Player = require("./simple_player");
 var Game = require("./simple_game");
 var Board = require("./simple_board");
 var StateMachine = require("./simple_turn");
+var View = require("./simple/view/simple_view");
 
 var player1 = new Player("Andrew");
 var player2 = new Player("Quinn");
@@ -46,5 +47,9 @@ var board = new Board(20);
 var stateMachine = new StateMachine();
 
 var simpleGame = new Game([player1, player2], board, stateMachine);
+
+var view = new View(simpleGame);
+
+view.drawBoard();
 
 stateMachine.runStateMachine(false, simpleGame);
