@@ -1,6 +1,6 @@
 var inherits = require('util').inherits;
-var Board = require("./board/board/board.js");
-var Space = require("./board/board/space.js");
+var Board = require("../board/board/board.js");
+var Space = require("../board/board/space.js");
 
 function SimpleBoard(numberOfSpaces) {
   Board.call(this);

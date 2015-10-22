@@ -1,5 +1,5 @@
 var inherits = require('util').inherits;
-var Game = require("./game.js");
+var Game = require("../game.js");
 
 
 function SimpleGame(players, board, stateMachine) {
