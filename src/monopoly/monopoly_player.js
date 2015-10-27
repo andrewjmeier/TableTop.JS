@@ -1,5 +1,5 @@
 var inherits = require('util').inherits;
-var Player = require("./player.js");
+var Player = require("../player.js");
 
 function MonopolyPlayer(name, number) {
   Player.call(this, name, number);

@@ -1,8 +1,8 @@
 should = require('chai').should(),
-ChanceDeck = require('../../src/cards/chanceDeck'),
-Player = require('../../src/monopoly_player');
-Game = require('../../src/monopoly_game');
-Board = require('../../src/board_utils');
+ChanceDeck = require('../../../src/monopoly/cards/chanceDeck'),
+Player = require('../../../src/monopoly/monopoly_player');
+Game = require('../../../src/monopoly/monopoly_game');
+Board = require('../../../src/monopoly/board_utils');
 
 describe('chance cards', function() {
   var cards;

@@ -1,8 +1,8 @@
 should = require('chai').should(),
-CommunityChestDeck = require('../../src/cards/communityChestDeck'),
-Player = require('../../src/monopoly_player');
-Game = require('../../src/monopoly_game');
-Board = require('../../src/board_utils');
+CommunityChestDeck = require('../../../src/monopoly/cards/communityChestDeck'),
+Player = require('../../../src/monopoly/monopoly_player');
+Game = require('../../../src/monopoly/monopoly_game');
+Board = require('../../../src/monopoly/board_utils');
 
 describe('community chest cards', function() {
   var cards;
