@@ -1,4 +1,4 @@
-require("../board/boardConstants.js");
+require("./board/boardConstants.js");
 var Property = require("./board/properties/property.js");
 var Turn = require("../turn");
 var inherits = require('util').inherits;
