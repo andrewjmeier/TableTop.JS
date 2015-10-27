@@ -62,6 +62,19 @@ viewConstants.playerColors = [
     0xFFFF00,
 ];
 
+
+// houses
+viewConstants.houseColor = 0x0AA345;
+viewConstants.houseXPadding = 5;
+viewConstants.houseYPadding = 5;
+viewConstants.houseWidth = viewConstants.tileShortSide/4.0 - viewConstants.houseXPadding*5;
+viewConstants.houseHeight = 10;
+
+// hotels
+viewConstants.hotelColor = 0x2D4A9B;
+viewConstants.hotelWidth = viewConstants.tile_short_side*.66;
+viewConstants.hotelHeight = 10;
+
 // DARTMOUTH LOGO
 // Constants for drawing Dartmouth logo at center of board
 viewConstants.logoTexturePath = 'assets/Big_D.png';

@@ -125,6 +125,16 @@ MonopolyView.prototype.drawTiles = function() {
     }
 } 
 
+MonopolyView.prototype.drawHouses = function(board, space, numHouses) { 
+    var house = new PIXI.Graphics();
+    house.lineStyle(1, 0, 1);
+    house.beginFill(constants.playerColors[player.color], 1);
+    var tile = this.tiles[player.position];
+    token.drawRect(5, 50, constants.tokenWidth, constants.tokenHeight);
+    tile.addChild(token);
+    this.HousesView.push({token: token, tile: tile});
+};
+
 MonopolyView.prototype.drawChanceDeck = function() {
     var deck = new PIXI.Graphics();
     deck.x = constants.leftBuffer + (constants.tileLongSide) + 30;
@@ -893,7 +903,7 @@ MonopolyView.prototype.drawMessage = function() {
     this.button2.interactive = true;
     this.button2.click = function(mouseData) {
         context.game.updateState(false);
-    }
+    };
 
     this.button2Text = new PIXI.Text("No", {font: '30px Arial',
                                                 align : 'center',
@@ -919,8 +929,8 @@ MonopolyView.prototype.updateMessage = function() {
         this.button2Text.text = "No";
         this.button2.alpha = 1;
         break;
-
-      default:
+        
+    default:
         this.button1Text.text = "Continue";
         this.button2Text.text = "";
         this.button2.alpha = 0;
@@ -931,15 +941,32 @@ MonopolyView.prototype.updateMessage = function() {
 MonopolyView.prototype.updateProperties = function() {
     for (var i in this.tiles) {
         var property = this.game.board.spaces[i];
+        var tile = this.tiles[i];
         if (property.owner) {
-            var tile = this.tiles[i];
             var ownerTag = new PIXI.Graphics();
             ownerTag.x = 0;
             ownerTag.y = constants.tileLongSide - 15;
             ownerTag.beginFill(constants.playerColors[property.owner.color], 1);
             ownerTag.drawRect(0, 0, constants.tileShortSide, 15);
-            tile.addChild(ownerTag);
-        }
+
+            if (property.numHouses > 0) {
+                var housesTag = new PIXI.Graphics();
+                housesTag.beginFill(constants.houseColor, 1);
+                housesTag.x = 0;
+                housesTag.y = constants.houseYPadding;
+                var xOffset = constants.houseXPadding;
+                
+                for (var idx in property.numHouses) { 
+                    housesTag.drawRect(xOffset, 0, constants.houseWidth, constants.houseHeight);
+                    xOffset += constants.houseXOffset;
+                } 
+                               
+                tile.addChild(ownerTag);
+                tile.addChild(housesTag);
+            }
+            
+        } 
+        
     }
 }
 
