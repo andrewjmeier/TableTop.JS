@@ -22,15 +22,28 @@ function MonopolyView(game_state) {
 };
 
 MonopolyView.prototype.drawBoard = function() {
-    // Draw Board and add to stage
 
+    // Draw Board and add to stage
     var board = new PIXI.Graphics();
     //board.lineStyle(1, 0x000000, 1);
     board.beginFill(0xC2E2BF, 1);
     board.drawRect(constants.boardStartX, constants.boardStartY, constants.boardWidth, constants.boardHeight);
     this.stage.addChild(board);
 
-    // Initialize variables for drawing tiles
+
+    this.drawTiles();
+    this.stage.addChild(this.drawLogo());
+    this.drawPlayers();
+    this.drawAllPlayersInfo();
+    this.drawMessage();
+    this.drawChanceDeck();
+    this.drawCommunityChestDeck();
+
+    // run the render loop
+    this.animate();
+}
+
+MonopolyView.prototype.drawTiles = function() { 
     var x_pos = constants.leftBuffer;
     var y_pos = constants.boardHeight + constants.upperBuffer - constants.tileLongSide;
     var x_inc = 0;
@@ -45,7 +58,7 @@ MonopolyView.prototype.drawBoard = function() {
             go = this.drawGo(x_pos, y_pos);
             this.tiles.push(go);
             this.stage.addChild(go);
-
+            
             x_correction = 1;
             y_correction = 0;
             x_inc = 0;
@@ -110,18 +123,7 @@ MonopolyView.prototype.drawBoard = function() {
             y_pos += y_inc;
         }
     }
-    // rescale and place logo
-    this.stage.addChild(this.drawLogo());
-
-    this.drawPlayers();
-    this.drawAllPlayersInfo();
-    this.drawMessage();
-    this.drawChanceDeck();
-    this.drawCommunityChestDeck();
-
-    // run the render loop
-    this.animate();
-}
+} 
 
 MonopolyView.prototype.drawChanceDeck = function() {
     var deck = new PIXI.Graphics();
