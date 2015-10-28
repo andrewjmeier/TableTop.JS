@@ -1,3 +1,5 @@
+var PIXI = require("../../../lib/pixi/pixi.min.js")
+
 var HousingProperty = require("../board/properties/housingProperty.js");
 var RailroadProperty = require("../board/properties/railroadProperty.js");
 var UtilityProperty = require("../board/properties/utilityProperty.js");
