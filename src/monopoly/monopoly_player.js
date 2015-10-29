@@ -102,6 +102,16 @@ MonopolyPlayer.prototype.buy = function(property) {
   property.owner = this;
 };
 
+MonopolyPlayer.prototype.buyHouse = function(property) { 
+  this.makePayment(property.housingCost);
+  property.numHouses++;
+};
+
+MonopolyPlayer.prototype.sellHouse = function(property) { 
+  this.makeDeposit(property.housingCost);
+  property.numHouses--;
+};
+
 MonopolyPlayer.prototype.assets = function() {
 
   var assets = this.money;
