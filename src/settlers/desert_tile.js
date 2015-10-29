@@ -1,11 +1,11 @@
-var Tile = require("./tile");
+var SettlersTile = require("./settlers_tile");
 var inherits = require('util').inherits;
 
 function DesertTile(number) {
-  Tile.call(this)
-  this.number = number;
+  SettlersTile.call(this, number);
+  this.hasRobber = true;
 }
 
-inherits(DesertTile, Tile)
+inherits(DesertTile, SettlersTile)
 
 module.exports = DesertTile;

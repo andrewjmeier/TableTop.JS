@@ -190,8 +190,28 @@ SettlersView.prototype.drawSettlement = function(token) {
 
 };
 
+SettlersView.prototype.drawRobber = function() {
+    if (!this.robber) {
+        var texture = PIXI.Texture.fromImage('assets/settlers/robber.png');
+        this.robber = new PIXI.Sprite(texture);
+        this.robber.width = 20;
+        this.robber.height = 50;
+    } else {
+        this.robberTile.removeChild(this.robber);
+    }
+    for (var i in this.tiles) {
+        var tile = this.tiles[i];
+        var gameTile = this.game.board.spaces[i];
+        if (gameTile.hasRobber) {
+            tile.addChild(this.robber);
+            this.robberTile = tile;
+        }
+    }
+};
+
 SettlersView.prototype.animate = function() {
     this.drawDice();
+    this.drawRobber();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 };
