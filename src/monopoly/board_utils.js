@@ -11,7 +11,7 @@ var Go = require('./board/other/go'),
     UtilityProperty = require('./board/properties/utilityProperty'),
     HousingProperty = require('./board/properties/housingProperty'),
     RailroadProperty = require('./board/properties/railroadProperty'),
-    Board = require('./board/board/board'); // looks ugly, maybe think of better naming pattern
+    Board = require('../board/board'); // looks ugly, maybe think of better naming pattern
 
 // end of space class definitions
 

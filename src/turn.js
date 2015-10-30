@@ -1,7 +1,3 @@
-require("./board/boardConstants.js");
-var Property = require("./board/properties/property.js");
-
-
 function Turn() {
   this.lastState = -1;
 };

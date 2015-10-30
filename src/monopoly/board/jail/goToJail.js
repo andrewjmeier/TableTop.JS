@@ -1,4 +1,4 @@
-var Space = require('../board/space'),
+var Space = require('../space'),
     inherits = require('util').inherits;
 
 function GoToJail() {
