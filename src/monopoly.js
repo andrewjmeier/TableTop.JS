@@ -1,65 +1,79 @@
-require("./monopoly/board/boardConstants.js");
+// require("./monopoly/board/boardConstants.js");
 
-var Player = require("./monopoly/monopoly_player.js");
-var Card = require("./monopoly/cards/card.js");
-var Game = require("./monopoly/monopoly_game.js");
-var Utils = require("./utils.js");
-var Board = require("./monopoly/board_utils.js");
-var Turn = require("./monopoly/monopoly_turn.js");
-var MonopolyView = require("./monopoly/view/monopoly_view.js");
-
-
-var john = new Player("Andrew", 1);
-
-var steve = new Player("Quinn", 2);
-
-var sam = new Player("James", 3);
-
-var mike = new Player("Kevin", 4);
-
-var jimmy = new Player("KC", 5);
-
-var players = [john, steve, sam, mike, jimmy];
-
-var board = new Board();
-
-var turn = new Turn();
-
-var monopoly = new Game(players, board, turn);
-
-var view = new MonopolyView(monopoly);
-
-view.drawBoard();
-
-//start running game
-turn.runStateMachine(false, monopoly);
+// var Player = require("./monopoly/monopoly_player.js");
+// var Card = require("./monopoly/cards/card.js");
+// var Game = require("./monopoly/monopoly_game.js");
+// var Utils = require("./utils.js");
+// var Board = require("./monopoly/board_utils.js");
+// var Turn = require("./monopoly/monopoly_turn.js");
+// var MonopolyView = require("./monopoly/view/monopoly_view.js");
 
 
+// var john = new Player("Andrew", 1);
 
+// var steve = new Player("Quinn", 2);
 
+// var sam = new Player("James", 3);
 
+// var mike = new Player("Kevin", 4);
 
-// var SettlersView = require("./settlers/view/settlers_view.js");
-// var Board = require("./settlers/settlers_board");
-// var Game = require("./settlers/settlers_game");
-// var Player = require("./player");
-// var Token = require("./settlers/settlement_token");
+// var jimmy = new Player("KC", 5);
+
+// var players = [john, steve, sam, mike, jimmy];
 
 // var board = new Board();
 
-// var Andrew = new Player("Andrew", 0);
-// var settlement1 = new Token(Andrew, [board.spaces[0], board.spaces[1], board.spaces[4]]);
-// Andrew.tokens.push(settlement1);
+// var turn = new Turn();
 
-// var Garrett = new Player("Garrett", 1);
-// var settlement2 = new Token(Garrett, [board.spaces[5], board.spaces[6], board.spaces[10]]);
-// Garrett.tokens.push(settlement2);
+// var monopoly = new Game(players, board, turn);
 
-// var game = new Game([Andrew, Garrett], board, {});
-
-// var view = new SettlersView(game);
+// var view = new MonopolyView(monopoly);
 
 // view.drawBoard();
+
+// //start running game
+// turn.runStateMachine(false, monopoly);
+
+
+
+
+
+
+var SettlersView = require("./settlers/view/settlers_view.js");
+var Board = require("./settlers/settlers_board");
+var Game = require("./settlers/settlers_game");
+var Player = require("./player");
+var Token = require("./settlers/settlement_token");
+
+var board = new Board();
+
+var andrew = new Player("Andrew", 1);
+var garrett = new Player("Garrett", 2);
+var jimmy = new Player("Shane", 3);
+
+var settlement1 = new Token(andrew);
+var settlement2 = new Token(andrew);
+
+board.addSettlement(settlement1, "5");
+board.addSettlement(settlement2, "10");
+
+var settlement3 = new Token(garrett);
+var settlement4 = new Token(garrett);
+
+board.addSettlement(settlement3, "7");
+board.addSettlement(settlement4, "15");
+
+var settlement5 = new Token(jimmy);
+var settlement6 = new Token(jimmy);
+
+board.addSettlement(settlement5, "25");
+board.addSettlement(settlement6, "36");
+
+var settlers = new Game([], board, {});
+
+var view = new SettlersView(settlers);
+
+view.drawBoard();
 
 
 

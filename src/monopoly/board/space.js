@@ -5,6 +5,7 @@ var inherits = require('util').inherits;
 
 
 function Space(name) {
+  Tile.call(this);
   this.name = name;
   this.occupier = null;
 };
