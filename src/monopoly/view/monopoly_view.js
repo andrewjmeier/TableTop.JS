@@ -922,7 +922,7 @@ MonopolyView.prototype.drawMessage = function() {
     var context = this;
     button1.click = function(mouseData){
        console.log("CLICK!");
-       context.game.updateState(true);
+       context.game.updateState(BTN1);
     };
 
     this.button1Text = new PIXI.Text("Yes", {font: '30px Arial',
@@ -944,7 +944,7 @@ MonopolyView.prototype.drawMessage = function() {
 
     this.button2.interactive = true;
     this.button2.click = function(mouseData) {
-        context.game.updateState(false);
+        context.game.updateState(BTN2);
     }
 
     this.button2Text = new PIXI.Text("No", {font: '30px Arial',
@@ -956,6 +956,30 @@ MonopolyView.prototype.drawMessage = function() {
                                                 });
     this.button2Text.x = 50;
     this.button2.addChild(this.button2Text);
+
+    //button 3
+    this.button3 = new PIXI.Graphics();
+    this.button3.x = 500;
+    this.button3.y = 180;
+    this.button3.beginFill(0x7A7A7A, 1);
+    this.button3.drawRect(0, 0, 200, 50);
+    container.addChild(this.button3);
+
+    this.button3.interactive = true;
+    this.button3.click = function(mouseData) {
+        context.game.updateState(BTN3);//need to add another button
+    }
+
+    this.button3Text = new PIXI.Text("Cancel", {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : 150,
+                                                });
+    this.button3Text.x = 50;
+    this.button3.addChild(this.button3Text);
+
 
     this.stage.addChild(container);
 };
@@ -970,12 +994,14 @@ MonopolyView.prototype.updateMessage = function() {
             this.button1Text.text = "Yes";
             this.button2Text.text = "No";
             this.button2.alpha = 1;
+            this.button3.alpha = 0;
             break;
 
         case TRADE_ANSWER:
             this.button1Text.text = "Yes";
             this.button2Text.text = "No";
             this.button2.alpha = 1;
+            this.button3.alpha = 0;
             break;
 
         case POST_TURN_ANSWER:
@@ -983,6 +1009,7 @@ MonopolyView.prototype.updateMessage = function() {
             this.button1Text.text = "Continue";
             this.button2Text.text = "Trade";
             this.button2.alpha = 1;
+            this.button3.alpha = 0;
             break;
 
         case PROPOSE_TRADE:
@@ -991,12 +1018,14 @@ MonopolyView.prototype.updateMessage = function() {
             this.button1Text.text = "Continue";
             this.button2Text.text = "Clear";
             this.button2.alpha = 1;
+            this.button3.alpha = 1;
             break;
 
         default:
             this.button1Text.text = "Continue";
             this.button2Text.text = "";
             this.button2.alpha = 0;
+            this.button3.alpha = 0;
             break;
     }
 };

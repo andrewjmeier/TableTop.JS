@@ -50,3 +50,9 @@ global.POST_TURN_ANSWER = 5;
 global.PROPOSE_TRADE = 6;
 global.TRADE_ANSWER = 7;
 global.ENDED_TURN = 8;
+
+//btnPressed
+global.BTN1 = 0;
+global.BTN2 = 1;
+global.BTN3 = 2;
+

@@ -35,7 +35,7 @@ inherits(MonopolyTurn, Turn);
 Possible states defined in boardConstants
 */
 
-MonopolyTurn.prototype.runStateMachine = function(yesPressed, game) {
+MonopolyTurn.prototype.runStateMachine = function(btnPressed, game) {
 
   // only changes on fn call so we call this outside the while loop
   var player = game.getCurrentPlayer();
@@ -91,7 +91,7 @@ MonopolyTurn.prototype.runStateMachine = function(yesPressed, game) {
 
     case BUY_ANSWER:
 
-      if (yesPressed) {
+      if (btnPressed == BTN1) {
         player.buy(space);
         displayMsg = displayMsg.concat("You bought " + space.name + ". ");
       } else {
@@ -113,7 +113,7 @@ MonopolyTurn.prototype.runStateMachine = function(yesPressed, game) {
       // ie. this.setState(TRADE, game) or this.setState(MORTAGE_CHOICES, game)
       game.clearActiveCard();
       
-      if (yesPressed) {
+      if (btnPressed == BTN1) {
         this.setState(ENDED_TURN, game);
       } else {//trade clicked
         //TODO: clear properties and people selected
@@ -128,31 +128,39 @@ MonopolyTurn.prototype.runStateMachine = function(yesPressed, game) {
     case PROPOSE_TRADE:
       //game. 
       //need to instatiate the trade object with the buttons they clicked. 
-      console.log("yesPressed" + yesPressed);
-      if (yesPressed) {
+      // console.log("yesPressed" + yesPressed);
+      if (btnPressed == BTN1) {
         if(game.trade.allDetails()){
-          displayMsg = displayMsg.concat("\n The trade is ......... Quinn, do you accept this trade?");
+          displayMsg = displayMsg.concat("\n" + game.trade.answering_player.name + ", do you want to trade with " + game.trade.proposing_player.name + "?");
+          displayMsg = displayMsg.concat("\nThey are " + game.trade.propsToString());
           this.setState(TRADE_ANSWER, game);
           game.message = displayMsg;
         } else {
           alert("Please select all details for a full trade");
         }
+        return;
         
-      } else {
+      } else if (btnPressed == BTN2){
         console.log("clear");
         game.clearTrade();
+        return;
+      } else{
+        game.clearTrade();
+        displayMsg = displayMsg.concat("\nTrade cancelled. ");
+        this.setState(POST_TURN_ANSWER, game);
       }
       
-      return;
+      
 
     case TRADE_ANSWER:
 
-      if (yesPressed) {
+      if (btnPressed == BTN1) {
+        game.trade.completeTrade();
         displayMsg = displayMsg.concat("You traded.");
       } else {
         displayMsg = displayMsg.concat("You didn't trade. ");
       }
-
+      game.clearTrade();
       this.setState(POST_TURN, game);
       break;
 
