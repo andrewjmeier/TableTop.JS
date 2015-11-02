@@ -31,6 +31,8 @@ inherits(MonopolyTurn, Turn);
  state run. When we exit (either by default, or by an early return) we use
  ui.displayPrompt(displayMsg) to print everything to the console. We do this because
  if we use ui.displayPrompt multiple times in a row, then previous msgs get overridden.
+
+Possible states defined in boardConstants
 */
 
 MonopolyTurn.prototype.runStateMachine = function(yesPressed, game) {
@@ -110,8 +112,50 @@ MonopolyTurn.prototype.runStateMachine = function(yesPressed, game) {
       // TODO: do stuff with their answer... send them to trade, mortage, etc.
       // ie. this.setState(TRADE, game) or this.setState(MORTAGE_CHOICES, game)
       game.clearActiveCard();
-      this.setState(ENDED_TURN, game);
+      
+      if (yesPressed) {
+        this.setState(ENDED_TURN, game);
+      } else {//trade clicked
+        //TODO: clear properties and people selected
+        displayMsg = displayMsg.concat("\n Click the items you want to trade. Choose 1 person and items. Then click continue.");
+        this.setState(PROPOSE_TRADE, game);
+        game.message = displayMsg;
+        return;
+      }
+      
       break;
+
+    case PROPOSE_TRADE:
+      //game. 
+      //need to instatiate the trade object with the buttons they clicked. 
+      console.log("yesPressed" + yesPressed);
+      if (yesPressed) {
+        if(game.trade.allDetails()){
+          displayMsg = displayMsg.concat("\n The trade is ......... Quinn, do you accept this trade?");
+          this.setState(TRADE_ANSWER, game);
+          game.message = displayMsg;
+        } else {
+          alert("Please select all details for a full trade");
+        }
+        
+      } else {
+        console.log("clear");
+        game.clearTrade();
+      }
+      
+      return;
+
+    case TRADE_ANSWER:
+
+      if (yesPressed) {
+        displayMsg = displayMsg.concat("You traded.");
+      } else {
+        displayMsg = displayMsg.concat("You didn't trade. ");
+      }
+
+      this.setState(POST_TURN, game);
+      break;
+
 
     case ENDED_TURN:
 

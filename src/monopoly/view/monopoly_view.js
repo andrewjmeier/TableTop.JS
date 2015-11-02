@@ -238,7 +238,51 @@ MonopolyView.prototype.drawCard = function(xPos, yPos, width, height, text, colo
     card.addChild(cardText);
 
     return card;
-}
+};
+
+
+
+MonopolyView.prototype.setupPropertyClick = function(tile, property){
+    tile.interactive = true;
+    var context = this;
+    //this sets the clickable area - doesnt work
+    //tile.hitArea = new PIXI.Rectangle(0, 0, constants.tileShortSide, constants.tileLongSide);
+    
+    tile.click = function(mouseData){
+        if(context.game.state == PROPOSE_TRADE){
+           // console.log("CLICK PROP!" + property.name);
+            if(context.game.trade == null){
+                context.game.createTrade();
+            }else{
+                context.game.addPropertyToTrade(property);
+                // console.log(context.game.trade.answering_player.name);
+            }
+           // console.log(context.game.trade_properties)
+        }
+    };
+};
+
+MonopolyView.prototype.setupPlayerClick = function(rect, player){
+    rect.interactive = true;
+    var context = this;
+    //this sets the clickable area - doesnt work
+    //tile.hitArea = new PIXI.Rectangle(0, 0, constants.tileShortSide, constants.tileLongSide);
+    
+    rect.click = function(mouseData){
+        if(context.game.state == PROPOSE_TRADE){
+            if(player != context.game.getCurrentPlayer()){
+                console.log("CLICK PLAYER!" + player.name);
+                if(context.game.trade == null){
+                    context.game.createTrade();
+                }else{
+                    context.game.addPlayerToTrade(player);
+                    // console.log(context.game.trade.answering_player.name);
+                }
+            }
+        }
+    };
+};
+
 
 MonopolyView.prototype.drawTile = function(x_pos, y_pos, tile) {
     if (tile instanceof HousingProperty) {
@@ -278,6 +322,8 @@ MonopolyView.prototype.drawProperty = function(x_pos, y_pos, property) {
     tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
     tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
 
+
+
     tile.beginFill(constants.propertyColors[property.propertyGroup], 1);
     tile.drawRect(0, 0, constants.tileShortSide, constants.tileColorLength);
 
@@ -308,6 +354,9 @@ MonopolyView.prototype.drawProperty = function(x_pos, y_pos, property) {
         price.anchor.set(.5, 1);
         tile.addChild(price);
     }
+
+
+    this.setupPropertyClick(tile, property);
 
     return tile;
 };
@@ -407,6 +456,8 @@ MonopolyView.prototype.drawUtilityProperty = function(x_pos, y_pos, property) {
     logo.x = constants.tileShortSide / 2;
     logo.anchor.set(.5, .5);
     tile.addChild(logo);
+
+    // this.setupPropertyClick(tile, property);
 
     return tile;
 }
@@ -530,6 +581,8 @@ MonopolyView.prototype.drawRailroadProperty = function(x_pos, y_pos, property) {
     logo.x = constants.tileShortSide / 2;
     logo.anchor.set(.5, .5);
     tile.addChild(logo);
+
+    // this.setupPropertyClick(tile, property);
 
     return tile;
 };
@@ -753,6 +806,7 @@ MonopolyView.prototype.drawAllPlayersInfo = function() {
         infoBlock.addChild(info);
         infoBlock.addChild(playerColor);
 
+        this.setupPlayerClick(box, player);
 
     }
     this.stage.addChild(infoBlock);
@@ -911,18 +965,39 @@ MonopolyView.prototype.updateMessage = function() {
 
     switch (this.game.state) {
 
-      case BUY_ANSWER:
+        case BUY_ANSWER:
 
-        this.button1Text.text = "Yes";
-        this.button2Text.text = "No";
-        this.button2.alpha = 1;
-        break;
+            this.button1Text.text = "Yes";
+            this.button2Text.text = "No";
+            this.button2.alpha = 1;
+            break;
 
-      default:
-        this.button1Text.text = "Continue";
-        this.button2Text.text = "";
-        this.button2.alpha = 0;
-        break;
+        case TRADE_ANSWER:
+            this.button1Text.text = "Yes";
+            this.button2Text.text = "No";
+            this.button2.alpha = 1;
+            break;
+
+        case POST_TURN_ANSWER:
+
+            this.button1Text.text = "Continue";
+            this.button2Text.text = "Trade";
+            this.button2.alpha = 1;
+            break;
+
+        case PROPOSE_TRADE:
+
+            this.updateTradeInfo();
+            this.button1Text.text = "Continue";
+            this.button2Text.text = "Clear";
+            this.button2.alpha = 1;
+            break;
+
+        default:
+            this.button1Text.text = "Continue";
+            this.button2Text.text = "";
+            this.button2.alpha = 0;
+            break;
     }
 };
 
@@ -939,7 +1014,22 @@ MonopolyView.prototype.updateProperties = function() {
             tile.addChild(ownerTag);
         }
     }
-}
+};
+
+MonopolyView.prototype.updateTradeInfo = function(){
+    
+    if(this.game.trade == null){
+        this.game.createTrade();
+    }
+    var trade_player_name = "";
+    if(!this.game.trade.answering_player){
+        trade_player_name = "Select Player";
+    }else{
+        trade_player_name = this.game.trade.answering_player.name;
+    }
+this.messageText.text = this.game.message + "\nTrading with: " + trade_player_name + "\n" + this.game.trade.propsToString();
+};
+
 
 MonopolyView.prototype.animate = function() {
     this.updatePlayers();
