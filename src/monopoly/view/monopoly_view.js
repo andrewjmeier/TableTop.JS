@@ -35,7 +35,15 @@ MonopolyView.prototype.drawBoard = function() {
     this.stage.addChild(this.drawLogo());
     this.drawPlayers();
     this.drawAllPlayersInfo();
-    this.drawMessage();
+
+    // build content container
+    var container = new PIXI.Container();
+    container.x = constants.leftBuffer;
+    container.y = constants.boardHeight + (2 * constants.upperBuffer);
+    this.stage.addChild(container);    
+    this.drawMessage(container);
+    this.drawButtons(container);
+    
     this.drawChanceDeck();
     this.drawCommunityChestDeck();
 
@@ -857,65 +865,56 @@ MonopolyView.prototype.updateCardsDisplays = function() {
 
 };
 
-MonopolyView.prototype.drawMessage = function() {
-    var container = new PIXI.Container();
+MonopolyView.prototype.drawMessage = function(container) {
+    
     this.messageText = new PIXI.Text(this.game.message, {font: '30px Arial',
-                                                align : 'center',
-                                                wordWrap : true,
-                                                strokeThickness : .25,
-                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                wordWrapWidth : constants.canvasWidth - (2 * constants.leftBuffer),
-                                                });
-    container.x = constants.leftBuffer;
-    container.y = constants.boardHeight + (2 * constants.upperBuffer);
+                                                         align : 'center',
+                                                         wordWrap : true,
+                                                         strokeThickness : .25,
+                                                         //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                         wordWrapWidth : constants.canvasWidth - (2 * constants.leftBuffer)
+                                                        });
     container.addChild(this.messageText);
+};
 
-    button1 = new PIXI.Graphics();
-    button1.y = 180;
-    button1.beginFill(0x00FF00, 1);
-    button1.drawRect(0, 0, 200, 50);
-    container.addChild(button1);
-
-    button1.interactive = true;
-    var context = this;
-    button1.click = function(mouseData){
-       console.log("CLICK!");
-       context.game.updateState(true);
-    };
-
-    this.button1Text = new PIXI.Text("Yes", {font: '30px Arial',
-                                                align : 'center',
-                                                wordWrap : true,
-                                                strokeThickness : .25,
-                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                wordWrapWidth : 150,
-                                                });
-    this.button1Text.x = 50;
-    button1.addChild(this.button1Text);
-
-    this.button2 = new PIXI.Graphics();
-    this.button2.x = 250;
-    this.button2.y = 180;
-    this.button2.beginFill(0xFF0000, 1);
-    this.button2.drawRect(0, 0, 200, 50);
+MonopolyView.prototype.drawButtons = function(container) { 
+  
+    this.button1Text = this.getButtonText("Yes");
+    this.button2Text = this.getButtonText("No");
+    this.button1 = this.getButton(container, 0, 180, true, this.button1Text);
+    this.button2 = this.getButton(container, 250, 180, false, this.button2Text);
+    
+    container.addChild(this.button1);
     container.addChild(this.button2);
+};
 
-    this.button2.interactive = true;
-    this.button2.click = function(mouseData) {
-        context.game.updateState(false);
+MonopolyView.prototype.getButton = function(container, x, y, callback_val, text) { 
+    var button = new PIXI.Graphics();
+    button.x = x;
+    button.y = y;
+    button.beginFill(0x00FF00, 1);
+    button.drawRect(0, 0, 200, 50);
+      
+    button.interactive = true;
+    var context = this;
+    button.click = function(mouseData){
+        context.game.updateState(callback_val);
     };
 
-    this.button2Text = new PIXI.Text("No", {font: '30px Arial',
-                                                align : 'center',
-                                                wordWrap : true,
-                                                strokeThickness : .25,
-                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                wordWrapWidth : 150,
-                                                });
-    this.button2Text.x = 50;
-    this.button2.addChild(this.button2Text);
+    button.addChild(text);
 
-    this.stage.addChild(container);
+    return button;
+};
+
+MonopolyView.prototype.getButtonText = function(text) {
+    var buttonText = new PIXI.Text(text, {font: '30px Arial',
+                                           align : 'center',
+                                          wordWrap : true,
+                                          strokeThickness : .25,
+                                          wordWrapWidth : 150
+                                         });
+    buttonText.x = 50;
+    return buttonText;
 };
 
 MonopolyView.prototype.updateMessage = function() {
