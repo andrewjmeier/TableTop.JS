@@ -6,6 +6,8 @@ var BrickTile = require("../brick_tile");
 var WheatTile = require("../wheat_tile");
 var OreTile = require("../ore_tile");
 var SettlementToken = require("../settlement_token");
+var SettlersVertexLeftTile = require("../board/settlers_vertex_left_tile");
+var SettlersVertexRightTile = require("../board/settlers_vertex_right_tile");
 
 function SettlersView(game_state) {
     this.game = game_state;
@@ -18,6 +20,8 @@ function SettlersView(game_state) {
 
     // create the root of the scene graph
     this.stage = new PIXI.Container();
+
+    this.drawGraph();
 };
 
 SettlersView.prototype.getHexagonTexture = function(cX, cY, size, color) {
@@ -59,7 +63,143 @@ SettlersView.prototype.drawTileNumber = function(number) {
     text.anchor.y = .5;
 
     return text;
+};
+
+SettlersView.prototype.drawVertex = function(v, x, y) {
+    var color = 0x000000;
+    if (v.settlement) {
+        color = constants.playerColors[v.settlement.player.color];
+    }
+    var vertex = new PIXI.Graphics();
+    vertex.beginFill(color);
+    vertex.drawRect(0, 0, 10, 10);
+    vertex.x = x;
+    vertex.y = y;
+    this.stage.addChild(vertex);
+};
+
+SettlersView.prototype.drawRoad = function(x1, y1, x2, y2, road) {
+    var road = new PIXI.Graphics();
+    color = constants.playerColors[0];
+    road.lineStyle(5, color);
+    road.moveTo(x1, y1);
+    road.lineTo(x2, y2);
+
+    this.stage.addChild(road);
 }
+
+SettlersView.prototype.drawGraph = function() {
+    this.drawnVerticies = [];
+    var vertex = this.game.board.graph["1"];
+    var v_x = 105;
+    var v_y = 225;
+
+    var verticiesToDraw = [];
+    verticiesToDraw.push({vertex: vertex, point: [v_x, v_y]});
+
+    // make queue of verticies to draw
+    while (verticiesToDraw.length) {
+        var data = verticiesToDraw.pop();
+        vertex = data.vertex;
+        var x = data.point[0];
+        var y = data.point[1];
+        this.drawVertex(vertex, x, y);
+        this.drawnVerticies.push(vertex);
+        if (vertex instanceof SettlersVertexLeftTile) {
+            this.addLeftVertexType(verticiesToDraw, vertex, x, y, this.drawnVerticies);
+        } else {
+            this.addRightVertexType(verticiesToDraw, vertex, x, y, this.drawnVerticies);
+        }
+    }
+};
+
+SettlersView.prototype.addLeftVertexType = function(verticiesToDraw, vertex, x, y, drawnVerticies) {
+    if (vertex.edges[0]) {
+        var left_x = x - 80;
+        var left_y = y;
+        var edge = vertex.edges[0];
+        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
+        if (edge.road) {
+            this.drawRoad(x, y, left_x, left_y, edge);
+        }
+        var index = drawnVerticies.indexOf(newVertex);
+        if (index === -1) {
+            verticiesToDraw.push({vertex: newVertex, point: [left_x, left_y]});
+        }
+    }
+
+    if (vertex.edges[1]) {
+        var up_x = x + 40;
+        var up_y = y - 70;
+        var edge = vertex.edges[1];
+        if (edge.road) {
+            this.drawRoad(x, y, up_x, up_y, edge);
+        }
+        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
+        var index = drawnVerticies.indexOf(newVertex);
+        if (index === -1) {
+            verticiesToDraw.push({vertex: newVertex, point: [up_x, up_y]});
+        }
+    }
+
+    if (vertex.edges[2]) {
+        var down_x = x + 40;
+        var down_y = y + 70;
+        var edge = vertex.edges[2];
+        if (edge.road) {
+            this.drawRoad(x, y, down_x, down_y, edge);
+        }
+        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
+        var index = drawnVerticies.indexOf(newVertex);
+        if (index === -1) {
+            verticiesToDraw.push({vertex: newVertex, point: [down_x, down_y]});
+        }
+    }
+};
+
+SettlersView.prototype.addRightVertexType = function(verticiesToDraw, vertex, x, y, drawnVerticies) {
+    if (vertex.edges[0]) {
+        var up_x = x - 40;
+        var up_y = y - 70;
+        var edge = vertex.edges[0];
+        if (edge.road) {
+            this.drawRoad(x, y, up_x, up_y, edge);
+        }
+        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
+        var index = drawnVerticies.indexOf(newVertex);
+        if (index === -1) {
+            verticiesToDraw.push({vertex: newVertex, point: [up_x, up_y]});
+        }
+    }
+
+    if (vertex.edges[1]) {
+        var right_x = x + 80;
+        var right_y = y;
+        var edge = vertex.edges[1];
+        if (edge.road) {
+            this.drawRoad(x, y, right_x, right_y, edge);
+        }
+        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
+        var index = drawnVerticies.indexOf(newVertex);
+        if (index === -1) {
+            verticiesToDraw.push({vertex: newVertex, point: [right_x, right_y]});
+        }
+    }
+
+    if (vertex.edges[2]) {
+        var down_x = x - 40;
+        var down_y = y + 70;
+        var edge = vertex.edges[2];
+        if (edge.road) {
+            this.drawRoad(x, y, down_x, down_y, edge);
+        }
+        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
+        var index = drawnVerticies.indexOf(newVertex);
+        if (index === -1) {
+            verticiesToDraw.push({vertex: newVertex, point: [down_x, down_y]});
+        }
+    }
+};
 
 SettlersView.prototype.drawBoard = function() {
     // Draw Board and add to stage
@@ -76,63 +216,63 @@ SettlersView.prototype.drawBoard = function() {
     var y_pos = startingYPos;
 
 
-    for (var i = 0; i < 3; i++) {
-        var tile = this.game.board.spaces[i];
-        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-        var num = this.drawTileNumber(tile.number);
-        hex.addChild(num);
-        this.stage.addChild(hex);
-        this.tiles.push(hex);
-        y_pos += hexagonHeight;
-    }
-    x_pos += 120;
+    // for (var i = 0; i < 3; i++) {
+    //     var tile = this.game.board.spaces[i];
+    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+    //     var num = this.drawTileNumber(tile.number);
+    //     hex.addChild(num);
+    //     this.stage.addChild(hex);
+    //     this.tiles.push(hex);
+    //     y_pos += hexagonHeight;
+    // }
+    // x_pos += 120;
 
-    y_pos = startingYPos - (hexagonHeight / 2);
-    for (i = 3; i < 7; i++) {
-        var tile = this.game.board.spaces[i];
-        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-        var num = this.drawTileNumber(tile.number);
-        hex.addChild(num);
-        this.stage.addChild(hex);
-        this.tiles.push(hex);
-        y_pos += hexagonHeight;
-    }
-    x_pos += 120;
+    // y_pos = startingYPos - (hexagonHeight / 2);
+    // for (i = 3; i < 7; i++) {
+    //     var tile = this.game.board.spaces[i];
+    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+    //     var num = this.drawTileNumber(tile.number);
+    //     hex.addChild(num);
+    //     this.stage.addChild(hex);
+    //     this.tiles.push(hex);
+    //     y_pos += hexagonHeight;
+    // }
+    // x_pos += 120;
 
-    y_pos = startingYPos - hexagonHeight;
-    for (i = 7; i < 12; i++) {
-        var tile = this.game.board.spaces[i];
-        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-        var num = this.drawTileNumber(tile.number);
-        hex.addChild(num);
-        this.stage.addChild(hex);
-        this.tiles.push(hex);
-        y_pos += hexagonHeight;
-    }
-    x_pos += 120;
+    // y_pos = startingYPos - hexagonHeight;
+    // for (i = 7; i < 12; i++) {
+    //     var tile = this.game.board.spaces[i];
+    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+    //     var num = this.drawTileNumber(tile.number);
+    //     hex.addChild(num);
+    //     this.stage.addChild(hex);
+    //     this.tiles.push(hex);
+    //     y_pos += hexagonHeight;
+    // }
+    // x_pos += 120;
 
-    y_pos = startingYPos - (hexagonHeight / 2);
-    for (i = 12; i < 16; i++) {
-        var tile = this.game.board.spaces[i];
-        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-        var num = this.drawTileNumber(tile.number);
-        hex.addChild(num);
-        this.stage.addChild(hex);
-        this.tiles.push(hex);
-        y_pos += hexagonHeight;
-    }
-    x_pos += 120;
+    // y_pos = startingYPos - (hexagonHeight / 2);
+    // for (i = 12; i < 16; i++) {
+    //     var tile = this.game.board.spaces[i];
+    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+    //     var num = this.drawTileNumber(tile.number);
+    //     hex.addChild(num);
+    //     this.stage.addChild(hex);
+    //     this.tiles.push(hex);
+    //     y_pos += hexagonHeight;
+    // }
+    // x_pos += 120;
 
-    y_pos = startingYPos;
-    for (i = 16; i < 19; i++) {
-        var tile = this.game.board.spaces[i];
-        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-        var num = this.drawTileNumber(tile.number);
-        hex.addChild(num);
-        this.stage.addChild(hex);
-        this.tiles.push(hex);
-        y_pos += hexagonHeight;
-    }
+    // y_pos = startingYPos;
+    // for (i = 16; i < 19; i++) {
+    //     var tile = this.game.board.spaces[i];
+    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+    //     var num = this.drawTileNumber(tile.number);
+    //     hex.addChild(num);
+    //     this.stage.addChild(hex);
+    //     this.tiles.push(hex);
+    //     y_pos += hexagonHeight;
+    // }
 
     // run the render loop
     this.animate();
@@ -212,6 +352,7 @@ SettlersView.prototype.drawRobber = function() {
 SettlersView.prototype.animate = function() {
     this.drawDice();
     this.drawRobber();
+    this.drawGraph();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 };

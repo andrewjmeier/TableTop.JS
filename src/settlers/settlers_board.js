@@ -313,7 +313,6 @@ function SettlersBoard() {
     this.spaces.push(tile);
   }
 
-  console.log(this.spaces);
   var tilesMap = {};
 
   for (var key in verticiesMap) {
@@ -329,7 +328,6 @@ function SettlersBoard() {
     for (var i in obj.tiles) {
       var hex = this.spaces[obj.tiles[i]];
       if (obj.tiles[i] !== null && hex !== null) {
-        console.log(hex);
         hex.verticies.push(tile);
       }
       hexList.push(hex);
@@ -349,7 +347,6 @@ function SettlersBoard() {
   }
 
   this.graph = tilesMap;
-  console.log(tilesMap);
 
 };
 
@@ -374,6 +371,21 @@ SettlersBoard.prototype.creatTile = function(type, number) {
 
 SettlersBoard.prototype.addSettlement = function(settlement, vertexName) {
   this.graph[vertexName].settlement = settlement;
+};
+
+// TODO - add method to check if you can build a valid road with these verticies
+SettlersBoard.prototype.addRoad = function(road, vertexStart, vertexEnd) {
+  var start = this.graph[vertexStart];
+  var end = this.graph[vertexEnd];
+  for (var i in start.edges) {
+    var edge = start.edges[i];
+    if (edge && (edge.startVertex == end || edge.endVertex == end)) {
+      edge.road = road;
+      return true;
+    }
+  }
+  console.log("INVALID ROAD!!!");
+  return false;
 }
 
 module.exports = SettlersBoard;

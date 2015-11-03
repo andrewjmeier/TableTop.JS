@@ -44,18 +44,23 @@ var Board = require("./settlers/settlers_board");
 var Game = require("./settlers/settlers_game");
 var Player = require("./player");
 var Token = require("./settlers/settlement_token");
+var Road = require("./settlers/road_token");
 
 var board = new Board();
 
-var andrew = new Player("Andrew", 1);
-var garrett = new Player("Garrett", 2);
-var jimmy = new Player("Shane", 3);
+var andrew = new Player("Andrew", 0);
+var garrett = new Player("Garrett", 1);
+var jimmy = new Player("Shane", 2);
 
 var settlement1 = new Token(andrew);
 var settlement2 = new Token(andrew);
+var road1 = new Road(andrew);
+var road2 = new Road(andrew);
 
 board.addSettlement(settlement1, "5");
 board.addSettlement(settlement2, "10");
+
+board.addRoad(road1, "5", "13");
 
 var settlement3 = new Token(garrett);
 var settlement4 = new Token(garrett);
