@@ -7,8 +7,8 @@ function Game(players, board, stateMachine) {
   this.stateMachine = stateMachine;
 };
 
-Game.prototype.updateState = function(yesPressed) {
-  this.stateMachine.buttonPressed(yesPressed, this);
+Game.prototype.updateState = function(btnPressed) {
+  this.stateMachine.buttonPressed(btnPressed, this);
 }
 
 Game.prototype.randomizeCurrentPlayer = function() {
