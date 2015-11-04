@@ -2,6 +2,7 @@ var ChanceDeck = require("./cards/chanceDeck");
 var CommunityChestDeck = require("./cards/communityChestDeck");
 var inherits = require('util').inherits;
 var Game = require("../game.js");
+var Trade = require("./monopoly_trade.js");
 
 
 function MonopolyGame(players, board, stateMachine) {
@@ -13,6 +14,7 @@ function MonopolyGame(players, board, stateMachine) {
   this.state = WAITING_FOR_ROLL;
   this.message = "";
   this.activeCard = null;
+  this.trade = null;
 };
 
 inherits(MonopolyGame, Game);
@@ -95,6 +97,23 @@ MonopolyGame.prototype.nextPlayer = function() {
 
 MonopolyGame.prototype.clearActiveCard = function() {
   this.activeCard = null;
+};
+
+MonopolyGame.prototype.clearTrade = function() {
+  this.trade = null;
+};
+MonopolyGame.prototype.createTrade = function() {
+  this.trade = new Trade(this.getCurrentPlayer());
+};
+
+MonopolyGame.prototype.addPropertyToTrade = function(property) {
+  this.trade.addOrRemoveProperty(property);
+};
+
+MonopolyGame.prototype.addPlayerToTrade = function(player) {
+  if(!this.trade.answering_player){
+    this.trade.answering_player = player;
+  }
 };
 
 module.exports = MonopolyGame;

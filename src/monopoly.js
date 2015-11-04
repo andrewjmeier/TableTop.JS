@@ -32,7 +32,7 @@ var view = new MonopolyView(monopoly);
 view.drawBoard();
 
 //start running game
-turn.runStateMachine(false, monopoly);
+turn.runStateMachine(BTN1, monopoly);
 
 
 
