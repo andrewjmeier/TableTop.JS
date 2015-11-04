@@ -51,8 +51,10 @@ global.PROPOSE_TRADE = 6;
 global.TRADE_ANSWER = 7;
 global.ENDED_TURN = 8;
 
-//btnPressed
-global.BTN1 = 0;
-global.BTN2 = 1;
+//buttons going left to right 
+global.BTN1 = 0; //Yes or Continue
+global.BTN2 = 1; //Usually No
 global.BTN3 = 2;
+global.BTN4 = 3;
+global.BTN5 = 4;
 

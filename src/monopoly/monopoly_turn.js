@@ -116,7 +116,6 @@ MonopolyTurn.prototype.runStateMachine = function(btnPressed, game) {
       if (btnPressed == BTN1) {
         this.setState(ENDED_TURN, game);
       } else {//trade clicked
-        //TODO: clear properties and people selected
         displayMsg = displayMsg.concat("\n Click the items you want to trade. Choose 1 person and items. Then click continue.");
         this.setState(PROPOSE_TRADE, game);
         game.message = displayMsg;
@@ -126,13 +125,10 @@ MonopolyTurn.prototype.runStateMachine = function(btnPressed, game) {
       break;
 
     case PROPOSE_TRADE:
-      //game. 
-      //need to instatiate the trade object with the buttons they clicked. 
-      // console.log("yesPressed" + yesPressed);
       if (btnPressed == BTN1) {
         if(game.trade.allDetails()){
           displayMsg = displayMsg.concat("\n" + game.trade.answering_player.name + ", do you want to trade with " + game.trade.proposing_player.name + "?");
-          displayMsg = displayMsg.concat("\nThey are " + game.trade.propsToString());
+          displayMsg = displayMsg.concat("\nThey are " + game.trade.itemsToString());
           this.setState(TRADE_ANSWER, game);
           game.message = displayMsg;
         } else {

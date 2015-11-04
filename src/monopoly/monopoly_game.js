@@ -111,7 +111,7 @@ MonopolyGame.prototype.addPropertyToTrade = function(property) {
 };
 
 MonopolyGame.prototype.addPlayerToTrade = function(player) {
-  if(this.trade.answering_player == null){
+  if(!this.trade.answering_player){
     this.trade.answering_player = player;
   }
 };
