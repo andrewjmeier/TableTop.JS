@@ -23,16 +23,20 @@ var players = [john, steve, sam, mike, jimmy];
 
 var board = new Board();
 
-var turn = new Turn();
-
 var monopoly = new Game(players, board, turn);
 
-var view = new MonopolyView(monopoly);
+var turn = new Turn(monopoly);
+
+var view = new MonopolyView(monopoly, turn);
+
+turn.turnMap.on("transition", function (data){
+    console.log("we just transitioned from " + data.fromState + " to " + data.toState);
+});
 
 view.drawBoard();
 
 //start running game
-turn.runStateMachine(false, monopoly);
+// turn.runStateMachine(false, monopoly);
 
 
 

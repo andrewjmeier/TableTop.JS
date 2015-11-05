@@ -1,17 +1,21 @@
-function Turn() {
-  this.lastState = -1;
-};
+var machina = require("machina");
 
-Turn.prototype.setState = function(state, game) {
-  this.lastState = game.state;
-  game.state = state;
-};
+var Turn = machina.Fsm.extend({
+        initialize: function( options ) {
+            console.log("tests");
+        },
 
-// setup btns
-Turn.prototype.buttonPressed = function(yesPressed, game) {
-  console.log("here!");
-  this.runStateMachine(yesPressed, game);
-};
+        initialState: "uninitialized",
 
+        namespace: "test",
+
+        states: {
+            setup: {
+                "_onEnter": function() {
+                    console.log('hello');
+                }
+            }
+        }
+});
 
 module.exports = Turn;
