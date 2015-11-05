@@ -912,9 +912,9 @@ MonopolyView.prototype.drawMessage = function() {
 MonopolyView.prototype.updateMessage = function() {
     this.messageText.text = this.game.message;
 
-    switch (this.game.state) {
+    switch (this.turnMap.getCurrentState()) {
 
-      case BUY_ANSWER:
+      case BUY_PROMPT:
 
         this.button1Text.text = "Yes";
         this.button2Text.text = "No";

@@ -99,6 +99,10 @@ MonopolyTurn.prototype.updateState = function(click) {
     this.turnMap.handle(click);
 };
 
+MonopolyTurn.prototype.getCurrentState = function() {
+    return this.turnMap.compositeState();
+};
+
 /*
  Couple notes on how this works:
 

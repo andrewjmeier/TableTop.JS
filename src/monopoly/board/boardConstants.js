@@ -44,7 +44,5 @@ global.PG_UTIL = 9;
 global.WAITING_FOR_ROLL = "waitingOnRoll";
 global.ROLLED = "rolled";
 global.BUY_PROMPT = "buyPrompt";
-global.BUY_ANSWER = "buyAnswer";
 global.POST_TURN = "postTurn";
-global.POST_TURN_ANSWER = "postTurnAnswer";
 global.ENDED_TURN = "endedTurn";
