@@ -23,20 +23,13 @@ var players = [john, steve, sam, mike, jimmy];
 
 var board = new Board();
 
-var turn = new Turn();
-
 var monopoly = new Game(players, board, turn);
 
-var view = new MonopolyView(monopoly);
+var turn = new Turn(monopoly);
+
+var view = new MonopolyView(monopoly, turn);
 
 view.drawBoard();
-
-//start running game
-turn.runStateMachine(false, monopoly);
-
-
-
-
 
 
 

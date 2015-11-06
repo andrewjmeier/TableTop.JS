@@ -1,3 +1,5 @@
+var PIXI = require("../../../lib/pixi/pixi.js")
+
 var HousingProperty = require("../board/properties/housingProperty.js");
 var RailroadProperty = require("../board/properties/railroadProperty.js");
 var UtilityProperty = require("../board/properties/utilityProperty.js");
@@ -7,8 +9,10 @@ var CommunityChest = require("../board/other/communityChest");
 var IncomeTax = require("../board/taxes/incomeTax");
 var LuxuryTax = require("../board/taxes/luxuryTax");
 
-function MonopolyView(game_state) {
-    this.game = game_state;
+function MonopolyView(gameState, turnMap) {
+    this.game = gameState;
+    this.turnMap = turnMap;
+    this.turnMap.updateState("start");
     this.tiles = [];
 
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
@@ -867,9 +871,8 @@ MonopolyView.prototype.drawMessage = function() {
     button1.interactive = true;
     var context = this;
     button1.click = function(mouseData){
-       console.log("CLICK!");
-       context.game.updateState(true);
-    };
+       this.turnMap.updateState("yes");
+    }.bind(this);
 
     this.button1Text = new PIXI.Text("Yes", {font: '30px Arial',
                                                 align : 'center',
@@ -890,8 +893,8 @@ MonopolyView.prototype.drawMessage = function() {
 
     this.button2.interactive = true;
     this.button2.click = function(mouseData) {
-        context.game.updateState(false);
-    }
+        this.turnMap.updateState("no");
+    }.bind(this);
 
     this.button2Text = new PIXI.Text("No", {font: '30px Arial',
                                                 align : 'center',
@@ -909,9 +912,9 @@ MonopolyView.prototype.drawMessage = function() {
 MonopolyView.prototype.updateMessage = function() {
     this.messageText.text = this.game.message;
 
-    switch (this.game.state) {
+    switch (this.turnMap.getCurrentState()) {
 
-      case BUY_ANSWER:
+      case BUY_PROMPT:
 
         this.button1Text.text = "Yes";
         this.button2Text.text = "No";
