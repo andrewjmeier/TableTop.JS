@@ -8,6 +8,7 @@ var OreTile = require("../ore_tile");
 var SettlementToken = require("../settlement_token");
 var SettlersVertexLeftTile = require("../board/settlers_vertex_left_tile");
 var SettlersVertexRightTile = require("../board/settlers_vertex_right_tile");
+var Road = require("../road_token");
 
 function SettlersView(game_state) {
     this.game = game_state;
@@ -71,6 +72,14 @@ SettlersView.prototype.drawVertex = function(v, x, y) {
         color = constants.playerColors[v.settlement.player.color];
     }
     var vertex = new PIXI.Graphics();
+
+    vertex.interactive = true;
+    var context = this;
+    vertex.click = function(mouseData){
+       console.log("CLICK!");
+       context.game.createSettlement(v);
+    };
+
     vertex.beginFill(color);
     vertex.drawRect(0, 0, 10, 10);
     vertex.x = x;
@@ -78,15 +87,15 @@ SettlersView.prototype.drawVertex = function(v, x, y) {
     this.stage.addChild(vertex);
 };
 
-SettlersView.prototype.drawRoad = function(x1, y1, x2, y2, road) {
+SettlersView.prototype.drawRoad = function(color, x1, y1, x2, y2) {
     var road = new PIXI.Graphics();
-    color = constants.playerColors[0];
-    road.lineStyle(5, color);
+    var color = constants.playerColors[color];
+    road.lineStyle(4, color);
     road.moveTo(x1, y1);
     road.lineTo(x2, y2);
 
     this.stage.addChild(road);
-}
+};
 
 SettlersView.prototype.drawGraph = function() {
     this.drawnVerticies = [];
@@ -118,10 +127,11 @@ SettlersView.prototype.addLeftVertexType = function(verticiesToDraw, vertex, x, 
         var left_x = x - 80;
         var left_y = y;
         var edge = vertex.edges[0];
-        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
         if (edge.road) {
-            this.drawRoad(x, y, left_x, left_y, edge);
+            var road = edge.road;
+            this.drawRoad(road.player.color, x, y, left_x, left_y);
         }
+        var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
         var index = drawnVerticies.indexOf(newVertex);
         if (index === -1) {
             verticiesToDraw.push({vertex: newVertex, point: [left_x, left_y]});
@@ -133,7 +143,8 @@ SettlersView.prototype.addLeftVertexType = function(verticiesToDraw, vertex, x, 
         var up_y = y - 70;
         var edge = vertex.edges[1];
         if (edge.road) {
-            this.drawRoad(x, y, up_x, up_y, edge);
+            var road = edge.road;
+            this.drawRoad(road.player.color, x, y, up_x, up_y);
         }
         var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
         var index = drawnVerticies.indexOf(newVertex);
@@ -147,7 +158,8 @@ SettlersView.prototype.addLeftVertexType = function(verticiesToDraw, vertex, x, 
         var down_y = y + 70;
         var edge = vertex.edges[2];
         if (edge.road) {
-            this.drawRoad(x, y, down_x, down_y, edge);
+            var road = edge.road;
+            this.drawRoad(road.player.color, x, y, down_x, down_y);
         }
         var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
         var index = drawnVerticies.indexOf(newVertex);
@@ -163,7 +175,8 @@ SettlersView.prototype.addRightVertexType = function(verticiesToDraw, vertex, x,
         var up_y = y - 70;
         var edge = vertex.edges[0];
         if (edge.road) {
-            this.drawRoad(x, y, up_x, up_y, edge);
+            var road = edge.road;
+            this.drawRoad(road.player.color, x, y, up_x, up_y);
         }
         var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
         var index = drawnVerticies.indexOf(newVertex);
@@ -177,7 +190,8 @@ SettlersView.prototype.addRightVertexType = function(verticiesToDraw, vertex, x,
         var right_y = y;
         var edge = vertex.edges[1];
         if (edge.road) {
-            this.drawRoad(x, y, right_x, right_y, edge);
+            var road = edge.road;
+            this.drawRoad(road.player.color, x, y, right_x, right_y);
         }
         var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
         var index = drawnVerticies.indexOf(newVertex);
@@ -191,7 +205,8 @@ SettlersView.prototype.addRightVertexType = function(verticiesToDraw, vertex, x,
         var down_y = y + 70;
         var edge = vertex.edges[2];
         if (edge.road) {
-            this.drawRoad(x, y, down_x, down_y, edge);
+            var road = edge.road;
+            this.drawRoad(road.player.color, x, y, down_x, down_y);
         }
         var newVertex = edge.startVertex === vertex ? edge.endVertex : edge.startVertex;
         var index = drawnVerticies.indexOf(newVertex);
@@ -216,64 +231,65 @@ SettlersView.prototype.drawBoard = function() {
     var y_pos = startingYPos;
 
 
-    // for (var i = 0; i < 3; i++) {
-    //     var tile = this.game.board.spaces[i];
-    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-    //     var num = this.drawTileNumber(tile.number);
-    //     hex.addChild(num);
-    //     this.stage.addChild(hex);
-    //     this.tiles.push(hex);
-    //     y_pos += hexagonHeight;
-    // }
-    // x_pos += 120;
+    for (var i = 0; i < 3; i++) {
+        var tile = this.game.board.spaces[i];
+        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+        var num = this.drawTileNumber(tile.number);
+        hex.addChild(num);
+        this.stage.addChild(hex);
+        this.tiles.push(hex);
+        y_pos += hexagonHeight;
+    }
+    x_pos += 120;
 
-    // y_pos = startingYPos - (hexagonHeight / 2);
-    // for (i = 3; i < 7; i++) {
-    //     var tile = this.game.board.spaces[i];
-    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-    //     var num = this.drawTileNumber(tile.number);
-    //     hex.addChild(num);
-    //     this.stage.addChild(hex);
-    //     this.tiles.push(hex);
-    //     y_pos += hexagonHeight;
-    // }
-    // x_pos += 120;
+    y_pos = startingYPos - (hexagonHeight / 2);
+    for (i = 3; i < 7; i++) {
+        var tile = this.game.board.spaces[i];
+        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+        var num = this.drawTileNumber(tile.number);
+        hex.addChild(num);
+        this.stage.addChild(hex);
+        this.tiles.push(hex);
+        y_pos += hexagonHeight;
+    }
+    x_pos += 120;
 
-    // y_pos = startingYPos - hexagonHeight;
-    // for (i = 7; i < 12; i++) {
-    //     var tile = this.game.board.spaces[i];
-    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-    //     var num = this.drawTileNumber(tile.number);
-    //     hex.addChild(num);
-    //     this.stage.addChild(hex);
-    //     this.tiles.push(hex);
-    //     y_pos += hexagonHeight;
-    // }
-    // x_pos += 120;
+    y_pos = startingYPos - hexagonHeight;
+    for (i = 7; i < 12; i++) {
+        var tile = this.game.board.spaces[i];
+        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+        var num = this.drawTileNumber(tile.number);
+        hex.addChild(num);
+        this.stage.addChild(hex);
+        this.tiles.push(hex);
+        y_pos += hexagonHeight;
+    }
+    x_pos += 120;
 
-    // y_pos = startingYPos - (hexagonHeight / 2);
-    // for (i = 12; i < 16; i++) {
-    //     var tile = this.game.board.spaces[i];
-    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-    //     var num = this.drawTileNumber(tile.number);
-    //     hex.addChild(num);
-    //     this.stage.addChild(hex);
-    //     this.tiles.push(hex);
-    //     y_pos += hexagonHeight;
-    // }
-    // x_pos += 120;
+    y_pos = startingYPos - (hexagonHeight / 2);
+    for (i = 12; i < 16; i++) {
+        var tile = this.game.board.spaces[i];
+        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+        var num = this.drawTileNumber(tile.number);
+        hex.addChild(num);
+        this.stage.addChild(hex);
+        this.tiles.push(hex);
+        y_pos += hexagonHeight;
+    }
+    x_pos += 120;
 
-    // y_pos = startingYPos;
-    // for (i = 16; i < 19; i++) {
-    //     var tile = this.game.board.spaces[i];
-    //     var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
-    //     var num = this.drawTileNumber(tile.number);
-    //     hex.addChild(num);
-    //     this.stage.addChild(hex);
-    //     this.tiles.push(hex);
-    //     y_pos += hexagonHeight;
-    // }
+    y_pos = startingYPos;
+    for (i = 16; i < 19; i++) {
+        var tile = this.game.board.spaces[i];
+        var hex = this.getHexagonTexture(x_pos, y_pos, 1, this.colorForType(tile));
+        var num = this.drawTileNumber(tile.number);
+        hex.addChild(num);
+        this.stage.addChild(hex);
+        this.tiles.push(hex);
+        y_pos += hexagonHeight;
+    }
 
+    this.drawAllPlayersInfo();
     // run the render loop
     this.animate();
 };
@@ -294,6 +310,88 @@ SettlersView.prototype.colorForType = function(tile) {
     }
 };
 
+SettlersView.prototype.drawPlayerInfo = function(player) {
+    var info = new PIXI.Text(player.name + "\nDBA: $" + player.money, {font: '20px Arial',
+                                                align : 'left',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : constants.canvasWidth - constants.boardWidth - (4 * constants.leftBuffer),
+                                                });
+    return info;
+}
+
+SettlersView.prototype.drawAllPlayersInfo = function() {
+    var infoBlock = new PIXI.Graphics();
+    infoBlock.x = constants.boardWidth + constants.leftBuffer * 2;
+    infoBlock.y = constants.upperBuffer;
+    var blockSize = 150;
+    this.playerInfos = [];
+    for (var i in this.game.players) {
+        var player = this.game.players[i];
+        var info = this.drawPlayerInfo(player);
+        info.x = constants.leftBuffer * 0.2;
+        info.y = i * blockSize + (constants.upperBuffer * 0.2);
+
+        var playerColor = new PIXI.Graphics();
+        playerColor.x = constants.leftBuffer * 3;
+        playerColor.y = i * blockSize + (constants.upperBuffer * 0.2);
+        playerColor.beginFill(constants.playerColors[player.color]);
+        playerColor.drawRect(0, 0, 20, 20);
+
+        var box = new PIXI.Graphics();
+        box.y = i * blockSize;
+
+        var outline = new PIXI.Graphics();
+        outline.y = i * blockSize;
+        outline.lineStyle(1, 0, 1);
+        outline.drawRect(0, 0, constants.canvasWidth - constants.boardWidth - (3 * constants.leftBuffer), 140);
+
+        box.lineStyle(1, 0, 1);
+        box.beginFill(0x44C0DF, 1);
+        box.drawRect(0, 0, constants.canvasWidth - constants.boardWidth - (3 * constants.leftBuffer), 140);
+        this.playerInfos.push({background: box, text: info});
+
+        infoBlock.addChild(outline);
+        infoBlock.addChild(box);
+        infoBlock.addChild(info);
+        infoBlock.addChild(playerColor);
+
+
+    }
+    this.stage.addChild(infoBlock);
+};
+
+SettlersView.prototype.updatePlayerInfo = function(player, index) {
+    var info = this.playerInfos[index].text;
+    var box = this.playerInfos[index].background;
+
+    if (player === this.game.getCurrentPlayer()) {
+        box.alpha = 1;
+    } else {
+        box.alpha = 0;
+    }
+    var cards = "";
+    var resourceNames = {
+        0: "Wood",
+        1: "Brick",
+        2: "Sheep",
+        3: "Wheat",
+        4: "Ore"
+    };
+    for (var key in player.cards) {
+        cards += resourceNames[key] + ": " + player.cards[key] + ", ";
+    }
+    info.text = player.name + "\n" + cards + "\nSettlements Remaining: " + player.settlementsRemaining + "\nCities Remaining: " + player.citiesRemaining + "\nRoads Remaining: " + player.roadsRemaining;
+};
+
+SettlersView.prototype.updateAllPlayersInfo = function() {
+    for (var i in this.game.players) {
+        var player = this.game.players[i];
+        this.updatePlayerInfo(player, i);
+    }
+}
+
 SettlersView.prototype.drawDice = function() {
     var text = this.game.dice[0] + ", " + this.game.dice[1];
     if (this.diceView) {
@@ -309,25 +407,9 @@ SettlersView.prototype.drawDice = function() {
         };
         this.diceView = new PIXI.Text(text, font);
         this.diceView.x = 1000;
-        this.diceView.y = 300;
+        this.diceView.y = 600;
         this.stage.addChild(this.diceView);
     }
-};
-
-SettlersView.prototype.drawSettlements = function() {
-    for (var i in this.game.players) {
-        var player = this.game.players[i];
-        for (var j in player.tokens) {
-            var token = player.tokens[j];
-            if (token instanceof SettlementToken) {
-                this.drawSettlement(token);
-            }
-        }
-    }
-};
-
-SettlersView.prototype.drawSettlement = function(token) {
-
 };
 
 SettlersView.prototype.drawRobber = function() {
@@ -337,7 +419,9 @@ SettlersView.prototype.drawRobber = function() {
         this.robber.width = 20;
         this.robber.height = 50;
     } else {
-        this.robberTile.removeChild(this.robber);
+        if (this.robberTile) {
+            this.robberTile.removeChild(this.robber);
+        }
     }
     for (var i in this.tiles) {
         var tile = this.tiles[i];
@@ -353,6 +437,7 @@ SettlersView.prototype.animate = function() {
     this.drawDice();
     this.drawRobber();
     this.drawGraph();
+    this.updateAllPlayersInfo();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 };

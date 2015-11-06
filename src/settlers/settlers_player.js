@@ -1,5 +1,9 @@
 var inherits = require('util').inherits;
 var Player = require("../player.js");
+var Settlement = require("./settlement_token");
+var Road = require("./road_token");
+var City = require("./city_token");
+
 
 var WOOD = 0;
 var BRICK = 1;
@@ -51,6 +55,7 @@ SettlersPlayer.prototype.buySettlement = function() {
   this.useResource(1, BRICK);
   this.useResource(1, WHEAT);
   this.useResource(1, SHEEP);
+  return new Settlement(this);
 };
 
 SettlersPlayer.prototype.canBuyCity = function() {
