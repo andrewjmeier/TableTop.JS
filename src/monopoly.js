@@ -27,7 +27,8 @@
 
 // var monopoly = new Game(players, board, turn);
 
-// var view = new MonopolyView(monopoly);
+// var view = new MonopolyView(monopoly, turn);
+
 
 // view.drawBoard();
 
@@ -48,6 +49,7 @@ var Road = require("./settlers/road_token");
 
 var board = new Board();
 
+<<<<<<< HEAD
 var andrew = new Player("Andrew", 0);
 
 andrew.cards = {
@@ -96,10 +98,6 @@ var settlers = new Game([andrew, garrett, jimmy], board, {});
 var view = new SettlersView(settlers);
 
 view.drawBoard();
-
-
-
-
 
 
 
