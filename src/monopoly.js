@@ -29,18 +29,7 @@ var turn = new Turn(monopoly);
 
 var view = new MonopolyView(monopoly, turn);
 
-turn.turnMap.on("transition", function (data){
-    console.log("we just transitioned from " + data.fromState + " to " + data.toState);
-});
-
 view.drawBoard();
-
-//start running game
-// turn.runStateMachine(false, monopoly);
-
-
-
-
 
 
 

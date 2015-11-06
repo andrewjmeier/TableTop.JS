@@ -30,10 +30,6 @@ Game.prototype.isDoubles = function(dice) {
   return dice[0] === dice[1];
 };
 
-// Game.prototype.setState = function(newState) {
-//   this.state = newState;
-// };
-
 Game.prototype.getCurrentPlayer = function() {
   return this.players[this.currentPlayer];
 };
