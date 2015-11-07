@@ -11,7 +11,8 @@ function SettlersVertexTile(isUp) {
 
 inherits(SettlersVertexTile, VertexTile);
 
-SettlersVertexTile.prototype.canBuild = function(player) {
+// at the beginning of the game, road isn't required to build settlement
+SettlersVertexTile.prototype.canBuild = function(player, requiresRoad) {
   var hasRoad = false;
   for (var i in this.edges) {
     var edge = this.edges[i];
@@ -27,7 +28,13 @@ SettlersVertexTile.prototype.canBuild = function(player) {
       }
     }
   }
-  return !this.settlement && hasRoad;    // can't build if there's already a settlement
+
+  // can't build if there's already a settlement
+  if (requiresRoad) {
+    return !this.settlement && hasRoad;
+  } else {
+    return !this.settlement;
+  }
 };
 
 SettlersVertexTile.prototype.addSettlement = function(settlement) {

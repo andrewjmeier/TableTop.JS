@@ -6,6 +6,6 @@ function DesertTile(number) {
   this.hasRobber = true;
 }
 
-inherits(DesertTile, SettlersTile)
+inherits(DesertTile, SettlersTile);
 
 module.exports = DesertTile;

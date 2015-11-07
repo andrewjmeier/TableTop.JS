@@ -13,7 +13,13 @@ var ORE = 4;
 
 function SettlersPlayer(name, number) {
   Player.call(this, name, number);
-  this.cards = {};
+  this.cards = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0
+  };
   this.developmentCards = [];
   this.settlementsRemaining = 5;
   this.citiesRemaining = 4;
@@ -50,12 +56,21 @@ SettlersPlayer.prototype.canBuySettlement = function() {
 }
 
 SettlersPlayer.prototype.buySettlement = function() {
-  this.settlementsRemaining -= 1;
   this.useResource(1, WOOD);
   this.useResource(1, BRICK);
   this.useResource(1, WHEAT);
   this.useResource(1, SHEEP);
+  return this.buildSettlement();
+};
+
+SettlersPlayer.prototype.buildSettlement = function() {
+  this.settlementsRemaining -= 1;
   return new Settlement(this);
+};
+
+SettlersPlayer.prototype.buildRoad = function() {
+  this.roadsRemaining -= 1;
+  return new Road(this);
 };
 
 SettlersPlayer.prototype.canBuyCity = function() {
@@ -78,9 +93,9 @@ SettlersPlayer.prototype.canBuyRoad = function() {
 }
 
 SettlersPlayer.prototype.buyRoad = function() {
-  this.roadsRemaining -= 1;
   this.useResource(1, WOOD);
   this.useResource(1, BRICK);
+  return this.buildRoad();
 };
 
 SettlersPlayer.prototype.canBuyDevelopmentCard = function() {

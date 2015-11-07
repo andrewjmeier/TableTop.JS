@@ -1,3 +1,5 @@
+var PIXI = require("../../../lib/pixi/pixi.js")
+
 var constants = require("./view_constants.js");
 var gameConstants = require("../game_constants");
 var DesertTile = require("../desert_tile");
@@ -10,8 +12,9 @@ var SettlersVertexLeftTile = require("../board/settlers_vertex_left_tile");
 var SettlersVertexRightTile = require("../board/settlers_vertex_right_tile");
 var Road = require("../road_token");
 
-function SettlersView(game_state) {
+function SettlersView(game_state, turnMap) {
     this.game = game_state;
+    this.turnMap = turnMap;
     this.tiles = [];
 
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
@@ -77,8 +80,9 @@ SettlersView.prototype.drawVertex = function(v, x, y) {
     var context = this;
     vertex.click = function(mouseData){
        console.log("CLICK!");
-       context.game.createSettlement(v);
-    };
+       this.game.createSettlement(v);
+       this.turnMap.updateState("yes");
+    }.bind(this);
 
     vertex.beginFill(color);
     vertex.drawRect(0, 0, 10, 10);
@@ -290,6 +294,7 @@ SettlersView.prototype.drawBoard = function() {
     }
 
     this.drawAllPlayersInfo();
+    this.drawMessage();
     // run the render loop
     this.animate();
 };
@@ -433,10 +438,91 @@ SettlersView.prototype.drawRobber = function() {
     }
 };
 
+SettlersView.prototype.drawMessage = function() {
+    var container = new PIXI.Container();
+    this.messageText = new PIXI.Text("Welcome to settlers", {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : constants.canvasWidth - (2 * constants.leftBuffer),
+                                                });
+    container.x = constants.leftBuffer;
+    container.y = constants.boardHeight + (2 * constants.upperBuffer);
+    container.addChild(this.messageText);
+
+    button1 = new PIXI.Graphics();
+    button1.y = 180;
+    button1.beginFill(0x00FF00, 1);
+    button1.drawRect(0, 0, 200, 50);
+    container.addChild(button1);
+
+    button1.interactive = true;
+    var context = this;
+    button1.click = function(mouseData){
+       this.turnMap.updateState("yes");
+    }.bind(this);
+
+    this.button1Text = new PIXI.Text("Yes", {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : 150,
+                                                });
+    this.button1Text.x = 50;
+    button1.addChild(this.button1Text);
+
+    this.button2 = new PIXI.Graphics();
+    this.button2.x = 250;
+    this.button2.y = 180;
+    this.button2.beginFill(0xFF0000, 1);
+    this.button2.drawRect(0, 0, 200, 50);
+    container.addChild(this.button2);
+
+    this.button2.interactive = true;
+    this.button2.click = function(mouseData) {
+        this.turnMap.updateState("no");
+    }.bind(this);
+
+    this.button2Text = new PIXI.Text("No", {font: '30px Arial',
+                                                align : 'center',
+                                                wordWrap : true,
+                                                strokeThickness : .25,
+                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                wordWrapWidth : 150,
+                                                });
+    this.button2Text.x = 50;
+    this.button2.addChild(this.button2Text);
+
+    this.stage.addChild(container);
+};
+
+SettlersView.prototype.updateMessage = function() {
+    this.messageText.text = this.game.message;
+
+    switch (this.turnMap.getCurrentState()) {
+
+      // case BUY_PROMPT:
+
+      //   this.button1Text.text = "Yes";
+      //   this.button2Text.text = "No";
+      //   this.button2.alpha = 1;
+      //   break;
+
+      default:
+        this.button1Text.text = "Continue";
+        this.button2Text.text = "";
+        this.button2.alpha = 0;
+        break;
+    }
+};
+
 SettlersView.prototype.animate = function() {
     this.drawDice();
     this.drawRobber();
     this.drawGraph();
+    this.updateMessage();
     this.updateAllPlayersInfo();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);

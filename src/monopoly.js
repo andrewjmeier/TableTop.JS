@@ -46,56 +46,21 @@ var Game = require("./settlers/settlers_game");
 var Player = require("./settlers/settlers_player");
 var Settlement = require("./settlers/settlement_token");
 var Road = require("./settlers/road_token");
+var Turn = require("./settlers/settlers_turn");
 
 var board = new Board();
 
-<<<<<<< HEAD
 var andrew = new Player("Andrew", 0);
-
-andrew.cards = {
-  0: 5,
-  1: 2,
-  2: 3,
-  3: 1,
-  4: 2
-};
-
 var garrett = new Player("Garrett", 1);
 var jimmy = new Player("Shane", 2);
 
-var settlement1 = new Settlement(andrew);
-var settlement2 = new Settlement(andrew);
-var road1 = new Road(andrew);
-var road2 = new Road(andrew);
+var settlers = new Game([andrew, garrett, jimmy], board);
 
-var road3 = new Road(garrett);
-var road4 = new Road(jimmy);
+var turn = new Turn(settlers);
 
-board.addSettlement(settlement1, "5");
-board.addSettlement(settlement2, "10");
+settlers.turnMap = turn;
 
-board.addRoad(road1, "5", "13");
-board.addRoad(road2, "2", "3");
-
-board.addRoad(road3, "13", "14");
-board.addRoad(road4, "25", "26");
-
-
-var settlement3 = new Settlement(garrett);
-var settlement4 = new Settlement(garrett);
-
-board.addSettlement(settlement3, "7");
-board.addSettlement(settlement4, "15");
-
-var settlement5 = new Settlement(jimmy);
-var settlement6 = new Settlement(jimmy);
-
-board.addSettlement(settlement5, "25");
-board.addSettlement(settlement6, "36");
-
-var settlers = new Game([andrew, garrett, jimmy], board, {});
-
-var view = new SettlersView(settlers);
+var view = new SettlersView(settlers, turn);
 
 view.drawBoard();
 
