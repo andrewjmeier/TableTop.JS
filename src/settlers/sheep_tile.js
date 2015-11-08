@@ -1,7 +1,6 @@
 var SettlersTile = require("./settlers_tile");
 var inherits = require('util').inherits;
-
-var SHEEP = 2;
+var constants = require("./settlers_constants");
 
 function SheepTile(number) {
   SettlersTile.call(this, number);
@@ -10,7 +9,7 @@ function SheepTile(number) {
 inherits(SheepTile, SettlersTile);
 
 SheepTile.prototype.addResource = function(player) {
-  player.addResource(1, SHEEP);
+  player.addResource(1, constants.SHEEP);
 };
 
 module.exports = SheepTile;

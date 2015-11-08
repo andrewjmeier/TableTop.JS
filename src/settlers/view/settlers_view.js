@@ -15,17 +15,23 @@ var Road = require("../road_token");
 function SettlersView(game_state, turnMap) {
     this.game = game_state;
     this.turnMap = turnMap;
+    // this.turnMap.updateState("start");
+
     this.tiles = [];
+    this.buttons = [];
 
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
             {backgroundColor : 0xF4A460});
 
     document.body.appendChild(this.renderer.view);
 
+    console.log(turnMap);
+    turnMap.turnMap.on("*", function(eventName, data) {
+        this.redraw();
+    }.bind(this));
+
     // create the root of the scene graph
     this.stage = new PIXI.Container();
-
-    this.drawGraph();
 };
 
 SettlersView.prototype.getHexagonTexture = function(cX, cY, size, color) {
@@ -81,11 +87,11 @@ SettlersView.prototype.drawVertex = function(v, x, y) {
     vertex.click = function(mouseData){
        console.log("CLICK!");
        this.game.createSettlement(v);
-       this.turnMap.updateState("yes");
+       this.drawGraph();
     }.bind(this);
 
     vertex.beginFill(color);
-    vertex.drawRect(0, 0, 10, 10);
+    vertex.drawRect(0, 0, 15, 15);
     vertex.x = x;
     vertex.y = y;
     this.stage.addChild(vertex);
@@ -294,8 +300,9 @@ SettlersView.prototype.drawBoard = function() {
     }
 
     this.drawAllPlayersInfo();
-    this.drawMessage();
-    // run the render loop
+    this.drawGraph();
+    this.redraw();
+
     this.animate();
 };
 
@@ -438,92 +445,73 @@ SettlersView.prototype.drawRobber = function() {
     }
 };
 
-SettlersView.prototype.drawMessage = function() {
-    var container = new PIXI.Container();
-    this.messageText = new PIXI.Text("Welcome to settlers", {font: '30px Arial',
+SettlersView.prototype.displayButtons = function() {
+    if (!this.buttons.length) {
+        var container = new PIXI.Container();
+        this.messageText = new PIXI.Text("Welcome to settlers", {font: '30px Arial',
                                                 align : 'center',
                                                 wordWrap : true,
                                                 strokeThickness : .25,
                                                 //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
                                                 wordWrapWidth : constants.canvasWidth - (2 * constants.leftBuffer),
                                                 });
-    container.x = constants.leftBuffer;
-    container.y = constants.boardHeight + (2 * constants.upperBuffer);
-    container.addChild(this.messageText);
+        container.x = constants.leftBuffer;
+        container.y = constants.boardHeight + (2 * constants.upperBuffer);
+        container.addChild(this.messageText);
 
-    button1 = new PIXI.Graphics();
-    button1.y = 180;
-    button1.beginFill(0x00FF00, 1);
-    button1.drawRect(0, 0, 200, 50);
-    container.addChild(button1);
 
-    button1.interactive = true;
-    var context = this;
-    button1.click = function(mouseData){
-       this.turnMap.updateState("yes");
-    }.bind(this);
+        for (var i = 0; i < 5; i++) {
+            button1 = new PIXI.Graphics();
+            button1.x = i * 250;
+            button1.y = 180;
+            button1.beginFill(0x00FF00, 1);
+            button1.drawRect(0, 0, 200, 50);
+            container.addChild(button1);
 
-    this.button1Text = new PIXI.Text("Yes", {font: '30px Arial',
-                                                align : 'center',
-                                                wordWrap : true,
-                                                strokeThickness : .25,
-                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                wordWrapWidth : 150,
-                                                });
-    this.button1Text.x = 50;
-    button1.addChild(this.button1Text);
+            button1.interactive = true;
+            button1.click = function(mouseData){
+               var buttonIndex = button1.x / 250;
+               console.log("clicked button ", buttonIndex, " with text ", this.turnMap.turnMap.buttons[buttonIndex]);
+               this.turnMap.updateState(this.turnMap.turnMap.buttons[buttonIndex]);
+            }.bind(this);
 
-    this.button2 = new PIXI.Graphics();
-    this.button2.x = 250;
-    this.button2.y = 180;
-    this.button2.beginFill(0xFF0000, 1);
-    this.button2.drawRect(0, 0, 200, 50);
-    container.addChild(this.button2);
-
-    this.button2.interactive = true;
-    this.button2.click = function(mouseData) {
-        this.turnMap.updateState("no");
-    }.bind(this);
-
-    this.button2Text = new PIXI.Text("No", {font: '30px Arial',
-                                                align : 'center',
-                                                wordWrap : true,
-                                                strokeThickness : .25,
-                                                //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                wordWrapWidth : 150,
-                                                });
-    this.button2Text.x = 50;
-    this.button2.addChild(this.button2Text);
-
-    this.stage.addChild(container);
-};
-
-SettlersView.prototype.updateMessage = function() {
-    this.messageText.text = this.game.message;
-
-    switch (this.turnMap.getCurrentState()) {
-
-      // case BUY_PROMPT:
-
-      //   this.button1Text.text = "Yes";
-      //   this.button2Text.text = "No";
-      //   this.button2.alpha = 1;
-      //   break;
-
-      default:
-        this.button1Text.text = "Continue";
-        this.button2Text.text = "";
-        this.button2.alpha = 0;
-        break;
+            this.button1Text = new PIXI.Text("", {font: '30px Arial',
+                                                        align : 'center',
+                                                        wordWrap : true,
+                                                        strokeThickness : .25,
+                                                        //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                        wordWrapWidth : 150,
+                                                        });
+            this.button1Text.x = 50;
+            button1.addChild(this.button1Text);
+            this.buttons.push(button1);
+        }
+        this.stage.addChild(container);
+    } else {
+        for (var i in this.buttons) {
+            var button = this.buttons[i];
+            var buttonText = this.turnMap.turnMap.buttons[i];
+            if (buttonText) {
+                console.log(buttonText);
+                button.text = buttonText;
+                button.alpha = 1;
+            } else {
+                button.alpha = 0;
+            }
+        }
+        this.messageText.text = this.game.message;
     }
 };
 
-SettlersView.prototype.animate = function() {
+SettlersView.prototype.redraw = function() {
     this.drawDice();
     this.drawRobber();
-    this.drawGraph();
-    this.updateMessage();
+    this.displayButtons();
     this.updateAllPlayersInfo();
+    this.drawGraph();
+}
+
+SettlersView.prototype.animate = function() {
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 };

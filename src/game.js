@@ -34,4 +34,8 @@ Game.prototype.getCurrentPlayer = function() {
   return this.players[this.currentPlayer];
 };
 
+Game.prototype.nextPlayer = function() {
+  this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+};
+
 module.exports = Game;

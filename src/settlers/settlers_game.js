@@ -54,6 +54,9 @@ SettlersGame.prototype.createSettlement = function(vertex) {
       }
       break;
   }
+
+  this.turnMap.updateState("yes");
+
 };
 
 SettlersGame.prototype.rollAndGiveCards = function() {

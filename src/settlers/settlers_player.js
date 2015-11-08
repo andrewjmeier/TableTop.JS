@@ -3,13 +3,7 @@ var Player = require("../player.js");
 var Settlement = require("./settlement_token");
 var Road = require("./road_token");
 var City = require("./city_token");
-
-
-var WOOD = 0;
-var BRICK = 1;
-var SHEEP = 2;
-var WHEAT = 3;
-var ORE = 4;
+var constants = require("./settlers_constants");
 
 function SettlersPlayer(name, number) {
   Player.call(this, name, number);
@@ -48,18 +42,18 @@ SettlersPlayer.prototype.useResource = function(amount, resource) {
 };
 
 SettlersPlayer.prototype.canBuySettlement = function() {
-  return this.cards[WOOD] > 0
-      && this.cards[BRICK] > 0
-      && this.cards[WHEAT] > 0
-      && this.cards[SHEEP] > 0
+  return this.cards[constants.WOOD] > 0
+      && this.cards[constants.BRICK] > 0
+      && this.cards[constants.WHEAT] > 0
+      && this.cards[constants.SHEEP] > 0
       && this.settlementsRemaining > 0;
 }
 
 SettlersPlayer.prototype.buySettlement = function() {
-  this.useResource(1, WOOD);
-  this.useResource(1, BRICK);
-  this.useResource(1, WHEAT);
-  this.useResource(1, SHEEP);
+  this.useResource(1, constants.WOOD);
+  this.useResource(1, constants.BRICK);
+  this.useResource(1, constants.WHEAT);
+  this.useResource(1, constants.SHEEP);
   return this.buildSettlement();
 };
 
@@ -74,41 +68,41 @@ SettlersPlayer.prototype.buildRoad = function() {
 };
 
 SettlersPlayer.prototype.canBuyCity = function() {
-  return this.cards[ORE] > 2
-      && this.cards[WHEAT] > 1
+  return this.cards[constants.ORE] > 2
+      && this.cards[constants.WHEAT] > 1
       && this.citiesRemaining > 0;
 }
 
 SettlersPlayer.prototype.buyCity = function() {
   this.settlementsRemaining += 1;
   this.citiesRemaining -= 1;
-  this.useResource(3, ORE);
-  this.useResource(2, WHEAT);
+  this.useResource(3, constants.ORE);
+  this.useResource(2, constants.WHEAT);
 };
 
 SettlersPlayer.prototype.canBuyRoad = function() {
-  return this.cards[WOOD] > 0
-      && this.cards[BRICK] > 0
+  return this.cards[constants.WOOD] > 0
+      && this.cards[constants.BRICK] > 0
       && this.roadsRemaining > 0;
 }
 
 SettlersPlayer.prototype.buyRoad = function() {
-  this.useResource(1, WOOD);
-  this.useResource(1, BRICK);
+  this.useResource(1, constants.WOOD);
+  this.useResource(1, constants.BRICK);
   return this.buildRoad();
 };
 
 SettlersPlayer.prototype.canBuyDevelopmentCard = function() {
-  return this.cards[SHEEP] > 0
-      && this.cards[ORE] > 0
-      && this.cards[WHEAT] > 0;
+  return this.cards[constants.SHEEP] > 0
+      && this.cards[constants.ORE] > 0
+      && this.cards[constants.WHEAT] > 0;
 }
 
 SettlersPlayer.prototype.buyDevelopmentCard = function() {
   // TODO add card to hand
-  this.useResource(1, SHEEP);
-  this.useResource(1, ORE);
-  this.useResource(1, WHEAT);
+  this.useResource(1, constants.SHEEP);
+  this.useResource(1, constants.ORE);
+  this.useResource(1, constants.WHEAT);
 };
 
 module.exports = SettlersPlayer;

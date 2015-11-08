@@ -1,7 +1,6 @@
 var SettlersTile = require("./settlers_tile");
 var inherits = require('util').inherits;
-
-var BRICK = 1;
+var constants = require("./settlers_constants");
 
 function BrickTile(number) {
   SettlersTile.call(this, number);
@@ -10,7 +9,7 @@ function BrickTile(number) {
 inherits(BrickTile, SettlersTile)
 
 BrickTile.prototype.addResource = function(player) {
-  player.addResource(1, BRICK);
+  player.addResource(1, constants.BRICK);
 };
 
 module.exports = BrickTile;

@@ -1,7 +1,6 @@
 var SettlersTile = require("./settlers_tile");
 var inherits = require('util').inherits;
-
-var ORE = 4;
+var constants = require("./settlers_constants");
 
 function OreTile(number) {
   SettlersTile.call(this, number)
@@ -10,7 +9,7 @@ function OreTile(number) {
 inherits(OreTile, SettlersTile);
 
 OreTile.prototype.addResource = function(player) {
-  player.addResource(1, ORE);
+  player.addResource(1, constants.ORE);
 };
 
 module.exports = OreTile;

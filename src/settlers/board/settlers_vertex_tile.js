@@ -18,12 +18,14 @@ SettlersVertexTile.prototype.canBuild = function(player, requiresRoad) {
     var edge = this.edges[i];
     var road = edge ? edge.road : null;
     if (road && road.player === player) {
+      console.log("vertex has an adjacent road to build settlement");
       hasRoad = true;
     }
     if (edge) {
       var otherVertex = edge.startVertex === this ? edge.endVertex : edge.startVertex;
       if (otherVertex.settlement) {
         // Can't build a settlement adjacent to another settlement
+        console.log("can't build next to another settlement");
         return false;
       }
     }
