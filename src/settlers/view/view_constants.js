@@ -60,6 +60,15 @@ viewConstants.playerColors = [
     0xFF9900,
 ];
 
+viewConstants.resourceColors = [
+    0x007827,
+    0xD85C38,
+    0x00E700,
+    0xFAB600,
+    0xA8BEB7,
+    0xC08E37
+];
+
 // DARTMOUTH LOGO
 // Constants for drawing Dartmouth logo at center of board
 viewConstants.logoTexturePath = 'assets/Big_D.png';

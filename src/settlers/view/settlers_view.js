@@ -1,7 +1,7 @@
 var PIXI = require("../../../lib/pixi/pixi.js")
 
 var constants = require("./view_constants.js");
-var gameConstants = require("../game_constants");
+var gameConstants = require("../settlers_constants");
 var DesertTile = require("../desert_tile");
 var WoodTile = require("../wood_tile");
 var BrickTile = require("../brick_tile");
@@ -11,22 +11,30 @@ var SettlementToken = require("../settlement_token");
 var SettlersVertexLeftTile = require("../board/settlers_vertex_left_tile");
 var SettlersVertexRightTile = require("../board/settlers_vertex_right_tile");
 var Road = require("../road_token");
+var City = require("../city_token");
 
 function SettlersView(game_state, turnMap) {
     this.game = game_state;
     this.turnMap = turnMap;
-    // this.turnMap.updateState("start");
 
+    // hex tiles
     this.tiles = [];
+
+    // five buttons for general control. Text determined by current state
     this.buttons = [];
     this.buttonTexts = [];
+    
+    // buttons for selecting resources to trade
+    this.addButtons = [];
+    this.removeButtons = [];
+
 
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
             {backgroundColor : 0xF4A460});
 
     document.body.appendChild(this.renderer.view);
 
-    console.log(turnMap);
+    // redraw the view when the state changes
     turnMap.turnMap.on("*", function(eventName, data) {
         this.redraw();
     }.bind(this));
@@ -78,10 +86,12 @@ SettlersView.prototype.drawTileNumber = function(number) {
 
 SettlersView.prototype.drawVertex = function(v, x, y) {
     var color = 0x000000;
+
+    var vertex = new PIXI.Graphics();
+
     if (v.settlement) {
         color = constants.playerColors[v.settlement.player.color];
     }
-    var vertex = new PIXI.Graphics();
 
     vertex.interactive = true;
     var context = this;
@@ -95,6 +105,14 @@ SettlersView.prototype.drawVertex = function(v, x, y) {
     vertex.drawRect(0, 0, 15, 15);
     vertex.x = x;
     vertex.y = y;
+
+    if (v.settlement instanceof City) {
+        var city = new PIXI.Graphics();
+        city.beginFill(0xFFFF00);
+        city.drawRect(3, 3, 9, 9);
+        vertex.addChild(city);
+    };
+
     this.stage.addChild(vertex);
 };
 
@@ -309,17 +327,17 @@ SettlersView.prototype.drawBoard = function() {
 
 SettlersView.prototype.colorForType = function(tile) {
     if (tile instanceof DesertTile) {
-        return 0xC08E37;
+        return constants.resourceColors[gameConstants.DESERT];
     } else if (tile instanceof WoodTile) {
-        return 0x007827;
+        return constants.resourceColors[gameConstants.WOOD];
     } else if (tile instanceof BrickTile) {
-        return 0xD85C38;
+        return constants.resourceColors[gameConstants.BRICK];
     } else if (tile instanceof WheatTile) {
-        return 0xFAB600;
+        return constants.resourceColors[gameConstants.WHEAT];
     } else if (tile instanceof OreTile) {
-        return 0xA8BEB7;
+        return constants.resourceColors[gameConstants.ORE];
     } else {
-        return 0x00E700;
+        return constants.resourceColors[gameConstants.SHEEP];
     }
 };
 
@@ -613,12 +631,78 @@ SettlersView.prototype.displayButtons = function() {
     }
 };
 
+SettlersView.prototype.drawResourceButtons = function() {
+
+    if (!this.addButtons.length) {
+        var container = new PIXI.Container();
+        container.x = 900;
+        container.y = 700;
+        this.stage.addChild(container);
+
+        for (var i = 0; i < 5; i++) {
+            var button = this.createResourceRemoveButton(constants.resourceColors[i], i);
+            var button2 = this.createResourceAddButton(constants.resourceColors[i], i);
+
+            this.removeButtons.push(button);
+            this.addButtons.push(button2);
+
+            container.addChild(button);
+            container.addChild(button2);
+        }
+    } 
+
+};
+
+SettlersView.prototype.createResourceRemoveButton = function(color, index) {
+    var button = new PIXI.Graphics();
+    button.beginFill(color);
+    button.drawRect(0, 0, 50, 30);
+
+    var text = new PIXI.Text("-1", {font: '20px Arial',
+                                                    align : 'center',
+                                                    wordWrap : true,
+                                                    strokeThickness : .25,
+                                                    //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                    wordWrapWidth : 150,
+                                                    });
+    text.x = 25;
+    text.y = 15;
+    text.anchor.set(.5, .5); 
+    button.addChild(text);
+
+    button.x = index * 60;
+    return button;
+};
+
+SettlersView.prototype.createResourceAddButton = function(color, index) {
+    var button = new PIXI.Graphics();
+    button.beginFill(color);
+    button.drawRect(0, 0, 50, 30);
+
+    var text = new PIXI.Text("+1", {font: '20px Arial',
+                                                    align : 'center',
+                                                    wordWrap : true,
+                                                    strokeThickness : .25,
+                                                    //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                    wordWrapWidth : 150,
+                                                    });
+    text.x = 25;
+    text.y = 15;
+    text.anchor.set(.5, .5); 
+    button.addChild(text);
+
+    button.x = index * 60;
+    button.y = 40;
+    return button;
+};
+
 SettlersView.prototype.redraw = function() {
     this.drawDice();
     this.drawRobber();
     this.displayButtons();
     this.updateAllPlayersInfo();
     this.drawGraph();
+    this.drawResourceButtons();
 }
 
 SettlersView.prototype.animate = function() {

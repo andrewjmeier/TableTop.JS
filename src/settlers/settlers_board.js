@@ -1,5 +1,5 @@
-var constants = require("./game_constants");
 var Utils = require("../utils");
+var constants = require("./settlers_constants");
 var DesertTile = require("./desert_tile");
 var WoodTile = require("./wood_tile");
 var BrickTile = require("./brick_tile");

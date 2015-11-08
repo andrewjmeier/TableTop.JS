@@ -19,7 +19,7 @@ SettlersGame.prototype.vertexClicked = function(vertex) {
 
     case "placingInitialSettlements":
       console.log("placingInitialSettlements");
-      if (vertex.canBuild(player)) {
+      if (vertex.canBuildSettlement(player)) {
         var settlement = player.buildSettlement();
         vertex.addSettlement(settlement);
         console.log(settlement);
@@ -36,11 +36,21 @@ SettlersGame.prototype.vertexClicked = function(vertex) {
     case "buildSettlement":
       // check that the player has a remaining token/resources and
       // then check that the selected vertex is legal on the board
-      if (player.canBuySettlement() && vertex.canBuild(player, true)) {
+      if (player.canBuySettlement() && vertex.canBuildSettlement(player, true)) {
         var settlement = player.buySettlement();
         vertex.addSettlement(settlement);
       } else {
         console.log("don't have resources to build settlement");
+      }
+      break;
+
+    case "buildCity":
+      if (player.canBuyCity() && vertex.canBuildCity(player)) {
+        var city = player.buyCity();
+        console.log(city, "CITY!!");
+        vertex.addSettlement(city);
+      } else {
+        console.log("don't have resources to build city");
       }
       break;
 

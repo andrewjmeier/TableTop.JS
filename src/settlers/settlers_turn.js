@@ -120,12 +120,20 @@ function SettlersTurn(game) {
                     this.game.message = "Select a location to build your settlement";
                     this.buttons = [];
                 },
+            
+                continue : function() {
+                    this.transition("postTurn");
+                },
             },
 
             buildCity: {
                 _onEnter : function() {
                     this.game.message = "Select a current settlement to upgrade to a city";
                     this.buttons = [];
+                },
+
+                continue : function() {
+                    this.transition("postTurn");
                 },
             },
 

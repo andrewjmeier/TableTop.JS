@@ -67,6 +67,10 @@ SettlersPlayer.prototype.buildRoad = function() {
   return new Road(this);
 };
 
+SettlersPlayer.prototype.buildCity = function() {
+  return new City(this);
+};
+
 SettlersPlayer.prototype.canBuyCity = function() {
   return this.cards[constants.ORE] > 2
       && this.cards[constants.WHEAT] > 1
@@ -78,6 +82,7 @@ SettlersPlayer.prototype.buyCity = function() {
   this.citiesRemaining -= 1;
   this.useResource(3, constants.ORE);
   this.useResource(2, constants.WHEAT);
+  return this.buildCity();
 };
 
 SettlersPlayer.prototype.canBuyRoad = function() {
