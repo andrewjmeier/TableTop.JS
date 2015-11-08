@@ -39,6 +39,49 @@ SettlersVertexTile.prototype.canBuild = function(player, requiresRoad) {
   }
 };
 
+SettlersVertexTile.prototype.canBuildRoad = function(player, otherVertex) {
+  // Need to have an adjacent road to build the new road
+  var previousRoadEdge = null;
+  for (var i in this.edges) {
+    var edge = this.edges[i];
+    console.log("edge", edge);
+    if (edge && edge.road && edge.road.player === player) {
+      previousRoadEdge = edge;
+      break;
+    }
+  };
+
+  for (var i in otherVertex.edges) {
+    var edge = otherVertex.edges[i];
+    console.log("edge", edge);
+    if (edge && edge.road && edge.road.player === player) {
+      previousRoadEdge = edge;
+      break;
+    }
+  }
+
+  if (!previousRoadEdge) {
+    console.log("no adjacent road");
+    return false;
+  }
+
+  for (var i in this.edges) {
+    var edge = this.edges[i];
+    if (edge) {
+      if (edge.startVertex === this && edge.endVertex === otherVertex) {
+        if (previousRoadEdge === edge) {
+          console.log("already a road here");
+          return false;
+        }
+      } else if (edge.endVertex === this && edge.startVertex === otherVertex) {
+        console.log("already a road here");
+        return false;
+      }
+    }
+  }
+  return true; 
+};
+
 SettlersVertexTile.prototype.addSettlement = function(settlement) {
   this.settlement = settlement;
 };

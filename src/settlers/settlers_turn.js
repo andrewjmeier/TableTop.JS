@@ -29,7 +29,7 @@ function SettlersTurn(game) {
                     this.buttons = [];
                 },
 
-                yes : function() {
+                continue : function() {
                     this.transition("placingInitialRoad");
                 }
             },
@@ -40,7 +40,7 @@ function SettlersTurn(game) {
                     this.buttons = [];
                 },
 
-                yes : function() {
+                continue : function() {
                     this.game.nextPlayer();
                     if (this.game.remainingInitialSettlements < 1) {
                         this.transition("waitingOnRoll");
@@ -77,7 +77,7 @@ function SettlersTurn(game) {
                 },
 
                 Road: function() {
-                    this.transition("buildRoad");
+                    this.transition("buildRoadFirstVertexSelect");
                 },
 
                 Settlement: function() {
@@ -93,10 +93,25 @@ function SettlersTurn(game) {
                 },
             },
 
-            buildRoad: {
+            buildRoadFirstVertexSelect: {
                 _onEnter : function() {
-                    this.game.message = "Select two verticies to build your road";
+                    this.game.message = "Select a start vertex for your road";
                     this.buttons = [];
+                },
+
+                continue : function() {
+                    this.transition("buildRoadSecondVertexSelect");
+                }
+            },
+
+            buildRoadSecondVertexSelect: {
+                _onEnter : function() {
+                    this.game.message = "Select an end vertex for your road";
+                    this.buttons = [];
+                },
+
+                continue : function() {
+                    this.transition("postTurn");
                 },
             },
 

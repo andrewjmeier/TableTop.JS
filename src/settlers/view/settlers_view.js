@@ -19,6 +19,7 @@ function SettlersView(game_state, turnMap) {
 
     this.tiles = [];
     this.buttons = [];
+    this.buttonTexts = [];
 
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
             {backgroundColor : 0xF4A460});
@@ -86,7 +87,7 @@ SettlersView.prototype.drawVertex = function(v, x, y) {
     var context = this;
     vertex.click = function(mouseData){
        console.log("CLICK!");
-       this.game.createSettlement(v);
+       this.game.vertexClicked(v);
        this.drawGraph();
     }.bind(this);
 
@@ -460,40 +461,149 @@ SettlersView.prototype.displayButtons = function() {
         container.addChild(this.messageText);
 
 
-        for (var i = 0; i < 5; i++) {
-            button1 = new PIXI.Graphics();
-            button1.x = i * 250;
-            button1.y = 180;
-            button1.beginFill(0x00FF00, 1);
-            button1.drawRect(0, 0, 200, 50);
-            container.addChild(button1);
+        var button1 = new PIXI.Graphics();
+        button1.alpha = 0;
+        button1.x = 0 * 250;
+        button1.y = 180;
+        button1.beginFill(0x00FF00, 1);
+        button1.drawRect(0, 0, 200, 50);
+        container.addChild(button1);
 
-            button1.interactive = true;
-            button1.click = function(mouseData){
-               var buttonIndex = button1.x / 250;
-               console.log("clicked button ", buttonIndex, " with text ", this.turnMap.turnMap.buttons[buttonIndex]);
-               this.turnMap.updateState(this.turnMap.turnMap.buttons[buttonIndex]);
-            }.bind(this);
+        button1.interactive = true;
+        button1.click = function(mouseData){
+           var buttonIndex = button1.x / 250;
+           console.log("clicked button 1", " with text ", this.turnMap.turnMap.buttons[0]);
+           this.turnMap.updateState(this.turnMap.turnMap.buttons[buttonIndex]);
+        }.bind(this);
 
-            this.button1Text = new PIXI.Text("", {font: '30px Arial',
-                                                        align : 'center',
-                                                        wordWrap : true,
-                                                        strokeThickness : .25,
-                                                        //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
-                                                        wordWrapWidth : 150,
-                                                        });
-            this.button1Text.x = 50;
-            button1.addChild(this.button1Text);
-            this.buttons.push(button1);
-        }
+        var button1Text = new PIXI.Text("", {font: '30px Arial',
+                                                    align : 'center',
+                                                    wordWrap : true,
+                                                    strokeThickness : .25,
+                                                    //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                    wordWrapWidth : 150,
+                                                    });
+        button1Text.x = 50;
+        button1.addChild(button1Text);
+        this.buttons.push(button1);
+        this.buttonTexts.push(button1Text);
+
+        var button2 = new PIXI.Graphics();
+        button2.alpha = 0;
+        button2.x = 1 * 250;
+        button2.y = 180;
+        button2.beginFill(0x00FF00, 1);
+        button2.drawRect(0, 0, 200, 50);
+        container.addChild(button2);
+
+        button2.interactive = true;
+        button2.click = function(mouseData){
+           var buttonIndex = button2.x / 250;
+           console.log("clicked button 2", " with text ", this.turnMap.turnMap.buttons[1]);
+           this.turnMap.updateState(this.turnMap.turnMap.buttons[buttonIndex]);
+        }.bind(this);
+
+        var button2Text = new PIXI.Text("", {font: '30px Arial',
+                                                    align : 'center',
+                                                    wordWrap : true,
+                                                    strokeThickness : .25,
+                                                    //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                    wordWrapWidth : 150,
+                                                    });
+        button2Text.x = 50;
+        button2.addChild(button2Text);
+        this.buttons.push(button2);
+        this.buttonTexts.push(button2Text);
+
+        var button3 = new PIXI.Graphics();
+        button3.alpha = 0;
+        button3.x = 2 * 250;
+        button3.y = 180;
+        button3.beginFill(0x00FF00, 1);
+        button3.drawRect(0, 0, 200, 50);
+        container.addChild(button3);
+
+        button3.interactive = true;
+        button3.click = function(mouseData){
+           var buttonIndex = button3.x / 250;
+           console.log("clicked button 3", " with text ", this.turnMap.turnMap.buttons[2]);
+           this.turnMap.updateState(this.turnMap.turnMap.buttons[buttonIndex]);
+        }.bind(this);
+
+        var button3Text = new PIXI.Text("", {font: '30px Arial',
+                                                    align : 'center',
+                                                    wordWrap : true,
+                                                    strokeThickness : .25,
+                                                    //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                    wordWrapWidth : 150,
+                                                    });
+        button3Text.x = 50;
+        button3.addChild(button3Text);
+        this.buttons.push(button3);
+        this.buttonTexts.push(button3Text);
+
+        var button4 = new PIXI.Graphics();
+        button4.alpha = 0;
+        button4.x = 3 * 250;
+        button4.y = 180;
+        button4.beginFill(0x00FF00, 1);
+        button4.drawRect(0, 0, 200, 50);
+        container.addChild(button4);
+
+        button4.interactive = true;
+        button4.click = function(mouseData){
+           var buttonIndex = button4.x / 250;
+           console.log("clicked button 4", " with text ", this.turnMap.turnMap.buttons[3]);
+           this.turnMap.updateState(this.turnMap.turnMap.buttons[buttonIndex]);
+        }.bind(this);
+
+        var button4Text = new PIXI.Text("", {font: '30px Arial',
+                                                    align : 'center',
+                                                    wordWrap : true,
+                                                    strokeThickness : .25,
+                                                    //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                    wordWrapWidth : 150,
+                                                    });
+        button4Text.x = 50;
+        button4.addChild(button4Text);
+        this.buttons.push(button4);
+        this.buttonTexts.push(button4Text);
+
+        var button5 = new PIXI.Graphics();
+        button5.alpha = 0;
+        button5.x = 4 * 250;
+        button5.y = 180;
+        button5.beginFill(0x00FF00, 1);
+        button5.drawRect(0, 0, 200, 50);
+        container.addChild(button5);
+
+        button5.interactive = true;
+        button5.click = function(mouseData){
+           console.log("clicked button 5", " with text ", this.turnMap.turnMap.buttons[4]);
+           this.turnMap.updateState(this.turnMap.turnMap.buttons[buttonIndex]);
+        }.bind(this);
+
+        var button5Text = new PIXI.Text("", {font: '30px Arial',
+                                                    align : 'center',
+                                                    wordWrap : true,
+                                                    strokeThickness : .25,
+                                                    //wordWrapWidth : (constants.tileLongSide - constants.tileColorLength),
+                                                    wordWrapWidth : 150,
+                                                    });
+        button5Text.x = 50;
+        button5.addChild(button5Text);
+        this.buttons.push(button5);
+        this.buttonTexts.push(button5Text);
+
         this.stage.addChild(container);
     } else {
         for (var i in this.buttons) {
+            var buttonText = this.buttonTexts[i];
             var button = this.buttons[i];
-            var buttonText = this.turnMap.turnMap.buttons[i];
-            if (buttonText) {
-                console.log(buttonText);
-                button.text = buttonText;
+            var text = this.turnMap.turnMap.buttons[i];
+            if (text) {
+                console.log(buttonText, button);
+                buttonText.text = text;
                 button.alpha = 1;
             } else {
                 button.alpha = 0;

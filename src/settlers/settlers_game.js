@@ -5,13 +5,13 @@ var Settlement = require("./settlement_token");
 function SettlersGame(players, board, stateMachine) {
   Game.call(this, players, board, stateMachine);
   this.rollDice(2);
-  this.lastPlacedSettlementVertex = null; // used for initial road building
+  this.lastSelectedVertex = null; // used for initial road building
   this.remainingInitialSettlements = players.length * 2;
 };
 
 inherits(SettlersGame, Game);
 
-SettlersGame.prototype.createSettlement = function(vertex) {
+SettlersGame.prototype.vertexClicked = function(vertex) {
 
   var player = this.getCurrentPlayer();
 
@@ -22,7 +22,6 @@ SettlersGame.prototype.createSettlement = function(vertex) {
       if (vertex.canBuild(player)) {
         var settlement = player.buildSettlement();
         vertex.addSettlement(settlement);
-        this.lastPlacedSettlementVertex = vertex;
         console.log(settlement);
         this.remainingInitialSettlements--;
       }
@@ -31,32 +30,50 @@ SettlersGame.prototype.createSettlement = function(vertex) {
     case "placingInitialRoad":
       console.log("placingInitialRoad");
       var road = player.buildRoad();
-      var otherVertex = this.lastPlacedSettlementVertex;
-      for (var i in vertex.edges) {
-        var edge = vertex.edges[i];
-        if (edge.startVertex === otherVertex || edge.endVertex === otherVertex) {
-          edge.road = road;
-          break;
-        }
-      }
+      this.addRoad(road, vertex, this.lastSelectedVertex);
       break;
 
-    default:
-
+    case "buildSettlement":
       // check that the player has a remaining token/resources and
       // then check that the selected vertex is legal on the board
       if (player.canBuySettlement() && vertex.canBuild(player, true)) {
         var settlement = player.buySettlement();
         vertex.addSettlement(settlement);
-        this.lastPlacedSettlementVertex = vertex;
       } else {
         console.log("don't have resources to build settlement");
       }
       break;
+
+    case "buildRoadFirstVertexSelect":
+      this.lastSelectedVertex = vertex;
+      break;
+
+    case "buildRoadSecondVertexSelect":
+      if (player.canBuyRoad() && vertex.canBuildRoad(player, this.lastSelectedVertex)) {
+        var road = player.buyRoad();
+        this.addRoad(road, vertex, this.lastSelectedVertex);
+      }
+      break;
+
+    default:
+
+ 
   }
+  // Used for road building and such.
+  this.lastSelectedVertex = vertex;
+  
+  this.turnMap.updateState("continue");
 
-  this.turnMap.updateState("yes");
+};
 
+SettlersGame.prototype.addRoad = function(road, vertex, otherVertex) {
+  for (var i in vertex.edges) {
+    var edge = vertex.edges[i];
+    if (edge.startVertex === otherVertex || edge.endVertex === otherVertex) {
+      edge.road = road;
+      return;
+    }
+  }
 };
 
 SettlersGame.prototype.rollAndGiveCards = function() {
