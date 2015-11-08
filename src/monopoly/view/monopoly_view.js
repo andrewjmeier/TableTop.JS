@@ -325,20 +325,29 @@ MonopolyView.prototype.drawChanceTile = function(x_pos, y_pos, property) {
     tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
     tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
 
-    // create a texture from an image path
-    var texture = PIXI.Texture.fromImage('assets/chance.jpg');
+    var qMark = new PIXI.Text("?", {font: '84px Tahoma',
+                                    fill: 0x1099bb,
+                                    stroke: 0,
+                                    align : 'center',
+                                    wordWrap : true,
+                                    strokeThickness : 4,
+                                    wordWrapWidth : (constants.tileShortSide),
+                                    });
+    qMark.x =  constants.tileShortSide / 2;
+    qMark.y =  constants.tileLongSide / 2;
+    qMark.anchor.set(.5, .5);
+    tile.addChild(qMark);
 
-
-    // rescale and place logo
-    var logo = new PIXI.Sprite(texture);
-
-    logo.width = constants.tileShortSide;
-    logo.height = constants.tileLongSide;
-
-    logo.position.x = 0;
-    logo.position.y = 0;
-
-    tile.addChild(logo);
+    var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                            align : 'center',
+                                            wordWrap : true,
+                                            strokeThickness : .25,
+                                            wordWrapWidth : (constants.tileShortSide),
+                                            });
+    name.x = constants.tileShortSide / 2;
+    name.y = constants.textPadding;
+    name.anchor.set(.5, 0);
+    tile.addChild(name);
 
     return tile;
 };
@@ -353,19 +362,31 @@ MonopolyView.prototype.drawCommunityChestTile = function(x_pos, y_pos, property)
     tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
 
     // create a texture from an image path
-    var texture = PIXI.Texture.fromImage('assets/community_chest.jpg');
+    var texture = PIXI.Texture.fromImage('assets/community_chest.png');
 
 
     // rescale and place logo
     var logo = new PIXI.Sprite(texture);
 
     logo.width = constants.tileShortSide;
-    logo.height = constants.tileLongSide;
+    logo.height = constants.tileShortSide;
 
     logo.position.x = 0;
-    logo.position.y = 0;
+    logo.position.y = constants.tileLongSide / 2 - constants.textPadding;
 
     tile.addChild(logo);
+
+    var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                        align : 'center',
+                                        wordWrap : true,
+                                        strokeThickness : .25,
+                                        wordWrapWidth : (constants.tileShortSide),
+                                        });
+    name.x = constants.tileShortSide / 2;
+    name.y = constants.textPadding;
+    name.anchor.set(.5, 0);
+    tile.addChild(name);
+
 
     return tile;
 };
