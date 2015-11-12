@@ -7,15 +7,9 @@ function Game(players, board, turnMap) {
   this.turnMap = turnMap;
 };
 
-// <<<<<<< HEAD
-// Game.prototype.updateState = function(btnPressed) {
-//   this.stateMachine.buttonPressed(btnPressed, this);
-// }
-// =======
 Game.prototype.updateState = function(click) {
   this.turnMap.processEvent(click, this);
 };
-//>>>>>>> 36516ef81d4380cca9d78026fc5bb0d194a99090
 
 Game.prototype.randomizeCurrentPlayer = function() {
   this.currentPlayer = Math.floor(Math.random() * this.players.length);

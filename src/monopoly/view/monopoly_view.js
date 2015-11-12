@@ -250,7 +250,7 @@ MonopolyView.prototype.setupPropertyClick = function(tile, property){
     var context = this;
 
     tile.click = function(mouseData){
-        if(context.game.state == PROPOSE_TRADE){
+        if(context.turnMap.getCurrentState() == PROPOSE_TRADE){
             if(!context.game.trade){
                 context.game.createTrade();
             }else{
@@ -264,7 +264,7 @@ MonopolyView.prototype.setupPlayerClick = function(rect, player){
     rect.interactive = true;
     var context = this;
     rect.click = function(mouseData){
-        if(context.game.state == PROPOSE_TRADE){
+        if(context.turnMap.getCurrentState() == PROPOSE_TRADE){
             if(player != context.game.getCurrentPlayer()){
                 if(!context.game.trade){
                     context.game.createTrade();
@@ -942,31 +942,31 @@ MonopolyView.prototype.drawMessage = function() {
     // button1
     this.button1 = new PIXI.Graphics();
     this.button1Text = new PIXI.Text("",{});
-    this.addButton(this.button1, 0, 0x00FF00, container, BTN1, "Yes", this.button1Text);
+    this.addButton(this.button1, 0, 0x00FF00, container, "yes_continue", "Yes", this.button1Text);
 
     // button 2
     this.button2 = new PIXI.Graphics();
     this.button2Text = new PIXI.Text("",{});
-    this.addButton(this.button2, 250, 0xFF0000, container, BTN2, "No", this.button2Text);
+    this.addButton(this.button2, 250, 0xFF0000, container, "no_trade_clear", "No", this.button2Text);
 
     //button 3
     this.button3 = new PIXI.Graphics();
     this.button3Text = new PIXI.Text("",{});
-    this.addButton(this.button3, 500, 0x7A7A7A, container, BTN3, "Cancel", this.button3Text);
+    this.addButton(this.button3, 500, 0x7A7A7A, container, "cancel", "Cancel", this.button3Text);
 
     //button 4
     this.button4 = new PIXI.Graphics();
     this.button4Text = new PIXI.Text("",{});
-    this.addButton(this.button4, 750, 0xFFCC00, container, BTN4, "+$20", this.button4Text, 20);
+    this.addButton(this.button4, 750, 0xFFCC00, container, "add$", "+$20", this.button4Text, 20);
 
     //button 5
     this.button5 = new PIXI.Graphics();
     this.button5Text = new PIXI.Text("",{});
-    this.addButton(this.button5, 1000, 0xFFCC00, container, BTN5, "-$20", this.button5Text, -20);
+    this.addButton(this.button5, 1000, 0xFFCC00, container, "subtract$", "-$20", this.button5Text, -20);
 
 };
 
-MonopolyView.prototype.addButton = function(btn, x, color, container, BTN_const, text, btnText, money){
+MonopolyView.prototype.addButton = function(btn, x, color, container, ans, text, btnText, money){
     btn.x = x;
     btn.y = 180;
     btn.beginFill(color, 1);
@@ -978,10 +978,9 @@ MonopolyView.prototype.addButton = function(btn, x, color, container, BTN_const,
         if(money){
             context.game.trade.money += money;
         } else {
-            //context.game.updateState(BTN_const);//need to add another button
-            context.turnMap.updateState("yes");
+            context.turnMap.updateState(ans);
         }
-    }//.bind(this);
+    }
 
     btnText.text = text;
     btnText.style = {font: '30px Arial',
@@ -1002,7 +1001,6 @@ MonopolyView.prototype.updateMessage = function() {
 
     switch (this.turnMap.getCurrentState()) {
 
-        case BUY_ANSWER:
         case BUY_PROMPT:
 
             this.button1Text.text = "Yes";
@@ -1022,7 +1020,7 @@ MonopolyView.prototype.updateMessage = function() {
             this.button5.alpha = 0;
             break; 
 
-        case POST_TURN_ANSWER:
+        case POST_TURN:
 
             this.button1Text.text = "Continue";
             this.button2Text.text = "Trade";
@@ -1034,7 +1032,6 @@ MonopolyView.prototype.updateMessage = function() {
 
         case PROPOSE_TRADE:
 
-            this.updateTradeInfo();
             this.button1Text.text = "Continue";
             this.button2Text.text = "Clear";
             this.button2.alpha = 1;
@@ -1072,18 +1069,19 @@ MonopolyView.prototype.updateProperties = function() {
 
 MonopolyView.prototype.updateTradeInfo = function(){
     
-    if(!this.game.trade){
-        this.game.createTrade();
+    if(this.turnMap.getCurrentState() == PROPOSE_TRADE){
+        if(!this.game.trade){
+            this.game.createTrade();
+        }
+        var trade_player_name = "";
+        if(!this.game.trade.answering_player){
+            trade_player_name = "Select Player";
+        }else{
+            trade_player_name = this.game.trade.answering_player.name;
+        }
+        this.messageText.text = this.game.message + "\nTrading with: " + trade_player_name + "\n" + this.game.trade.itemsToString();
     }
-    var trade_player_name = "";
-    if(!this.game.trade.answering_player){
-        trade_player_name = "Select Player";
-    }else{
-        trade_player_name = this.game.trade.answering_player.name;
-    }
-    this.messageText.text = this.game.message + "\nTrading with: " + trade_player_name + "\n" + this.game.trade.itemsToString();
 };
-
 
 MonopolyView.prototype.animate = function() {
     this.updatePlayers();
@@ -1091,6 +1089,7 @@ MonopolyView.prototype.animate = function() {
     this.updateCardsDisplays();
     this.updateMessage();
     this.updateProperties();
+    this.updateTradeInfo();
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.stage);
 };

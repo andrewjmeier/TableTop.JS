@@ -25,18 +25,7 @@ var board = new Board();
 
 var monopoly = new Game(players, board, turn);
 
-// <<<<<<< HEAD
-// var view = new MonopolyView(monopoly);
-
-// view.drawBoard();
-
-// //start running game
-// turn.runStateMachine(BTN1, monopoly);
-
-
-// =======
 var turn = new Turn(monopoly);
-// >>>>>>> 36516ef81d4380cca9d78026fc5bb0d194a99090
 
 var view = new MonopolyView(monopoly, turn);
 

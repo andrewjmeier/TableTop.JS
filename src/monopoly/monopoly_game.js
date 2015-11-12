@@ -11,7 +11,6 @@ function MonopolyGame(players, board, turnMap) {
   this.communityChestCards = new CommunityChestDeck();
   this.shuffleCards();
   this.doublesCount = 0;
-  this.state = WAITING_FOR_ROLL;
   this.message = "";
   this.activeCard = null;
   this.trade = null;
