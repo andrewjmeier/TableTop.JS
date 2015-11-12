@@ -5,8 +5,8 @@ var Game = require("../game.js");
 var Trade = require("./monopoly_trade.js");
 
 
-function MonopolyGame(players, board, stateMachine) {
-  Game.call(this, players, board, stateMachine);
+function MonopolyGame(players, board, turnMap) {
+  Game.call(this, players, board, turnMap);
   this.chanceCards = new ChanceDeck();
   this.communityChestCards = new CommunityChestDeck();
   this.shuffleCards();
@@ -61,7 +61,7 @@ MonopolyGame.prototype.movePlayer = function() {
   } else if (this.getCurrentPlayer().turnsInJail === 3) {
     this.getCurrentPlayer().payBail();
   } else {
-    return [this.getCurrentPlayer().name + " is serving a turn in jail. ", POST_TURN_ANSWER];
+    return [this.getCurrentPlayer().name + " is serving a turn in jail. ", POST_TURN];
   }
 
   return this.move();

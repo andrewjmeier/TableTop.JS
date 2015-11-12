@@ -1,3 +1,5 @@
+var PIXI = require("../../../lib/pixi/pixi.js")
+
 var HousingProperty = require("../board/properties/housingProperty.js");
 var RailroadProperty = require("../board/properties/railroadProperty.js");
 var UtilityProperty = require("../board/properties/utilityProperty.js");
@@ -7,8 +9,10 @@ var CommunityChest = require("../board/other/communityChest");
 var IncomeTax = require("../board/taxes/incomeTax");
 var LuxuryTax = require("../board/taxes/luxuryTax");
 
-function MonopolyView(game_state) {
-    this.game = game_state;
+function MonopolyView(gameState, turnMap) {
+    this.game = gameState;
+    this.turnMap = turnMap;
+    this.turnMap.updateState("start");
     this.tiles = [];
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
             {backgroundColor : 0x1099bb});
@@ -376,20 +380,29 @@ MonopolyView.prototype.drawChanceTile = function(x_pos, y_pos, property) {
     tile.pivot.set(constants.tileShortSide, constants.tileLongSide);
     tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
 
-    // create a texture from an image path
-    var texture = PIXI.Texture.fromImage('assets/chance.jpg');
+    var qMark = new PIXI.Text("?", {font: '84px Tahoma',
+                                    fill: 0x1099bb,
+                                    stroke: 0,
+                                    align : 'center',
+                                    wordWrap : true,
+                                    strokeThickness : 4,
+                                    wordWrapWidth : (constants.tileShortSide),
+                                    });
+    qMark.x =  constants.tileShortSide / 2;
+    qMark.y =  constants.tileLongSide / 2;
+    qMark.anchor.set(.5, .5);
+    tile.addChild(qMark);
 
-
-    // rescale and place logo
-    var logo = new PIXI.Sprite(texture);
-
-    logo.width = constants.tileShortSide;
-    logo.height = constants.tileLongSide;
-
-    logo.position.x = 0;
-    logo.position.y = 0;
-
-    tile.addChild(logo);
+    var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                            align : 'center',
+                                            wordWrap : true,
+                                            strokeThickness : .25,
+                                            wordWrapWidth : (constants.tileShortSide),
+                                            });
+    name.x = constants.tileShortSide / 2;
+    name.y = constants.textPadding;
+    name.anchor.set(.5, 0);
+    tile.addChild(name);
 
     return tile;
 };
@@ -411,12 +424,24 @@ MonopolyView.prototype.drawCommunityChestTile = function(x_pos, y_pos, property)
     var logo = new PIXI.Sprite(texture);
 
     logo.width = constants.tileShortSide;
-    logo.height = constants.tileLongSide;
+    logo.height = constants.tileShortSide;
 
     logo.position.x = 0;
-    logo.position.y = 0;
+    logo.position.y = constants.tileLongSide / 2 - constants.textPadding;
 
     tile.addChild(logo);
+
+    var name = new PIXI.Text(property.name, {font: '10px Arial',
+                                        align : 'center',
+                                        wordWrap : true,
+                                        strokeThickness : .25,
+                                        wordWrapWidth : (constants.tileShortSide),
+                                        });
+    name.x = constants.tileShortSide / 2;
+    name.y = constants.textPadding;
+    name.anchor.set(.5, 0);
+    tile.addChild(name);
+
 
     return tile;
 };
@@ -924,7 +949,6 @@ MonopolyView.prototype.drawMessage = function() {
     this.button2Text = new PIXI.Text("",{});
     this.addButton(this.button2, 250, 0xFF0000, container, BTN2, "No", this.button2Text);
 
-
     //button 3
     this.button3 = new PIXI.Graphics();
     this.button3Text = new PIXI.Text("",{});
@@ -954,9 +978,10 @@ MonopolyView.prototype.addButton = function(btn, x, color, container, BTN_const,
         if(money){
             context.game.trade.money += money;
         } else {
-            context.game.updateState(BTN_const);//need to add another button
+            //context.game.updateState(BTN_const);//need to add another button
+            context.turnMap.updateState("yes");
         }
-    }
+    }//.bind(this);
 
     btnText.text = text;
     btnText.style = {font: '30px Arial',
@@ -975,9 +1000,10 @@ MonopolyView.prototype.addButton = function(btn, x, color, container, BTN_const,
 MonopolyView.prototype.updateMessage = function() {
     this.messageText.text = this.game.message;
 
-    switch (this.game.state) {
+    switch (this.turnMap.getCurrentState()) {
 
         case BUY_ANSWER:
+        case BUY_PROMPT:
 
             this.button1Text.text = "Yes";
             this.button2Text.text = "No";

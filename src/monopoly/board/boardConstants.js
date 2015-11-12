@@ -41,15 +41,16 @@ global.PG_RR = 8;
 global.PG_UTIL = 9;
 
 // states
-global.WAITING_FOR_ROLL = 0;
-global.ROLLED = 1;
-global.BUY_PROMPT = 2;
-global.BUY_ANSWER = 3;
-global.POST_TURN = 4;
-global.POST_TURN_ANSWER = 5;
-global.PROPOSE_TRADE = 6;
-global.TRADE_ANSWER = 7;
-global.ENDED_TURN = 8;
+// <<<<<<< HEAD
+// global.WAITING_FOR_ROLL = 0;
+// global.ROLLED = 1;
+// global.BUY_PROMPT = 2;
+// global.BUY_ANSWER = 3;
+// global.POST_TURN = 4;
+// global.POST_TURN_ANSWER = 5;
+// global.PROPOSE_TRADE = 6;
+// global.TRADE_ANSWER = 7;
+// global.ENDED_TURN = 8;
 
 //buttons going left to right 
 global.BTN1 = 0; //Yes or Continue
@@ -57,4 +58,15 @@ global.BTN2 = 1; //Usually No
 global.BTN3 = 2;
 global.BTN4 = 3;
 global.BTN5 = 4;
+
+global.WAITING_FOR_ROLL = "waitingOnRoll";
+global.ROLLED = "rolled";
+global.BUY_PROMPT = "buyPrompt";
+global.BUY_ANSWER = "buyAnswer";//this should not exist
+global.POST_TURN = "postTurn";
+global.POST_TURN_ANSWER = "postTurnAnswer";//this should not exist
+global.PROPOSE_TRADE = "proposeTrade";
+global.TRADE_ANSWER = "tradeAnswer";//this should not exist
+global.ENDED_TURN = "endedTurn";
+
 
