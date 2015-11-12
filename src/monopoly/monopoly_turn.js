@@ -46,9 +46,9 @@ function MonopolyTurn(game) {
                     var player = this.game.getCurrentPlayer();
                     var property = this.game.board.spaces[player.position];
                     if (player.canBuy(property)) {
-                        this.game.message = "Do you want to buy it?";
+                        this.game.message = this.game.message.concat("Do you want to buy it?");
                     } else {
-                        this.game.message = "You can't afford it.";
+                        this.game.message = this.game.message.concat("You can't afford it.");
                         this.transition("postTurn");
                     }
                 },
@@ -71,7 +71,7 @@ function MonopolyTurn(game) {
 
             postTurn: {
                 _onEnter : function() {
-                    this.game.message = "Choose an option (trade, buy houses, etc), or click continue to end your turn";
+                    this.game.message = this.game.message.concat("Choose an option (trade, buy houses, etc), or click continue to end your turn");
                 },
 
                 yes: function() {
