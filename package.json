@@ -1,0 +1,34 @@
+{
+  "name": "tabletop.js",
+  "version": "1.0.0",
+  "description": "A simple framework for making board games",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test",
+    "webpack": "webpack --watch",
+    "test-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 \n open coverage/lcov-report/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewjmeier/TableTop.JS.git"
+  },
+  "author": "Andrew Meier <booyankees13@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrewjmeier/TableTop.JS/issues"
+  },
+  "homepage": "https://github.com/andrewjmeier/TableTop.JS#readme",
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "eslint": "^1.5.1",
+    "eslint-plugin-react": "^3.5.0",
+    "istanbul": "^0.3.22",
+    "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "machina": "^1.1.2"
+  }
+}
