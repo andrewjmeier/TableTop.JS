@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: utils.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,36 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: utils.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Some Extra Utility functions for building games
+*/
+var Utils = {
+  // http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
 
+  /**
+   * Shuffle a list
+   * @param {Array} o - A list of items to be shuffled
+   * @returns {Array} The shuffled list of items 
+  */
+  shuffle: function(o) {
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+  },
+};
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = Utils;
+</code></pre>
+        </article>
+    </section>
 
 
 

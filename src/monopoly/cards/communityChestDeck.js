@@ -1,6 +1,6 @@
-inherits = require('util').inherits;
-Deck = require("./deck");
-var Card = require("./card.js");
+var inherits = require('util').inherits;
+var Deck = require("../../deck");
+var Card = require("../../card.js");
 
 
 function CommunityChestDeck() {
