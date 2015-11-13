@@ -1,8 +1,8 @@
-Utils = require("./utils");
+var Utils = require("./utils");
 /**
  * The Deck class
- * @constructor
  * Should probably be subclassed to create the cards for the deck in the constructor
+ * @constructor
 */
 function Deck() {
   this.cards = [];
