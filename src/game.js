@@ -40,8 +40,8 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     sides = 6;
   }
   this.dice = [];
-  for (i = 0; i < numberOfDice; i++) {
-    roll = Math.floor(Math.random() * sides) + 1;
+  for (var i = 0; i < numberOfDice; i++) {
+    var roll = Math.floor(Math.random() * sides) + 1;
     this.dice.push(roll);
   }
 };
