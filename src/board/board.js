@@ -5,4 +5,8 @@ function Board() {
   this.spaces = [];
 }
 
+Board.prototype.getSpace = function(idx) { 
+  return this.spaces[idx];
+};
+
 module.exports = Board;

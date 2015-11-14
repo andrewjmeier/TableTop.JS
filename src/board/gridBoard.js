@@ -13,4 +13,8 @@ function GridBoard(width, height) {
 
 inherits(GridBoard, Board);
 
+GridBoard.prototype.getSpace = function(x, y) { 
+  return this.spaces[x][y];
+};
+
 module.exports = GridBoard;
