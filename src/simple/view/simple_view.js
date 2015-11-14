@@ -1,14 +1,12 @@
 var constants = {
     canvasWidth : 1000,
     canvasHeight : 200,
-
     numberOfSpaces : 20,
-
     colors : [
         0x6F3A19,
         0x88C8F3
     ]
-}
+};
 
 function SimpleView(game_state) {
     this.game = game_state;
@@ -31,7 +29,7 @@ SimpleView.prototype.drawBoard = function() {
         tile = new PIXI.Graphics();
         tile.lineStyle(1, 0, 1);
         tile.drawRect(x_pos, y_pos, constants.canvasWidth / this.game.board.spaces.length, constants.canvasHeight);
-        x_pos += constants.canvasWidth / this.game.board.spaces.length
+        x_pos += constants.canvasWidth / this.game.board.spaces.length;
 
         this.tileViews.push(tile);
         this.stage.addChild(tile);
@@ -42,7 +40,7 @@ SimpleView.prototype.drawBoard = function() {
 
     this.drawMessage();
     this.animate();
-}
+};
 
 SimpleView.prototype.drawToken = function(position, index, color) {
     var token = new PIXI.Graphics();
@@ -58,7 +56,7 @@ SimpleView.prototype.drawTokens = function() {
     for (i = 0; i < this.game.players.length; i++) {
         this.drawToken(this.game.players[i].position, i, constants.colors[i]);
     }
-}
+};
 
 SimpleView.prototype.updateToken = function(position, index, color) {
     var playerView = this.tokenViews[index];
