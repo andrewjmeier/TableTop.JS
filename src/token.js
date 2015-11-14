@@ -27,4 +27,13 @@ Token.prototype.setPosition = function(position) {
   this.position.y = position.y;
 };
 
+Token.prototype.destroy = function() { 
+  for (var i = 0; i < this.owner.tokens.length; i++) { 
+    if (this.owner.tokens[i] == this) 
+      this.owner.tokens.splice(i, 1);
+  } 
+  
+  this.owner = null;
+};
+
 module.exports = Token;

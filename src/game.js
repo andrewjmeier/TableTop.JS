@@ -14,6 +14,7 @@ function Game(players, board, turnMap) {
   this.randomizeCurrentPlayer();
   this.turnMap = turnMap;
   this.moveType = c.moveTypeDice; // manual movement? or dicerolls? 
+  this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
 };
 
 /**
@@ -70,6 +71,10 @@ Game.prototype.getCurrentPlayer = function() {
 */
 Game.prototype.submitMove = function(token) { 
   this.lastMovedToken = token;
+};
+
+Game.prototype.nextPlayer = function() { 
+  this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
 };
 
 module.exports = Game;
