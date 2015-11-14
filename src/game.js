@@ -1,3 +1,5 @@
+var c = require("ttConstants.js");
+
 /**
  * The Game class
  * @constructor
@@ -11,6 +13,7 @@ function Game(players, board, turnMap) {
   this.dice = [];
   this.randomizeCurrentPlayer();
   this.turnMap = turnMap;
+  this.moveType = c.moveTypeDice; // manual movement? or dicerolls? 
 };
 
 /**
@@ -60,6 +63,13 @@ Game.prototype.isDoubles = function(dice) {
 */
 Game.prototype.getCurrentPlayer = function() {
   return this.players[this.currentPlayer];
+};
+
+/**
+ * Sets the last moved token for later reference
+*/
+Game.prototype.submitMove = function(token) { 
+  this.lastMovedToken = token;
 };
 
 module.exports = Game;
