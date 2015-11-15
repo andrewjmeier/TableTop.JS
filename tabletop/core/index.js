@@ -1,15 +1,4 @@
-/**
- * @file        Main export of the PIXI core library
- * @author      Mat Groves <mat@goodboydigital.com>
- * @copyright   2013-2015 GoodBoyDigital
- * @license     {@link https://github.com/pixijs/pixi.js/blob/master/LICENSE|MIT License}
- */
-
-/**
- * @namespace PIXI
- */
-// export core and const. We assign core to const so that the non-reference types in const remain in-tact
-var core = Object.assign(require('./const'), {
+var core = Object.assign({
 
     Board: require('./board'),
     Game: require('./game'),
