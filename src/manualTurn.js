@@ -1,4 +1,4 @@
-var Turn = require("turn");
+var Turn = require("./turn.js");
 var inherits = require('util').inherits;
 
 function ManualTurn(game) { 
@@ -11,7 +11,7 @@ function ManualTurn(game) {
     
     game : game, 
 
-    initialState: "waitingForMove",
+    initialState: "uninitialized",
     
     namespace: "test",
 
@@ -27,13 +27,12 @@ function ManualTurn(game) {
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
-          game.message = this.game.getcurrentPlayer().name + ": Make your move.";
+          game.message = this.game.getCurrentPlayer().name + ": Make your move.";
         },
         
         makeMove : function() { 
-          var player = this.game.getCurrentPlayer();
-          if (game.isValidMove(player.moveData)) { 
-            game.moveToken(player.moveData);
+          if (game.hasValidMove()) { 
+            game.evaluateMove();
             this.transition("postTurn");
           } else { 
             this.game.message = "Invalid move. Try again.";
@@ -65,3 +64,14 @@ function ManualTurn(game) {
   });
   
 } 
+
+ManualTurn.prototype.updateState = function(command) {
+    this.turnMap.handle(command);
+};
+
+ManualTurn.prototype.getCurrentState = function() {
+    return this.turnMap.compositeState();
+};
+
+
+module.exports = ManualTurn;

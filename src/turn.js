@@ -5,14 +5,14 @@ var Turn = machina.Fsm.extend({
             console.log("tests");
         },
 
-        initialState: "uninitialized",
+        initialState: "setup",
 
         namespace: "test",
 
         states: {
             setup: {
                 "_onEnter": function() {
-                    console.log('hello');
+                    // do actions here! 
                 }
             }
         }

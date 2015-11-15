@@ -3,37 +3,32 @@
  * @constructor
  * @param {string} owner - The player who owns this token.
  * @param {string} [color=COLOR_BLACK] - Token color. See constants.js.
- * @param position - Starting position
- * @param position.x - The x position
- * @param position.y - The y position
 */
-function Token(owner, color, position) {
+function Token(owner, space, color) {
   this.owner = owner;
-  this.position = position;
-  this.oldPosition = NULL; // clarity
+  this.space = space;
   this.color = color;
+  this.isDead = false;
 };
 
-/**
- * Represents a Token.
- * @param position - The new position
- * @param position.x - The x position
- * @param position.y - The y position
-*/
 
-Token.prototype.setPosition = function(position) {
-  this.oldPosition = this.position;
-  this.position.x = position.x;
-  this.position.y = position.y;
+// sets variables for token, calls space functions
+Token.prototype.setSpace = function(space) { 
+  this.space = space;
 };
 
 Token.prototype.destroy = function() { 
+
   for (var i = 0; i < this.owner.tokens.length; i++) { 
     if (this.owner.tokens[i] == this) 
       this.owner.tokens.splice(i, 1);
   } 
   
+  this.space.removeOccupier(this);
   this.owner = null;
+  this.space = null;
+  this.isDead = true;
+
 };
 
 module.exports = Token;

@@ -1,4 +1,4 @@
-var c = require("ttConstants.js");
+var c = require("./ttConstants");
 
 /**
  * The Game class
@@ -13,7 +13,8 @@ function Game(players, board, turnMap) {
   this.dice = [];
   this.randomizeCurrentPlayer();
   this.turnMap = turnMap;
-  this.moveType = c.moveTypeDice; // manual movement? or dicerolls? 
+  this.moveType = c.moveTypeDice; // manual movement or dicerolls
+  this.proposedMove = {}; // for c.moveTypeManual
   this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
 };
 
@@ -23,6 +24,21 @@ function Game(players, board, turnMap) {
 */
 Game.prototype.updateState = function(message) {
   this.turnMap.updateState(message, this);
+};
+
+Game.prototype.setTurnMap = function(turnMap) { 
+  this.turnMap = turnMap;
+};
+
+/**
+ * Set the move type for this game
+ * @param {string} moveType - The move type. See ttConstants
+*/
+Game.prototype.setMoveType = function(moveType) { 
+  this.moveType = moveType;
+  if (moveType == c.moveTypeManual) { 
+    this.proposedMove = {};
+  } 
 };
 
 /**
@@ -75,6 +91,32 @@ Game.prototype.submitMove = function(token) {
 
 Game.prototype.nextPlayer = function() { 
   this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+};
+
+Game.prototype.setProposedMoveDestination = function(space) { 
+  this.proposedMove.destination = space;
+};
+
+Game.prototype.setProposedMoveToken = function(token) { 
+  this.proposedMove.token = token;
+};
+
+Game.prototype.hasValidMove = function() { 
+  
+  if (this.moveType != c.moveTypeManual) 
+    return false;
+  if (!this.proposedMove.token || !this.proposedMove.destinationSpace)
+    return false;
+
+  return this.isValidMove(this.proposedMove.token, 
+                          this.proposedMove.token.space, 
+                          this.proposedMove.destinationTile);
+}; 
+
+Game.prototype.moveTokenToSpace = function(token, destinationTile) { 
+  token.space.removeOccupier(token);
+  token.setSpace(destinationTile);
+  destinationTile.addOccupier(token);
 };
 
 module.exports = Game;
