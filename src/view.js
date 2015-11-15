@@ -1,23 +1,36 @@
-var constants = {
-  canvasWidth : 1000,
-  canvasHeight : 200
-};
+var c = require("ttConstants.js");
+var GridBoard = require("gridboard");
 
-function View(game_state, board_type) {
-  this.game = game_state;
+function View(game, turnMap) {
+  this.game = game;
+  this.turnMap = turnMap;
+  this.turnMap.updateState("start");
   this.tileViews = [];
+  if (game.board instanceof GridBoard) { 
+    for (var i = 0; i < this.game.board.height, i++) { 
+      this.tileViews[i] = [];
+    } 
+  } 
+
   this.tokenViews = [];
-  
-  this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
+    
+  this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight,
                                           {backgroundColor : 0x1099bb});
   
   document.body.appendChild(this.renderer.view);
-
+  
   // create the root of the scene graph
   this.stage = new PIXI.Container();
 };
 
 View.prototype.drawGridBoard = function() {
+ 
+  var board = new PIXI.Graphics();
+  //board.lineStyle(1, 0x000000, 1);
+  board.beginFill(0xC2E2BF, 1);
+  board.drawRect(c.boardStartX, c.boardStartY, c.boardWidth, c.boardHeight);
+  this.stage.addChild(board);
+  
   var y_pos = 0;
   var x_pos = 0;
   if (!this.board.spaces[0]) return;
@@ -25,12 +38,12 @@ View.prototype.drawGridBoard = function() {
     x_pos = 0;
     for (var y = 0; y < this.board.spaces.length; y++) {
       var tileView = new PIXI.Graphics();
-      var tile = this.board.spaces[x, y];
+      var tile = this.board.getSpace(x, y);
       tileView.lineStyle(1, 0, 1);
-      tileView.drawRect(x_pos, y_pos, constants.canvasWidth / this.game.board.spaces.length, constants.canvasHeight);
-      x_pos += constants.canvasWidth / this.game.board.spaces.length;
+      tileView.drawRect(x_pos, y_pos, c.canvasWidth / this.game.board.spaces.length, c.canvasHeight);
+      x_pos += c.canvasWidth / this.game.board.spaces.length;
       tileView.beginFill(tile.color, 1);
-      this.tileViews.push(tileView);
+      this.tileViews[x][y] = tileView;
       this.stage.addChild(tileView);
     }
   }
@@ -59,11 +72,11 @@ View.prototype.drawToken = function(token) {
   tokenView.beginFill(token.color, 1);
   
   // put it on the tile
-  var tile = this.tileViews[token.pos.x, token.pos.y];
-  // todo: shape of token 
-  tokenView.drawRect(10, 10, 20, 20);
-  tile.addChild(tokenView);
-  this.tokenViews.push({token: tokenView, tile: tile});
+  var tileView = this.tileViews[token.pos.x, token.pos.y];
+  tokenView.drawRect(10, 10, 20, 20); // todo: other shapes
+  tileView.addChild(tokenView);
+
+  this.tokenViews.push({tokenView: tokenView, tileView: tileView});
 };
 
 View.prototype.drawTokens = function() {
@@ -79,7 +92,7 @@ View.prototype.drawTokens = function() {
 };
 
 View.prototype.updateToken = function(token) {
-  var tokenView = 
+  var playerView = 
   var token = playerView.token;
 
   // remove the token from the previous tile
@@ -92,7 +105,7 @@ View.prototype.updateToken = function(token) {
   this.tokenViews[index] = {token: token, tile: currentTile};
 
   // calculate an offset for the token if there are multiple
-  token.x = ((constants.canvasWidth / this.game.board.spaces.length) * position);
+  token.x = ((c.canvasWidth / this.game.board.spaces.length) * position);
 };
 
 View.prototype.updateTokens = function() {
@@ -105,6 +118,10 @@ View.prototype.updateTokens = function() {
       }
     }
   }
+};
+
+View.prototype.removeToken = function() { 
+  
 };
 
 View.prototype.drawMessage = function() {
