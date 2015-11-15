@@ -14,6 +14,16 @@ function Game(players, board, turnMap) {
 };
 
 /**
+ * Check the Game State to see if a player has won the game
+ * @abstract
+ * @return {boolean}
+*/
+Game.prototype.isGameOver = function() {
+  // TODO - check this method every transition in the state machine
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
  * Method to call from the view to update the game state
  * @param {string} message - A string saying which state to transition to
 */
