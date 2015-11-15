@@ -20,9 +20,9 @@
 
 ### Setup a new project
 
-Take a look at some of our example projects to get a feel for how they're setup. You can view all of our examples as well as our documentation [here] (andrewjmeier.github.io/TableTop.JS) or you can check out [Monopoly](github.com/andrewjmeier/Monopoly) or [Settlers of Catan](github.com/andrewjmeier/Settlers). 
+Take a look at some of our example projects to get a feel for how they're setup. You can view all of our examples as well as our documentation [here] (http://andrewjmeier.github.io/TableTop.JS) or you can check out [Monopoly](http://github.com/andrewjmeier/Monopoly) or [Settlers of Catan](http://github.com/andrewjmeier/Settlers). 
 
-#### If you're new to JavaScript and npm, try using our [TableTopSkeleton](github.com/andrewjmeier/TableTopSkeleton) to get started. 
+#### If you're new to JavaScript and npm, try using our [TableTopSkeleton](http://github.com/andrewjmeier/TableTopSkeleton) to get started. 
 
 * Click on `Fork` on the top right of the page. This will create a new repository for you to create your boardgame. 
 * Next find the link on the right side of the page under `HTTPS clone URL`. Copy this link
