@@ -1,4 +1,4 @@
-var Space = require("../space.js");
+var Space = require("../board/space.js");
 var inherits = require('util').inherits;
 
 function CheckerTile(color) { 
@@ -7,3 +7,5 @@ function CheckerTile(color) {
 } 
 
 inherits(CheckerTile, Space);
+
+module.exports = CheckerTile;

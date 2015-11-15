@@ -12,20 +12,33 @@ function CheckersGame(players, board, turnMap) {
 inherits(CheckersGame, Game);
 
 // assumes valid move
-CheckersGame.prototype.evaluateMove = function(token, newPos) {  
-  token.setPosition(newPos);
-  var jumpedToken = this.getJumpedToken(token, this.token.oldPosition, this.token.newPosition);
-  jumpedToken.destroy();
+CheckersGame.prototype.evaluateMove = function() {  
+
+  var token = this.proposedMove.token;
+  var destination = this.proposedMove.destination;
+  
+  var oldPosition = this.board.getSpacePosition(token.space);
+  var newPosition = this.board.getSpacePosition(destination);
+  
+  var jumpedToken = this.getJumpedToken(token, oldPosition, newPosition);
+
+  if (jumpedToken)
+    jumpedToken.destroy();
+  
+  this.moveTokenToSpace(token, destination);
+  this.proposedMove = {};
 };
 
-CheckersGame.prototype.isValidMove = function(token, oldPos, newPos) { 
- 
-  var tile = this.board[newPos.x][newPos.y];
+CheckersGame.prototype.isValidMove = function(token, oldSpace, newSpace) { 
+  
+  var oldPos = this.board.getSpacePosition(oldSpace);
+  var newPos = this.board.getSpacePosition(newSpace);
+  
   var player = this.game.getCurrentPlayer();
   
   if (token.owner != player) return false;
-  if (tile.color == c.redColor) return false;
-  if (tile.occupier) return false;
+  if (newSpace.color == c.redColor) return false;
+  if (newSpace.occupier) return false;
 
   return this.validNormalMove(token.color, oldPos, newPos, 1) || 
     this.validJumpMove(token.color, oldPos, newPos);  
