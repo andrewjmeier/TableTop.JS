@@ -1,10 +1,12 @@
 require("./board/boardConstants.js");
+var Messenger = require("../messenger")
 var Property = require("./board/properties/property.js");
 var Turn = require("../turn");
 var inherits = require('util').inherits;
 
 function MonopolyTurn(game) {
     this.game = game;
+    this.messenger = new Messenger("message");
 
     this.turnMap = new Turn({
         initialize: function( options ) {
@@ -97,5 +99,9 @@ MonopolyTurn.prototype.updateState = function(click) {
 MonopolyTurn.prototype.getCurrentState = function() {
     return this.turnMap.compositeState();
 };
+
+MonopolyTurn.prototype.sendMessage = function(message) {
+    this.messenger.sendMessage(message);
+}
 
 module.exports = MonopolyTurn;
