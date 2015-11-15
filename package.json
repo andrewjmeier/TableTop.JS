@@ -1,8 +1,8 @@
 {
-  "name": "tabletop.js",
+  "name": "tabletop-boardgames",
   "version": "1.0.0",
   "description": "A simple framework for making board games",
-  "main": "index.js",
+  "main": "./tabletop/index.js",
   "directories": {
     "test": "test"
   },
