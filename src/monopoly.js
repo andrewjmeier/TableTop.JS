@@ -27,7 +27,9 @@ var monopoly = new Game(players, board, turn);
 
 var turn = new Turn(monopoly);
 
-var view = new MonopolyView(monopoly, turn);
+monopoly.setTurn(turn);
+
+var view = new MonopolyView(monopoly);
 
 view.drawBoard();
 

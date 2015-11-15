@@ -9,10 +9,9 @@ var CommunityChest = require("../board/other/communityChest");
 var IncomeTax = require("../board/taxes/incomeTax");
 var LuxuryTax = require("../board/taxes/luxuryTax");
 
-function MonopolyView(gameState, turnMap) {
+function MonopolyView(gameState) {
     this.game = gameState;
-    this.turnMap = turnMap;
-    this.turnMap.updateState("start");
+    this.game.updateState("start");
     this.tiles = [];
     this.renderer = PIXI.autoDetectRenderer(constants.canvasWidth, constants.canvasHeight,
             {backgroundColor : 0x1099bb});
@@ -250,12 +249,12 @@ MonopolyView.prototype.setupPropertyClick = function(tile, property){
     var context = this;
 
     tile.click = function(mouseData){
-        if(context.turnMap.getCurrentState() == PROPOSE_TRADE){
-            if(!context.game.trade){
-                context.game.createTrade();
-            }else{
+        if(context.game.getCurrentState() == PROPOSE_TRADE){
+            // if(!context.game.trade){
+            //     context.game.createTrade();
+            // }else{
                 context.game.addPropertyToTrade(property);
-            }
+            // }
         }
     };
 };
@@ -264,13 +263,13 @@ MonopolyView.prototype.setupPlayerClick = function(rect, player){
     rect.interactive = true;
     var context = this;
     rect.click = function(mouseData){
-        if(context.turnMap.getCurrentState() == PROPOSE_TRADE){
+        if(context.game.getCurrentState() == PROPOSE_TRADE){
             if(player != context.game.getCurrentPlayer()){
-                if(!context.game.trade){
-                    context.game.createTrade();
-                }else{
+                // if(!context.game.trade){
+                    // context.game.createTrade();
+                // }else{
                     context.game.addPlayerToTrade(player);
-                }
+                // }
             }
         }
     };
@@ -417,7 +416,7 @@ MonopolyView.prototype.drawCommunityChestTile = function(x_pos, y_pos, property)
     tile.drawRect(0, 0, constants.tileShortSide, constants.tileLongSide);
 
     // create a texture from an image path
-    var texture = PIXI.Texture.fromImage('assets/community_chest.jpg');
+    var texture = PIXI.Texture.fromImage('assets/community_chest.png');
 
 
     // rescale and place logo
@@ -975,10 +974,10 @@ MonopolyView.prototype.addButton = function(btn, x, color, container, ans, text,
     var context = this;
     btn.interactive = true;
     btn.click = function(mouseData) {
-        if(money){
-            context.game.trade.money += money;
+        if (money){
+            context.game.addMoneyToTrade(money);
         } else {
-            context.turnMap.updateState(ans);
+            context.game.updateState(ans);
         }
     }
 
@@ -999,7 +998,7 @@ MonopolyView.prototype.addButton = function(btn, x, color, container, ans, text,
 MonopolyView.prototype.updateMessage = function() {
     this.messageText.text = this.game.message;
 
-    switch (this.turnMap.getCurrentState()) {
+    switch (this.game.getCurrentState()) {
 
         case BUY_PROMPT:
 
@@ -1069,14 +1068,14 @@ MonopolyView.prototype.updateProperties = function() {
 
 MonopolyView.prototype.updateTradeInfo = function(){
     
-    if(this.turnMap.getCurrentState() == PROPOSE_TRADE){
-        if(!this.game.trade){
-            this.game.createTrade();
-        }
+    if (this.game.getCurrentState() == PROPOSE_TRADE){
+        //if(!this.game.trade){
+         //   this.game.createTrade();
+        //}
         var trade_player_name = "";
-        if(!this.game.trade.answering_player){
+        if (!this.game.trade.answering_player){
             trade_player_name = "Select Player";
-        }else{
+        } else {
             trade_player_name = this.game.trade.answering_player.name;
         }
         this.messageText.text = this.game.message + "\nTrading with: " + trade_player_name + "\n" + this.game.trade.itemsToString();

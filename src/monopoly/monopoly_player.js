@@ -118,7 +118,7 @@ MonopolyPlayer.prototype.assets = function() {
 //used in trading
 MonopolyPlayer.prototype.removeProperty = function(property) {
   var index = this.properties.indexOf(property);
-  //this is just a double check that this player has this property
+  //double check player has property then remove from player
   if(index > -1){
     this.properties.splice(index, 1);
   }

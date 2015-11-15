@@ -71,6 +71,10 @@ MonopolyTrade.prototype.allDetails = function(){
   return true;
 };
 
+MonopolyTrade.prototype.addOrRemoveMoney = function(money){
+  this.money += money;
+}
+
 MonopolyTrade.prototype.itemsToString = function(){
   var my_prop_names = "";
   for (var i in this.proposing_player_items){

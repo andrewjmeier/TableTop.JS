@@ -7,6 +7,7 @@ var Trade = require("./monopoly_trade.js");
 
 function MonopolyGame(players, board, turnMap) {
   Game.call(this, players, board, turnMap);
+  this.turnMap = turnMap;
   this.chanceCards = new ChanceDeck();
   this.communityChestCards = new CommunityChestDeck();
   this.shuffleCards();
@@ -110,9 +111,25 @@ MonopolyGame.prototype.addPropertyToTrade = function(property) {
 };
 
 MonopolyGame.prototype.addPlayerToTrade = function(player) {
-  if(!this.trade.answering_player){
+  if (!this.trade.answering_player){
     this.trade.answering_player = player;
   }
 };
+
+MonopolyGame.prototype.addMoneyToTrade = function(money) {
+  this.trade.addOrRemoveMoney(money);
+};
+
+MonopolyGame.prototype.updateState = function(click) {
+  this.turnMap.updateState(click);
+};
+
+MonopolyGame.prototype.getCurrentState = function() {
+  return this.turnMap.getCurrentState();
+};
+
+
+
+
 
 module.exports = MonopolyGame;

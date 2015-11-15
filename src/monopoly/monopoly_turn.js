@@ -26,12 +26,12 @@ function MonopolyTurn(game) {
 
             waitingOnRoll: {
                 _onEnter: function() {
-                    game.message = this.game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
+                    this.game.message = this.game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
                 },
 
                 yes_continue : function() {
                     this.transition("rolled");
-                },
+                }
             },
 
             rolled: {
@@ -70,7 +70,7 @@ function MonopolyTurn(game) {
                     this.transition("postTurn");
                 }
             },
-            
+
             postTurn: {
                 _onEnter : function() {
                     this.game.message = this.game.message.concat("Choose an option (trade, buy houses, etc), or click continue to end your turn");
@@ -88,6 +88,7 @@ function MonopolyTurn(game) {
 
             proposeTrade: {
                 _onEnter : function() {
+                    this.game.createTrade();
                     this.game.message = "Click the items you want to trade. Choose 1 person and items. Then click continue.";
                 },
 

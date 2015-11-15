@@ -7,6 +7,10 @@ function Game(players, board, turnMap) {
   this.turnMap = turnMap;
 };
 
+Game.prototype.setTurn = function(turnMap) {
+  this.turnMap = turnMap;
+};
+
 Game.prototype.updateState = function(click) {
   this.turnMap.processEvent(click, this);
 };
