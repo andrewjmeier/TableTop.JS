@@ -1,6 +1,7 @@
-function Space(name) {
-  this.name = name;
-  this.occupier = null; // todo: make this an array of tokens
+function Space(opts) {
+  this.name = opts.name;
+  this.color = opts.color;
+  this.occupier = opts.occupier; // todo: make this an array of tokens
 }
 
 Space.prototype.clearOccupiers = function() { 
