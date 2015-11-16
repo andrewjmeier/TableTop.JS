@@ -4,7 +4,6 @@ var c = require("../ttConstants.js");
 
 function CheckersGame(players, board, turnMap) {
   Game.call(this, players, board, turnMap);
-  this.message = "";
   this.moveType = c.moveTypeManual;
   this.moveEvaluationType = c.moveEvalationTypeGameEvaluator;
   board.tokens.forEach(function(token) { 
@@ -16,7 +15,6 @@ function CheckersGame(players, board, turnMap) {
 
 inherits(CheckersGame, Game);
 
-// assumes valid move
 CheckersGame.prototype.evaluateMove = function() {  
 
   var token = this.proposedMove.token;
@@ -41,9 +39,10 @@ CheckersGame.prototype.isValidMove = function(token, oldSpace, newSpace) {
   
   var player = this.getCurrentPlayer();
   
-  if (token.owner != player) return false;
-  if (newSpace.color == c.redColor) return false;
-  if (newSpace.occupier) return false;
+  if (token.owner != player || 
+     newSpace.color == c.redColor || 
+     newSpace.occupier) 
+    return false;
 
   return this.validNormalMove(token, oldPos, newPos, 1) || 
     this.validJumpMove(token, oldPos, newPos);  
@@ -76,19 +75,14 @@ CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) {
 
 };
 
-// game
 CheckersGame.prototype.playerDidWin = function(player) { 
-  var otherPlayer = this.otherPlayer(player);
+  var otherPlayer = (this.players[0] == player) ? this.players[1] : this.players[0];
   var tokens = otherPlayer.tokens;
   for (var tokenIdx in tokens) { 
     if (tokens[tokenIdx]) return false;
   } 
   
   return true;
-};
-
-CheckersGame.prototype.otherPlayer = function(player) { 
-  return (this.players[0] == player) ? this.players[1] : this.players[0];
 };
 
 module.exports = CheckersGame;

@@ -3,6 +3,7 @@
 // existing "board" and "players" implementations if any exist
 function Board() {
   this.spaces = [];
+  this.tokens = [];
 }
 
 Board.prototype.getSpace = function(idx) { 

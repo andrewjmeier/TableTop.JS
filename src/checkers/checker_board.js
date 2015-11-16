@@ -7,7 +7,6 @@ var c = require("../ttConstants.js");
 function CheckerBoard() { 
   GridBoard.call(this, 8, 8);
   this.buildTiles();
-  this.tokens = []; 
   this.buildTokens();
 }
 
@@ -34,30 +33,23 @@ CheckerBoard.prototype.buildTokens = function() {
   var whiteX = [1, 3, 5, 7, 0, 2, 4, 6, 1, 3, 5, 7];
   var whiteY = [5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7];
 
-  var token;
   var space;
   for (var i = 0; i < redX.length; i++) { 
 
     space = this.getSpace(redX[i], redY[i]);
-    token = new Token(null, space, c.redColor);
+    this.buildTokenForSpace(space, c.redColor);
 
-    space.addOccupier(token);
-    token.setSpace(space);
+    space = this.getSpace(whiteX[i], whiteY[i]);
+    this.buildTokenForSpace(space, c.whiteColor);
 
-    this.tokens.push(token);
   }
 
-  for (var j = 0; j < redX.length; j++) { 
+};
 
-    space = this.getSpace(whiteX[j], whiteY[j]);
-    token = new Token(null, space, c.whiteColor);
-
-    space.addOccupier(token);
-    token.setSpace(space);
-    
-    this.tokens.push(token);
-  }
-
+CheckerBoard.prototype.buildTokenForSpace = function(space, color) { 
+  var token = new Token(null, space, color);
+  space.addOccupier(token);
+  this.tokens.push(token);
 };
 
 module.exports = CheckerBoard;

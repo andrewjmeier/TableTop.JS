@@ -4,12 +4,12 @@
  * @param {string} name - The player's name.
  * @param {int} number - The player's number.
 */
-function Player(name, number) {
-  this.name = name;
+function Player(opts) {
+  this.name = opts.name;
   // TODO - this should be refactored to be an array of tokens for the player
   this.tokens = [];
-  this.position = 0;
-  this.color = number;
+  this.position = opts.position;
+  this.color = opts.color;
 };
 
 /**
