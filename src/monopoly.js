@@ -1,7 +1,7 @@
 require("./monopoly/board/boardConstants.js");
 
 var Player = require("./monopoly/monopoly_player.js");
-var Card = require("./monopoly/cards/card.js");
+var Card = require("./card.js");
 var Game = require("./monopoly/monopoly_game.js");
 var Utils = require("./utils.js");
 var Board = require("./monopoly/board_utils.js");
@@ -23,11 +23,12 @@ var players = [john, steve, sam, mike, jimmy];
 
 var board = new Board();
 
-var monopoly = new Game(players, board, turn);
+var monopoly = new Game(players, board);
 
 var turn = new Turn(monopoly);
 
-var view = new MonopolyView(monopoly, turn);
+monopoly.setTurn(turn);
+
+var view = new MonopolyView(monopoly);
 
 view.drawBoard();
-

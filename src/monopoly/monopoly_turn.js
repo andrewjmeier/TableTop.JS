@@ -25,12 +25,13 @@ function MonopolyTurn(game) {
                     this.transition("waitingOnRoll");
                 }
             },
+
             waitingOnRoll: {
                 _onEnter: function() {
-                    game.message = this.game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
+                    this.game.message = this.game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
                 },
 
-                yes : function() {
+                yes_continue : function() {
                     this.transition("rolled");
                 }
             },
@@ -55,7 +56,7 @@ function MonopolyTurn(game) {
                     }
                 },
 
-                yes : function() {
+                yes_continue : function() {
                     var player = this.game.getCurrentPlayer();
                     var property = this.game.board.spaces[player.position];
                     player.buy(property);
@@ -63,7 +64,8 @@ function MonopolyTurn(game) {
                     this.transition("postTurn");
                 },
 
-                no : function() {
+                no_trade_clear : function() {
+                    //btn is no in this case
                     var player = this.game.getCurrentPlayer();       
                     var property = this.game.board.spaces[player.position];
                     this.game.message = "You didn't buy " + property.name + ". ";
@@ -76,8 +78,60 @@ function MonopolyTurn(game) {
                     this.game.message = this.game.message.concat("Choose an option (trade, buy houses, etc), or click continue to end your turn");
                 },
 
-                yes: function() {
+                yes_continue: function() {
                     this.transition("endedTurn");
+                },
+
+                no_trade_clear : function() {
+                    //btn is trade in this case
+                    this.transition("proposeTrade")
+                }
+            },
+
+            proposeTrade: {
+                _onEnter : function() {
+                    this.game.createTrade();
+                    this.game.message = "Click the items you want to trade. Choose 1 person and items. Then click continue.";
+                },
+
+                yes_continue: function() {
+                    if(this.game.trade.allDetails()){
+                      this.transition("tradeAnswer")
+                    } else {
+                      alert("Please select all details for a full trade");
+                    }
+                },
+
+                no_trade_clear : function() {
+                    //btn is clear in this case
+                    this.game.clearTrade();
+                },
+
+                cancel: function() {
+                    this.game.clearTrade();
+                    this.game.message = "Trade cancelled. ";
+                    this.transition("postTurn");
+                }
+            },
+
+            tradeAnswer: {
+                _onEnter : function() {
+                    this.game.message = this.game.trade.answering_player.name + ", do you want to trade with " + this.game.trade.proposing_player.name + "?" + "\nThey are " + this.game.trade.itemsToString();
+                },
+
+                yes_continue : function() {
+                    this.game.trade.completeTrade();
+                    this.game.message = "You traded. ";
+                    this.game.clearTrade();
+                    this.transition("postTurn");
+                },
+
+                no_trade_clear : function() {
+                    //btn is no in this case
+                    this.game.message = "You didn't trade. ";
+                    this.game.clearTrade();
+                    this.transition("postTurn");
+
                 }
             },
 

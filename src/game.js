@@ -4,12 +4,21 @@
  * @param {Player|Array} players - A list of players
  * @param {Board} board - The game board
 */
-function Game(players, board, turnMap) {
+function Game(players, board) {
   this.players = players,
   this.currentPlayer = 0;
   this.board = board;
   this.dice = [];
   this.randomizeCurrentPlayer();
+  this.turnMap = null;
+};
+
+/**
+ * Method to set turnMap of the game once it is created
+ * This is required!
+ * @param {Turn} turnMap - A turn object to be used by the game
+*/
+Game.prototype.setTurn = function(turnMap) {
   this.turnMap = turnMap;
 };
 
@@ -19,6 +28,36 @@ function Game(players, board, turnMap) {
 */
 Game.prototype.updateState = function(message) {
   this.turnMap.updateState(message, this);
+};
+
+/**
+ * Callback method from the view when a token is clicked
+ * To be overridden by the subclass
+ * @abstract
+ * @parram {Token} token - The token object that was clicked
+*/
+Game.prototype.tokenClicked = function(token) {
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
+ * Callback method from the view when a space is clicked
+ * To be overridden by the subclass
+ * @abstract
+ * @param {Space} space - the space object that was clicked in the view
+*/
+Game.prototype.spaceClicked = function(space) {
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
+ * Check the Game State to see if a player has won the game
+ * @abstract
+ * @return {boolean}
+*/
+Game.prototype.isGameOver = function() {
+  // TODO - check this method every transition in the state machine
+  throw new Error('must be implemented by subclass!');
 };
 
 /**
