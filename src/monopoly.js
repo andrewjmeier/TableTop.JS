@@ -23,7 +23,7 @@ var players = [john, steve, sam, mike, jimmy];
 
 var board = new Board();
 
-var monopoly = new Game(players, board, turn);
+var monopoly = new Game(players, board);
 
 var turn = new Turn(monopoly);
 
