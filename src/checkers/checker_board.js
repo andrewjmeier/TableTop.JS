@@ -1,6 +1,6 @@
 var inherits = require('util').inherits;
 var GridBoard = require("../board/gridBoard.js");
-var Space = require("../space.js");
+var Space = require("../board/space.js");
 var Token = require("../token.js");
 var c = require("../ttConstants.js");
 
