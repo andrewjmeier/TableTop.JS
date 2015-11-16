@@ -169,9 +169,8 @@ Add the following method to your check_board.js file, and call it from your cons
         var whiteX = [1, 3, 5, 7, 0, 2, 4, 6, 1, 3, 5, 7];
         var whiteY = [5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7];
 
-        var space;
-
         // build the tokens
+        var space;
         for (var i = 0; i < redX.length; i++) { 
 
             space = this.getSpace(redX[i], redY[i]);
