@@ -113,6 +113,16 @@ Game.prototype.hasValidMove = function() {
                           this.proposedMove.destination);
 }; 
 
+Game.prototype.isValidMove = function(token, oldSpace, newSpace) { 
+  console.log("Warning: you should overwrite isValidMove(token, oldSpaace, newSpace)");
+  return true;
+};
+
+Game.prototype.playerDidWin = function(player) {
+  console.log("Warning: you should overwrite playerDidWin(player)");
+  return false;
+};
+
 Game.prototype.moveTokenToSpace = function(token, destinationTile) { 
   token.space.removeOccupier(token);
   token.setSpace(destinationTile);
