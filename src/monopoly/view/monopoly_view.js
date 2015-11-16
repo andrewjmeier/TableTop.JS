@@ -103,7 +103,7 @@ MonopolyView.prototype.drawBoard = function() {
 
         // Else Draw Tile
         else {
-            var property = this.drawTile(x_pos + x_correction, y_pos + y_correction, this.game.board.spaces[i]);
+            var property = this.drawTile(x_pos + x_correction, y_pos + y_correction, this.game.board.spaces[i], rotation);
             property.rotation = rotation;
             this.tiles.push(property);
             this.stage.addChild(property);
@@ -250,11 +250,7 @@ MonopolyView.prototype.setupPropertyClick = function(tile, property){
 
     tile.click = function(mouseData){
         if(context.game.getCurrentState() == PROPOSE_TRADE){
-            // if(!context.game.trade){
-            //     context.game.createTrade();
-            // }else{
-                context.game.addPropertyToTrade(property);
-            // }
+            context.game.addPropertyToTrade(property);
         }
     };
 };
@@ -265,18 +261,14 @@ MonopolyView.prototype.setupPlayerClick = function(rect, player){
     rect.click = function(mouseData){
         if(context.game.getCurrentState() == PROPOSE_TRADE){
             if(player != context.game.getCurrentPlayer()){
-                // if(!context.game.trade){
-                    // context.game.createTrade();
-                // }else{
-                    context.game.addPlayerToTrade(player);
-                // }
+                context.game.addPlayerToTrade(player);
             }
         }
     };
 };
 
 //this is a bit of a hack to make the entire property viewable but it works
-MonopolyView.prototype.addClickableBox = function(x_pos, y_pos, property) {
+MonopolyView.prototype.addClickableBox = function(x_pos, y_pos, property, rotation) {
 
     box = new PIXI.Graphics();
     box.lineStyle(1, 0, 1);
@@ -293,16 +285,16 @@ MonopolyView.prototype.addClickableBox = function(x_pos, y_pos, property) {
 
 }
 
-MonopolyView.prototype.drawTile = function(x_pos, y_pos, tile) {
+MonopolyView.prototype.drawTile = function(x_pos, y_pos, tile, rotation) {
     if (tile instanceof HousingProperty) {
         property = this.drawProperty(x_pos, y_pos, tile);
-        this.addClickableBox(x_pos, y_pos, tile);
+        this.addClickableBox(x_pos, y_pos, tile, rotation);
     } else if (tile instanceof RailroadProperty) {
         property = this.drawRailroadProperty(x_pos, y_pos, tile);
-        this.addClickableBox(x_pos, y_pos, tile);
+        this.addClickableBox(x_pos, y_pos, tile, rotation);
     } else if (tile instanceof UtilityProperty) {
         property = this.drawUtilityProperty(x_pos, y_pos, tile);
-        this.addClickableBox(x_pos, y_pos, tile);
+        this.addClickableBox(x_pos, y_pos, tile, rotation);
     } else if (tile instanceof Chance) {
         property = this.drawChanceTile(x_pos, y_pos, tile);
     } else if (tile instanceof CommunityChest) {
@@ -1069,9 +1061,6 @@ MonopolyView.prototype.updateProperties = function() {
 MonopolyView.prototype.updateTradeInfo = function(){
     
     if (this.game.getCurrentState() == PROPOSE_TRADE){
-        //if(!this.game.trade){
-         //   this.game.createTrade();
-        //}
         var trade_player_name = "";
         if (!this.game.trade.answering_player){
             trade_player_name = "Select Player";
