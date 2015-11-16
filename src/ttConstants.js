@@ -4,17 +4,16 @@ var ttConstants = new Object();
 
 // CANVAS
 // Constants defining the canvas properties
-ttConstants.canvasWidth = 1500;
-ttConstants.canvasHeight = 1200;
+ttConstants.canvasWidth = 1200;
+ttConstants.canvasHeight = 1500;
 
 ttConstants.leftBuffer = 50;
-ttConstants.rightBuffer = 50;
 ttConstants.upperBuffer = 50;
 
 // BOARD
 // Constants for defining the board on top of the canvas
-ttConstants.boardWidth = 800;
-ttConstants.boardHeight = 800;
+ttConstants.boardWidth = 1100;
+ttConstants.boardHeight = 1100;
 
 ttConstants.boardStartX = ttConstants.leftBuffer;
 ttConstants.boardStartY = ttConstants.upperBuffer;
@@ -25,7 +24,7 @@ ttConstants.blackColor = 0x000000;
 ttConstants.whiteColor = 0xFFFFFF;
 ttConstants.redColor = 0xFF0000;
 ttConstants.blueColor = 0x0000FF;
-ttConstants.greenColor = 0x0080000;
+ttConstants.greenColor = 0x008000;
 
 // MOVE TYPES
 // Constants defining how moving occurs
