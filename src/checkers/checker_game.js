@@ -7,6 +7,11 @@ function CheckersGame(players, board, turnMap) {
   this.message = "";
   this.moveType = c.moveTypeManual;
   this.moveEvaluationType = c.moveEvalationTypeGameEvaluator;
+  board.tokens.forEach(function(token) { 
+    var player = token.color == c.redColor ? players[0] : players[1];
+    token.owner = player;
+    player.tokens.push(token);
+  });
 };
 
 inherits(CheckersGame, Game);

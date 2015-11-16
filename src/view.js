@@ -8,18 +8,16 @@ function View(game, turnMap) {
   this.tokenViews = [];
   this.tileViews = [];
   this.boardView = new PIXI.Graphics();
+  this.stage = new PIXI.Container();
+  this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight, 
+                                          { transparent: true });
+  document.body.appendChild(this.renderer.view);
   
   if (game.board instanceof GridBoard) { 
     for (var i = 0; i < this.game.board.height; i++) { 
       this.tileViews[i] = [];
     } 
   } 
-    
-  this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight,
-                                          {backgroundColor : 0x1099bb});
-  document.body.appendChild(this.renderer.view);
-  // create the root of the scene graph
-  this.stage = new PIXI.Container();
 };
 
 View.prototype.drawBoard = function() { 
@@ -39,12 +37,12 @@ View.prototype.drawBoard = function() {
 };
 
 View.prototype.drawGridBoard = function() {
- 
-  //board.lineStyle(1, 0x000000, 1);
-  this.boardView.beginFill(0xC2E2BF, 1);
-  this.boardView.drawRect(c.boardStartX, c.boardStartY, c.boardWidth, c.boardHeight);
-  this.stage.addChild(this.boardView);
   
+  this.boardView.x = c.boardStartX;
+  this.boardView.y = c.boardStartY;
+  this.boardView.beginFill(c.blueColor, 1);
+  this.boardView.drawRect(0, 0, c.boardWidth, c.boardHeight);
+  this.stage.addChild(this.boardView);
   this.drawTiles(this.boardView);
   this.drawTokens();
   this.drawMessage();
@@ -61,11 +59,13 @@ View.prototype.drawGraphBoard = function() {
 
 };
 
-View.prototype.drawTile = function(tile, boardView, x_pos, y_pos, tileWidth, tileHeight) {
+View.prototype.drawTile = function(opts) { 
   var tileView = new PIXI.Graphics();
   tileView.lineStyle(1, 0, 1);
-  tileView.drawRect(x_pos, y_pos, tileWidth, tileHeight);
-  tileView.beginFill(tile.color, 1);
+  tileView.beginFill(opts.tile.color, 1);
+  tileView.drawRect(0, 0, opts.dim.width, opts.dim.height);
+  tileView.x = opts.position.x;
+  tileView.y = opts.position.y;
   
   if (this.game.moveType == c.moveTypeManual) { 
     tileView.interactive = true;
@@ -73,32 +73,38 @@ View.prototype.drawTile = function(tile, boardView, x_pos, y_pos, tileWidth, til
     tileView.click = function(mouseData) { 
       if (context.turnMap.getCurrentState() == "waitingForMove" && 
           context.game.proposedMove.token) { 
-        context.game.setProposedMoveDestination(tile);
+        context.game.setProposedMoveDestination(opts.tile);
         context.turnMap.updateState("makeMove");
       };
     };
   } 
   
-  this.tileViews[x_pos][y_pos] = tileView;
+  this.tileViews[opts.index.x][opts.index.y] = tileView;
   this.boardView.addChild(tileView);
 };
 
 View.prototype.drawTiles = function(boardView) {
 
-  var tileWidth = c.canvasWidth / this.game.board.spaces[0].length;
-  var tileHeight = c.canvasHeight / this.game.board.spaces.length;
-  var y_pos = 0;
-  var x_pos = c.canvasHeight;
+  var tileWidth = c.boardWidth / this.game.board.spaces[0].length;
+  var tileHeight = c.boardHeight / this.game.board.spaces.length;
+  var y_pos = c.boardHeight;
+  var x_pos = 0;
   
-  for (var x = 0; x < this.game.board.spaces[0].length; x++) {
+  for (var y = 0; y < this.game.board.spaces.length; y++) {
     x_pos = 0;
     y_pos -= tileHeight;
-    for (var y = 0; y < this.game.board.spaces.length; y++) {
+    for (var x = 0; x < this.game.board.spaces[0].length; x++) {
       var tile = this.game.board.getSpace(x, y);
-      this.drawTile(tile, boardView, x_pos, y_pos, tileWidth, tileHeight);
-      x_pos += tile.width;
+      this.drawTile({
+        tile: tile, 
+        boardView: boardView,
+        position: {x: x_pos, y: y_pos},
+        index: {x: x, y: y},
+        dim: {width: tileWidth, height: tileHeight}
+      });
+      x_pos += tileWidth;
     }
-  }
+   }
 };
 
 // draws token, puts it on appropriate tile,
@@ -120,8 +126,11 @@ View.prototype.drawToken = function(token) {
   }
   
   // put it on the tile
-  var tileView = this.tileViews[token.pos.x, token.pos.y];
-  tokenView.drawRect(10, 10, 20, 20); // todo: other shapes
+  var position = this.game.board.getSpacePosition(token.space);
+  var tileView = this.tileViews[position.x][position.y];
+  var w = tileView.width;
+  var h = tileView.height;
+  tokenView.drawCircle(w/2, h/2, w/2 - 20);
   tileView.addChild(tokenView);
 
   this.tokenViews.push({view: tokenView, token: token});
@@ -138,19 +147,19 @@ View.prototype.drawTokens = function() {
 };
 
 View.prototype.updateTokenView = function(tokenView) {
-  var view = tokenView.view;
-  var token = tokenView.token;
   
   // if it's dead, destroy and return
-  if (token.isDead) {
+  if (tokenView.token.isDead) {
     this.destroyTokenView(tokenView);
     return;
   } 
   
-  // move the token to new tile
-  var destinationTile = this.tileViews[token.position.x][token.position.y];
-  destinationTile.removeChildren(); 
-  tokenView.view.setParent(destinationTile);
+  // update if we've moved
+  var position = this.game.board.getSpacePosition(tokenView.token.space);
+  var tileView = this.tileViews[position.x][position.y];
+
+  // make ourself a child of new tile
+  tokenView.view.setParent(tileView); 
 };
 
 View.prototype.updateTokens = function() {
@@ -178,34 +187,10 @@ View.prototype.destroyTokenView = function(tokenView) {
 };
   
 View.prototype.drawMessage = function() {
-  var container = new PIXI.Container();
-
-  var button1 = new PIXI.Graphics();
-  button1.y = 160;
-  button1.beginFill(0x00FF00, 1);
-  button1.drawRect(0, 0, 200, 40);
-  container.addChild(button1);
-
-  button1.interactive = true;
-  var context = this;
-  button1.click = function(mouseData){
-    console.log("CLICK!");
-    context.game.updateState(true);
-  };
-
-  this.button1Text = new PIXI.Text("Roll", {font: '30px Arial',
-                                            align : 'center',
-                                            wordWrap : true,
-                                            strokeThickness : .25,
-                                            wordWrapWidth : 150
-                                           });
-  this.button1Text.x = 50;
-  button1.addChild(this.button1Text);
-  this.stage.addChild(container);
 };
 
 View.prototype.animate = function() {
-  this.updateTokens();
+//  this.updateTokens();
   requestAnimationFrame(this.animate.bind(this));
   this.renderer.render(this.stage);
 };

@@ -1,6 +1,6 @@
 var inherits = require('util').inherits;
 var GridBoard = require("../board/gridBoard.js");
-var CheckersTile = require("./checker_tile.js");
+var CheckerTile = require("./checker_tile.js");
 var Token = require("../token.js");
 var c = require("../ttConstants.js");
 
@@ -15,14 +15,14 @@ inherits(CheckerBoard, GridBoard);
 
 
 CheckerBoard.prototype.buildTiles = function() { 
-  var tileColor = c.colorBlack;
+  var tileColor = c.redColor;
   var tile;
   for (var y = 0; y < this.height; y++) {
-    tileColor = (tileColor == c.colorRed) ? c.colorBlack : c.colorRed;
+    tileColor = (tileColor == c.redColor) ? c.blackColor : c.redColor;
     for (var x = 0; x < this.width; x++) {
-      tile = new CheckersTile(tileColor);
+      tile = new CheckerTile(tileColor);
       this.spaces[x][y] = tile;
-      tileColor = (tileColor == c.colorRed) ? c.colorBlack : c.colorRed;
+      tileColor = (tileColor == c.redColor) ? c.blackColor : c.redColor;
     } 
   } 
 };
