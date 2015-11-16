@@ -58,7 +58,7 @@ In this demo, we'll be creating a simple checkers game. For simplicity sake, we'
 
 When you create a game, there are 5 major components: the Players, Game, Board, TurnMap, and View. However, as we'll learn shortly, the default View and TurnMap classes can be extremely convenient to utilize. In fact, for this demo, we'll do little more than modifying a few flags on our objects to get checkers to work with the defaults. 
 
-To begin, create a new file checkers.js -- this will be the file that builds your game from scratch. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly.
+To begin, create a new file checkers.js in the root of your project folder. This will be the file that the framework looks for to builds your game. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly.
    
     // Import necessary modules
     var Player = require("./player.js"); 
@@ -85,7 +85,7 @@ To begin, create a new file checkers.js -- this will be the file that builds you
 
     // this initiates the TurnMap ("Gameloop") and 
     // gets the ball rolling!
-    checkers.updateState("start")
+    checkers.updateState("start");
     
 
 This is all you need for the main game file. In general, your (game).js file should never be much longer than this -- you should offload the complicated logic to your subclasses of the five main game components (like we will do with Checkers and CheckerBoard).
@@ -109,9 +109,11 @@ In checker_game.js, enter the following:
             token.owner = player;
             player.tokens.push(token);
         });
-   };
+    };
 
-   inherits(CheckersGame, Game);
+    inherits(CheckersGame, Game);
+
+    module.exports = CheckersGame;
 
 This is the constructor for our game. We overwrite a few important defaults here. 
 
@@ -119,11 +121,11 @@ First, we set the moveType to c.moveTypeManual. Game defaults to using c.moveTyp
 
 Second, we set the moveEvaluationType to c.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the spaces. When we set this flag, the TurnMap will call "evaluateMove()" on our game class to decide what the side effects of a move are. 
 
-We'll finish this class later. For now, let's move on to the checkers_board class. Create the file and enter the following: 
+We'll finish this class later. For now, let's move on to the checker_board class. Create the file and enter the following: 
 
     var inherits = require('util').inherits;
     var GridBoard = require("../board/gridBoard.js");
-    var Space = require("../space.js");
+    var Space = require("../board/space.js");
     var Token = require("../token.js");
     var c = require("../ttConstants.js");
 
@@ -148,6 +150,8 @@ We'll finish this class later. For now, let's move on to the checkers_board clas
         } 
     };
 
+
+    module.exports = CheckerBoard;
 
 First, we subclass GridBoard. PathBoard (for games like monopoly) and GraphBoard (for games like Settlers of Catan) are available, but those are more complex to implement. Then, we build the tiles for our game. We alternate colors black and red to create the checkerboard effect. 
 
@@ -229,8 +233,9 @@ Lets write our evaluateMove() function. This function should assume that there's
     
     };
 
+Now, refresh your index.html and you should be able to move tokens around. Notice that the game has no concept of what should be a valid move or not -- players can move each others tokens, and tokens can move an infinite amount of spaces. The console should be warning you about this on every move. Let's fix that. 
 
-We're almost done - just a few more things we need to add. As we mentioned before, we need a isValidMove() function. For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one space diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
+For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one space diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
 
     CheckersGame.prototype.isValidMove = function(token, oldSpace, newSpace) { 
   
@@ -274,9 +279,11 @@ We're almost done - just a few more things we need to add. As we mentioned befor
     };
 
 
-Notice that we could include double jumps here with a few more lines of code -- after this tutorial, try it yourself! 
+Notice that we could include double jumps here with a few more lines of code -- after this tutorial, try it yourself!
 
-At this point, there's only one more thing we need to define in our game class: how do we tell who won the game? The default TurnMap will call the bool function game.playerDidWin(player) to find out this information. Let's implement that now: 
+You can refresh the game at this point to try moving around - invalid moves should raise an error in the console, and you shouldn't be able to perform anything illegal. 
+
+At this point, there's only one more thing we need to define in our game class (as indicated by the warnings in the console): how do we tell who won the game? The default TurnMap will call the bool function game.playerDidWin(player) to find out this information. Let's implement that now: 
 
     CheckersGame.prototype.playerDidWin = function(player) { 
        var otherPlayer = (this.players[0] == player) ? this.players[1] : this.players[0];
@@ -289,9 +296,15 @@ At this point, there's only one more thing we need to define in our game class: 
     };
 
 
-We're done! Reload your index.html file and you should be able to play checkers to your hearts content. 
+Anddd we're done! Congratulations on your first TableTop.js game! 
 
-If you're ready for more game development, try implementing double jump and token upgrades upon reaching the end of the board (hint: you might need to subclass token for the latter case). If you'd rather move on from checkers, look at our other example projects (Monopoly and Settlers of Catan) for ways you can leverage our framework to create more complicated games. 
+Reload your index.html file and you should be able to play checkers to your hearts content.
+
+If you're ready for more game development, try implementing double jump and token upgrades upon reaching the end of the board (hint: you might need to subclass token for the latter case). If you'd rather move on from checkers, look at our other example projects (Monopoly and Settlers of Catan) for ways you can leverage our framework to create more complex games.
+
+Happy gaming! 
+
+- TableTop.js Team
 
 
 
