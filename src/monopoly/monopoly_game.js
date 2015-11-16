@@ -24,7 +24,7 @@ MonopolyGame.prototype.shuffleCards = function() {
 };
 
 MonopolyGame.prototype.drawChanceCard = function() {
-  var card = this.chanceCards.drawCard();
+  var card = this.chanceCards.drawCard(true);
   this.activeCard = card;
   console.log("chance card drawn ", card);
   var actions = card.action(this);
@@ -32,7 +32,7 @@ MonopolyGame.prototype.drawChanceCard = function() {
 };
 
 MonopolyGame.prototype.drawCommunityChestCard = function() {
-  var card = this.communityChestCards.drawCard();
+  var card = this.communityChestCards.drawCard(true);
   this.activeCard = card;
   console.log("community chest card drawn ", card);
   var actions = card.action(this);
