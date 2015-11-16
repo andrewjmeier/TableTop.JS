@@ -70,12 +70,17 @@ View.prototype.drawTile = function(opts) {
   if (this.game.moveType == c.moveTypeManual) { 
     tileView.interactive = true;
     var context = this;
-    tileView.click = function(mouseData) { 
-      if (context.turnMap.getCurrentState() == "waitingForMove" && 
-          context.game.proposedMove.token) { 
+    tileView.click = function(mouseData) {
+      if (tileView.children.length > 0) { 
+        console.log("Swalling touch -- this was meant for token");
+      } else if (context.turnMap.getCurrentState() == "waitingForMove" && 
+                 context.game.proposedMove.token) { 
+        console.log("Got destination");
         context.game.setProposedMoveDestination(opts.tile);
         context.turnMap.updateState("makeMove");
-      };
+      } else { 
+        console.log("Wrong time to click tile.");
+      } 
     };
   } 
   
@@ -120,7 +125,11 @@ View.prototype.drawToken = function(token) {
     var context = this;
     tokenView.click = function(mouseData) { 
       if (context.turnMap.getCurrentState() == "waitingForMove") { 
-        context.game.setProposedMoveToken(tokenView.token);
+        console.log("Got token");
+        var token = context.tokenViews.filter(function(tv) { 
+          return tv.view == tokenView;
+        })[0].token;
+        context.game.setProposedMoveToken(token);
       };
     };
   }

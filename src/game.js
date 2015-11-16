@@ -11,11 +11,11 @@ function Game(players, board, turnMap) {
   this.currentPlayer = 0;
   this.board = board;
   this.dice = [];
-  this.randomizeCurrentPlayer();
   this.turnMap = turnMap;
   this.moveType = c.moveTypeDice; // manual movement or dicerolls
   this.proposedMove = {}; // for c.moveTypeManual
   this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
+  this.currentPlayer = 0;
 };
 
 /**
@@ -105,12 +105,12 @@ Game.prototype.hasValidMove = function() {
   
   if (this.moveType != c.moveTypeManual) 
     return false;
-  if (!this.proposedMove.token || !this.proposedMove.destinationSpace)
+  if (!this.proposedMove.token || !this.proposedMove.destination)
     return false;
 
   return this.isValidMove(this.proposedMove.token, 
                           this.proposedMove.token.space, 
-                          this.proposedMove.destinationTile);
+                          this.proposedMove.destination);
 }; 
 
 Game.prototype.moveTokenToSpace = function(token, destinationTile) { 

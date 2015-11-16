@@ -39,14 +39,14 @@ CheckersGame.prototype.isValidMove = function(token, oldSpace, newSpace) {
   var oldPos = this.board.getSpacePosition(oldSpace);
   var newPos = this.board.getSpacePosition(newSpace);
   
-  var player = this.game.getCurrentPlayer();
+  var player = this.getCurrentPlayer();
   
   if (token.owner != player) return false;
   if (newSpace.color == c.redColor) return false;
   if (newSpace.occupier) return false;
 
-  return this.validNormalMove(token.color, oldPos, newPos, 1) || 
-    this.validJumpMove(token.color, oldPos, newPos);  
+  return this.validNormalMove(token, oldPos, newPos, 1) || 
+    this.validJumpMove(token, oldPos, newPos);  
 };
 
 CheckersGame.prototype.validNormalMove = function(token, oldPos, newPos, moveLen) { 

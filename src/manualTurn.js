@@ -27,15 +27,16 @@ function ManualTurn(game) {
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
-          game.message = this.game.getCurrentPlayer().name + ": Make your move.";
+          console.log(this.game.getCurrentPlayer().name + ": Make your move.");
         },
         
         makeMove : function() { 
           if (game.hasValidMove()) { 
             game.evaluateMove();
             this.transition("postTurn");
+            console.log("Making valid move");
           } else { 
-            this.game.message = "Invalid move. Try again.";
+            console.log("Invalid move. Try again.");
           } 
         } 
       },
@@ -43,7 +44,7 @@ function ManualTurn(game) {
       // 3
       postTurn: { 
         _onEnter : function() { 
-          this.game.message = "Move made.";
+          console.log("Move made.");
           if (this.game.getCurrentPlayer().hasWon()) { 
             this.transition("gameOver");
           } else { 
@@ -55,7 +56,7 @@ function ManualTurn(game) {
 
       gameOver : { 
         _onEnter : function() { 
-          this.game.message = this.game.getCurrentPlayer() + "has won.";
+          console.log(this.game.getCurrentPlayer() + "has won.");
         } 
       } 
       
