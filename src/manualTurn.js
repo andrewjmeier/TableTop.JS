@@ -5,9 +5,7 @@ function ManualTurn(game) {
   
   this.game = game;
   this.turnMap = new Turn({ 
-    initialize: function( options ) {
-      console.log("tests");
-    },
+    initialize: function( options ) {},
     
     game : game, 
 
@@ -34,7 +32,6 @@ function ManualTurn(game) {
           if (game.hasValidMove()) { 
             game.evaluateMove();
             this.transition("postTurn");
-            console.log("Making valid move");
           } else { 
             console.log("Invalid move. Try again.");
           } 
@@ -44,8 +41,7 @@ function ManualTurn(game) {
       // 3
       postTurn: { 
         _onEnter : function() { 
-          console.log("Move made.");
-          if (this.game.getCurrentPlayer().hasWon()) { 
+          if (this.game.playerDidWin(game.getCurrentPlayer())) { 
             this.transition("gameOver");
           } else { 
             this.game.nextPlayer();

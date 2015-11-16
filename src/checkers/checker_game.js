@@ -76,8 +76,9 @@ CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) {
 
 };
 
-CheckersGame.prototype.playerDidWin = function() { 
-  var otherPlayer = this.otherPlayer();
+// game
+CheckersGame.prototype.playerDidWin = function(player) { 
+  var otherPlayer = this.otherPlayer(player);
   var tokens = otherPlayer.tokens;
   for (var tokenIdx in tokens) { 
     if (tokens[tokenIdx]) return false;
@@ -86,8 +87,7 @@ CheckersGame.prototype.playerDidWin = function() {
   return true;
 };
 
-CheckersGame.prototype.otherPlayer = function() { 
-  var player = this.getCurrentPlayer();
+CheckersGame.prototype.otherPlayer = function(player) { 
   return (this.players[0] == player) ? this.players[1] : this.players[0];
 };
 

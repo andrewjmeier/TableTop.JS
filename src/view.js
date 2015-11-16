@@ -71,15 +71,15 @@ View.prototype.drawTile = function(opts) {
     tileView.interactive = true;
     var context = this;
     tileView.click = function(mouseData) {
-      if (tileView.children.length > 0) { 
-        console.log("Swalling touch -- this was meant for token");
-      } else if (context.turnMap.getCurrentState() == "waitingForMove" && 
-                 context.game.proposedMove.token) { 
-        console.log("Got destination");
+      /* make sure we're in the right state, 
+         a token has been pressed, 
+         and we're not a tile with a token on it (if we have > 0
+         children, then this click was meant for a token... */
+      if (context.turnMap.getCurrentState() == "waitingForMove" && 
+          context.game.proposedMove.token && 
+          tileView.children.length == 0) { 
         context.game.setProposedMoveDestination(opts.tile);
         context.turnMap.updateState("makeMove");
-      } else { 
-        console.log("Wrong time to click tile.");
       } 
     };
   } 
@@ -125,7 +125,6 @@ View.prototype.drawToken = function(token) {
     var context = this;
     tokenView.click = function(mouseData) { 
       if (context.turnMap.getCurrentState() == "waitingForMove") { 
-        console.log("Got token");
         var token = context.tokenViews.filter(function(tv) { 
           return tv.view == tokenView;
         })[0].token;
@@ -168,7 +167,8 @@ View.prototype.updateTokenView = function(tokenView) {
   var tileView = this.tileViews[position.x][position.y];
 
   // make ourself a child of new tile
-  tokenView.view.setParent(tileView); 
+  tokenView.view.removeChild(tileView.view);
+  tileView.addChild(tokenView.view);
 };
 
 View.prototype.updateTokens = function() {
@@ -180,26 +180,39 @@ View.prototype.updateTokens = function() {
 };
   
 View.prototype.destroyTokenViewForToken = function(token) { 
+
   var tokenView;
   for (var tokenViewIdx in this.tokenViews) { 
     tokenView = this.tokenViews[tokenViewIdx];
-    if (tokenView.token == token) { 
-      this.destoryTokenView(tokenView);
+    if (tokenView.token == token) {
+      tokenView.view.parent.removeChild(tokenView.view);
+      tokenView.view.destroy();
+      this.tokenViews.splice(tokenViewIdx, 1);
       return;
     }
   } 
 };
 
 View.prototype.destroyTokenView = function(tokenView) { 
-  tokenView.view.destroy();
-  this.tokenViews.remove(function(tv) { return tv == tokenView; });
-};
   
+  tokenView.view.parent.removeChild(tokenView.view);
+  tokenView.view.destroy();
+  
+  var tv;
+  for (var tokenViewIdx in this.tokenViews) { 
+    tv = this.tokenViews[tokenViewIdx];
+    if (tv == tokenView) { 
+      this.tokenViews.splice(tokenViewIdx, 1);
+      return;
+    }
+  } 
+};
+
 View.prototype.drawMessage = function() {
 };
 
 View.prototype.animate = function() {
-//  this.updateTokens();
+  this.updateTokens();
   requestAnimationFrame(this.animate.bind(this));
   this.renderer.render(this.stage);
 };

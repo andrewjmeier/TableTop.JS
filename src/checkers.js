@@ -5,8 +5,8 @@ var ManualTurn = require("./manualTurn.js");
 var View = require("./view.js");
 
 
-var player1 = new Player("John", 1);
-var player2 = new Player("Frank", 2);
+var player1 = new Player("Red", 1);
+var player2 = new Player("White", 2);
 var players = [player1, player2];
 
 var board = new CheckerBoard();
