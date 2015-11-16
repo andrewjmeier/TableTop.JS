@@ -14,6 +14,14 @@ function Game(players, board, turnMap) {
 };
 
 /**
+ * Method to set turnMap of the game once it is created
+ * @param {Turn} turnMap - A turn object to be used by the game
+*/
+Game.prototype.setTurn = function(turnMap) {
+  this.turnMap = turnMap;
+};
+
+/**
  * Method to call from the view to update the game state
  * @param {string} message - A string saying which state to transition to
 */
