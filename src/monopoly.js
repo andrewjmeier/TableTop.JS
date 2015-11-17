@@ -27,7 +27,6 @@ var monopoly = new Game(players, board);
 monopoly.subscribe(function(message) {
     var div = document.getElementById("messages");
     div.innerHTML = div.innerHTML.concat("<br>" + message);
-    console.log(message);
 });
 
 var turn = new Turn(monopoly);
