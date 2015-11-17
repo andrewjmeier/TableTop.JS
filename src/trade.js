@@ -21,6 +21,9 @@ Trade.prototype.completeTrade = function() {
   this.answeringPlayer.addItems(this.proposingPlayerItems);
 };
 
+/**
+ * Add the objects back to their respective players 
+*/
 Trade.prototype.cancelTrade = function() {
   this.proposingPlayer.addItems(this.proposingPlayerItems);
   this.answeringPlayer.addItems(this.answeringPlayerItems);
