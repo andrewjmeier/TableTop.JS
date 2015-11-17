@@ -152,8 +152,4 @@ MonopolyTurn.prototype.getCurrentState = function() {
     return this.turnMap.compositeState();
 };
 
-MonopolyTurn.prototype.sendMessage = function(message) {
-    this.messenger.sendMessage(message);
-}
-
 module.exports = MonopolyTurn;
