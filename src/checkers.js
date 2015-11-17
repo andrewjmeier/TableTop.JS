@@ -6,8 +6,8 @@ var ManualTurn = require("../tabletop/core/manualTurn.js");
 var CheckerView = require("./checkers/checker_view.js");
 
 // create the players
-var redPlayer = new Player({name: "Red"});
-var whitePlayer = new Player({name: "White"});
+var redPlayer = new Player("Red", 1);
+var whitePlayer = new Player("White", 2);
 var players = [redPlayer, whitePlayer];
 
 // create the Board, Game, and TurnMap

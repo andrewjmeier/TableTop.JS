@@ -67,8 +67,8 @@ To begin, create a new file checkers.js in the root of your project folder. This
     var CheckerView = require("./checkers/checker_view.js");
     
     // create the players
-    var redPlayer = new Player({name: "Red"});
-    var whitePlayer = new Player({name: "White"});
+    var redPlayer = new Player("Red", 1);
+    var whitePlayer = new Player("White", 2);
     var players = [redPlayer, whitePlayer];
     
     // create the Board, Game, and TurnMap
