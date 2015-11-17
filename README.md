@@ -59,11 +59,11 @@ When you create a game, there are 5 major components: the Players, Game, Board, 
 
 To begin, create a new file checkers.js in the root of your project folder. This will be the file that the framework looks for to builds your game. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly. 
    
-    // Import necessary modules
-    var Player = require("./player.js"); 
+    // import necessary modules
+    var Player = require("../tabletop/core/player.js");
     var Checkers = require("./checkers/checker_game.js");
     var CheckerBoard = require("./checkers/checker_board.js");
-    var ManualTurn = require("./manualTurn.js");
+    var ManualTurn = require("../tabletop/core/manualTurn.js");
     var CheckerView = require("./checkers/checker_view.js");
     
     // create the players
@@ -96,8 +96,8 @@ At this point, you'll be getting an error that checkers/checker_game.js and chec
 In checker_game.js, enter the following: 
 
     var inherits = require('util').inherits;
-    var Game = require("../game.js");
-    var c = require("../ttConstants.js");
+    var Game = require("../../tabletop/core/game.js");
+    var c = require("../../tabletop/core/ttConstants.js");
 
     function CheckersGame(players, board, turnMap) {
         Game.call(this, players, board, turnMap);
@@ -124,10 +124,11 @@ Second, we set the moveEvaluationType to c.moveEvaluationTypeGameEvaluator. This
 We'll finish this class later. For now, let's move on to the checker_board class. Create the file and enter the following: 
 
     var inherits = require('util').inherits;
-    var GridBoard = require("../board/gridBoard.js");
-    var Space = require("../board/space.js");
-    var Token = require("../token.js");
-    var c = require("../ttConstants.js");
+    var GridBoard = require("../../tabletop/core/gridBoard.js");
+    var Space = require("../../tabletop/core/tile.js");
+    var Token = require("../../tabletop/core/token.js");
+    var c = require("../../tabletop/core/ttConstants.js");
+    
 
     function CheckerBoard() { 
         GridBoard.call(this, 8, 8);
@@ -157,8 +158,8 @@ First, we subclass GridBoard. PathBoard (for games like monopoly) and GraphBoard
 
 Now let's work on our view. We need to tell the board how we want our tokens and tiles to look. Our framework uses Pixi.js for graphics support -- check out their docs for different options you can use to create different graphics objects for your game. Create the file checkers/checker_view.js and add the following: 
 
-    var c = require("../ttConstants.js");
-    var View = require("../view.js");
+    var c = require("../../tabletop/core/ttConstants.js");
+    var View = require("../../tabletop/core/view.js");
     var inherits = require('util').inherits;
 
     function CheckerView(game, turnMap) {
