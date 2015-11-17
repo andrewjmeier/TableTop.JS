@@ -65,7 +65,7 @@ To begin, create a new file checkers.js in the root of your project folder. This
     var Checkers = require("./checkers/checker_game.js");
     var CheckerBoard = require("./checkers/checker_board.js");
     var ManualTurn = require("./manualTurn.js");
-    var View = require("./view.js");
+    var CheckerView = require("./checkers/checker_view.js");
     
     // create the players
     var redPlayer = new Player({name: "Red"});
@@ -80,7 +80,7 @@ To begin, create a new file checkers.js in the root of your project folder. This
 
    
     // create our view, and draw it
-    var view = new View(checkers, turnMap);
+    var view = new CheckerView(checkers, turnMap);
     view.drawBoard();
 
     // this initiates the TurnMap ("Gameloop") and 
@@ -155,7 +155,41 @@ We'll finish this class later. For now, let's move on to the checker_board class
 
 First, we subclass GridBoard. PathBoard (for games like monopoly) and GraphBoard (for games like Settlers of Catan) are available, but those are more complex to implement. Then, we build the tiles for our game. We alternate colors black and red to create the checkerboard effect. 
 
-Now, you should be able to load your index.html file and see a checkerboard drawn. If not, go back and make sure you didn't miss anything. 
+Now let's work on our view. We need to tell the board how we want our tokens and tiles to look. Our framework uses Pixi.js for graphics support -- check out their docs for different options you can use to create different graphics objects for your game. Create the file checkers/checker_view.js and add the following: 
+
+    var c = require("../ttConstants.js");
+    var View = require("../view.js");
+    var inherits = require('util').inherits;
+
+    function CheckerView(game, turnMap) {
+        View.call(this, game, turnMap);
+    }
+
+    inherits(CheckerView, View);
+
+    CheckerView.prototype.drawTile = function(tile, size) {
+
+        var tileView = new PIXI.Graphics();
+        tileView.lineStyle(1, 0, 1); 
+        tileView.beginFill(tile.color, 1); 
+        tileView.drawRect(0, 0, size.width, size.height);
+        return tileView;
+
+    };
+
+    CheckerView.prototype.drawToken = function(token, size) {
+
+        var tokenView = new PIXI.Graphics();
+        tokenView.lineStyle(1, 0, 1);
+        tokenView.beginFill(token.color, 1);
+        tokenView.drawCircle(size.width/2, size.height/2, size.width/2 - 20);
+        return tokenView;
+
+    };
+
+    module.exports = CheckerView;
+
+That's all we need for the view for the rest of the tutorial. The rest of the logic is handled by the framework. It recognizes the board type and can draw the board and tokens accordingly. Now, you should be able to load your index.html file and see a checkerboard drawn. If not, go back and make sure you didn't miss anything. Note that even though we told the framework how we want our tokens drawn, it recognizes that we haven't added any to the board and therefor doesn't draw them.
 
 Next, let's create our "tokens". Tokens are the movable, actionable objects that belong to players. In a game like checkers, they're our pieces. In a game like monopoly, it's the literal token that represents your player. 
 
