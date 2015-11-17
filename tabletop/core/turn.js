@@ -1,3 +1,6 @@
+Component = require("./component.js");
+    inherits = require('util').inherits;
+
 var machina = require('machina');
 
 var Turn = machina.Fsm.extend({
