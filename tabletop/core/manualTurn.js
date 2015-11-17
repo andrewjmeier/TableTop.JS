@@ -52,7 +52,7 @@ function ManualTurn(game) {
 
       gameOver : { 
         _onEnter : function() { 
-          console.log(this.game.getCurrentPlayer() + "has won.");
+          console.log(this.game.getCurrentPlayer().name + " has won.");
         } 
       } 
       
