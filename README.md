@@ -51,15 +51,15 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 # Demo - Checkers
 
-## checkers.js
-
 In this demo, we'll be creating a simple checkers game. For simplicity sake, we'll exclude some of the more complicated rules - most notably, we won't be upgrading tokens when they hit the last row, and we won't be allowing double jumps. Hopefully by the end of this tutorial you'll be able to add those on your own!
 
 When you create a game, there are 5 major components: the Players, Game, Board, TurnMap, and View. As we'll learn shortly, these classes, with very little configuration, can be extremely powerful and do alot of the heavy lifting for you.
 
+### Checkers.js -- Your Main File
+
 To begin, create a new file checkers.js in the root of your project folder. This will be the file that the framework looks for to builds your game. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly. 
-   
-    // import necessary modules
+
+    // Our 5 Main Components
     var Player = require("../tabletop/core/player.js");
     var Checkers = require("./checkers/checker_game.js");
     var CheckerBoard = require("./checkers/checker_board.js");
@@ -85,11 +85,13 @@ To begin, create a new file checkers.js in the root of your project folder. This
     // this initiates the TurnMap ("Gameloop") and 
     // gets the ball rolling!
     checkers.updateState("start");
-    
+
 
 This is all you need for the main game file. In general, your (game).js file should never be much longer than this -- you should offload the complicated logic to your subclasses of the five main game components (like we will do with Checkers and CheckerBoard).
 
 Before continuing, let's go over what we're doing above. First, we create two players, passing their names. We chose Red and White so we can easily refer to the players later by color to identify who's turn it is, but for other games (like our monopoly example) we'll use actual names like "John" or "KC". Then, we create our Board, Game, TurnMap and View. We pass the turnMap to our game, and tell the View to draw our board. Once we call view.drawBoard(), the view graphics loop begins it's animation loop. However, our game doesn't begin running until we update the TurnMap state to "start", which begins to run our game.
+
+### The Game
 
 At this point, you'll be getting an error that checkers/checker_game.js and checkers/checker_board.js don't exist - let's fix that and create those now. 
 
@@ -121,7 +123,9 @@ First, we set the moveType to c.moveTypeManual. Game defaults to using c.moveTyp
 
 Second, we set the moveEvaluationType to c.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the spaces. When we set this flag, the TurnMap will call "evaluateMove()" on our game class to decide what the side effects of a move are. 
 
-We'll finish this class later. For now, let's move on to the checker_board class. Create the file and enter the following: 
+### The Board
+
+We'll finish filling out our game class later. For now, let's move on to the checker_board class. Create the file and enter the following: 
 
     var inherits = require('util').inherits;
     var GridBoard = require("../../tabletop/core/gridBoard.js");
@@ -157,6 +161,8 @@ We'll finish this class later. For now, let's move on to the checker_board class
 
 First, we subclass GridBoard. PathBoard (for games like monopoly) and GraphBoard (for games like Settlers of Catan) are available, but those are more complex to implement. Then, we build the tiles for our game. We alternate colors black and red to create the checkerboard effect. 
 
+### The View
+
 Now let's work on our view. We need to tell the board how we want our tokens and tiles to look. Our framework uses Pixi.js for graphics support -- check out their docs for different options you can use to create different graphics objects for your game. Create the file checkers/checker_view.js and add the following: 
 
     var c = require("../../tabletop/core/ttConstants.js");
@@ -191,7 +197,9 @@ Now let's work on our view. We need to tell the board how we want our tokens and
 
     module.exports = CheckerView;
 
-That's all we need for the view for the rest of the tutorial. The rest of the logic is handled by the framework. It recognizes the board type and can draw the board and tokens accordingly. Now, you should be able to load your test.html file and see a checkerboard drawn. If not, go back and make sure you didn't miss anything. Note that even though we told the framework how we want our tokens drawn, it recognizes that we haven't added any to the board and therefor doesn't draw them.
+That's all we need for the view for the rest of the tutorial. The rest of the logic is handled by the framework. It recognizes the board type and can draw the board and tokens accordingly. 
+
+**You should be able to load your test.html file and see a checkerboard drawn.** If not, go back and make sure you didn't miss anything. Note: even though we told the framework how we want our tokens drawn, it recognizes that we haven't added any to the board and therefor doesn't draw them.
 
 Next, let's create our "tokens". Tokens are the movable, actionable objects that belong to players. In a game like checkers, they're our pieces. In a game like monopoly, it's the literal token that represents your player. 
 
@@ -227,9 +235,13 @@ Add the following method to your checker_board.js file, and call it from your co
     };
 
 
-That's all we need for the checker_board.js file! Reload your test.html file and you should see the tokens draw on the board. As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and spaces. 
+That's all we need for the checker_board.js file! 
+
+**Reload your test.html file and you should see the tokens draw on the board.** As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and spaces. 
 
 Now, let's move back to checker_game.js and add some of the game logic. Since we're using c.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions evaluateMove() and isValidMove(). evaluateMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
+
+### Evaluating Moves
 
 Lets write our evaluateMove() function. This function should assume that there's a valid move stored in this.proposedMove (in the form of proposedMove.token and proposedMove.destination). 
 
@@ -313,10 +325,13 @@ For checkers, there's two types of valid moves (that we're concerned about for t
 
     };
 
+If you get an error about a function not existing - be sure that the methods are above the inheritance declaration.
 
-Notice that we could include double jumps here with a few more lines of code -- after this tutorial, try it yourself!
+Notice that we could include double jumps here with a few more lines of code - after this tutorial, try it yourself!
 
 You can refresh the game at this point to try moving around - invalid moves should raise an error in the console, and you shouldn't be able to perform anything illegal. 
+
+### Game Over
 
 At this point, there's only one more thing we need to define in our game class (as indicated by the warnings in the console): how do we tell who won the game? The default TurnMap will call the bool function game.playerDidWin(player) to find out this information. Let's implement that now: 
 
@@ -333,7 +348,9 @@ At this point, there's only one more thing we need to define in our game class (
 
 Anddd we're done! Congratulations on your first TableTop.js game! 
 
-Reload your test.html file and you should be able to play checkers to your hearts content.
+**Reload your test.html file one last time!** You should be able to play checkers to your hearts content.
+
+### Conclusion
 
 If you're ready for more game development, try implementing double jump and token upgrades upon reaching the end of the board (hint: you might need to subclass token for the latter case). If you'd rather move on from checkers, look at our other example projects (Monopoly and Settlers of Catan) for ways you can leverage our framework to create more complex games.
 
