@@ -32,7 +32,6 @@ MonopolyTrade.prototype.removeProperty = function(property) {
 MonopolyTrade.prototype.addProperty = function(property){
   if(property.owner == this.proposingPlayer){
     this.proposingPlayerItems.property.push(property);
-    // console.log("after push", this.proposingPlayerItems.property);
     this.removePropertyFromList(property, this.proposingPlayer.properties);
   }
   else if (property.owner == this.answeringPlayer){
