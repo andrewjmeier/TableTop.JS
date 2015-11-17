@@ -104,6 +104,7 @@ MonopolyGame.prototype.clearTrade = function() {
 };
 MonopolyGame.prototype.createTrade = function() {
   this.trade = new Trade(this.getCurrentPlayer());
+  console.log("creating trade");
 };
 
 MonopolyGame.prototype.addPropertyToTrade = function(property) {
@@ -111,9 +112,11 @@ MonopolyGame.prototype.addPropertyToTrade = function(property) {
 };
 
 MonopolyGame.prototype.addPlayerToTrade = function(player) {
-  if (!this.trade.answering_player){
-    this.trade.answering_player = player;
+  console.log("adding player to trade", player, this.trade.answeringPlayer);
+  if (!this.trade.answeringPlayer){
+    this.trade.answeringPlayer = player;
   }
+  console.log("player added?", this.trade.answeringPlayer);
 };
 
 MonopolyGame.prototype.addMoneyToTrade = function(money) {

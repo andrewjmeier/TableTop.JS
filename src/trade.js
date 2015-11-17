@@ -22,4 +22,4 @@ Trade.prototype.completeTrade = function() {
   this.answeringPlayer.addItems(this.proposingPlayerItems);
 };
 
-module.exports = Trade;
+module.exports = Trade
