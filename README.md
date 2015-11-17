@@ -133,6 +133,7 @@ We'll finish this class later. For now, let's move on to the checker_board class
     function CheckerBoard() { 
         GridBoard.call(this, 8, 8);
         this.buildTiles();
+        //this.buildTokens();
     }       
 
     inherits(CheckerBoard, GridBoard);
@@ -194,7 +195,7 @@ That's all we need for the view for the rest of the tutorial. The rest of the lo
 
 Next, let's create our "tokens". Tokens are the movable, actionable objects that belong to players. In a game like checkers, they're our pieces. In a game like monopoly, it's the literal token that represents your player. 
 
-Add the following method to your check_board.js file, and call it from your constructer after this.BuildTiles():
+Add the following method to your checker_board.js file, and call it from your constructer after this.BuildTiles():
 
     CheckerBoard.prototype.buildTokens = function() { 
 

@@ -162,7 +162,7 @@ Game.prototype.hasValidMove = function() {
 }; 
 
 Game.prototype.isValidMove = function(token, oldSpace, newSpace) { 
-  console.log("Warning: you should overwrite isValidMove(token, oldSpaace, newSpace)");
+  console.log("Warning: you should overwrite isValidMove(token, oldSpace, newSpace)");
   return true;
 };
 
