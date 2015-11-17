@@ -1,8 +1,8 @@
 var inherits = require('util').inherits;
-var GridBoard = require("../board/gridBoard.js");
-var Space = require("../board/space.js");
-var Token = require("../token.js");
-var c = require("../ttConstants.js");
+var GridBoard = require("../../tabletop/core/gridBoard.js");
+var Space = require("../../tabletop/core/tile.js");
+var Token = require("../../tabletop/core/token.js");
+var c = require("../../tabletop/core/ttConstants.js");
 
 function CheckerBoard() { 
   GridBoard.call(this, 8, 8);

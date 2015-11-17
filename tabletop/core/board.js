@@ -6,6 +6,11 @@ Component = require("./component.js");
 // existing "board" and "players" implementations if any exist
 function Board() {
   this.spaces = [];
+  this.tokens = [];
 }
+
+Board.prototype.getSpace = function(idx) { 
+  return this.spaces[idx];
+};
 
 module.exports = Board;

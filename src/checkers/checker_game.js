@@ -1,6 +1,6 @@
 var inherits = require('util').inherits;
-var Game = require("../game.js");
-var c = require("../ttConstants.js");
+var Game = require("../../tabletop/core/game.js");
+var c = require("../../tabletop/core/ttConstants.js");
 
 function CheckersGame(players, board, turnMap) {
   Game.call(this, players, board, turnMap);

@@ -1,5 +1,5 @@
-var c = require("../ttConstants.js");
-var View = require("../view.js");
+var c = require("../../tabletop/core/ttConstants.js");
+var View = require("../../tabletop/core/view.js");
 var inherits = require('util').inherits;
 
 function CheckerView(game, turnMap) { 

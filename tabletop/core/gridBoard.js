@@ -1,6 +1,6 @@
 // gridBoard.j
 var inherits = require('util').inherits;
-var Board = require("../board/board.js");
+var Board = require("./board.js");
 
 function GridBoard(width, height) { 
   Board.call(this);

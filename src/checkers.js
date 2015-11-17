@@ -1,8 +1,8 @@
 // Import necessary modules
-var Player = require("./player.js"); 
+var Player = require("../tabletop/core/player.js"); 
 var Checkers = require("./checkers/checker_game.js");
 var CheckerBoard = require("./checkers/checker_board.js");
-var ManualTurn = require("./manualTurn.js");
+var ManualTurn = require("../tabletop/core/manualTurn.js");
 var CheckerView = require("./checkers/checker_view.js");
 
 // create the players
