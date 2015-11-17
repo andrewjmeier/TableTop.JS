@@ -56,9 +56,9 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 In this demo, we'll be creating a simple checkers game. For simplicity sake, we'll exclude some of the more complicated rules - most notably, we won't be upgrading tokens when they hit the last row, and we won't be allowing double jumps. Hopefully by the end of this tutorial you'll be able to add those on your own!
 
-When you create a game, there are 5 major components: the Players, Game, Board, TurnMap, and View. However, as we'll learn shortly, the default View and TurnMap classes can be extremely convenient to utilize. In fact, for this demo, we'll do little more than modifying a few flags on our objects to get checkers to work with the defaults. 
+When you create a game, there are 5 major components: the Players, Game, Board, TurnMap, and View. As we'll learn shortly, these classes, with very little configuration, can be extremely powerful and do alot of the heavy lifting for you.
 
-To begin, create a new file checkers.js in the root of your project folder. This will be the file that the framework looks for to builds your game. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly.
+To begin, create a new file checkers.js in the root of your project folder. This will be the file that the framework looks for to builds your game. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly. 
    
     // Import necessary modules
     var Player = require("./player.js"); 
@@ -189,7 +189,7 @@ Now let's work on our view. We need to tell the board how we want our tokens and
 
     module.exports = CheckerView;
 
-That's all we need for the view for the rest of the tutorial. The rest of the logic is handled by the framework. It recognizes the board type and can draw the board and tokens accordingly. Now, you should be able to load your index.html file and see a checkerboard drawn. If not, go back and make sure you didn't miss anything. Note that even though we told the framework how we want our tokens drawn, it recognizes that we haven't added any to the board and therefor doesn't draw them.
+That's all we need for the view for the rest of the tutorial. The rest of the logic is handled by the framework. It recognizes the board type and can draw the board and tokens accordingly. Now, you should be able to load your test.html file and see a checkerboard drawn. If not, go back and make sure you didn't miss anything. Note that even though we told the framework how we want our tokens drawn, it recognizes that we haven't added any to the board and therefor doesn't draw them.
 
 Next, let's create our "tokens". Tokens are the movable, actionable objects that belong to players. In a game like checkers, they're our pieces. In a game like monopoly, it's the literal token that represents your player. 
 
@@ -225,7 +225,7 @@ Add the following method to your check_board.js file, and call it from your cons
     };
 
 
-That's all we need for the checker_board.js file! Reload your index.html file and you should see the tokens draw on the board. As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and spaces. 
+That's all we need for the checker_board.js file! Reload your test.html file and you should see the tokens draw on the board. As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and spaces. 
 
 Now, let's move back to checker_game.js and add some of the game logic. Since we're using c.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions evaluateMove() and isValidMove(). evaluateMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
 
@@ -266,7 +266,7 @@ Lets write our evaluateMove() function. This function should assume that there's
     
     };
 
-Now, refresh your index.html and you should be able to move tokens around. Notice that the game has no concept of what should be a valid move or not -- players can move each others tokens, and tokens can move an infinite amount of spaces. The console should be warning you about this on every move. Let's fix that. 
+Now, refresh your test.html and you should be able to move tokens around. Notice that the game has no concept of what should be a valid move or not -- players can move each others tokens, and tokens can move an infinite amount of spaces. The console should be warning you about this on every move. Let's fix that. 
 
 For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one space diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
 
@@ -331,13 +331,13 @@ At this point, there's only one more thing we need to define in our game class (
 
 Anddd we're done! Congratulations on your first TableTop.js game! 
 
-Reload your index.html file and you should be able to play checkers to your hearts content.
+Reload your test.html file and you should be able to play checkers to your hearts content.
 
 If you're ready for more game development, try implementing double jump and token upgrades upon reaching the end of the board (hint: you might need to subclass token for the latter case). If you'd rather move on from checkers, look at our other example projects (Monopoly and Settlers of Catan) for ways you can leverage our framework to create more complex games.
 
 Happy gaming! 
 
-- TableTop.js Team
+TableTop.js Team
 
 
 
