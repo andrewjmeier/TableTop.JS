@@ -4,6 +4,7 @@ var c = require("../ttConstants.js");
 
 function CheckersGame(players, board, turnMap) {
   Game.call(this, players, board, turnMap);
+  this.currentPlayer = 0;
   this.moveType = c.moveTypeManual;
   this.moveEvaluationType = c.moveEvalationTypeGameEvaluator;
   board.tokens.forEach(function(token) { 
