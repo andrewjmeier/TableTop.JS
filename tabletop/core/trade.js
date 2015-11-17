@@ -13,7 +13,6 @@ function Trade(proposingPlayer, answeringPlayer, proposingPlayerItems, answering
   this.answeringPlayerItems = answeringPlayerItems;
 };
 
-//I think this would be a good method to have in eventually but requires more abstraction on other parts
 /**
  * Execute the trade and swap the players' items
 */
@@ -22,4 +21,12 @@ Trade.prototype.completeTrade = function() {
   this.answeringPlayer.addItems(this.proposingPlayerItems);
 };
 
-module.exports = Trade;
+/**
+ * Add the objects back to their respective players 
+*/
+Trade.prototype.cancelTrade = function() {
+  this.proposingPlayer.addItems(this.proposingPlayerItems);
+  this.answeringPlayer.addItems(this.answeringPlayerItems);
+};
+
+module.exports = Trade

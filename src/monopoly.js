@@ -1,9 +1,8 @@
 require("./monopoly/board/boardConstants.js");
 
 var Player = require("./monopoly/monopoly_player.js");
-var Card = require("./card.js");
+var Card = require("../tabletop/core/card.js");
 var Game = require("./monopoly/monopoly_game.js");
-var Utils = require("./utils.js");
 var Board = require("./monopoly/board_utils.js");
 var Turn = require("./monopoly/monopoly_turn.js");
 var MonopolyView = require("./monopoly/view/monopoly_view.js");

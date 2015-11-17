@@ -1,6 +1,6 @@
 require("./board/boardConstants.js");
 var Property = require("./board/properties/property.js");
-var Turn = require("../turn");
+var Turn = require("../../tabletop/core/turn.js");
 var inherits = require('util').inherits;
 
 function MonopolyTurn(game) {

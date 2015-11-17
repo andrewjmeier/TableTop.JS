@@ -1,5 +1,5 @@
 var inherits = require('util').inherits;
-var Trade = require("../trade.js");
+var Trade = require("../../tabletop/core/trade.js");
 
 function MonopolyTrade(proposingPlayer) {
   Trade.call(this, proposingPlayer, null, {property: [], money: 0}, {property: [], money: 0});
