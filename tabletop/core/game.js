@@ -1,3 +1,5 @@
+var c = require("./ttConstants");
+var ManualTurn = require("./manualTurn.js");
 var Component = require("../../tabletop/core/component.js");
 var inherits = require('util').inherits;
 
@@ -10,11 +12,13 @@ var inherits = require('util').inherits;
 function Game(players, board) {
   Component.call(this);
   this.players = players,
-  this.currentPlayer = 0;
   this.board = board;
   this.dice = [];
   this.randomizeCurrentPlayer();
   this.turnMap = null;
+  this.moveType = c.moveTypeDice; // manual movement or dicerolls
+  this.proposedMove = {}; // for c.moveTypeManual
+  this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
 };
 
 inherits(Game, Component);
@@ -34,6 +38,21 @@ Game.prototype.setTurn = function(turnMap) {
 */
 Game.prototype.updateState = function(message) {
   this.turnMap.updateState(message, this);
+};
+
+Game.prototype.setTurnMap = function(turnMap) { 
+  this.turnMap = turnMap;
+};
+
+/**
+ * Set the move type for this game
+ * @param {string} moveType - The move type. See ttConstants
+*/
+Game.prototype.setMoveType = function(moveType) { 
+  this.moveType = moveType;
+  if (moveType == c.moveTypeManual) { 
+    this.proposedMove = {};
+  } 
 };
 
 /**
@@ -86,8 +105,8 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
   }
   this.dice = [];
   var message = "You rolled a ";
-  for (i = 0; i < numberOfDice; i++) {
-    roll = Math.floor(Math.random() * sides) + 1;
+  for (var i = 0; i < numberOfDice; i++) {
+    var roll = Math.floor(Math.random() * sides) + 1;
     this.dice.push(roll);
     message = message.concat(roll + ", ");
   }
@@ -110,5 +129,76 @@ Game.prototype.isDoubles = function(dice) {
 Game.prototype.getCurrentPlayer = function() {
   return this.players[this.currentPlayer];
 };
+
+/**
+ * Sets the last moved token for later reference
+*/
+Game.prototype.submitMove = function(token) { 
+  this.lastMovedToken = token;
+};
+
+Game.prototype.nextPlayer = function() { 
+  this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+};
+
+Game.prototype.setProposedMoveDestination = function(space) { 
+  this.proposedMove.destination = space;
+};
+
+Game.prototype.setProposedMoveToken = function(token) { 
+  this.proposedMove.token = token;
+};
+
+Game.prototype.hasValidMove = function() { 
+  
+  if (this.moveType != c.moveTypeManual) 
+    return false;
+  if (!this.proposedMove.token || !this.proposedMove.destination)
+    return false;
+
+  return this.isValidMove(this.proposedMove.token, 
+                          this.proposedMove.token.space, 
+                          this.proposedMove.destination);
+}; 
+
+Game.prototype.isValidMove = function(token, oldSpace, newSpace) { 
+  console.log("Warning: you should overwrite isValidMove(token, oldSpaace, newSpace)");
+  return true;
+};
+
+Game.prototype.playerDidWin = function(player) {
+  console.log("Warning: you should overwrite playerDidWin(player)");
+  return false;
+};
+
+Game.prototype.moveTokenToSpace = function(token, destinationTile) { 
+  token.space.removeOccupier(token);
+  token.setSpace(destinationTile);
+  destinationTile.addOccupier(token);
+};
+
+Game.prototype.tokenClicked = function(token) { 
+  if (this.moveType == c.moveTypeManual &&
+      this.turnMap.getCurrentState() == "waitingForMove") { 
+    this.setProposedMoveToken(token);
+  }
+};
+
+
+Game.prototype.spaceClicked = function(space) { 
+  /* make sure we're in the right state, 
+   a token has been pressed, 
+   and we're not a tile with a token on it (if we have > 0
+   children, then this click was meant for a token... */
+  if (this.moveType == c.moveTypeManual && 
+      this.turnMap.getCurrentState() == "waitingForMove" && 
+      this.proposedMove.token && 
+      this.proposedMove.token.space != space) { 
+
+    this.setProposedMoveDestination(space);
+    this.turnMap.updateState("makeMove");
+  } 
+};
+
 
 module.exports = Game;

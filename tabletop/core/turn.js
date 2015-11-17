@@ -5,7 +5,6 @@ var machina = require('machina');
 
 var Turn = machina.Fsm.extend({
         initialize: function( ) {
-            // console.log('tests');
         },
 
         initialState: 'uninitialized',
@@ -15,7 +14,6 @@ var Turn = machina.Fsm.extend({
         states: {
             setup: {
                 '_onEnter': function() {
-                    // console.log('hello');
                 }
             }
         }
