@@ -1,3 +1,6 @@
+Component = require("./component.js");
+    inherits = require('util').inherits;
+
 function Player(name, number) {
   this.name = name;
   // TODO - this should be refactored to be an array of tokens for the player

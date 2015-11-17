@@ -1,7 +1,7 @@
 var ChanceDeck = require("./cards/chanceDeck");
 var CommunityChestDeck = require("./cards/communityChestDeck");
 var inherits = require('util').inherits;
-var Game = require("../game.js");
+var Game = require("../../tabletop/core/game.js");
 var Trade = require("./monopoly_trade.js");
 
 
