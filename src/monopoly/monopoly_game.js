@@ -19,7 +19,6 @@ function MonopolyGame(players, board, turnMap) {
 
 inherits(MonopolyGame, Game);
 
-
 MonopolyGame.prototype.shuffleCards = function() {
   this.chanceCards.shuffle();
   this.communityChestCards.shuffle();
@@ -94,17 +93,16 @@ MonopolyGame.prototype.nextPlayer = function() {
   }
 };
 
-
 MonopolyGame.prototype.clearActiveCard = function() {
   this.activeCard = null;
 };
 
 MonopolyGame.prototype.clearTrade = function() {
+  this.trade.cancelTrade();
   this.trade = null;
 };
 MonopolyGame.prototype.createTrade = function() {
   this.trade = new Trade(this.getCurrentPlayer());
-  console.log("creating trade");
 };
 
 MonopolyGame.prototype.addPropertyToTrade = function(property) {
@@ -112,11 +110,9 @@ MonopolyGame.prototype.addPropertyToTrade = function(property) {
 };
 
 MonopolyGame.prototype.addPlayerToTrade = function(player) {
-  console.log("adding player to trade", player, this.trade.answeringPlayer);
   if (!this.trade.answeringPlayer){
     this.trade.answeringPlayer = player;
   }
-  console.log("player added?", this.trade.answeringPlayer);
 };
 
 MonopolyGame.prototype.addMoneyToTrade = function(money) {
@@ -130,9 +126,5 @@ MonopolyGame.prototype.updateState = function(click) {
 MonopolyGame.prototype.getCurrentState = function() {
   return this.turnMap.getCurrentState();
 };
-
-
-
-
 
 module.exports = MonopolyGame;
