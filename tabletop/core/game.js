@@ -1,21 +1,35 @@
 var c = require("./ttConstants");
 var ManualTurn = require("./manualTurn.js");
+var Component = require("../../tabletop/core/component.js");
+var inherits = require('util').inherits;
+
 /**
  * The Game class
  * @constructor
  * @param {Player|Array} players - A list of players
  * @param {Board} board - The game board
 */
-function Game(players, board, turnMap) {
+function Game(players, board) {
+  Component.call(this);
   this.players = players,
-  this.currentPlayer = 0;
   this.board = board;
   this.dice = [];
-  this.turnMap = turnMap;
+  this.randomizeCurrentPlayer();
+  this.turnMap = null;
   this.moveType = c.moveTypeDice; // manual movement or dicerolls
   this.proposedMove = {}; // for c.moveTypeManual
   this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
-  this.currentPlayer = 0;
+};
+
+inherits(Game, Component);
+
+/**
+ * Method to set turnMap of the game once it is created
+ * This is required!
+ * @param {Turn} turnMap - A turn object to be used by the game
+*/
+Game.prototype.setTurn = function(turnMap) {
+  this.turnMap = turnMap;
 };
 
 /**
@@ -42,6 +56,36 @@ Game.prototype.setMoveType = function(moveType) {
 };
 
 /**
+ * Callback method from the view when a token is clicked
+ * To be overridden by the subclass
+ * @abstract
+ * @parram {Token} token - The token object that was clicked
+*/
+Game.prototype.tokenClicked = function(token) {
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
+ * Callback method from the view when a space is clicked
+ * To be overridden by the subclass
+ * @abstract
+ * @param {Space} space - the space object that was clicked in the view
+*/
+Game.prototype.spaceClicked = function(space) {
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
+ * Check the Game State to see if a player has won the game
+ * @abstract
+ * @return {boolean}
+*/
+Game.prototype.isGameOver = function() {
+  // TODO - check this method every transition in the state machine
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
  * Set the current player to a random player
  * Used to decide who goes first at the beginning of the game
 */
@@ -60,10 +104,14 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     sides = 6;
   }
   this.dice = [];
+  var message = "You rolled a ";
   for (var i = 0; i < numberOfDice; i++) {
     var roll = Math.floor(Math.random() * sides) + 1;
     this.dice.push(roll);
+    message = message.concat(roll + ", ");
   }
+
+  this.sendMessage(message);
 };
 
 /**

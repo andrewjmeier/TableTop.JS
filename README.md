@@ -49,7 +49,6 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 #### If npm is nothing new to you, just use `npm install tabletop-boardgames` to get started! 
 
-
 # Demo - Checkers
 
 ## checkers.js
@@ -338,8 +337,3 @@ If you're ready for more game development, try implementing double jump and toke
 Happy gaming! 
 
 TableTop.js Team
-
-
-
-
-
