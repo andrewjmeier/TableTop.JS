@@ -3,7 +3,7 @@ var Player = require("./player.js");
 var Checkers = require("./checkers/checker_game.js");
 var CheckerBoard = require("./checkers/checker_board.js");
 var ManualTurn = require("./manualTurn.js");
-var View = require("./view.js");
+var CheckerView = require("./checkers/checker_view.js");
 
 // create the players
 var redPlayer = new Player({name: "Red"});
@@ -16,9 +16,8 @@ var checkers = new Checkers(players, board);
 var turnMap = new ManualTurn(checkers);
 checkers.setTurnMap(turnMap);
 
-
 // create our view, and draw it
-var view = new View(checkers, turnMap);
+var view = new CheckerView(checkers, turnMap);
 view.drawBoard();
 
 // this initiates the TurnMap ("Gameloop") and 

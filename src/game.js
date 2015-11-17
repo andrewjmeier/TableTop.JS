@@ -1,5 +1,5 @@
 var c = require("./ttConstants");
-
+var ManualTurn = require("./manualTurn.js");
 /**
  * The Game class
  * @constructor
@@ -128,5 +128,29 @@ Game.prototype.moveTokenToSpace = function(token, destinationTile) {
   token.setSpace(destinationTile);
   destinationTile.addOccupier(token);
 };
+
+Game.prototype.tokenClicked = function(token) { 
+  if (this.moveType == c.moveTypeManual &&
+      this.turnMap.getCurrentState() == "waitingForMove") { 
+    this.setProposedMoveToken(token);
+  }
+};
+
+
+Game.prototype.spaceClicked = function(space) { 
+  /* make sure we're in the right state, 
+   a token has been pressed, 
+   and we're not a tile with a token on it (if we have > 0
+   children, then this click was meant for a token... */
+  if (this.moveType == c.moveTypeManual && 
+      this.turnMap.getCurrentState() == "waitingForMove" && 
+      this.proposedMove.token && 
+      this.proposedMove.token.space != space) { 
+
+    this.setProposedMoveDestination(space);
+    this.turnMap.updateState("makeMove");
+  } 
+};
+
 
 module.exports = Game;

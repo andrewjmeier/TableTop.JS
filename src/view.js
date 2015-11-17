@@ -43,7 +43,7 @@ View.prototype.drawGridBoard = function() {
   this.boardView.beginFill(c.blueColor, 1);
   this.boardView.drawRect(0, 0, c.boardWidth, c.boardHeight);
   this.stage.addChild(this.boardView);
-  this.drawTiles(this.boardView);
+  this.drawTiles();
   this.drawTokens();
   this.drawMessage();
   this.animate();
@@ -59,36 +59,17 @@ View.prototype.drawGraphBoard = function() {
 
 };
 
-View.prototype.drawTile = function(opts) { 
+View.prototype.drawTile = function(tile, size) { 
+
+  console.log("Using default drawTile()");
   var tileView = new PIXI.Graphics();
   tileView.lineStyle(1, 0, 1);
-  tileView.beginFill(opts.tile.color, 1);
-  tileView.drawRect(0, 0, opts.dim.width, opts.dim.height);
-  tileView.x = opts.position.x;
-  tileView.y = opts.position.y;
-  
-  if (this.game.moveType == c.moveTypeManual) { 
-    tileView.interactive = true;
-    var context = this;
-    tileView.click = function(mouseData) {
-      /* make sure we're in the right state, 
-         a token has been pressed, 
-         and we're not a tile with a token on it (if we have > 0
-         children, then this click was meant for a token... */
-      if (context.turnMap.getCurrentState() == "waitingForMove" && 
-          context.game.proposedMove.token && 
-          tileView.children.length == 0) { 
-        context.game.setProposedMoveDestination(opts.tile);
-        context.turnMap.updateState("makeMove");
-      } 
-    };
-  } 
-  
-  this.tileViews[opts.index.x][opts.index.y] = tileView;
-  this.boardView.addChild(tileView);
+  tileView.beginFill(tile.color, 1);
+  tileView.drawRect(0, 0, size.width, size.height);
+
 };
 
-View.prototype.drawTiles = function(boardView) {
+View.prototype.drawTiles = function() {
 
   var tileWidth = c.boardWidth / this.game.board.spaces[0].length;
   var tileHeight = c.boardHeight / this.game.board.spaces.length;
@@ -99,57 +80,80 @@ View.prototype.drawTiles = function(boardView) {
     x_pos = 0;
     y_pos -= tileHeight;
     for (var x = 0; x < this.game.board.spaces[0].length; x++) {
+
       var tile = this.game.board.getSpace(x, y);
-      this.drawTile({
-        tile: tile, 
-        boardView: boardView,
-        position: {x: x_pos, y: y_pos},
-        index: {x: x, y: y},
-        dim: {width: tileWidth, height: tileHeight}
-      });
+      var tileView = this.drawTile(tile, {width: tileWidth, height:tileHeight});
+      tileView.x = x_pos;
+      tileView.y = y_pos;
+      
+      if (this.game.moveType == c.moveTypeManual) { 
+        tileView.interactive = true;
+        var context = this;
+        tileView.click = function(mouseData) {
+          var selectedSpace;
+          for (var i = 0; i < context.tileViews.length; i++) {
+            for (var j = 0; j < context.tileViews[0].length; j++) { 
+              if (context.tileViews[i][j] == this) { 
+                selectedSpace = context.game.board.getSpace(i, j);
+              }
+            }
+          }
+          
+          context.game.spaceClicked(selectedSpace);
+        };
+      } 
+      
+      this.tileViews[x][y] = tileView;
+      this.boardView.addChild(tileView);
+      
       x_pos += tileWidth;
     }
-   }
+  }
 };
 
 // draws token, puts it on appropriate tile,
 // adds it to tokenViews
-View.prototype.drawToken = function(token) {
+View.prototype.drawToken = function(token, size) {
 
-  // draw the token 
+  console.log("Using default drawToken()");
+
   var tokenView = new PIXI.Graphics();
   tokenView.lineStyle(1, 0, 1);
   tokenView.beginFill(token.color, 1);
-  if (this.game.moveType == c.moveTypeManual) { 
-    tokenView.interactive = true;
-    var context = this;
-    tokenView.click = function(mouseData) { 
-      if (context.turnMap.getCurrentState() == "waitingForMove") { 
-        var token = context.tokenViews.filter(function(tv) { 
-          return tv.view == tokenView;
-        })[0].token;
-        context.game.setProposedMoveToken(token);
-      };
-    };
-  }
-  
-  // put it on the tile
-  var position = this.game.board.getSpacePosition(token.space);
-  var tileView = this.tileViews[position.x][position.y];
-  var w = tileView.width;
-  var h = tileView.height;
-  tokenView.drawCircle(w/2, h/2, w/2 - 20);
-  tileView.addChild(tokenView);
+  tokenView.drawRect(size.width/2, size.height/2, size.width/2 - 20);
+  return tokenView;
 
-  this.tokenViews.push({view: tokenView, token: token});
 };
 
 View.prototype.drawTokens = function() {
+
   for (var playerIdx in this.game.players) { 
     var player = this.game.players[playerIdx];
     for (var tokenIdx in player.tokens) {
+
       var token = player.tokens[tokenIdx];
-      this.drawToken(token);
+      var position = this.game.board.getSpacePosition(token.space);
+      var tileView = this.tileViews[position.x][position.y];
+      
+      // overridden by user, probably
+      var tokenView = this.drawToken(token, tileView);
+      
+      if (this.game.moveType == c.moveTypeManual) { 
+        tokenView.interactive = true;
+        var context = this;
+        tokenView.click = function(mouseData) { 
+          var selectedToken;
+          for (var i = 0; i < context.tokenViews.length; i++) {
+            if (context.tokenViews[i].view == this) { 
+              selectedToken = context.tokenViews[i].token;
+            }
+          }
+          context.game.tokenClicked(selectedToken);
+        };
+      }
+      
+      tileView.addChild(tokenView);
+      this.tokenViews.push({view: tokenView, token: token});
     }
   }
 };
