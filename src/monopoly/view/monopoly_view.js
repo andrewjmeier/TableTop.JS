@@ -1062,10 +1062,10 @@ MonopolyView.prototype.updateTradeInfo = function(){
     
     if (this.game.getCurrentState() == PROPOSE_TRADE){
         var trade_player_name = "";
-        if (!this.game.trade.answering_player){
+        if (!this.game.trade.answeringPlayer){
             trade_player_name = "Select Player";
         } else {
-            trade_player_name = this.game.trade.answering_player.name;
+            trade_player_name = this.game.trade.answeringPlayer.name;
         }
         this.messageText.text = this.game.message + "\nTrading with: " + trade_player_name + "\n" + this.game.trade.itemsToString();
     }

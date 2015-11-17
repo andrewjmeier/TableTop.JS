@@ -114,7 +114,7 @@ function MonopolyTurn(game) {
 
             tradeAnswer: {
                 _onEnter : function() {
-                    this.game.message = this.game.trade.answering_player.name + ", do you want to trade with " + this.game.trade.proposing_player.name + "?" + "\nThey are " + this.game.trade.itemsToString();
+                    this.game.message = this.game.trade.answeringPlayer.name + ", do you want to trade with " + this.game.trade.proposingPlayer.name + "?" + "\nThey are " + this.game.trade.itemsToString();
                 },
 
                 yes_continue : function() {
