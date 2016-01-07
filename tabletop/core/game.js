@@ -1,5 +1,5 @@
 var c = require("./ttConstants");
-var ManualTurn = require("./manualTurn.js");
+var ManualTurn = require("./manual_turn.js");
 var Component = require("../../tabletop/core/component.js");
 var inherits = require('util').inherits;
 

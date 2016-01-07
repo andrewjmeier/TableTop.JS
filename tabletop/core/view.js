@@ -1,5 +1,5 @@
 var c = require("./ttConstants.js");
-var GridBoard = require("./gridBoard.js");
+var GridBoard = require("./grid_board.js");
 var PIXI = require("../../lib/pixi/pixi.js");
 
 function View(game, turnMap) {
