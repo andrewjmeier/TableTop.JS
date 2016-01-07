@@ -128,6 +128,7 @@ MonopolyPlayer.prototype.removeProperty = function(property) {
 MonopolyPlayer.prototype.addItems = function(items) {
   for (var i in items.property) {
     this.properties.push(items.property[i]);
+    items.property[i].owner = this;
   }
   this.money += items.money;
 };
