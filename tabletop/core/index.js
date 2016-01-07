@@ -10,7 +10,7 @@ var core = Object.assign({
     ManualTurn: require('./manual_turn'),
     Player: require('./player'),
     Tile: require('./tile'),
-    Token: require(./'token'),
+    Token: require('./token'),
     Trade: require('./trade'),
     Turn: require('./turn'),
     Utils: require('./utils'),
