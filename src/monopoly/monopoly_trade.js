@@ -1,11 +1,12 @@
 var inherits = require('util').inherits;
-var Trade = require("../../tabletop/core/trade.js");
+// var Trade = require("../../tabletop/core/trade.js");
+var TableTop = require('../../tabletop/tabletop');
 
 function MonopolyTrade(proposingPlayer) {
-  Trade.call(this, proposingPlayer, null, {property: [], money: 0}, {property: [], money: 0});
+  TableTop.Trade.call(this, proposingPlayer, null, {property: [], money: 0}, {property: [], money: 0});
 };
 
-inherits(MonopolyTrade, Trade);
+inherits(MonopolyTrade, TableTop.Trade);
 
 MonopolyTrade.prototype.addOrRemoveProperty = function(property) {
   if ((this.proposingPlayerItems.property.indexOf(property) > -1)||(this.answeringPlayerItems.property.indexOf(property) > -1)){

@@ -1,12 +1,13 @@
 var ChanceDeck = require("./cards/chanceDeck");
 var CommunityChestDeck = require("./cards/communityChestDeck");
 var inherits = require('util').inherits;
-var Game = require("../../tabletop/core/game.js");
+// var Game = require("../../tabletop/core/game.js");
 var Trade = require("./monopoly_trade.js");
+var TableTop = require('../../tabletop/tabletop');
 
 
 function MonopolyGame(players, board, turnMap) {
-  Game.call(this, players, board, turnMap);
+  TableTop.Game.call(this, players, board, turnMap);
   this.turnMap = turnMap;
   this.chanceCards = new ChanceDeck();
   this.communityChestCards = new CommunityChestDeck();
@@ -17,7 +18,7 @@ function MonopolyGame(players, board, turnMap) {
   this.trade = null;
 };
 
-inherits(MonopolyGame, Game);
+inherits(MonopolyGame, TableTop.Game);
 
 MonopolyGame.prototype.shuffleCards = function() {
   this.chanceCards.shuffle();

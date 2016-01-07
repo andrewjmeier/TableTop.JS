@@ -1,8 +1,9 @@
 var inherits = require('util').inherits;
-var Player = require("../../tabletop/core/player.js");
+// var Player = require("../../tabletop/core/player.js");
+var TableTop = require('../../tabletop/tabletop');
 
 function MonopolyPlayer(name, number) {
-  Player.call(this, name, number);
+  TableTop.Player.call(this, name, number);
   this.money = 1500;
   this.properties = [];
   this.getOutOfJailFreeCards = 0;
@@ -10,7 +11,7 @@ function MonopolyPlayer(name, number) {
   this.turnsInJail = 0;
 };
 
-inherits(MonopolyPlayer, Player);
+inherits(MonopolyPlayer, TableTop.Player);
 
 MonopolyPlayer.prototype.sendToJail = function() {
   this.position = 10;
