@@ -2,7 +2,7 @@
 var Player = require("../tabletop/core/player.js");
 var Checkers = require("./checkers/checker_game.js");
 var CheckerBoard = require("./checkers/checker_board.js");
-var ManualTurn = require("../tabletop/core/manualTurn.js");
+var ManualTurn = require("../tabletop/core/manual_turn.js");
 var CheckerView = require("./checkers/checker_view.js");
 
 // create the players

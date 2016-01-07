@@ -1,5 +1,5 @@
 var inherits = require('util').inherits;
-var GridBoard = require("../../tabletop/core/gridBoard.js");
+var GridBoard = require("../../tabletop/core/grid_board.js");
 var Space = require("../../tabletop/core/tile.js");
 var Token = require("../../tabletop/core/token.js");
 var c = require("../../tabletop/core/ttConstants.js");

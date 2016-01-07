@@ -1,14 +1,21 @@
 var core = Object.assign({
 
     Board: require('./board'),
+    Card: require('./card'),
+    Component: require('./component'),
+    Deck: require('./deck'),
+    EdgeTile: require('./edge_tile'),
     Game: require('./game'),
-    EdgeTile: require("./edge_tile"),
+    GridBoard: require('./grid_board'),
+    ManualTurn: require('./manual_turn'),
     Player: require('./player'),
-    Turn: require('./turn'),
     Tile: require('./tile'),
-    Token: require('./token'),
+    Token: require(./'token'),
+    Trade: require('./trade'),
+    Turn: require('./turn'),
     Utils: require('./utils'),
-    VertexTile: require('./vertex_tile')
+    VertexTile: require('./vertex_tile'),
+    View: require('./view')
 
 });
 
