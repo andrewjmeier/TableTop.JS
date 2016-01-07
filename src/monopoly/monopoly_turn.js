@@ -102,11 +102,11 @@ function MonopolyTurn(game) {
 
                 no_trade_clear : function() {
                     //btn is clear in this case
-                    this.game.clearTrade();
+                    this.game.cancelTrade();
                 },
 
                 cancel: function() {
-                    this.game.clearTrade();
+                    this.game.cancelTrade();
                     this.game.message = "Trade cancelled. ";
                     this.transition("postTurn");
                 }
@@ -127,7 +127,7 @@ function MonopolyTurn(game) {
                 no_trade_clear : function() {
                     //btn is no in this case
                     this.game.message = "You didn't trade. ";
-                    this.game.clearTrade();
+                    this.game.cancelTrade();
                     this.transition("postTurn");
 
                 }

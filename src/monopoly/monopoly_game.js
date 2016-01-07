@@ -97,8 +97,12 @@ MonopolyGame.prototype.clearActiveCard = function() {
   this.activeCard = null;
 };
 
-MonopolyGame.prototype.clearTrade = function() {
+MonopolyGame.prototype.cancelTrade = function() {
   this.trade.cancelTrade();
+  this.clearTrade();
+}
+
+MonopolyGame.prototype.clearTrade = function() {
   this.trade = null;
 };
 MonopolyGame.prototype.createTrade = function() {

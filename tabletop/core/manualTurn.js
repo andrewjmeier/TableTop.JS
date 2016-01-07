@@ -21,7 +21,7 @@ function ManualTurn(game) {
           this.transition("waitingForMove");
         } 
       },
-      
+
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
@@ -37,7 +37,7 @@ function ManualTurn(game) {
           } 
         } 
       },
-      
+
       // 3
       postTurn: { 
         _onEnter : function() { 
@@ -50,6 +50,7 @@ function ManualTurn(game) {
         } 
       },
 
+      // 4
       gameOver : { 
         _onEnter : function() { 
           console.log(this.game.getCurrentPlayer().name + " has won.");
