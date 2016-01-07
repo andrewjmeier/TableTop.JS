@@ -1,12 +1,13 @@
 var c = require("../../tabletop/core/ttConstants.js");
-var View = require("../../tabletop/core/view.js");
+// var View = require("../../tabletop/core/view.js");
 var inherits = require('util').inherits;
+var TableTop = require('../../tabletop/tabletop');
 
 function CheckerView(game, turnMap) { 
-  View.call(this, game, turnMap);
+  TableTop.View.call(this, game, turnMap);
 } 
 
-inherits(CheckerView, View);
+inherits(CheckerView, TableTop.View);
 
 CheckerView.prototype.drawTile = function(tile, size) { 
   

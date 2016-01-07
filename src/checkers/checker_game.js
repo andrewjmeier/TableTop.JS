@@ -1,9 +1,10 @@
 var inherits = require('util').inherits;
-var Game = require("../../tabletop/core/game.js");
+// var Game = require("../../tabletop/core/game.js");
 var c = require("../../tabletop/core/ttConstants.js");
+var TableTop = require('../../tabletop/tabletop');
 
 function CheckersGame(players, board, turnMap) {
-  Game.call(this, players, board, turnMap);
+  TableTop.Game.call(this, players, board, turnMap);
   this.currentPlayer = 0;
   this.moveType = c.moveTypeManual;
   this.moveEvaluationType = c.moveEvalationTypeGameEvaluator;
@@ -14,7 +15,7 @@ function CheckersGame(players, board, turnMap) {
   });
 };
 
-inherits(CheckersGame, Game);
+inherits(CheckersGame, TableTop.Game);
 
 CheckersGame.prototype.evaluateMove = function() {  
 
