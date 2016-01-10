@@ -3,6 +3,7 @@ var core = Object.assign({
     Board: require('./board'),
     Card: require('./card'),
     Component: require('./component'),
+    Constants: require('./ttConstants'),
     Deck: require('./deck'),
     EdgeTile: require('./edge_tile'),
     Game: require('./game'),
