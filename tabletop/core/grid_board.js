@@ -4,8 +4,8 @@ var Board = require("./board.js");
 
 function GridBoard(width, height) { 
   Board.call(this);
-  for (var i = 0; i < height; i++) { 
-    this.spaces[i] = Array(this.width);
+  for (var i = 0; i < width; i++) { 
+    this.spaces[i] = Array(this.height);
   }
   this.width = width;
   this.height = height;
