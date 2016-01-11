@@ -34,7 +34,7 @@ Take a look at some of our example projects to get a feel for how they're setup.
 * To start, you'll need to have Homebrew installed on your computer. Homebrew is a great tool for managing different software packages. You can ready about it [here](http://brew.sh) but it's not crucial that you understand what it's doing. We just need it to install some other software.
 * To install Homebrew enter `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"` into the terminal window and press enter.
 * Now that that's done, we can install [npm](https://www.npmjs.com) using Homebrew. Enter `brew install npm` into the terminal. ![brew npm](tutorials/images/brew-npm.png)
-* Using npm, we'll install webpack which is a tool that compiles JavaScript together. Enter `npm install -g webpack`. ![webpack-install](tutorials/images/npm-webpack) 
+* Using npm, we'll install webpack which is a tool that compiles JavaScript together. Enter `npm install -g webpack`. ![webpack-install](/tutorials/images/npm-webpack) 
 * Now enter `npm install`. This will download some external dependencies for your project (including the TableTop framework)
 * Open the `package.json` file to customize the project for your board game (you can enter `open .` in the terminal to show the folder in Finder)
 * You'll want to edit a bunch of lines in this file: 
