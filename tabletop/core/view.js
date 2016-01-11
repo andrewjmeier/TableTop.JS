@@ -92,8 +92,8 @@ View.prototype.drawTiles = function() {
         var context = this;
         tileView.click = function(mouseData) {
           var selectedSpace;
-          for (var i = 0; i < context.tileViews[0].length; i++) {
-            for (var j = 0; j < context.tileViews.length; j++) { 
+          for (var i = 0; i < context.tileViews.length; i++) {
+            for (var j = 0; j < context.tileViews[0].length; j++) { 
               if (context.tileViews[i][j] == this) { 
                 selectedSpace = context.game.board.getSpace(i, j);
               }
