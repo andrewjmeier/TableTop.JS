@@ -24,7 +24,7 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 #### If you're new to JavaScript and npm, try using our [TableTopSkeleton](http://github.com/andrewjmeier/TableTopSkeleton) to get started. 
 
-* Click on `Fork` on the top right of the page. This will create a new repository for you to create your boardgame. 
+* Click on `Fork` on the top right of the page. This will create a new repository for you to create your board game. ![Fork Image](/tutorials/images/how-to-fork.png)
 * Next find the link on the right side of the page under `HTTPS clone URL`. Copy this link
 * Open up the `Terminal` application on your computer and enter `git clone` followed by the URL from above that you copied.
 * `Press Enter`. This will download the project to your computer and setup git which is a version control system. You can learn all about git from [github](https://try.github.io/levels/1/challenges/1). 
