@@ -9,8 +9,6 @@ function GridBoard(width, height) {
     this.spaces[i] = Array(this.height);
   }
 
-  console.log(this.spaces, this.spaces[0], this.spaces[0][0]);
-
   this.width = width;
   this.height = height;
 };
