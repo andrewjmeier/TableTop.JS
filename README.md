@@ -35,7 +35,7 @@ Take a look at some of our example projects to get a feel for how they're setup.
 * To install Homebrew enter `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"` into the terminal window and press enter.
 * Now that that's done, we can install [npm](https://www.npmjs.com) using Homebrew. Enter `brew install npm` into the terminal. ![brew npm](/tutorials/images/brew-npm.png)
 * Using npm, we'll install webpack which is a tool that compiles JavaScript together. Enter `npm install -g webpack`. ![webpack-install](/tutorials/images/npm-webpack.png) 
-* Now enter `npm install`. This will download some external dependencies for your project (including the TableTop framework)
+* Now enter `npm install`. This will download some external dependencies for your project (including the TableTop framework) ![npm install](/tutorials/images/npm-install.png)
 * Open the `package.json` file to customize the project for your board game (you can enter `open .` in the terminal to show the folder in Finder)
 * You'll want to edit a bunch of lines in this file: 
   * Add the name of your game `"name": "your-game-name-here"`  
@@ -50,7 +50,7 @@ Take a look at some of our example projects to get a feel for how they're setup.
   }```
   * Change the homepage `"homepage": "https://github.com/your-github-user-name/your-project-name#readme"`
 * Add your code in the `/src` directory
-* Enter `npm run webpack` in the Terminal
+* To compile your code, enter `npm run webpack` in the Terminal. This command takes all of the different JavaScript files and combines them into a single file to use on the webpage. The HTML file `index.html` has been setup to look for the compiled JavaScript file and that's how your game will run. Webpack will continue to rebuild your project automatically every time you save a new file. If you want to stop executing it, you can enter control-c `^c` in the terminal. ![running webpack](/tutorials/images/npm-run-webpack.png)
 * You're all set! Open the `index.html` file and check out your game!
 
 #### If npm is nothing new to you, just use `npm install tabletop-boardgames` to get started! 
