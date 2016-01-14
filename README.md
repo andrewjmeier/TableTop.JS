@@ -8,19 +8,11 @@
 * Well-documented and testable
 * Advanced features for veteran developers
 
-## How to setup environment
-
-* Download npm `brew install npm`
-* Download webpack `npm install -g webpack`
-* npm install (needed whenever there's an update to node modules) `npm install`
-* Compile JS `npm run webpack`
-* To run the tests `npm run test`
-
 ## How to use TableTop.JS
 
 ### Setup a new project
 
-Take a look at some of our example projects to get a feel for how they're setup. You can view all of our examples as well as our documentation [here] (http://andrewjmeier.github.io/TableTop.JS) or you can check out [Monopoly](http://github.com/andrewjmeier/Monopoly) or [Settlers of Catan](http://github.com/andrewjmeier/Settlers). 
+Take a look at some of our example projects to get a feel for how they're setup. You can view all of our examples as well as our documentation [here](http://andrewjmeier.github.io/TableTop.JS) or you can check out [Monopoly](http://github.com/andrewjmeier/Monopoly) or [Settlers of Catan](http://github.com/andrewjmeier/Settlers). 
 
 #### If you're new to JavaScript and npm, try using our [TableTopSkeleton](http://github.com/andrewjmeier/TableTopSkeleton) to get started. 
 
@@ -55,69 +47,10 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 #### If npm is nothing new to you, just use `npm install tabletop-boardgames` to get started! 
 
-# Ok, But How do I JavaScript?
+# Tutorials
 
-We won't go into all of the details of JavaScript (you can use the [internet](https://en.wikipedia.org/wiki/Internet), [Stack Overflow](http://stackoverflow.com), or [Google](http://google.com) for that). Instead, we'll just fill you in on a few things that you need to understand in order to fully use our framework.
+## [Ok, But How do I JavaScript?](/tutorials/markdown/javascript.md)
 
-## Classes, Objects, and Inheritance
+## Demo - [SimpleGame](/tutorials/markdown/simple_game.md)
 
-JavaScript classes have four main parts: the Constructor, Inheritance, Methods, and the Export. 
-
-### Constructor
-
-In the constructor we'll create the object and set up any instance variables that we may need. 
-
-```
-function GridBoard(width, height) { 
-  Board.call(this);
-  for (var i = 0; i < width; i++) { 
-    this.spaces[i] = Array(this.height);
-  }
-
-  this.width = width;
-  this.height = height;
-};
-```
-
-In this example we have `Board.call(this)` which is a call to the super class' constructor. In JavaScript `this` refers to the current object (you might be familiar with using `self` from another language). If you need to pass parameters to the super class, you can include those as well `Board.call(this, a, b)`. 
-
-### Inheritance
-
-It's not enough to simply call the super class from our constructor. We must also state that our new class inherits from the super class. 
-
-```
-var inherits = require('util').inherits;
-var Board = require("./board.js");
-
-function GridBoard(width, height) {
-    ...
-}
-
-inherits(GridBoard, Board);
-```
-
-To do that, we'll need to require (just like an import) the inherits method from util and the super class. Then we just call the inherits method.
-
-### Methods
-
-Adding methods to a class in JavaScript is just like any other language, except that the notation is slightly different. 
-
-```
-GridBoard.prototype.getSpace = function(x, y) { 
-  return this.spaces[x][y];
-};
-```
-
-It's very straight forward, here we simply have a method that takes two parameters, x and y, and returns the element in those indices in the array.
-
-### Export
-
-Lastly, we need to export our object. This allows us to use the `require` statement that you saw earlier to use the object in another file. 
-
-```
-module.exports = GridBoard;
-```
-
-# Demo - [SimpleGame](/tutorials/markdown/simple_game.md)
-
-# Demo - [Checkers](/tutorials/markdown/checkers.md)
+## Demo - [Checkers](/tutorials/markdown/checkers.md)
