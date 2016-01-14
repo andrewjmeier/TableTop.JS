@@ -59,9 +59,9 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 ### Board
 
-    #### ArrayBoard
-    #### GridBoard
-    #### GraphBoard
+#### ArrayBoard
+#### GridBoard
+#### GraphBoard
 
 ### [Card](/out/Card.html)
 
@@ -77,8 +77,8 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 ### Tile
 
-    #### EdgeTile
-    #### VertexTile
+#### EdgeTile
+#### VertexTile
 
 ### Token
 
@@ -86,6 +86,6 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 ### Turn
 
-    ### ManualTurn
+### ManualTurn
 
 ### View
