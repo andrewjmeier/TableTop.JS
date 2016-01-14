@@ -17,7 +17,7 @@ function CheckersGame(players, board, turnMap) {
 
 inherits(CheckersGame, TableTop.Game);
 
-CheckersGame.prototype.evaluateMove = function() {  
+CheckersGame.prototype.executeMove = function() {  
 
   // store proposedMove data for convenience
   var token = this.proposedMove.token;

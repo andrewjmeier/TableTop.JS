@@ -41,24 +41,13 @@ CheckerBoard.prototype.buildTokens = function() {
   for (var i = 0; i < redX.length; i++) { 
 
     space = this.getSpace(redX[i], redY[i]);
-    this.buildTokenForSpace(space, c.redColor);
+    this.buildTokenForSpace(null, space, c.redColor);
 
     space = this.getSpace(whiteX[i], whiteY[i]);
-    this.buildTokenForSpace(space, c.whiteColor);
+    this.buildTokenForSpace(null, space, c.whiteColor);
 
   }
 
-};
-
-/*
-   creates the token for given space and color, 
-   adds it to the space, and appends it to our 
-   list of tokens 
-*/
-CheckerBoard.prototype.buildTokenForSpace = function(space, color) { 
-  var token = new TableTop.Token(null, space, color);
-  space.addOccupier(token);
-  this.tokens.push(token);
 };
 
 module.exports = CheckerBoard;
