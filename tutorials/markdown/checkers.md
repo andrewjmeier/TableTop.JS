@@ -70,7 +70,7 @@ This is the constructor for our game. We overwrite a few important defaults here
 
 First, we set the moveType to c.moveTypeManual. Game defaults to using c.moveTypeDiceRoll, which is useful for games like monopoly where there's only one path the follow, however we want the user to be able to control where she moves her token. This flag lets our view know that it should add click listeners to tokens and spaces in our view, and lets our game know that it should store these listener events as they arrive for later evaluation.
 
-Second, we set the moveEvaluationType to c.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the spaces. When we set this flag, the TurnMap will call "evaluateMove()" on our game class to decide what the side effects of a move are. 
+Second, we set the moveEvaluationType to c.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the spaces. When we set this flag, the TurnMap will call "executeMove()" on our game class to decide what the side effects of a move are. 
 
 ### The Board
 
@@ -188,13 +188,13 @@ That's all we need for the checker_board.js file!
 
 **Reload your test.html file and you should see the tokens draw on the board.** As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and spaces. 
 
-Now, let's move back to checker_game.js and add some of the game logic. Since we're using c.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions evaluateMove() and isValidMove(). evaluateMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
+Now, let's move back to checker_game.js and add some of the game logic. Since we're using c.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions executeMove() and isValidMove(). executeMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
 
 ### Evaluating Moves
 
-Lets write our evaluateMove() function. This function should assume that there's a valid move stored in this.proposedMove (in the form of proposedMove.token and proposedMove.destination). 
+Lets write our executeMove() function. This function should assume that there's a valid move stored in this.proposedMove (in the form of proposedMove.token and proposedMove.destination). 
 
-    CheckersGame.prototype.evaluateMove = function() {  
+    CheckersGame.prototype.executeMove = function() {  
 
         // store proposedMove data for convenience
         var token = this.proposedMove.token;

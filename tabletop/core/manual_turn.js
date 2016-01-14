@@ -30,7 +30,7 @@ function ManualTurn(game) {
         
         makeMove : function() { 
           if (game.hasValidMove()) { 
-            game.evaluateMove();
+            game.executeMove();
             this.transition("postTurn");
           } else { 
             console.log("Invalid move. Try again.");

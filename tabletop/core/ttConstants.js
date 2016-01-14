@@ -40,7 +40,7 @@ ttConstants.moveTypeDiceRoll = 2;
 // space.performLandingAction() is called 
 ttConstants.moveEvaluationTypeLandingAction = 1;
 
-// game.evaluateMove() is called
+// game.executeMove() is called
 // after game.isValidMove() verfies move is legal
 ttConstants.moveEvaluationTypeGameEvaluator = 2;
 

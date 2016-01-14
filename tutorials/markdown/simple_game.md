@@ -188,7 +188,7 @@ inherits(SimpleGame, TableTop.Game);
 After the player makes a move, we need to know how to change the state of the game to represent that a move has been made. In our game, a move will consist of the player clicking on a token and then clicking on a tile to move it to. We need to remove the token from the old tile and associate it with the new tile instead.
 
 ```
-SimpleGame.prototype.evaluateMove = function() {  
+SimpleGame.prototype.executeMove = function() {  
 
   // store proposedMove data for convenience
   var token = this.proposedMove.token;
