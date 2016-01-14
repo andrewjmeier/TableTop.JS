@@ -118,7 +118,7 @@ Lastly, we need to export our object. This allows us to use the `require` statem
 module.exports = GridBoard;
 ```
 
-# Demo - [SimpleGame]("./tutorials/markdown/SimpleGame.md")
+# Demo - [SimpleGame]("/tutorials/markdown/SimpleGame.md")
 
 # Demo - Checkers
 
