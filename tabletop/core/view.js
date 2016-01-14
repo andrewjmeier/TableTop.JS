@@ -15,7 +15,7 @@ function View(game, turnMap) {
   document.body.appendChild(this.renderer.view);
   
   if (game.board instanceof GridBoard) { 
-    for (var i = 0; i < this.game.board.height; i++) { 
+    for (var i = 0; i < this.game.board.width; i++) { 
       this.tileViews[i] = [];
     } 
   } 
@@ -72,15 +72,15 @@ View.prototype.drawTile = function(tile, size) {
 
 View.prototype.drawTiles = function() {
 
-  var tileWidth = c.boardWidth / this.game.board.spaces[0].length;
-  var tileHeight = c.boardHeight / this.game.board.spaces.length;
+  var tileWidth = c.boardWidth / this.game.board.spaces.length;
+  var tileHeight = c.boardHeight / this.game.board.spaces[0].length;
   var y_pos = c.boardHeight;
   var x_pos = 0;
   
-  for (var y = 0; y < this.game.board.spaces.length; y++) {
+  for (var y = 0; y < this.game.board.spaces[0].length; y++) {
     x_pos = 0;
     y_pos -= tileHeight;
-    for (var x = 0; x < this.game.board.spaces[0].length; x++) {
+    for (var x = 0; x < this.game.board.spaces.length; x++) {
 
       var tile = this.game.board.getSpace(x, y);
       var tileView = this.drawTile(tile, {width: tileWidth, height:tileHeight});
@@ -224,5 +224,3 @@ View.prototype.animate = function() {
 
 
 module.exports = View;
-
-

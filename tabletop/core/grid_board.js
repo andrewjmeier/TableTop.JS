@@ -1,4 +1,5 @@
-// gridBoard.j
+// grid_board.js
+
 var inherits = require('util').inherits;
 var Board = require("./board.js");
 
@@ -7,6 +8,7 @@ function GridBoard(width, height) {
   for (var i = 0; i < width; i++) { 
     this.spaces[i] = Array(this.height);
   }
+
   this.width = width;
   this.height = height;
 };
