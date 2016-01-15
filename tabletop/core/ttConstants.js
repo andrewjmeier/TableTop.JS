@@ -35,6 +35,9 @@ ttConstants.moveTypeManual = 1;
 // user rolls dice, player is moved 
 ttConstants.moveTypeDiceRoll = 2;
 
+// user selects a position and a token is placed there
+ttConstants.moveTypePlaceToken = 3;
+
 // MOVE EVALUATION TYPES
 
 // space.performLandingAction() is called 
