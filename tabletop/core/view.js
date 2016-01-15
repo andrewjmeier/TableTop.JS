@@ -15,7 +15,7 @@ function View(game, turnMap) {
   document.body.appendChild(this.renderer.view);
   
   if (game.board instanceof GridBoard) { 
-    for (var i = 0; i < this.game.board.width; i++) { 
+    for (var i = 0; i < this.game.board.height; i++) { 
       this.tileViews[i] = [];
     } 
   } 
@@ -72,22 +72,22 @@ View.prototype.drawTile = function(tile, size) {
 
 View.prototype.drawTiles = function() {
 
-  var tileWidth = c.boardWidth / this.game.board.spaces.length;
-  var tileHeight = c.boardHeight / this.game.board.spaces[0].length;
+  var tileWidth = c.boardWidth / this.game.board.spaces[0].length;
+  var tileHeight = c.boardHeight / this.game.board.spaces.length;
   var y_pos = c.boardHeight;
   var x_pos = 0;
   
-  for (var y = 0; y < this.game.board.spaces[0].length; y++) {
+  for (var y = 0; y < this.game.board.spaces.length; y++) {
     x_pos = 0;
     y_pos -= tileHeight;
-    for (var x = 0; x < this.game.board.spaces.length; x++) {
+    for (var x = 0; x < this.game.board.spaces[0].length; x++) {
 
       var tile = this.game.board.getSpace(x, y);
       var tileView = this.drawTile(tile, {width: tileWidth, height:tileHeight});
       tileView.x = x_pos;
       tileView.y = y_pos;
       
-      if (this.game.moveType == c.moveTypeManual) { 
+      if (this.game.moveType == c.moveTypeManual || this.game.moveType == c.moveTypePlaceToken) { 
         tileView.interactive = true;
         var context = this;
         tileView.click = function(mouseData) {
@@ -139,7 +139,7 @@ View.prototype.drawTokens = function() {
       // overridden by user, probably
       var tokenView = this.drawToken(token, tileView);
       
-      if (this.game.moveType == c.moveTypeManual) { 
+      if (this.game.moveType == c.moveTypeManual || this.game.moveType == c.moveTypePlaceToken) { 
         tokenView.interactive = true;
         var context = this;
         tokenView.click = function(mouseData) { 
@@ -177,6 +177,10 @@ View.prototype.updateTokenView = function(tokenView) {
 };
 
 View.prototype.updateTokens = function() {
+  if (this.game.moveType = c.moveTypePlaceToken) {
+    this.drawTokens();
+  }
+
   var tokenView;
   for (var tokenViewIdx in this.tokenViews) { 
     tokenView = this.tokenViews[tokenViewIdx];

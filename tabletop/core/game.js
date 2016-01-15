@@ -151,28 +151,30 @@ Game.prototype.setProposedMoveToken = function(token) {
 
 Game.prototype.hasValidMove = function() { 
   
-  if (this.moveType != c.moveTypeManual) 
+  if (this.moveType == c.moveTypeManual &&  (!this.proposedMove.token || !this.proposedMove.destination)) {
     return false;
-  if (!this.proposedMove.token || !this.proposedMove.destination)
+  }
+  else if (this.moveType == c.moveTypePlaceToken && !this.proposedMove.destination) {
     return false;
+  } 
 
-  return this.isValidMove(this.proposedMove.token, 
-                          this.proposedMove.token.space, 
-                          this.proposedMove.destination);
+  var token = this.proposedMove.token;
+  var tile = token ? token.space : null;
+  var destination = this.proposedMove.destination;
+
+  return this.isValidMove(token, 
+                          tile, 
+                          destination);
 }; 
 
 Game.prototype.isValidMove = function(token, oldSpace, newSpace) { 
-  console.warn("isValidMove should be implemented by subclass!");
+  console.log("Warning: you should overwrite isValidMove(token, oldSpace, newSpace)");
   return true;
 };
 
 Game.prototype.playerDidWin = function(player) {
-  console.warn("playerDidWin should be implemented by subclass!");
+  console.log("Warning: you should overwrite playerDidWin(player)");
   return false;
-};
-
-Game.prototype.executeMove = function(player) {
-  throw new Error('must be implemented by subclass!');
 };
 
 Game.prototype.moveTokenToSpace = function(token, destinationTile) { 
@@ -201,7 +203,13 @@ Game.prototype.spaceClicked = function(space) {
 
     this.setProposedMoveDestination(space);
     this.turnMap.updateState("makeMove");
-  } 
+
+  } else if (this.moveType == c.moveTypePlaceToken &&
+      this.turnMap.getCurrentState() == "waitingForMove") {
+
+    this.setProposedMoveDestination(space);
+    this.turnMap.updateState("makeMove");
+  }
 };
 
 
