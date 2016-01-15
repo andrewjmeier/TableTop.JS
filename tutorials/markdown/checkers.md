@@ -8,25 +8,26 @@ When you create a game, there are 5 major components: the Players, Game, Board, 
 
 To begin, create a new file checkers.js in the root of your project folder. This will be the file that the framework looks for to builds your game. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly. 
 
+    // Start creating your game here
+
     // Our 5 Main Components
-    var Player = require("../tabletop/core/player.js");
-    var Checkers = require("./checkers/checker_game.js");
-    var CheckerBoard = require("./checkers/checker_board.js");
-    var ManualTurn = require("../tabletop/core/manualTurn.js");
-    var CheckerView = require("./checkers/checker_view.js");
-    
+    var TableTop = require('tabletop-boardgames');
+    var Checkers = require('./checkers/checkers_game');
+    var CheckerBoard = require('./checkers/checkers_board');
+    var CheckerView = require('./checkers/checkers_view');
+
     // create the players
-    var redPlayer = new Player("Red", 1);
-    var whitePlayer = new Player("White", 2);
+    var redPlayer = new TableTop.Player("Red", 1);
+    var whitePlayer = new TableTop.Player("White", 2);
     var players = [redPlayer, whitePlayer];
-    
+
     // create the Board, Game, and TurnMap
     var board = new CheckerBoard();
     var checkers = new Checkers(players, board);
-    var turnMap = new ManualTurn(checkers);
+    var turnMap = new TableTop.ManualTurn(checkers);
     checkers.setTurnMap(turnMap);
 
-   
+
     // create our view, and draw it
     var view = new CheckerView(checkers, turnMap);
     view.drawBoard();
@@ -36,75 +37,70 @@ To begin, create a new file checkers.js in the root of your project folder. This
     checkers.updateState("start");
 
 
+
 This is all you need for the main game file. In general, your (game).js file should never be much longer than this -- you should offload the complicated logic to your subclasses of the five main game components (like we will do with Checkers and CheckerBoard).
 
 Before continuing, let's go over what we're doing above. First, we create two players, passing their names. We chose Red and White so we can easily refer to the players later by color to identify who's turn it is, but for other games (like our monopoly example) we'll use actual names like "John" or "KC". Then, we create our Board, Game, TurnMap and View. We pass the turnMap to our game, and tell the View to draw our board. Once we call view.drawBoard(), the view graphics loop begins it's animation loop. However, our game doesn't begin running until we update the TurnMap state to "start", which begins to run our game.
 
 ### The Game
 
-At this point, you'll be getting an error that checkers/checker_game.js and checkers/checker_board.js don't exist - let's fix that and create those now. 
+At this point, you'll be getting an error that checkers/checkers_game.js and checkers/checkers_board.js don't exist - let's fix that and create those now. 
 
-In checker_game.js, enter the following: 
+In checkers_game.js, enter the following: 
 
     var inherits = require('util').inherits;
-    var Game = require("../../tabletop/core/game.js");
-    var c = require("../../tabletop/core/ttConstants.js");
+    var TableTop = require('tabletop-boardgames');
 
     function CheckersGame(players, board, turnMap) {
-        Game.call(this, players, board, turnMap);
-        this.currentPlayer = 0;
-        this.moveType = c.moveTypeManual;
-        this.moveEvaluationType = c.moveEvalationTypeGameEvaluator;
-        board.tokens.forEach(function(token) { 
-            var player = token.color == c.redColor ? players[0] : players[1];
-            token.owner = player;
-            player.tokens.push(token);
-        });
+      TableTop.Game.call(this, players, board, turnMap);
+      this.currentPlayer = 0;
+      this.moveType = TableTop.Constants.moveTypeManual;
+      this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
+      board.tokens.forEach(function(token) { 
+        var player = token.color == TableTop.Constants.redColor ? players[0] : players[1];
+        token.owner = player;
+        player.tokens.push(token);
+      });
     };
 
-    inherits(CheckersGame, Game);
+    inherits(CheckersGame, TableTop.Game);
 
     module.exports = CheckersGame;
 
 This is the constructor for our game. We overwrite a few important defaults here. 
 
-First, we set the moveType to c.moveTypeManual. Game defaults to using c.moveTypeDiceRoll, which is useful for games like monopoly where there's only one path the follow, however we want the user to be able to control where she moves her token. This flag lets our view know that it should add click listeners to tokens and spaces in our view, and lets our game know that it should store these listener events as they arrive for later evaluation.
+First, we set the moveType to TableTop.Constants.moveTypeManual. Game defaults to using TableTop.Constants.moveTypeDiceRoll, which is useful for games like monopoly where there's only one path the follow, however we want the user to be able to control where she moves her token. This flag lets our view know that it should add click listeners to tokens and spaces in our view, and lets our game know that it should store these listener events as they arrive for later evaluation.
 
-Second, we set the moveEvaluationType to c.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the spaces. When we set this flag, the TurnMap will call "executeMove()" on our game class to decide what the side effects of a move are. 
+Second, we set the moveEvaluationType to TableTop.Constants.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the spaces. When we set this flag, the TurnMap will call "executeMove()" on our game class to decide what the side effects of a move are. 
 
 ### The Board
 
-We'll finish filling out our game class later. For now, let's move on to the checker_board class. Create the file and enter the following: 
+We'll finish filling out our game class later. For now, let's move on to the checkers_board class. Create the file and enter the following: 
 
     var inherits = require('util').inherits;
-    var GridBoard = require("../../tabletop/core/gridBoard.js");
-    var Space = require("../../tabletop/core/tile.js");
-    var Token = require("../../tabletop/core/token.js");
-    var c = require("../../tabletop/core/ttConstants.js");
-    
+    var TableTop = require('tabletop-boardgames');
 
     function CheckerBoard() { 
-        GridBoard.call(this, 8, 8);
-        this.buildTiles();
-        //this.buildTokens();
+      TableTop.GridBoard.call(this, 8, 8);
+      this.buildTiles();
+      this.buildTokens();
     }       
 
-    inherits(CheckerBoard, GridBoard);
+    inherits(CheckerBoard, TableTop.GridBoard);
 
 
     CheckerBoard.prototype.buildTiles = function() { 
-        var tileColor = c.redColor;
-        var tile;
-        for (var y = 0; y < this.height; y++) {
-            tileColor = (tileColor == c.redColor) ? c.blackColor : c.redColor;
-            for (var x = 0; x < this.width; x++) {
-                tile = new Space({color: tileColor});
-                this.spaces[x][y] = tile;
-                tileColor = (tileColor == c.redColor) ? c.blackColor : c.redColor;
-            }
-        } 
+      var tileColor = TableTop.Constants.redColor;
+      var tile;
+      for (var y = 0; y < this.height; y++) {
+        tileColor = (tileColor == TableTop.Constants.redColor) ? TableTop.Constants.blackColor : TableTop.Constants.redColor;
+        for (var x = 0; x < this.width; x++) {
+        tile = new TableTop.Tile({color: tileColor});
+        this.spaces[x][y] = tile;
+        tileColor = (tileColor == TableTop.Constants.redColor) ? TableTop.Constants.blackColor : TableTop.Constants.redColor;
+        }
+      } 
     };
-
 
     module.exports = CheckerBoard;
 
@@ -112,35 +108,34 @@ First, we subclass GridBoard. PathBoard (for games like monopoly) and GraphBoard
 
 ### The View
 
-Now let's work on our view. We need to tell the board how we want our tokens and tiles to look. Our framework uses Pixi.js for graphics support -- check out their docs for different options you can use to create different graphics objects for your game. Create the file checkers/checker_view.js and add the following: 
+Now let's work on our view. We need to tell the board how we want our tokens and tiles to look. Our framework uses Pixi.js for graphics support -- check out their docs for different options you can use to create different graphics objects for your game. Create the file checkers/checkers_view.js and add the following: 
 
-    var c = require("../../tabletop/core/ttConstants.js");
-    var View = require("../../tabletop/core/view.js");
+    var TableTop = require("tabletop-boardgames");
     var inherits = require('util').inherits;
 
     function CheckerView(game, turnMap) {
-        View.call(this, game, turnMap);
+      TableTop.View.call(this, game, turnMap);
     }
 
-    inherits(CheckerView, View);
+    inherits(CheckerView, TableTop.View);
 
     CheckerView.prototype.drawTile = function(tile, size) {
 
-        var tileView = new PIXI.Graphics();
-        tileView.lineStyle(1, 0, 1); 
-        tileView.beginFill(tile.color, 1); 
-        tileView.drawRect(0, 0, size.width, size.height);
-        return tileView;
+      var tileView = new PIXI.Graphics();
+      tileView.lineStyle(1, 0, 1); 
+      tileView.beginFill(tile.color, 1); 
+      tileView.drawRect(0, 0, size.width, size.height);
+      return tileView;
 
     };
 
     CheckerView.prototype.drawToken = function(token, size) {
 
-        var tokenView = new PIXI.Graphics();
-        tokenView.lineStyle(1, 0, 1);
-        tokenView.beginFill(token.color, 1);
-        tokenView.drawCircle(size.width/2, size.height/2, size.width/2 - 20);
-        return tokenView;
+      var tokenView = new PIXI.Graphics();
+      tokenView.lineStyle(1, 0, 1);
+      tokenView.beginFill(token.color, 1);
+      tokenView.drawCircle(size.width/2, size.height/2, size.width/2 - 20);
+      return tokenView;
 
     };
 
@@ -152,7 +147,7 @@ That's all we need for the view for the rest of the tutorial. The rest of the lo
 
 Next, let's create our "tokens". Tokens are the movable, actionable objects that belong to players. In a game like checkers, they're our pieces. In a game like monopoly, it's the literal token that represents your player. 
 
-Add the following method to your checker_board.js file, and call it from your constructer after this.BuildTiles():
+Add the following method to your checkers_board.js file, and call it from your constructer after this.BuildTiles():
 
     CheckerBoard.prototype.buildTokens = function() { 
 
@@ -167,10 +162,10 @@ Add the following method to your checker_board.js file, and call it from your co
         for (var i = 0; i < redX.length; i++) { 
 
             space = this.getSpace(redX[i], redY[i]);
-            this.buildTokenForSpace(space, c.redColor);
+            this.buildTokenForSpace(space, TableTop.Constants.redColor);
 
             space = this.getSpace(whiteX[i], whiteY[i]);
-            this.buildTokenForSpace(space, c.whiteColor);
+            this.buildTokenForSpace(space, TableTop.Constants.whiteColor);
         }
     };
 
@@ -178,17 +173,17 @@ Add the following method to your checker_board.js file, and call it from your co
     // adds it to the space, 
     // and appends it to our list of tokens
     CheckerBoard.prototype.buildTokenForSpace = function(space, color) { 
-        var token = new Token(null, space, color);
+        var token = new TableTop.Token(null, space, color);
         space.addOccupier(token);
         this.tokens.push(token);
     };
 
 
-That's all we need for the checker_board.js file! 
+That's all we need for the checkers_board.js file! 
 
 **Reload your test.html file and you should see the tokens draw on the board.** As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and spaces. 
 
-Now, let's move back to checker_game.js and add some of the game logic. Since we're using c.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions executeMove() and isValidMove(). executeMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
+Now, let's move back to checkers_game.js and add some of the game logic. Since we're using TableTop.Constants.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions executeMove() and isValidMove(). executeMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
 
 ### Evaluating Moves
 
@@ -218,7 +213,7 @@ Lets write our executeMove() function. This function should assume that there's 
     CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) { 
 
         // are we moving up or down? 
-        var yModifier = token.color == c.redColor ? 1 : -1;
+        var yModifier = token.color == TableTop.Constants.redColor ? 1 : -1;
   
         // grab the occupier of the space that we jumped
         // if we didn't jump anything, this will return null - that's what we want!
@@ -247,7 +242,7 @@ For checkers, there's two types of valid moves (that we're concerned about for t
            it's not a valid move! 
         */
         if (token.owner != player || 
-           newSpace.color == c.redColor || 
+           newSpace.color == TableTop.Constants.redColor || 
            newSpace.occupier) 
          return false;
 
@@ -258,7 +253,7 @@ For checkers, there's two types of valid moves (that we're concerned about for t
     CheckersGame.prototype.validNormalMove = function(token, oldPos, newPos, moveLen) { 
   
         // are we moving up or down? 
-        var yModifier = token.color == c.redColor ? moveLen : -moveLen;
+        var yModifier = token.color == TableTop.Constants.redColor ? moveLen : -moveLen;
         return oldPos.y + yModifier == newPos.y && Math.abs(oldPos.x - newPos.x) == moveLen;
 
     };
