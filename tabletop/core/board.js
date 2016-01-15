@@ -14,8 +14,7 @@ Board.prototype.getSpace = function(idx) {
 };
 
 // TODO, maybe pass the token or the token class to this method?
-Board.prototype.buildTokenForSpace = function(player, tile, color) { 
-  var token = new TableTop.Token(player, tile, color);
+Board.prototype.buildTokenForSpace = function(token, tile) { 
   tile.addOccupier(token);
   this.tokens.push(token);
 };
