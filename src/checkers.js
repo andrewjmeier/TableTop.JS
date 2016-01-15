@@ -1,10 +1,10 @@
+// Start creating your game here
+
 // Our 5 Main Components
-// var Player = require("../tabletop/core/player.js");
-var Checkers = require("./checkers/checker_game.js");
-var CheckerBoard = require("./checkers/checker_board.js");
-// var ManualTurn = require("../tabletop/core/manual_turn.js");
-var CheckerView = require("./checkers/checker_view.js");
-var TableTop = require('../tabletop/tabletop');
+var TableTop = require('../tabletop/tabletop.js');
+var Checkers = require('./checkers/checkers_game');
+var CheckerBoard = require('./checkers/checkers_board');
+var CheckerView = require('./checkers/checkers_view');
 
 // create the players
 var redPlayer = new TableTop.Player("Red", 1);

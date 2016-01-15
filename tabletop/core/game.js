@@ -162,13 +162,17 @@ Game.prototype.hasValidMove = function() {
 }; 
 
 Game.prototype.isValidMove = function(token, oldSpace, newSpace) { 
-  console.log("Warning: you should overwrite isValidMove(token, oldSpace, newSpace)");
+  console.warn("isValidMove should be implemented by subclass!");
   return true;
 };
 
 Game.prototype.playerDidWin = function(player) {
-  console.log("Warning: you should overwrite playerDidWin(player)");
+  console.warn("playerDidWin should be implemented by subclass!");
   return false;
+};
+
+Game.prototype.executeMove = function(player) {
+  throw new Error('must be implemented by subclass!');
 };
 
 Game.prototype.moveTokenToSpace = function(token, destinationTile) { 
