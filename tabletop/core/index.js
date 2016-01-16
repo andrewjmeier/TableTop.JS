@@ -1,5 +1,6 @@
 var core = Object.assign({
 
+    ArrayBoard: require('./array_board'),
     Board: require('./board'),
     Card: require('./card'),
     Component: require('./component'),
