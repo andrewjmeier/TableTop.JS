@@ -230,7 +230,7 @@ View.prototype.updateTokenView = function(tokenView) {
 };
 
 View.prototype.updateTokens = function() {
-  if (this.game.moveType = c.moveTypePlaceToken) {
+  if (this.game.moveType == c.moveTypePlaceToken) {
     this.drawTokens();
   }
 

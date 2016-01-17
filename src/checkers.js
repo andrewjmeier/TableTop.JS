@@ -3,7 +3,7 @@
 // Our 5 Main Components
 var TableTop = require('../tabletop/tabletop.js');
 var Checkers = require('./checkers/checkers_game');
-var CheckerBoard = require('./checkers/checkers_board_dup');
+var CheckerBoard = require('./checkers/checkers_board');
 var CheckerView = require('./checkers/checkers_view');
 
 // create the players
