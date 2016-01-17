@@ -1,5 +1,6 @@
 var c = require("./ttConstants.js");
 var GridBoard = require("./grid_board.js");
+var ArrayBoard = require('./array_board.js');
 var PIXI = require("../../lib/pixi/pixi.js");
 
 function View(game, turnMap) {
@@ -24,11 +25,11 @@ function View(game, turnMap) {
 View.prototype.drawBoard = function() { 
   if (this.game.board instanceof GridBoard) 
     this.drawGridBoard();
-  
+  else if (this.game.board instanceof ArrayBoard) {
+    this.drawArrayBoard();
+  }
   /* todo: 
 
-   else if (this.game.board instanceof PathBoard) 
-     this.drawPathBoard();
    else if (this.game.board instanceof GraphBoard)
      this.drawGraphBoard();
    else 
@@ -50,9 +51,52 @@ View.prototype.drawGridBoard = function() {
   this.animate();
 };
 
-// todo 
-View.prototype.drawPathBoard = function() {
+View.prototype.drawArrayBoard = function() {
 
+  this.boardView.x = c.boardStartX;
+  this.boardView.y = c.boardStartY;
+  this.boardView.beginFill(c.blueColor, 1);
+  this.boardView.drawRect(0, 0, c.boardWidth, c.boardHeight);
+  this.stage.addChild(this.boardView);
+  this.drawArrayTiles();
+  this.drawTokens();
+  this.drawMessage();
+  this.animate();
+
+};
+
+View.prototype.drawArrayTiles = function() {
+  var tileWidth = c.boardWidth / this.game.board.width;
+  var tileHeight = c.boardHeight / this.game.board.height;
+  
+  var tileNum = 0;
+
+  for (var x = 0; x < this.game.board.width; x++) {
+    tileNum = this.createTileView(tileNum, x * tileWidth, 0, tileWidth, tileHeight);
+  }
+
+  for (var y = 1; y < this.game.board.height; y++) {
+    tileNum = this.createTileView(tileNum, c.boardWidth - tileWidth, y * tileHeight, tileWidth, tileHeight);
+  }
+
+  for (var x = this.game.board.width - 2; x >= 0; x--) {
+    tileNum = this.createTileView(tileNum, x * tileWidth, c.boardHeight - tileHeight, tileWidth, tileHeight);
+  }
+
+  for (var y = this.game.board.height - 2; y > 0; y--) {
+    tileNum = this.createTileView(tileNum, 0, y * tileHeight, tileWidth, tileHeight);
+  }
+
+};
+
+View.prototype.createTileView = function(tileNum, x, y, width, height) {
+  var tile = this.game.board.getSpace(tileNum);
+  var tileView = this.drawTile(tile, {width: width, height: height});
+  tileView.x = x;
+  tileView.y = y;
+  this.tileViews[tileNum] = tileView;
+  this.boardView.addChild(tileView);
+  return tileNum + 1;
 };
 
 // todo 
@@ -126,6 +170,17 @@ View.prototype.drawToken = function(token, size) {
 
 };
 
+View.prototype.getTileViewForToken = function(token) {
+  var position = this.game.board.getSpacePosition(token.space);
+  var tileView = null;
+  if (this.game.board instanceof ArrayBoard) {
+    tileView = this.tileViews[position];
+  } else if (this.game.board instanceof GridBoard) {
+    tileView = this.tileViews[position.x][position.y];
+  }
+  return tileView;
+};
+
 View.prototype.drawTokens = function() {
 
   for (var playerIdx in this.game.players) { 
@@ -133,8 +188,7 @@ View.prototype.drawTokens = function() {
     for (var tokenIdx in player.tokens) {
 
       var token = player.tokens[tokenIdx];
-      var position = this.game.board.getSpacePosition(token.space);
-      var tileView = this.tileViews[position.x][position.y];
+      var tileView = this.getTileViewForToken(token);
       
       // overridden by user, probably
       var tokenView = this.drawToken(token, tileView);
@@ -168,8 +222,7 @@ View.prototype.updateTokenView = function(tokenView) {
   } 
   
   // update if we've moved
-  var position = this.game.board.getSpacePosition(tokenView.token.space);
-  var tileView = this.tileViews[position.x][position.y];
+  var tileView = this.getTileViewForToken(tokenView.token);
 
   // make ourself a child of new tile
   tokenView.view.removeChild(tileView.view);
