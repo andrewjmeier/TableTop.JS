@@ -72,45 +72,31 @@ View.prototype.drawArrayTiles = function() {
   var tileNum = 0;
 
   for (var x = 0; x < this.game.board.width; x++) {
-    var tile = this.game.board.getSpace(tileNum);
-    var tileView = this.drawTile(tile, {width: tileWidth, height: tileHeight});
-    tileView.x = (x * tileWidth);
-    tileView.y = 0;
-    this.tileViews[tileNum] = tileView;
-    this.boardView.addChild(tileView);
-    tileNum++;
+    tileNum = this.createTileView(tileNum, x * tileWidth, 0, tileWidth, tileHeight);
   }
 
   for (var y = 1; y < this.game.board.height; y++) {
-    var tile = this.game.board.getSpace(tileNum);
-    var tileView = this.drawTile(tile, {width: tileWidth, height: tileHeight});
-    tileView.x = c.boardWidth - tileWidth;
-    tileView.y = (y * tileHeight);
-    this.tileViews[tileNum] = tileView;
-    this.boardView.addChild(tileView);
-    tileNum++; 
+    tileNum = this.createTileView(tileNum, c.boardWidth - tileWidth, y * tileHeight, tileWidth, tileHeight);
   }
 
   for (var x = this.game.board.width - 2; x >= 0; x--) {
-    var tile = this.game.board.getSpace(tileNum);
-    var tileView = this.drawTile(tile, {width: tileWidth, height: tileHeight});
-    tileView.x = (x * tileWidth);
-    tileView.y = c.boardHeight - tileHeight;
-    this.tileViews[tileNum] = tileView;
-    this.boardView.addChild(tileView);
-    tileNum++;
+    tileNum = this.createTileView(tileNum, x * tileWidth, c.boardHeight - tileHeight, tileWidth, tileHeight);
   }
 
   for (var y = this.game.board.height - 2; y > 0; y--) {
-    var tile = this.game.board.getSpace(tileNum);
-    var tileView = this.drawTile(tile, {width: tileWidth, height: tileHeight});
-    tileView.x = 0;
-    tileView.y = (y * tileHeight);
-    this.tileViews[tileNum] = tileView;
-    this.boardView.addChild(tileView);
-    tileNum++; 
+    tileNum = this.createTileView(tileNum, 0, y * tileHeight, tileWidth, tileHeight);
   }
 
+};
+
+View.prototype.createTileView = function(tileNum, x, y, width, height) {
+  var tile = this.game.board.getSpace(tileNum);
+  var tileView = this.drawTile(tile, {width: width, height: height});
+  tileView.x = x;
+  tileView.y = y;
+  this.tileViews[tileNum] = tileView;
+  this.boardView.addChild(tileView);
+  return tileNum + 1;
 };
 
 // todo 
