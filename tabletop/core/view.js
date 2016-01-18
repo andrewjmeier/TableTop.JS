@@ -14,6 +14,8 @@ function View(game, turnMap) {
   this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight, 
                                           { transparent: true });
   document.body.appendChild(this.renderer.view);
+  this.playerInfos = [];
+  this.drawAllPlayersInfo();
   
   if (game.board instanceof GridBoard) { 
     for (var i = 0; i < this.game.board.height; i++) { 
@@ -31,9 +33,9 @@ View.prototype.drawBoard = function() {
   /* todo: 
 
    else if (this.game.board instanceof GraphBoard)
-     this.drawGraphBoard();
+   this.drawGraphBoard();
    else 
-     do nothing and defer drawing to user? 
+   do nothing and defer drawing to user? 
 
    */
 };
@@ -240,7 +242,7 @@ View.prototype.updateTokens = function() {
     this.updateTokenView(tokenView);
   } 
 };
-  
+
 View.prototype.destroyTokenViewForToken = function(token) { 
 
   var tokenView;
@@ -279,5 +281,92 @@ View.prototype.animate = function() {
   this.renderer.render(this.stage);
 };
 
+View.prototype.drawAllPlayersInfo = function() {
+
+  var playersInfo = this.getPlayersInfo();
+  if (!playersInfo) return;
+
+  var infoBlock = new PIXI.Graphics();
+  infoBlock.x = c.boardWidth + c.leftBuffer * 2;
+  infoBlock.y = c.upperBuffer;
+
+  var blockSize = 150;
+  var vertOffset = .2*c.upperBuffer;
+  
+  var view = this;
+  playersInfo.forEach(function(player) { 
+    view.drawPlayerInfo(player, vertOffset, infoBlock);
+    vertOffset += blockSize;
+  });
+  
+  this.stage.addChild(infoBlock);
+
+};
+
+
+View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
+  
+  var string = "";
+  for (var key in player) { 
+    string += key + " " + player[key] + "\n";
+  } 
+  
+  var info = new PIXI.Text(string, 
+                           {font: '20px Arial',
+                            align : 'left',
+                            wordWrap : true,
+                            strokeThickness : .25,
+                            wordWrapWidth : c.canvasWidth - c.boardWidth - (4 * c.leftBuffer)
+                           });
+
+  info.x = c.leftBuffer * 0.2;
+  info.y = vertOffset;
+  
+  var playerColor = new PIXI.Graphics();
+  playerColor.x = c.leftBuffer * 3;
+  playerColor.y = vertOffset;
+  var color = player.color ? player.color : c.redColor; 
+  playerColor.beginFill(color);
+  playerColor.drawRect(0, 0, 20, 20);
+  
+  var box = new PIXI.Graphics();
+  box.y = vertOffset - c.upperBuffer*.2;
+  
+  var outline = new PIXI.Graphics();
+  outline.y = vertOffset - c.upperBuffer*.2;
+  outline.lineStyle(1, 0, 1);
+  outline.drawRect(0, 0, c.canvasWidth - c.boardWidth - (3 * c.leftBuffer), 140);
+  
+  box.lineStyle(1, 0, 1);
+  box.beginFill(0x44C0DF, 1);
+  box.drawRect(0, 0, c.canvasWidth - c.boardWidth - (3 * c.leftBuffer), 140);
+  this.playerInfos.push({background: box, text: info});
+  
+  infoBlock.addChild(outline);
+  infoBlock.addChild(box);
+  infoBlock.addChild(info);
+  infoBlock.addChild(playerColor);
+
+};
+
+
+// todo: remove this testing code 
+// this will be overridden in subclass
+View.prototype.getPlayersInfo = function() { 
+  return [    
+    { 
+      name: "kc", 
+      money: 234, 
+      skill: 10
+    },
+    
+    { 
+      name: "john",
+      money: 98, 
+      skill: 1
+    }
+  ];
+  
+};
 
 module.exports = View;
