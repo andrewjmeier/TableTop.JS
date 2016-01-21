@@ -6,15 +6,18 @@ var inherits = require('util').inherits;
 /**
  * The Game class
  * @constructor
- * @param {Player|Array} players - A list of players
  * @param {Board} board - The game board
+ * @param {int} defaultNumPlayers - default of players
+ * @param {int|Array} possibleNumPlayers - A list of possible number of players
 */
-function Game(players, board) {
+function Game(board, defaultNumPlayers, possibleNumPlayers) {
   Component.call(this);
-  this.players = players,
+  this.defaultNumPlayers = defaultNumPlayers;
+  this.possibleNumPlayers = possibleNumPlayers;
   this.board = board;
   this.dice = [];
-  this.randomizeCurrentPlayer();
+  this.players = [];
+  // this.randomizeCurrentPlayer(); //this may be an issue
   this.turnMap = null;
   this.moveType = c.moveTypeDice; // manual movement or dicerolls
   this.proposedMove = {}; // for c.moveTypeManual
@@ -28,7 +31,7 @@ inherits(Game, Component);
  * This is required!
  * @param {Turn} turnMap - A turn object to be used by the game
 */
-Game.prototype.setTurn = function(turnMap) {
+Game.prototype.setTurnMap = function(turnMap) {
   this.turnMap = turnMap;
 };
 
@@ -38,10 +41,6 @@ Game.prototype.setTurn = function(turnMap) {
 */
 Game.prototype.updateState = function(message) {
   this.turnMap.updateState(message, this);
-};
-
-Game.prototype.setTurnMap = function(turnMap) { 
-  this.turnMap = turnMap;
 };
 
 /**
@@ -54,6 +53,15 @@ Game.prototype.setMoveType = function(moveType) {
     this.proposedMove = {};
   } 
 };
+
+/**
+ * Set the players for this game
+ * @param {Player|Array} players - The players in the game
+*/
+Game.prototype.setPlayers = function(players) { 
+  this.players = players;
+};
+
 
 /**
  * Callback method from the view when a token is clicked

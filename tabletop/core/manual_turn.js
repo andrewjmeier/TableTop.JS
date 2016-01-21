@@ -1,9 +1,14 @@
 var Turn = require("./turn.js");
 var inherits = require('util').inherits;
 
-function ManualTurn(game) { 
+function ManualTurn(game, startView, view) { 
   
   this.game = game;
+  this.startView = startView;
+  this.view = view;
+  // this.nextPlayerView = nextPlayerView;
+  // this.gameOverView = gameOverView;
+
   this.turnMap = new Turn({ 
     initialize: function( options ) {},
     
@@ -18,13 +23,27 @@ function ManualTurn(game) {
       // 1
       uninitialized: { 
         start : function() { 
+          this.transition("startScreen");
+        } 
+      },
+
+      // 1a
+      startScreen:{
+        _onEnter: function() { 
+          console.log("Diplay the start screen.");
+          startView.drawStartView();
+        },
+        play : function() { 
+          view.drawView();
           this.transition("waitingForMove");
         } 
       },
 
+
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
+          // view.drawNextPlayerView();
           console.log(this.game.getCurrentPlayer().name + ": Make your move.");
         },
         
@@ -53,6 +72,7 @@ function ManualTurn(game) {
       // 4
       gameOver : { 
         _onEnter : function() { 
+          // view.drawGameOverView();
           console.log(this.game.getCurrentPlayer().name + " has won.");
         } 
       } 

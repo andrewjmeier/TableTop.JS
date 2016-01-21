@@ -3,10 +3,8 @@ var GridBoard = require("./grid_board.js");
 var ArrayBoard = require('./array_board.js');
 var PIXI = require("../../lib/pixi/pixi.js");
 
-function View(game, turnMap) {
+function View(game) {
   this.game = game;
-  this.turnMap = turnMap;
-  this.turnMap.updateState("start");
   this.tokenViews = [];
   this.tileViews = [];
   this.boardView = new PIXI.Graphics();
@@ -21,6 +19,10 @@ function View(game, turnMap) {
     } 
   } 
 };
+
+View.prototype.drawView = function() { 
+  this.drawBoard();
+}
 
 View.prototype.drawBoard = function() { 
   if (this.game.board instanceof GridBoard) 
@@ -230,7 +232,7 @@ View.prototype.updateTokenView = function(tokenView) {
 };
 
 View.prototype.updateTokens = function() {
-  if (this.game.moveType = c.moveTypePlaceToken) {
+  if (this.game.moveType == c.moveTypePlaceToken) {
     this.drawTokens();
   }
 
