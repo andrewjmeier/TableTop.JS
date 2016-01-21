@@ -69,9 +69,9 @@ In checkers_game.js, enter the following:
 
 This is the constructor for our game. We overwrite a few important defaults here. 
 
-First, we set the moveType to TableTop.Constants.moveTypeManual. Game defaults to using TableTop.Constants.moveTypeDiceRoll, which is useful for games like monopoly where there's only one path the follow, however we want the user to be able to control where she moves her token. This flag lets our view know that it should add click listeners to tokens and spaces in our view, and lets our game know that it should store these listener events as they arrive for later evaluation.
+First, we set the moveType to TableTop.Constants.moveTypeManual. Game defaults to using TableTop.Constants.moveTypeDiceRoll, which is useful for games like monopoly where there's only one path the follow, however we want the user to be able to control where she moves her token. This flag lets our view know that it should add click listeners to tokens and tiles in our view, and lets our game know that it should store these listener events as they arrive for later evaluation.
 
-Second, we set the moveEvaluationType to TableTop.Constants.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the spaces. When we set this flag, the TurnMap will call "executeMove()" on our game class to decide what the side effects of a move are. 
+Second, we set the moveEvaluationType to TableTop.Constants.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the tiles. When we set this flag, the TurnMap will call "executeMove()" on our game class to decide what the side effects of a move are. 
 
 ### The Board
 
@@ -96,7 +96,7 @@ We'll finish filling out our game class later. For now, let's move on to the che
         tileColor = (tileColor == TableTop.Constants.redColor) ? TableTop.Constants.blackColor : TableTop.Constants.redColor;
         for (var x = 0; x < this.width; x++) {
         tile = new TableTop.Tile({color: tileColor});
-        this.spaces[x][y] = tile;
+        this.tiles[x][y] = tile;
         tileColor = (tileColor == TableTop.Constants.redColor) ? TableTop.Constants.blackColor : TableTop.Constants.redColor;
         }
       } 
@@ -158,30 +158,30 @@ Add the following method to your checkers_board.js file, and call it from your c
         var whiteY = [5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7];
 
         // build the tokens
-        var space;
+        var tile;
         for (var i = 0; i < redX.length; i++) { 
 
-            space = this.getSpace(redX[i], redY[i]);
-            this.buildTokenForSpace(space, TableTop.Constants.redColor);
+            tile = this.getTile(redX[i], redY[i]);
+            this.buildTokenForTile(tile, TableTop.Constants.redColor);
 
-            space = this.getSpace(whiteX[i], whiteY[i]);
-            this.buildTokenForSpace(space, TableTop.Constants.whiteColor);
+            tile = this.getTile(whiteX[i], whiteY[i]);
+            this.buildTokenForTile(tile, TableTop.Constants.whiteColor);
         }
     };
 
-    // creates the token for given space and color, 
-    // adds it to the space, 
+    // creates the token for given tile and color, 
+    // adds it to the tile, 
     // and appends it to our list of tokens
-    CheckerBoard.prototype.buildTokenForSpace = function(space, color) { 
-        var token = new TableTop.Token(null, space, color);
-        space.addOccupier(token);
+    CheckerBoard.prototype.buildTokenForTile = function(tile, color) { 
+        var token = new TableTop.Token(null, tile, color);
+        tile.addOccupier(token);
         this.tokens.push(token);
     };
 
 
 That's all we need for the checkers_board.js file! 
 
-**Reload your test.html file and you should see the tokens draw on the board.** As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and spaces. 
+**Reload your test.html file and you should see the tokens draw on the board.** As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and tiles. 
 
 Now, let's move back to checkers_game.js and add some of the game logic. Since we're using TableTop.Constants.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions executeMove() and isValidMove(). executeMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
 
@@ -195,9 +195,9 @@ Lets write our executeMove() function. This function should assume that there's 
         var token = this.proposedMove.token;
         var destination = this.proposedMove.destination;
         
-        // get positions of current token space and the destination
-        var oldPosition = this.board.getSpacePosition(token.space);
-        var newPosition = this.board.getSpacePosition(destination);
+        // get positions of current token tile and the destination
+        var oldPosition = this.board.getTilePosition(token.tile);
+        var newPosition = this.board.getTilePosition(destination);
   
         // check if we jumped a token, and remove it if so 
         var jumpedToken = this.getJumpedToken(token, oldPosition, newPosition);
@@ -205,8 +205,8 @@ Lets write our executeMove() function. This function should assume that there's 
         if (jumpedToken)
             jumpedToken.destroy();
   
-        // move the token to the new space and clear proposedMove
-        this.moveTokenToSpace(token, destination);
+        // move the token to the new tile and clear proposedMove
+        token.moveToTile(destination);
         this.proposedMove = {};
     };
 
@@ -215,35 +215,35 @@ Lets write our executeMove() function. This function should assume that there's 
         // are we moving up or down? 
         var yModifier = token.color == TableTop.Constants.redColor ? 1 : -1;
   
-        // grab the occupier of the space that we jumped
+        // grab the occupier of the tile that we jumped
         // if we didn't jump anything, this will return null - that's what we want!
         if (newPos.x > oldPos.x)
-            return this.board.getSpace(oldPos.x + 1, oldPos.y + yModifier).occupier;
+            return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).occupier;
         else  
-            return this.board.getSpace(oldPos.x - 1, oldPos.y + yModifier).occupier;
+            return this.board.getTile(oldPos.x - 1, oldPos.y + yModifier).occupier;
     
     };
 
-Now, refresh your test.html and you should be able to move tokens around. Notice that the game has no concept of what should be a valid move or not -- players can move each others tokens, and tokens can move an infinite amount of spaces. The console should be warning you about this on every move. Let's fix that. 
+Now, refresh your test.html and you should be able to move tokens around. Notice that the game has no concept of what should be a valid move or not -- players can move each others tokens, and tokens can move an infinite amount of tiles. The console should be warning you about this on every move. Let's fix that. 
 
-For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one space diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
+For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one tile diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
 
-    CheckersGame.prototype.isValidMove = function(token, oldSpace, newSpace) { 
+    CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) { 
   
-        var oldPos = this.board.getSpacePosition(oldSpace);
-        var newPos = this.board.getSpacePosition(newSpace);
+        var oldPos = this.board.getTilePosition(oldTile);
+        var newPos = this.board.getTilePosition(newTile);
   
         var player = this.getCurrentPlayer();
   
         /* 
            If we don't own the piece or
-           the destination is a red space or 
+           the destination is a red tile or 
            the destination is occupied 
            it's not a valid move! 
         */
         if (token.owner != player || 
-           newSpace.color == TableTop.Constants.redColor || 
-           newSpace.occupier) 
+           newTile.color == TableTop.Constants.redColor || 
+           newTile.occupier) 
          return false;
 
         return this.validNormalMove(token, oldPos, newPos, 1) || 
@@ -260,7 +260,7 @@ For checkers, there's two types of valid moves (that we're concerned about for t
 
     CheckersGame.prototype.validJumpMove = function(token, oldPos, newPos) { 
     
-        // make sure it's a valid normal move that's two spaces long
+        // make sure it's a valid normal move that's two tiles long
         if (!this.validNormalMove(token, oldPos, newPos, 2)) return false;
   
         // make sure we jump an enemy token 

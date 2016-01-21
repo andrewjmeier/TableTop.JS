@@ -1,20 +1,21 @@
 Component = require("./component.js");
     inherits = require('util').inherits;
 
-// more of a placeholder for now -
-// should talk when merged to properly integrate this with
-// existing "board" and "players" implementations if any exist
+/**
+ * The Board class
+ * @constructor
+*/
 function Board() {
-  this.spaces = [];
+  this.tiles = [];
   this.tokens = [];
 }
 
-Board.prototype.getSpace = function(idx) { 
-  return this.spaces[idx];
+Board.prototype.getTile = function(idx) { 
+  return this.tiles[idx];
 };
 
 // TODO, maybe pass the token or the token class to this method?
-Board.prototype.buildTokenForSpace = function(token, tile) { 
+Board.prototype.buildTokenForTile = function(token, tile) { 
   tile.addOccupier(token);
   this.tokens.push(token);
 };

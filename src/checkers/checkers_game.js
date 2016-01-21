@@ -21,9 +21,9 @@ CheckersGame.prototype.executeMove = function() {
   var token = this.proposedMove.token;
   var destination = this.proposedMove.destination;
 
-  // get positions of current token space and the destination
-  var oldPosition = this.board.getSpacePosition(token.space);
-  var newPosition = this.board.getSpacePosition(destination);
+  // get positions of current token tile and the destination
+  var oldPosition = this.board.getTilePosition(token.tile);
+  var newPosition = this.board.getTilePosition(destination);
 
   // check if we jumped a token, and remove it if so 
   var jumpedToken = this.getJumpedToken(token, oldPosition, newPosition);
@@ -31,8 +31,8 @@ CheckersGame.prototype.executeMove = function() {
   if (jumpedToken)
     jumpedToken.destroy();
 
-  // move the token to the new space and clear proposedMove
-  this.moveTokenToSpace(token, destination);
+  // move the token to the new tile and clear proposedMove
+  token.moveToTile(destination);
   this.proposedMove = {};
 };
 
@@ -41,31 +41,31 @@ CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) {
   // are we moving up or down? 
   var yModifier = token.color == TableTop.Constants.redColor ? 1 : -1;
 
-  // grab the occupier of the space that we jumped
+  // grab the occupier of the tile that we jumped
   // if we didn't jump anything, this will return null - that's what we want!
   if (newPos.x > oldPos.x)
-    return this.board.getSpace(oldPos.x + 1, oldPos.y + yModifier).occupier;
+    return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).occupier;
   else  
-    return this.board.getSpace(oldPos.x - 1, oldPos.y + yModifier).occupier;
+    return this.board.getTile(oldPos.x - 1, oldPos.y + yModifier).occupier;
 
 };
 
-CheckersGame.prototype.isValidMove = function(token, oldSpace, newSpace) { 
+CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) { 
 
-  var oldPos = this.board.getSpacePosition(oldSpace);
-  var newPos = this.board.getSpacePosition(newSpace);
+  var oldPos = this.board.getTilePosition(oldTile);
+  var newPos = this.board.getTilePosition(newTile);
 
   var player = this.getCurrentPlayer();
 
   /* 
    If we don't own the piece or
-   the destination is a red space or 
+   the destination is a red tile or 
    the destination is occupied 
    it's not a valid move! 
    */
   if (token.owner != player || 
-      newSpace.color == TableTop.Constants.redColor || 
-      newSpace.occupier) 
+      newTile.color == TableTop.Constants.redColor || 
+      newTile.occupier) 
     return false;
 
   return this.validNormalMove(token, oldPos, newPos, 1) || 

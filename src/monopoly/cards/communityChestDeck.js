@@ -15,7 +15,7 @@ var buildCommunityChestDeck = function() {
 
   var card1 = new TableTop.Card("Advance to Go (Collect $200)", function(game) {
     game.getCurrentPlayer().moveTo(0);
-    return game.board.spaces[0].performLandingAction(game);
+    return game.board.tiles[0].performLandingAction(game);
   });
 
   var card2 = new TableTop.Card("Bank error in your favor - collect $75", function(game) {

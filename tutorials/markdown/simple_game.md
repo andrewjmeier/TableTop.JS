@@ -85,7 +85,7 @@ SimpleBoard.prototype.buildTiles = function() {
   for (var x = 0; x < this.width; x++) {
     for (var y = 0; y < this.height; y++) {
       tile = new TableTop.Tile({color: tileColor});
-      this.spaces[x][y] = tile;
+      this.tiles[x][y] = tile;
     }
   } 
 };
@@ -96,21 +96,21 @@ Now we want to create a token for each player and place it in the first tile of 
 ```
 SimpleBoard.prototype.buildTokens = function() { 
 
-  var player1Start = this.getSpace(0, 0);
-  this.buildTokenForSpace(player1Start, 0x000000);
+  var player1Start = this.getTile(0, 0);
+  this.buildTokenForTile(player1Start, 0x000000);
 
-  var player2Start = this.getSpace(0, 1);
-  this.buildTokenForSpace(player2Start, 0xFFFFFF);
+  var player2Start = this.getTile(0, 1);
+  this.buildTokenForTile(player2Start, 0xFFFFFF);
 
 };
 ```
 
-We have a helpful method `buildTokenForSpace` that makes a new token and adds it to the given Tile on the board.
+We have a helpful method `buildTokenForTile` that makes a new token and adds it to the given Tile on the board.
 
 ```
-SimpleBoard.prototype.buildTokenForSpace = function(space, color) { 
-  var token = new TableTop.Token(null, space, color);
-  space.addOccupier(token);
+SimpleBoard.prototype.buildTokenForTile = function(tile, color) { 
+  var token = new TableTop.Token(null, tile, color);
+  tile.addOccupier(token);
   this.tokens.push(token);
 };
 ```
@@ -194,12 +194,12 @@ SimpleGame.prototype.executeMove = function() {
   var token = this.proposedMove.token;
   var destination = this.proposedMove.destination;
   
-  // get positions of current token space and the destination
-  var oldPosition = this.board.getSpacePosition(token.space);
-  var newPosition = this.board.getSpacePosition(destination);
+  // get positions of current token tile and the destination
+  var oldPosition = this.board.getTilePosition(token.tile);
+  var newPosition = this.board.getTilePosition(destination);
   
-  // move the token to the new space and clear proposedMove
-  this.moveTokenToSpace(token, destination);
+  // move the token to the new tile and clear proposedMove
+  token.moveToTile(destination);
   this.proposedMove = {};
 };
 ```
@@ -207,16 +207,16 @@ SimpleGame.prototype.executeMove = function() {
 But not all moves are allowed. We don't want the player to be able to move his opponents token and it's also against our game's rules to move your token backward. We'll provide that logic with the `isValidMove` method.
 
 ```
-SimpleGame.prototype.isValidMove = function(token, oldSpace, newSpace) { 
+SimpleGame.prototype.isValidMove = function(token, oldTile, newTile) { 
   
-  var oldPos = this.board.getSpacePosition(oldSpace);
-  var newPos = this.board.getSpacePosition(newSpace);
+  var oldPos = this.board.getTilePosition(oldTile);
+  var newPos = this.board.getTilePosition(newTile);
   
   var player = this.getCurrentPlayer();
   
     /* 
        If we don't own the piece or
-       the destination is a red space or 
+       the destination is a red tile or 
        the destination is occupied 
        it's not a valid move! 
      */
@@ -233,10 +233,10 @@ The final step is determining if it's Game Over!
 ```
 SimpleGame.prototype.playerDidWin = function(player) {
   var token = player.tokens[0];
-  return this.board.getSpacePosition(token.space).x === 9;
+  return this.board.getTilePosition(token.tile).x === 9;
 };
 ```
 
-If the player's token reaches all the way to the end of the board, he's the winner. So we'll just check the x position of the token's space to see if it equals nine (since we have ten tiles on the board starting at index 0).
+If the player's token reaches all the way to the end of the board, he's the winner. So we'll just check the x position of the token's tile to see if it equals nine (since we have ten tiles on the board starting at index 0).
 
 That's it! The game should be complete. Make sure that you have webpack running in the Terminal using the command `npm run webpack` and then open the index.html file to try out your new game! 
