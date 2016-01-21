@@ -1,13 +1,14 @@
 var inherits = require('util').inherits;
 var TableTop = require("../../tabletop/tabletop.js");
 
-function CheckersGame(board, defaultNumPlayers, possibleNumPlayers) {
-  TableTop.Game.call(this, board, defaultNumPlayers, possibleNumPlayers);
+function CheckersGame(board) {
+
+  TableTop.Game.call(this, board);
   this.currentPlayer = 0;
   this.moveType = TableTop.Constants.moveTypeManual;
   this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
-  
-  
+  this.defaultNumPlayers = 2;
+  this.possibleNumPlayers = [2, 4, 6, 8];//this should be 2 for checkers
 };
 inherits(CheckersGame, TableTop.Game);
 
@@ -20,8 +21,6 @@ CheckersGame.prototype.setPlayers = function(players) {
     player.tokens.push(token);
   });
 };
-
-
 
 
 CheckersGame.prototype.executeMove = function() {  

@@ -10,10 +10,8 @@ var inherits = require('util').inherits;
  * @param {int} defaultNumPlayers - default of players
  * @param {int|Array} possibleNumPlayers - A list of possible number of players
 */
-function Game(board, defaultNumPlayers, possibleNumPlayers) {
+function Game(board) {
   Component.call(this);
-  this.defaultNumPlayers = defaultNumPlayers;
-  this.possibleNumPlayers = possibleNumPlayers;
   this.board = board;
   this.dice = [];
   this.players = [];
@@ -22,6 +20,8 @@ function Game(board, defaultNumPlayers, possibleNumPlayers) {
   this.moveType = c.moveTypeDice; // manual movement or dicerolls
   this.proposedMove = {}; // for c.moveTypeManual
   this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
+  this.defaultNumPlayers = 2;
+  this.possibleNumPlayers = [2, 3, 4, 5];
 };
 
 inherits(Game, Component);

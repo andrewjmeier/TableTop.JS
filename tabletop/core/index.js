@@ -8,7 +8,7 @@ var core = Object.assign({
     Deck: require('./deck'),
     EdgeTile: require('./edge_tile'),
     Game: require('./game'),
-  //  GameOverView: require('./game_over_view'),
+    GameOverView: require('./game_over_view'),
     GridBoard: require('./grid_board'),
     ManualTurn: require('./manual_turn'),
   //  NextPlayerView: require('./next_player_view'),

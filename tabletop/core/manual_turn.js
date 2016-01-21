@@ -1,13 +1,13 @@
 var Turn = require("./turn.js");
 var inherits = require('util').inherits;
 
-function ManualTurn(game, startView, view) { 
+function ManualTurn(game, startView, view, gameOverView) { 
   
   this.game = game;
   this.startView = startView;
   this.view = view;
   // this.nextPlayerView = nextPlayerView;
-  // this.gameOverView = gameOverView;
+  this.gameOverView = gameOverView;
 
   this.turnMap = new Turn({ 
     initialize: function( options ) {},
@@ -34,6 +34,7 @@ function ManualTurn(game, startView, view) {
           startView.drawStartView();
         },
         play : function() { 
+          startView.removeStartView();
           view.drawView();
           this.transition("waitingForMove");
         } 
@@ -61,8 +62,13 @@ function ManualTurn(game, startView, view) {
       postTurn: { 
         _onEnter : function() { 
           if (this.game.playerDidWin(game.getCurrentPlayer())) { 
+            view.removeView();
             this.transition("gameOver");
           } else { 
+            //for testing
+            // view.removeView();
+            // this.transition("gameOver");
+
             this.game.nextPlayer();
             this.transition("waitingForMove");
           }
@@ -72,8 +78,14 @@ function ManualTurn(game, startView, view) {
       // 4
       gameOver : { 
         _onEnter : function() { 
-          // view.drawGameOverView();
+          gameOverView.drawGameOverView();
           console.log(this.game.getCurrentPlayer().name + " has won.");
+        },
+        
+        reset : function() { 
+           gameOverView.removeGameOverView();
+           //not sure how to handle restarting the game. Will have to think more on this. 
+           this.transition("startScreen");
         } 
       } 
       

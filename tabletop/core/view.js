@@ -24,6 +24,15 @@ View.prototype.drawView = function() {
   this.drawBoard();
 }
 
+View.prototype.hideView = function() { 
+  this.stage.alpha = 0;
+}
+
+//think this needs to be changed
+View.prototype.removeView = function() { 
+  this.stage.alpha = 0;
+}
+
 View.prototype.drawBoard = function() { 
   if (this.game.board instanceof GridBoard) 
     this.drawGridBoard();

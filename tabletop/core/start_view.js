@@ -77,7 +77,7 @@ StartView.prototype.handleButtonClick = function() {
 
   this.game.setPlayers(players);
 
-  this.removeStartView();
+  // this.removeStartView();
   this.game.updateState("play");
 };
 
