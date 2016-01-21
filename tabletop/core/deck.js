@@ -10,7 +10,8 @@ function Deck() {
 };
 
 /**
- * Shuffle the deck
+ * Shuffle the deck in place
+ * @returns {void}
 */
 Deck.prototype.shuffle = function() {
   Utils.shuffle(this.cards);

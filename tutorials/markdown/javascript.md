@@ -14,7 +14,7 @@ In the constructor we'll create the object and set up any instance variables tha
 function GridBoard(width, height) { 
   Board.call(this);
   for (var i = 0; i < width; i++) { 
-    this.spaces[i] = Array(this.height);
+    this.tiles[i] = Array(this.height);
   }
 
   this.width = width;
@@ -46,8 +46,8 @@ To do that, we'll need to require (just like an import) the inherits method from
 Adding methods to a class in JavaScript is just like any other language, except that the notation is slightly different. 
 
 ```
-GridBoard.prototype.getSpace = function(x, y) { 
-  return this.spaces[x][y];
+GridBoard.prototype.getTile = function(x, y) { 
+  return this.tiles[x][y];
 };
 ```
 

@@ -14,26 +14,26 @@ CheckerBoard.prototype.buildTiles = function() {
   var tile;
   for (var y = 0; y < 40; y++) {
     tile = new TableTop.Tile({color: tileColor});
-    this.spaces[y] = tile;
+    this.tiles[y] = tile;
     tileColor += 200;
   } 
 };
 
 CheckerBoard.prototype.buildTokens = function() {
 
-  space = this.getSpace(10);
-  this.buildTokenForSpace(space, TableTop.Constants.redColor);
+  tile = this.getTile(10);
+  this.buildTokenForTile(tile, TableTop.Constants.redColor);
 
-  space = this.getSpace(22);
-  this.buildTokenForSpace(space, TableTop.Constants.whiteColor);
+  tile = this.getTile(22);
+  this.buildTokenForTile(tile, TableTop.Constants.whiteColor);
 };
 
-// creates the token for given space and color, 
-// adds it to the space, 
+// creates the token for given tile and color, 
+// adds it to the tile, 
 // and appends it to our list of tokens
-CheckerBoard.prototype.buildTokenForSpace = function(space, color) { 
-  var token = new TableTop.Token(null, space, color);
-  space.addOccupier(token);
+CheckerBoard.prototype.buildTokenForTile = function(tile, color) { 
+  var token = new TableTop.Token(null, tile, color);
+  tile.addOccupier(token);
   this.tokens.push(token);
 };
 

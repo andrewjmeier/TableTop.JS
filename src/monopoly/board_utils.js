@@ -26,7 +26,7 @@ function buildBoard() {
 
 function buildSpaces(board) {
   var props = propertiesList();
-  board.spaces = [
+  board.tiles = [
 
     // first row
     new Go(),

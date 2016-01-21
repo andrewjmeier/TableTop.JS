@@ -74,12 +74,12 @@ Game.prototype.tokenClicked = function(token) {
 };
 
 /**
- * Callback method from the view when a space is clicked
+ * Callback method from the view when a tile is clicked
  * To be overridden by the subclass
  * @abstract
- * @param {Space} space - the space object that was clicked in the view
+ * @param {Tile} tile - the tile object that was clicked in the view
 */
-Game.prototype.spaceClicked = function(space) {
+Game.prototype.tileClicked = function(tile) {
   throw new Error('must be implemented by subclass!');
 };
 
@@ -140,23 +140,44 @@ Game.prototype.getCurrentPlayer = function() {
 
 /**
  * Sets the last moved token for later reference
+ * @param {Token} token - Last moved token
+ * @returns {void}
 */
 Game.prototype.submitMove = function(token) { 
   this.lastMovedToken = token;
 };
 
+/**
+ * Switch to the next player
+ * Override to provide more logic on determining the next player
+ * @returns {void}
+*/
 Game.prototype.nextPlayer = function() { 
   this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
 };
 
-Game.prototype.setProposedMoveDestination = function(space) { 
-  this.proposedMove.destination = space;
+/**
+ * Set the destination for a proposed move
+ * @param {Tile} tile - the tile to move to
+ * @returns {void}
+*/
+Game.prototype.setProposedMoveDestination = function(tile) { 
+  this.proposedMove.destination = tile;
 };
 
+/**
+ * Set the token for a proposed move
+ * @param {Token} token - the token to move
+ * @returns {void}
+*/
 Game.prototype.setProposedMoveToken = function(token) { 
   this.proposedMove.token = token;
 };
 
+/**
+ * A proposed move exists and it is valid
+ * @returns {boolean}
+*/
 Game.prototype.hasValidMove = function() { 
   
   if (this.moveType == c.moveTypeManual &&  (!this.proposedMove.token || !this.proposedMove.destination)) {
@@ -167,7 +188,7 @@ Game.prototype.hasValidMove = function() {
   } 
 
   var token = this.proposedMove.token;
-  var tile = token ? token.space : null;
+  var tile = token ? token.tile : null;
   var destination = this.proposedMove.destination;
 
   return this.isValidMove(token, 
@@ -175,26 +196,45 @@ Game.prototype.hasValidMove = function() {
                           destination);
 }; 
 
-Game.prototype.isValidMove = function(token, oldSpace, newSpace) { 
+/**
+ * Determines if it is valid to move the given token to the new tile
+ * @param {Token} token - token to place or move
+ * @param {Tile} oldTile - the previous token location (could be null if token not on board yet)
+ * @param {Tile} newTile - the new token location
+ * @abstract 
+ * @returns {boolean}
+*/
+Game.prototype.isValidMove = function(token, oldTile, newTile) { 
   console.warn("isValidMove should be implemented by the subclass");
   return true;
 };
 
+/**
+ * Evaluates the current state of the game and determines if a player won
+ * @param {Player} player - the current player
+ * @abstract
+ * @returns {boolean}
+*/
 Game.prototype.playerDidWin = function(player) {
   console.warn("playerDidWin should be implemented by the subclass");
   return false;
 };
 
+/** 
+ * Execute the proposed move made by the player
+ * @param {Player} player - the current player
+ * @abstract
+ * @returns {void}
+*/
 Game.prototype.executeMove = function(player) {
   throw new Error('executeMove must be implemented by the subclass!');
-}
-
-Game.prototype.moveTokenToSpace = function(token, destinationTile) { 
-  token.space.removeOccupier(token);
-  token.setSpace(destinationTile);
-  destinationTile.addOccupier(token);
 };
 
+/**
+ * Event for when a token is clicked on
+ * @param {Token} token - the token that was clicked
+ * @returns {void}
+*/
 Game.prototype.tokenClicked = function(token) { 
   if (this.moveType == c.moveTypeManual &&
       this.turnMap.getCurrentState() == "waitingForMove") { 
@@ -202,8 +242,12 @@ Game.prototype.tokenClicked = function(token) {
   }
 };
 
-
-Game.prototype.spaceClicked = function(space) { 
+/**
+ * Event for when a tile is clicked on
+ * @param {Tile} tile - the tile that was clicked
+ * @returns {void}
+*/
+Game.prototype.tileClicked = function(tile) { 
   /* make sure we're in the right state, 
    a token has been pressed, 
    and we're not a tile with a token on it (if we have > 0
@@ -211,15 +255,15 @@ Game.prototype.spaceClicked = function(space) {
   if (this.moveType == c.moveTypeManual && 
       this.turnMap.getCurrentState() == "waitingForMove" && 
       this.proposedMove.token && 
-      this.proposedMove.token.space != space) { 
+      this.proposedMove.token.tile != tile) { 
 
-    this.setProposedMoveDestination(space);
+    this.setProposedMoveDestination(tile);
     this.turnMap.updateState("makeMove");
 
   } else if (this.moveType == c.moveTypePlaceToken &&
       this.turnMap.getCurrentState() == "waitingForMove") {
 
-    this.setProposedMoveDestination(space);
+    this.setProposedMoveDestination(tile);
     this.turnMap.updateState("makeMove");
   }
 };

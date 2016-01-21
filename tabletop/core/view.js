@@ -101,7 +101,7 @@ View.prototype.drawArrayTiles = function() {
 };
 
 View.prototype.createTileView = function(tileNum, x, y, width, height) {
-  var tile = this.game.board.getSpace(tileNum);
+  var tile = this.game.board.getTile(tileNum);
   var tileView = this.drawTile(tile, {width: width, height: height});
   tileView.x = x;
   tileView.y = y;
@@ -127,17 +127,17 @@ View.prototype.drawTile = function(tile, size) {
 
 View.prototype.drawTiles = function() {
 
-  var tileWidth = c.boardWidth / this.game.board.spaces[0].length;
-  var tileHeight = c.boardHeight / this.game.board.spaces.length;
+  var tileWidth = c.boardWidth / this.game.board.tiles[0].length;
+  var tileHeight = c.boardHeight / this.game.board.tiles.length;
   var y_pos = c.boardHeight;
   var x_pos = 0;
   
-  for (var y = 0; y < this.game.board.spaces.length; y++) {
+  for (var y = 0; y < this.game.board.tiles.length; y++) {
     x_pos = 0;
     y_pos -= tileHeight;
-    for (var x = 0; x < this.game.board.spaces[0].length; x++) {
+    for (var x = 0; x < this.game.board.tiles[0].length; x++) {
 
-      var tile = this.game.board.getSpace(x, y);
+      var tile = this.game.board.getTile(x, y);
       var tileView = this.drawTile(tile, {width: tileWidth, height:tileHeight});
       tileView.x = x_pos;
       tileView.y = y_pos;
@@ -146,16 +146,16 @@ View.prototype.drawTiles = function() {
         tileView.interactive = true;
         var context = this;
         tileView.click = function(mouseData) {
-          var selectedSpace;
+          var selectedTile;
           for (var i = 0; i < context.tileViews.length; i++) {
             for (var j = 0; j < context.tileViews[0].length; j++) { 
               if (context.tileViews[i][j] == this) { 
-                selectedSpace = context.game.board.getSpace(i, j);
+                selectedTile = context.game.board.getTile(i, j);
               }
             }
           }
           
-          context.game.spaceClicked(selectedSpace);
+          context.game.tileClicked(selectedTile);
         };
       } 
       
@@ -182,7 +182,7 @@ View.prototype.drawToken = function(token, size) {
 };
 
 View.prototype.getTileViewForToken = function(token) {
-  var position = this.game.board.getSpacePosition(token.space);
+  var position = this.game.board.getTilePosition(token.tile);
   var tileView = null;
   if (this.game.board instanceof ArrayBoard) {
     tileView = this.tileViews[position];

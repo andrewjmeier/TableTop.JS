@@ -46,7 +46,7 @@ function MonopolyTurn(game) {
             buyPrompt: {
                 _onEnter : function() {
                     var player = this.game.getCurrentPlayer();
-                    var property = this.game.board.spaces[player.position];
+                    var property = this.game.board.tiles[player.position];
                     if (player.canBuy(property)) {
                         this.game.message = this.game.message.concat("Do you want to buy it?");
                     } else {
@@ -57,7 +57,7 @@ function MonopolyTurn(game) {
 
                 yes_continue : function() {
                     var player = this.game.getCurrentPlayer();
-                    var property = this.game.board.spaces[player.position];
+                    var property = this.game.board.tiles[player.position];
                     player.buy(property);
                     this.game.message = "You bought " + property.name + ". ";
                     this.transition("postTurn");
@@ -66,7 +66,7 @@ function MonopolyTurn(game) {
                 no_trade_clear : function() {
                     //btn is no in this case
                     var player = this.game.getCurrentPlayer();       
-                    var property = this.game.board.spaces[player.position];
+                    var property = this.game.board.tiles[player.position];
                     this.game.message = "You didn't buy " + property.name + ". ";
                     this.transition("postTurn");
                 }
