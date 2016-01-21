@@ -2,7 +2,7 @@
 // should talk when merged to properly integrate this with
 // existing "board" and "players" implementations if any exist
 function Board() {
-  this.spaces = [];
+  this.tiles = [];
 }
 
 module.exports = Board;

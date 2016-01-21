@@ -41,7 +41,7 @@ MonopolyView.prototype.drawBoard = function() {
     var property_index = 0;
 
     // Draw Tiles
-    for (i = 0; i < this.game.board.spaces.length; i++) {
+    for (i = 0; i < this.game.board.tiles.length; i++) {
         // Draw Go
         if (i == 0) {
             go = this.drawGo(x_pos, y_pos);
@@ -103,7 +103,7 @@ MonopolyView.prototype.drawBoard = function() {
 
         // Else Draw Tile
         else {
-            var property = this.drawTile(x_pos + x_correction, y_pos + y_correction, this.game.board.spaces[i], rotation);
+            var property = this.drawTile(x_pos + x_correction, y_pos + y_correction, this.game.board.tiles[i], rotation);
             property.rotation = rotation;
             this.tiles.push(property);
             this.stage.addChild(property);
@@ -1045,7 +1045,7 @@ MonopolyView.prototype.updateMessage = function() {
 
 MonopolyView.prototype.updateProperties = function() {
     for (var i in this.tiles) {
-        var property = this.game.board.spaces[i];
+        var property = this.game.board.tiles[i];
         if (property.owner) {
             var tile = this.tiles[i];
             var ownerTag = new PIXI.Graphics();

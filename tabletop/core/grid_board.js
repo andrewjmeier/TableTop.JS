@@ -6,7 +6,7 @@ var Board = require("./board.js");
 function GridBoard(width, height) { 
   Board.call(this);
   for (var i = 0; i < width; i++) { 
-    this.spaces[i] = Array(this.height);
+    this.tiles[i] = Array(this.height);
   }
 
   this.width = width;
@@ -15,15 +15,15 @@ function GridBoard(width, height) {
 
 inherits(GridBoard, Board);
 
-GridBoard.prototype.getSpace = function(x, y) { 
-  return this.spaces[x][y];
+GridBoard.prototype.getTile = function(x, y) { 
+  return this.tiles[x][y];
 };
 
-GridBoard.prototype.getSpacePosition = function(space) { 
+GridBoard.prototype.getTilePosition = function(tile) { 
 
   for (var x = 0; x < this.width; x++) {
     for (var y = 0; y < this.height; y++) { 
-      if (this.spaces[x][y] == space) { 
+      if (this.tiles[x][y] == tile) { 
         return {x: x, y: y};
       } 
     } 
