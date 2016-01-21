@@ -22,6 +22,7 @@ function Game(board) {
   this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
   this.defaultNumPlayers = 2;
   this.possibleNumPlayers = [2, 3, 4, 5];
+  this.showNextPlayerScreen = true;
 };
 
 inherits(Game, Component);

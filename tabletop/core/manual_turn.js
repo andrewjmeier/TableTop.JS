@@ -1,12 +1,12 @@
 var Turn = require("./turn.js");
 var inherits = require('util').inherits;
 
-function ManualTurn(game, startView, view, gameOverView) { 
+function ManualTurn(game, startView, view, gameOverView, nextPlayerView) { 
   
   this.game = game;
   this.startView = startView;
   this.view = view;
-  // this.nextPlayerView = nextPlayerView;
+  this.nextPlayerView = nextPlayerView;
   this.gameOverView = gameOverView;
 
   this.turnMap = new Turn({ 
@@ -30,21 +30,33 @@ function ManualTurn(game, startView, view, gameOverView) {
       // 1a
       startScreen:{
         _onEnter: function() { 
-          console.log("Diplay the start screen.");
-          startView.drawStartView();
+          startView.drawView();
         },
         play : function() { 
-          startView.removeStartView();
-          view.drawView();
+          startView.removeView();
+          if(game.showNextPlayerScreen){
+            this.transition("nextPlayerScreen");
+          } else {
+            this.transition("waitingForMove");
+          }
+        } 
+      },
+
+      // 1b
+      nextPlayerScreen:{
+        _onEnter: function() { 
+          nextPlayerView.drawView();
+        },
+        goToTurn : function() { 
+          nextPlayerView.removeView();
           this.transition("waitingForMove");
         } 
       },
 
-
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
-          // view.drawNextPlayerView();
+          view.drawView();
           console.log(this.game.getCurrentPlayer().name + ": Make your move.");
         },
         
@@ -70,7 +82,12 @@ function ManualTurn(game, startView, view, gameOverView) {
             // this.transition("gameOver");
 
             this.game.nextPlayer();
-            this.transition("waitingForMove");
+            if(game.showNextPlayerScreen){
+              view.hideView();
+              this.transition("nextPlayerScreen");
+            } else {
+              this.transition("waitingForMove");
+            }
           }
         } 
       },
@@ -78,12 +95,12 @@ function ManualTurn(game, startView, view, gameOverView) {
       // 4
       gameOver : { 
         _onEnter : function() { 
-          gameOverView.drawGameOverView();
+          gameOverView.drawView();
           console.log(this.game.getCurrentPlayer().name + " has won.");
         },
         
         reset : function() { 
-           gameOverView.removeGameOverView();
+           gameOverView.removeView();
            //not sure how to handle restarting the game. Will have to think more on this. 
            this.transition("startScreen");
         } 

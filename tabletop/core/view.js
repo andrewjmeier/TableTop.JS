@@ -9,6 +9,7 @@ function View(game) {
   this.tileViews = [];
   this.boardView = new PIXI.Graphics();
   this.stage = new PIXI.Container();
+  this.resetView = true;
   this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight, 
                                           { transparent: true });
   document.body.appendChild(this.renderer.view);
@@ -21,11 +22,20 @@ function View(game) {
 };
 
 View.prototype.drawView = function() { 
-  this.drawBoard();
+  if(this.resetView){
+    this.drawBoard();
+  } else {
+    this.showView();
+  }
 }
 
 View.prototype.hideView = function() { 
   this.stage.alpha = 0;
+  this.resetView = false;
+}
+
+View.prototype.showView = function() { 
+  this.stage.alpha = 1;
 }
 
 //think this needs to be changed

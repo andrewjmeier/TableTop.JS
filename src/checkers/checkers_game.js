@@ -9,6 +9,7 @@ function CheckersGame(board) {
   this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
   this.defaultNumPlayers = 2;
   this.possibleNumPlayers = [2, 4, 6, 8];//this should be 2 for checkers
+  this.showNextPlayerScreen = false;
 };
 inherits(CheckersGame, TableTop.Game);
 

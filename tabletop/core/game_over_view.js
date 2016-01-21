@@ -1,11 +1,10 @@
 var c = require("./ttConstants.js");
-var Player = require("./player.js");
 
 function GameOverView(game) {
   this.game = game;
 };
 
-GameOverView.prototype.drawGameOverView = function() {
+GameOverView.prototype.drawView = function() {
   this.setupPage();
 };
 
@@ -31,7 +30,7 @@ GameOverView.prototype.handleButtonClick = function() {
   this.game.updateState("reset");
 };
 
-GameOverView.prototype.removeGameOverView = function() {
+GameOverView.prototype.removeView = function() {
   document.getElementById('div1').innerHTML = '';
 };
 

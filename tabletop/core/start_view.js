@@ -5,7 +5,7 @@ function StartView(game) {
   this.game = game;
 };
 
-StartView.prototype.drawStartView = function() {
+StartView.prototype.drawView = function() {
   this.setupPage(this.game.defaultNumPlayers);
 };
 
@@ -81,7 +81,7 @@ StartView.prototype.handleButtonClick = function() {
   this.game.updateState("play");
 };
 
-StartView.prototype.removeStartView = function() {
+StartView.prototype.removeView = function() {
   document.getElementById('div1').innerHTML = '';
 };
 
