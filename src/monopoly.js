@@ -1,9 +1,8 @@
 require("./monopoly/board/boardConstants.js");
 
 var Player = require("./monopoly/monopoly_player.js");
-var Card = require("./monopoly/cards/card.js");
+var Card = require("../tabletop/core/card.js");
 var Game = require("./monopoly/monopoly_game.js");
-var Utils = require("./utils.js");
 var Board = require("./monopoly/board_utils.js");
 var Turn = require("./monopoly/monopoly_turn.js");
 var MonopolyView = require("./monopoly/view/monopoly_view.js");
@@ -23,11 +22,17 @@ var players = [john, steve, sam, mike, jimmy];
 
 var board = new Board();
 
-var monopoly = new Game(players, board, turn);
+var monopoly = new Game(players, board);
+
+monopoly.subscribe(function(message) {
+    var div = document.getElementById("messages");
+    div.innerHTML = div.innerHTML.concat("<br>" + message);
+});
 
 var turn = new Turn(monopoly);
 
-var view = new MonopolyView(monopoly, turn);
+monopoly.setTurn(turn);
+
+var view = new MonopolyView(monopoly);
 
 view.drawBoard();
-

@@ -1,8 +1,9 @@
 var inherits = require('util').inherits;
-var Player = require("../player.js");
+// var Player = require("../../tabletop/core/player.js");
+var TableTop = require('../../tabletop/tabletop');
 
 function MonopolyPlayer(name, number) {
-  Player.call(this, name, number);
+  TableTop.Player.call(this, name, number);
   this.money = 1500;
   this.properties = [];
   this.getOutOfJailFreeCards = 0;
@@ -10,7 +11,7 @@ function MonopolyPlayer(name, number) {
   this.turnsInJail = 0;
 };
 
-inherits(MonopolyPlayer, Player);
+inherits(MonopolyPlayer, TableTop.Player);
 
 MonopolyPlayer.prototype.sendToJail = function() {
   this.position = 10;
@@ -115,6 +116,22 @@ MonopolyPlayer.prototype.assets = function() {
   return assets;
 };
 
+//used in trading
+MonopolyPlayer.prototype.removeProperty = function(property) {
+  var index = this.properties.indexOf(property);
+  //double check player has property then remove from player
+  if(index > -1){
+    this.properties.splice(index, 1);
+  }
 
+};
+
+MonopolyPlayer.prototype.addItems = function(items) {
+  for (var i in items.property) {
+    this.properties.push(items.property[i]);
+    items.property[i].owner = this;
+  }
+  this.money += items.money;
+};
 
 module.exports = MonopolyPlayer;

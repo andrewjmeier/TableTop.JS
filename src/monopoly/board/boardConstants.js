@@ -45,4 +45,8 @@ global.WAITING_FOR_ROLL = "waitingOnRoll";
 global.ROLLED = "rolled";
 global.BUY_PROMPT = "buyPrompt";
 global.POST_TURN = "postTurn";
+global.PROPOSE_TRADE = "proposeTrade";
+global.TRADE_ANSWER = "tradeAnswer";
 global.ENDED_TURN = "endedTurn";
+
+
