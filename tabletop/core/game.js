@@ -1,11 +1,12 @@
 var c = require("./ttConstants");
 var ManualTurn = require("./manual_turn.js");
-var Component = require("../../tabletop/core/component.js");
+var Component = require("./component.js");
 var inherits = require('util').inherits;
 
 /**
  * The Game class
  * @constructor
+ * @extends {Component}
  * @param {Board} board - The game board
 */
 function Game(board) {

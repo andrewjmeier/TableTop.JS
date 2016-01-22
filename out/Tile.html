@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Player</title>
+    <title>JSDoc: Class: Tile</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Player</h1>
+    <h1 class="page-title">Class: Tile</h1>
 
     
 
@@ -29,7 +29,7 @@
 <header>
     
         <h2>
-        Player
+        Tile
         </h2>
         
     
@@ -42,14 +42,14 @@
 
     
 
-    <h4 class="name" id="Player"><span class="type-signature"></span>new Player<span class="signature">(name, number)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Tile"><span class="type-signature"></span>new Tile<span class="signature">(opts)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    A Player class
+    The Tile class
 </div>
 
 
@@ -85,13 +85,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>opts</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Dictionary</span>
 
 
             
@@ -101,30 +101,7 @@
 
             
 
-            <td class="description last">The player's name.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>number</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">int</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The player's number.</td>
+            <td class="description last">name {string}, color {hex}, occupier {Token}</td>
         </tr>
 
     
@@ -165,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line11">line 11</a>
+        <a href="tile.js.html">tile.js</a>, <a href="tile.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -225,15 +202,14 @@
 
     
 
-    <h4 class="name" id="addItems"><span class="type-signature">(abstract) </span>addItems<span class="signature">(items)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addOccupier"><span class="type-signature"></span>addOccupier<span class="signature">(occupier)</span><span class="type-signature"> &rarr; {void}</span></h4>
 
     
 
 
 
 <div class="description">
-    Add items to a player
-This is used by the trade (but could be used elsewhere as well)
+    Add a Token to the Tile
 </div>
 
 
@@ -269,13 +245,13 @@ This is used by the trade (but could be used elsewhere as well)
 
         <tr>
             
-                <td class="name"><code>items</code></td>
+                <td class="name"><code>occupier</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Dictionary</span>
+<span class="param-type"><a href="Token.html">Token</a></span>
 
 
             
@@ -285,7 +261,7 @@ This is used by the trade (but could be used elsewhere as well)
 
             
 
-            <td class="description last">a dictionary of items to be added to the player</td>
+            <td class="description last">token to be added</td>
         </tr>
 
     
@@ -326,7 +302,7 @@ This is used by the trade (but could be used elsewhere as well)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line35">line 35</a>
+        <a href="tile.js.html">tile.js</a>, <a href="tile.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -349,6 +325,24 @@ This is used by the trade (but could be used elsewhere as well)
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -357,14 +351,114 @@ This is used by the trade (but could be used elsewhere as well)
 
     
 
-    <h4 class="name" id="moveTo"><span class="type-signature"></span>moveTo<span class="signature">(position)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="clearOccupiers"><span class="type-signature"></span>clearOccupiers<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
 
     
 
 
 
 <div class="description">
-    Represents a Player.
+    Remove all tokens from the Tile
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tile.js.html">tile.js</a>, <a href="tile.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="removeOccupier"><span class="type-signature"></span>removeOccupier<span class="signature">(occupier)</span><span class="type-signature"> &rarr; {void}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Remove a Token from the Tile
 </div>
 
 
@@ -400,13 +494,13 @@ This is used by the trade (but could be used elsewhere as well)
 
         <tr>
             
-                <td class="name"><code>position</code></td>
+                <td class="name"><code>occupier</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type"><a href="Token.html">Token</a></span>
 
 
             
@@ -416,7 +510,7 @@ This is used by the trade (but could be used elsewhere as well)
 
             
 
-            <td class="description last">The new position (index on the board) to move the player to</td>
+            <td class="description last">token to be remvoed</td>
         </tr>
 
     
@@ -457,7 +551,7 @@ This is used by the trade (but could be used elsewhere as well)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line25">line 25</a>
+        <a href="tile.js.html">tile.js</a>, <a href="tile.js.html#line42">line 42</a>
     </li></ul></dd>
     
 
@@ -480,6 +574,24 @@ This is used by the trade (but could be used elsewhere as well)
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 

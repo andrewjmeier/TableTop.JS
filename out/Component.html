@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Player</title>
+    <title>JSDoc: Class: Component</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Player</h1>
+    <h1 class="page-title">Class: Component</h1>
 
     
 
@@ -29,7 +29,7 @@
 <header>
     
         <h2>
-        Player
+        Component
         </h2>
         
     
@@ -42,14 +42,15 @@
 
     
 
-    <h4 class="name" id="Player"><span class="type-signature"></span>new Player<span class="signature">(name, number)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Component"><span class="type-signature"></span>new Component<span class="signature">(type)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    A Player class
+    The Component class
+All game components should inherit from this class
 </div>
 
 
@@ -85,30 +86,7 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The player's name.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>number</code></td>
+                <td class="name"><code>type</code></td>
             
 
             <td class="type">
@@ -124,7 +102,7 @@
 
             
 
-            <td class="description last">The player's number.</td>
+            <td class="description last">the type of messages that the component subscribes to</td>
         </tr>
 
     
@@ -165,7 +143,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line11">line 11</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -195,17 +173,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="Component.html">Component</a></li>
-    </ul>
-
-
-    
 
     
 
@@ -219,269 +186,6 @@
 
     
         <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="addItems"><span class="type-signature">(abstract) </span>addItems<span class="signature">(items)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Add items to a player
-This is used by the trade (but could be used elsewhere as well)
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>items</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Dictionary</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a dictionary of items to be added to the player</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line35">line 35</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="moveTo"><span class="type-signature"></span>moveTo<span class="signature">(position)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Represents a Player.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>position</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">int</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The new position (index on the board) to move the player to</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line25">line 25</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         
             
@@ -565,11 +269,6 @@ This is used by the trade (but could be used elsewhere as well)
 
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Component.html#sendMessage">Component#sendMessage</a>
-    </li></ul></dd>
     
 
     
@@ -719,11 +418,6 @@ This is used by the trade (but could be used elsewhere as well)
 
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Component.html#subscribe">Component#subscribe</a>
-    </li></ul></dd>
     
 
     

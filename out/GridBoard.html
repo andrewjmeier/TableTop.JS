@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Player</title>
+    <title>JSDoc: Class: GridBoard</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Player</h1>
+    <h1 class="page-title">Class: GridBoard</h1>
 
     
 
@@ -29,7 +29,7 @@
 <header>
     
         <h2>
-        Player
+        GridBoard
         </h2>
         
     
@@ -42,14 +42,14 @@
 
     
 
-    <h4 class="name" id="Player"><span class="type-signature"></span>new Player<span class="signature">(name, number)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="GridBoard"><span class="type-signature"></span>new GridBoard<span class="signature">(width, height)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    A Player class
+    Grid Board (i.e. Checkers)
 </div>
 
 
@@ -85,30 +85,7 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The player's name.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>number</code></td>
+                <td class="name"><code>width</code></td>
             
 
             <td class="type">
@@ -124,7 +101,30 @@
 
             
 
-            <td class="description last">The player's number.</td>
+            <td class="description last">width of the board</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">height of the board</td>
         </tr>
 
     
@@ -165,7 +165,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line11">line 11</a>
+        <a href="grid_board.js.html">grid_board.js</a>, <a href="grid_board.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -201,7 +201,7 @@
 
 
     <ul>
-        <li><a href="Component.html">Component</a></li>
+        <li><a href="Board.html">Board</a></li>
     </ul>
 
 
@@ -225,15 +225,14 @@
 
     
 
-    <h4 class="name" id="addItems"><span class="type-signature">(abstract) </span>addItems<span class="signature">(items)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getTile"><span class="type-signature"></span>getTile<span class="signature">(x, y)</span><span class="type-signature"> &rarr; {<a href="Tile.html">Tile</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    Add items to a player
-This is used by the trade (but could be used elsewhere as well)
+    Get a Tile from the board
 </div>
 
 
@@ -269,138 +268,7 @@ This is used by the trade (but could be used elsewhere as well)
 
         <tr>
             
-                <td class="name"><code>items</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Dictionary</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a dictionary of items to be added to the player</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line35">line 35</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="moveTo"><span class="type-signature"></span>moveTo<span class="signature">(position)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Represents a Player.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>position</code></td>
+                <td class="name"><code>x</code></td>
             
 
             <td class="type">
@@ -416,7 +284,30 @@ This is used by the trade (but could be used elsewhere as well)
 
             
 
-            <td class="description last">The new position (index on the board) to move the player to</td>
+            <td class="description last">x coordinate of the tile</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">y coordinate of the tile</td>
         </tr>
 
     
@@ -457,7 +348,7 @@ This is used by the trade (but could be used elsewhere as well)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="player.js.html">player.js</a>, <a href="player.js.html#line25">line 25</a>
+        <a href="grid_board.js.html">grid_board.js</a>, <a href="grid_board.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -480,6 +371,180 @@ This is used by the trade (but could be used elsewhere as well)
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Tile.html">Tile</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getTilePosition"><span class="type-signature"></span>getTilePosition<span class="signature">(tile)</span><span class="type-signature"> &rarr; {Dictionary|int}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Get the position of a Tile
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tile</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Tile.html">Tile</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The tile to find position of</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="grid_board.js.html">grid_board.js</a>, <a href="grid_board.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    {x: a, y: b}
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Dictionary</span>
+|
+
+<span class="param-type">int</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 

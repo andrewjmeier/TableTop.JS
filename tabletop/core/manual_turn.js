@@ -96,17 +96,24 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
           console.log(this.game.getCurrentPlayer().name + " has won.");
         }
       } 
-      
     } 
-    
-  });
-  
+  });  
 } 
 
+
+/**
+ * executes the command in a state
+ * @param {string} command - the command in the state to exercise
+ * @returns {void}
+*/
 ManualTurn.prototype.updateState = function(command) {
     this.turnMap.handle(command);
 };
 
+/**
+ * gets the current state
+ * @returns {string}
+*/
 ManualTurn.prototype.getCurrentState = function() {
     return this.turnMap.compositeState();
 };

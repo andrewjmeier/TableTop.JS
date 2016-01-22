@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: board.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,36 +17,45 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: board.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>TableTop.JS</h1><p>TableTop.JS is a JavaScript framework to help you turn your board game idea into a functioning game! You can check out our example tutorials on <a href="http://github.com/andrewjmeier/TableTop.JS">github</a> or you can read through the documentation here! </p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>var Component = require("./component.js");
+var inherits = require('util').inherits;
+
+/**
+ * The Board class
+ * @constructor
+ * @extends {Component}
+*/
+function Board() {
+  Component.call(this);
+  this.tiles = [];
+  this.tokens = [];
+}
+
+inherits(Board, Component);
+
+Board.prototype.getTile = function(idx) { 
+  return this.tiles[idx];
+};
+
+// TODO, maybe pass the token or the token class to this method?
+Board.prototype.buildTokenForTile = function(token, tile) { 
+  tile.addOccupier(token);
+  this.tokens.push(token);
+};
+
+module.exports = Board;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

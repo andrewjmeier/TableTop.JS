@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: edge_tile.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,36 +17,36 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: edge_tile.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>TableTop.JS</h1><p>TableTop.JS is a JavaScript framework to help you turn your board game idea into a functioning game! You can check out our example tutorials on <a href="http://github.com/andrewjmeier/TableTop.JS">github</a> or you can read through the documentation here! </p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>var Tile = require('./tile'),
+    inherits = require('util').inherits;
+
+/**
+ * The EdgeTile class
+ * @constructor
+ * @param {VertexTile} start - Vertex on one side of the edge
+ * @param {VertexTile} end - Vertex on the other side of the edge
+ * @extends {Tile}
+*/
+function EdgeTile(start, end) {
+  Tile.call(this);
+  this.startVertex = start;
+  this.endVertex = end;
+}
+
+inherits(EdgeTile, Tile);
+
+module.exports = EdgeTile;</code></pre>
+        </article>
     </section>
-
-
 
 
 

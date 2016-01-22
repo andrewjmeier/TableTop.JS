@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: trade.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,36 +17,51 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: trade.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>TableTop.JS</h1><p>TableTop.JS is a JavaScript framework to help you turn your board game idea into a functioning game! You can check out our example tutorials on <a href="http://github.com/andrewjmeier/TableTop.JS">github</a> or you can read through the documentation here! </p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * A Trade class
+ * @constructor
+ * @param {Player} proposingPlayer - The player starting the trade
+ * @param {Player} answeringPlayer - The player responding to the trade
+ * @param {Dictionary} proposingPlayerItems - The proposing player's items in the trade
+ * @param {Dictionary} answeringPlayerItems - The answering player's items in the trade
+*/
+function Trade(proposingPlayer, answeringPlayer, proposingPlayerItems, answeringPlayerItems) {
+  this.proposingPlayer = proposingPlayer;
+  this.answeringPlayer = answeringPlayer;
+  this.proposingPlayerItems = proposingPlayerItems;
+  this.answeringPlayerItems = answeringPlayerItems;
+};
+
+/**
+ * Execute the trade and swap the players' items
+ * @returns {void}
+*/
+Trade.prototype.completeTrade = function() {
+  this.proposingPlayer.addItems(this.answeringPlayerItems);
+  this.answeringPlayer.addItems(this.proposingPlayerItems);
+};
+
+/**
+ * Add the objects back to their respective players 
+ * @returns {void}
+*/
+Trade.prototype.cancelTrade = function() {
+  this.proposingPlayer.addItems(this.proposingPlayerItems);
+  this.answeringPlayer.addItems(this.answeringPlayerItems);
+};
+
+module.exports = Trade</code></pre>
+        </article>
     </section>
-
-
 
 
 
