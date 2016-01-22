@@ -2,8 +2,18 @@ var c = require("./ttConstants.js");
 var GridBoard = require("./grid_board.js");
 var ArrayBoard = require('./array_board.js');
 var PIXI = require("../../lib/pixi/pixi.js");
+var Component = require("./component");
+var inherits = require('util').inherits;
 
+/**
+ * The View class
+ * @constructor
+ * @param {Game} game - the game state
+ * @param {TurnMap} turnMap - the state machine
+ * @extends {Component}
+*/
 function View(game, turnMap) {
+  Component.call(this);
   this.game = game;
   this.turnMap = turnMap;
   this.turnMap.updateState("start");
@@ -21,6 +31,8 @@ function View(game, turnMap) {
     } 
   } 
 };
+
+inherits(View, Component);
 
 View.prototype.drawBoard = function() { 
   if (this.game.board instanceof GridBoard) 

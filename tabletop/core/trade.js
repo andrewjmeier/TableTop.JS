@@ -15,6 +15,7 @@ function Trade(proposingPlayer, answeringPlayer, proposingPlayerItems, answering
 
 /**
  * Execute the trade and swap the players' items
+ * @returns {void}
 */
 Trade.prototype.completeTrade = function() {
   this.proposingPlayer.addItems(this.answeringPlayerItems);
@@ -23,6 +24,7 @@ Trade.prototype.completeTrade = function() {
 
 /**
  * Add the objects back to their respective players 
+ * @returns {void}
 */
 Trade.prototype.cancelTrade = function() {
   this.proposingPlayer.addItems(this.proposingPlayerItems);
