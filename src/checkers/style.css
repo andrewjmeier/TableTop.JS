@@ -18,25 +18,25 @@ form {
 
 select {
 	   background: #FFE064;
-	   width: 110px;
+	   width: 5%;
 	   padding: 20px;
 	   font-size: 4vw;
 	   line-height: 1;
 	   border: 0;
 	   border-radius: 0;
-	   height: 70px;
+	   height: 15%;
 	   text-align: center;
 }
 
 input {
 	   background: #FFE064;
-	   width: 310px;
-	   padding: 0px;
+	   width: 15%;
+	   padding: 10px;
 	   font-size: 3vw;
 	   line-height: 1;
 	   border: 0;
 	   border-radius: 0;
-	   height: 70px;
+	   height: 15%;
 	   text-align: center;
 	   border-radius: 20px;
 }
