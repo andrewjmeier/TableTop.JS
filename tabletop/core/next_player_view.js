@@ -18,7 +18,7 @@ NextPlayerView.prototype.setupPage = function() {
 NextPlayerView.prototype.getHTMLText= function() {
 
   var htmlText = ' <form id="form1">\
-  Please pass ' + this.game.getCurrentPlayer().name + ' the computer. It is their turn.\
+  Please pass ' + this.game.getCurrentPlayer().name + ' the computer. It is their turn.<br>\
     <input type="button" id="btnContinue" value="Continue">\
     </form> ';
 

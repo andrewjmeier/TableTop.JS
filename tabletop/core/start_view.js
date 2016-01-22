@@ -6,7 +6,7 @@ function StartView(game) {
 };
 
 StartView.prototype.drawView = function() {
-  this.setupPage(this.game.defaultNumPlayers);
+  this.setupPage(this.game.possibleNumPlayers[0]);
 };
 
 StartView.prototype.setupPage = function(beginningNumPlayers) {
@@ -21,53 +21,60 @@ StartView.prototype.setupPage = function(beginningNumPlayers) {
 StartView.prototype.getHTMLText= function(beginningNumPlayers) {
 
   var htmlText = ' <form id="form1">\
-    Enter the number of players\
-    <select id="numPlayersInput">';
+    Enter the number of players:  ' + 
+    this.createDropDown("numPlayersInput", this.game.possibleNumPlayers, beginningNumPlayers) + 
+    '<br>';
 
-  for(var i = 0; i < this.game.possibleNumPlayers.length; i++){
-    htmlText = htmlText + '<option value="' + this.game.possibleNumPlayers[i] +  '"';
-    if(this.game.possibleNumPlayers[i] == beginningNumPlayers){
-      htmlText = htmlText + ' selected';
-    } 
-    htmlText = htmlText +  '>' +this.game.possibleNumPlayers[i] + '</option>';
-  }
-  htmlText = htmlText + '</select><br>';
-
-  var numPlayers;
-  if(!document.getElementById('numPlayersInput')){
-    numPlayers = beginningNumPlayers;
-  } else {
-    numPlayers = document.getElementById('numPlayersInput').value;
-  }
-  for(var i = 0; i < numPlayers; i++){
+  for(var i = 0; i < this.getNumPlayers(beginningNumPlayers); i++){
     htmlText = htmlText + 'Player ' + (i+1) + ' Name: \
     <input type="text" id="player' + (i+1) + 'Name"><br>';
   }
-    //adding enter button
+  //adding enter button
   htmlText = htmlText + '<input type="button" id="btnEnter" value="Enter">\
     </form> ';
 
   return htmlText;
-
 };
+
+StartView.prototype.createDropDown = function(id, array, selected) {
+  var dropDownHTML = '<select id="' + id + '">';
+
+  for(var i = 0; i < array.length; i++){
+    dropDownHTML = dropDownHTML + '<option value="' + array[i] +  '"';
+    if(array[i] == selected){
+      dropDownHTML = dropDownHTML + ' selected';
+    } 
+    dropDownHTML = dropDownHTML +  '>' +array[i] + '</option>';
+  }
+  dropDownHTML = dropDownHTML + '</select>';
+
+  return dropDownHTML;
+};
+
+StartView.prototype.getNumPlayers = function(beginningNumPlayers) {
+  if(!document.getElementById('numPlayersInput')){
+    return beginningNumPlayers;
+  }
+  return document.getElementById('numPlayersInput').value;
+};
+
 
 StartView.prototype.handleNumChanged = function() {
   this.setupPage(document.getElementById('numPlayersInput').value);
 };
 
-//this creates players
+
 StartView.prototype.handleButtonClick = function() {
-  //transition to view
   var players = [];
   var numPlayers;
   if(!document.getElementById('numPlayersInput')){
-    numPlayers = this.game.defaultNumPlayers;
+    numPlayers = this.game.possibleNumPlayers[0];
   } else {
     numPlayers = document.getElementById('numPlayersInput').value;
   }
   for(var i = 0; i < numPlayers; i++){
     var playerName;
-    if(!document.getElementById('player' + (i+1) + 'Name')){
+    if(!document.getElementById('player' + (i+1) + 'Name') || document.getElementById('player' + (i+1) + 'Name').value == ""){
       playerName = "Player " + (i+1);
     } else {
       playerName = document.getElementById('player' + (i+1) + 'Name').value;
@@ -77,7 +84,6 @@ StartView.prototype.handleButtonClick = function() {
 
   this.game.setPlayers(players);
 
-  // this.removeStartView();
   this.game.updateState("play");
 };
 

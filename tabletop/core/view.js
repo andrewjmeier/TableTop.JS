@@ -9,43 +9,36 @@ function View(game) {
   this.tileViews = [];
   this.boardView = new PIXI.Graphics();
   this.stage = new PIXI.Container();
-  this.resetView = true;
+  this.viewHidden = false;
   this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight, 
                                           { transparent: true });
   document.body.appendChild(this.renderer.view);
-  
-  if (game.board instanceof GridBoard) { 
-    for (var i = 0; i < this.game.board.height; i++) { 
-      this.tileViews[i] = [];
-    } 
-  } 
 };
 
 View.prototype.drawView = function() { 
-  if(this.resetView){
+  this.showView();
+  if(!this.viewHidden){
     this.drawBoard();
-  } else {
-    this.showView();
   }
 }
 
 View.prototype.hideView = function() { 
   this.stage.alpha = 0;
-  this.resetView = false;
+  this.viewHidden = true;
 }
 
 View.prototype.showView = function() { 
   this.stage.alpha = 1;
 }
 
-//think this needs to be changed
 View.prototype.removeView = function() { 
   this.stage.alpha = 0;
 }
 
 View.prototype.drawBoard = function() { 
-  if (this.game.board instanceof GridBoard) 
+  if (this.game.board instanceof GridBoard) { 
     this.drawGridBoard();
+  }
   else if (this.game.board instanceof ArrayBoard) {
     this.drawArrayBoard();
   }
@@ -60,6 +53,9 @@ View.prototype.drawBoard = function() {
 };
 
 View.prototype.drawGridBoard = function() {
+  for (var i = 0; i < this.game.board.height; i++) { 
+    this.tileViews[i] = [];
+  }   
   
   this.boardView.x = c.boardStartX;
   this.boardView.y = c.boardStartY;

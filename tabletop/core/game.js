@@ -7,20 +7,16 @@ var inherits = require('util').inherits;
  * The Game class
  * @constructor
  * @param {Board} board - The game board
- * @param {int} defaultNumPlayers - default of players
- * @param {int|Array} possibleNumPlayers - A list of possible number of players
 */
 function Game(board) {
   Component.call(this);
   this.board = board;
   this.dice = [];
   this.players = [];
-  // this.randomizeCurrentPlayer(); //this may be an issue
   this.turnMap = null;
   this.moveType = c.moveTypeDice; // manual movement or dicerolls
   this.proposedMove = {}; // for c.moveTypeManual
   this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
-  this.defaultNumPlayers = 2;
   this.possibleNumPlayers = [2, 3, 4, 5];
   this.showNextPlayerScreen = true;
 };
@@ -54,6 +50,7 @@ Game.prototype.setMoveType = function(moveType) {
     this.proposedMove = {};
   } 
 };
+
 
 /**
  * Set the players for this game

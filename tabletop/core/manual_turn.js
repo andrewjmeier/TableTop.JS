@@ -24,6 +24,7 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       uninitialized: { 
         start : function() { 
           this.transition("startScreen");
+          
         } 
       },
 
@@ -77,10 +78,6 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
             view.removeView();
             this.transition("gameOver");
           } else { 
-            //for testing
-            // view.removeView();
-            // this.transition("gameOver");
-
             this.game.nextPlayer();
             if(game.showNextPlayerScreen){
               view.hideView();
@@ -97,13 +94,7 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
         _onEnter : function() { 
           gameOverView.drawView();
           console.log(this.game.getCurrentPlayer().name + " has won.");
-        },
-        
-        reset : function() { 
-           gameOverView.removeView();
-           //not sure how to handle restarting the game. Will have to think more on this. 
-           this.transition("startScreen");
-        } 
+        }
       } 
       
     } 

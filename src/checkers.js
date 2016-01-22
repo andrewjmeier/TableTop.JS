@@ -6,11 +6,6 @@ var Checkers = require('./checkers/checkers_game');
 var CheckerBoard = require('./checkers/checkers_board');
 var CheckerView = require('./checkers/checkers_view');
 
-// create the players
-// var redPlayer = new TableTop.Player("Red", 1);
-// var whitePlayer = new TableTop.Player("White", 2);
-// var players = [redPlayer, whitePlayer];
-
 // create the Board, Game
 var board = new CheckerBoard();
 var checkers = new Checkers(board);
