@@ -57,35 +57,35 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 # Documentation
 
-### Board
+### [Board](http://andrewjmeier.github.io/TableTop.js/out/Board.html)
 
-#### ArrayBoard
-#### GridBoard
+#### [ArrayBoard](http://andrewjmeier.github.io/TableTop.js/out/ArrayBoard.html)
+#### [GrideBoard](http://andrewjmeier.github.io/TableTop.js/out/GridBoard.html)
 #### GraphBoard
 
-### [Card](/out/Card.html)
+### [Card](http://andrewjmeier.github.io/TableTop.js/out/Card.html)
 
-### Component
+### [Component](http://andrewjmeier.github.io/TableTop.js/out/Component.html)
 
 ### Constants
 
-### [Deck](/out/Deck.html)
+### [Deck](http://andrewjmeier.github.io/TableTop.js/out/Deck.html)
 
-### [Game](/out/Game.html)
+### [Game](http://andrewjmeier.github.io/TableTop.js/out/Game.html)
 
-### [Player](/out/Player.html)
+### [Player](http://andrewjmeier.github.io/TableTop.js/out/Player.html)
 
-### Tile
+### [Tile](http://andrewjmeier.github.io/TableTop.js/out/Tile.html)
 
-#### EdgeTile
-#### VertexTile
+#### [EdgeTile](http://andrewjmeier.github.io/TableTop.js/out/EdgeTile.html)
+#### [VertexTile](http://andrewjmeier.github.io/TableTop.js/out/VertexTile.html)
 
-### Token
+### [Token](http://andrewjmeier.github.io/TableTop.js/out/Token.html)
 
-### Trade
+### [Trade](http://andrewjmeier.github.io/TableTop.js/out/Trade.html)
 
 ### Turn
 
 ### ManualTurn
 
-### View
+### [View](http://andrewjmeier.github.io/TableTop.js/out/View.html)
