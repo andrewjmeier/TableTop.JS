@@ -1,0 +1,29 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "source": {
+        "include": [ "./tabletop/core/array_board.js", 
+                     "./tabletop/core/board.js",
+                     "./tabletop/core/card.js",
+                     "./tabletop/core/component.js",
+                     "./tabletop/core/deck.js",
+                     "./tabletop/core/edge_tile.js",
+                     "./tabletop/core/game.js",
+                     "./tabletop/core/grid_board.js",
+                     "./tabletop/core/player.js",
+                     "./tabletop/core/tile.js",
+                     "./tabletop/core/token.js",
+                     "./tabletop/core/trade.js",
+                     "./tabletop/core/vertex_tile.js",
+                     "./tabletop/core/view.js",
+                     "./DOCS.md"],
+        "exclude": [ /* array of paths to exclude */ ],
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    }
+}

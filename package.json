@@ -9,7 +9,8 @@
   "scripts": {
     "test": "make test",
     "webpack": "webpack --watch",
-    "test-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 \n open coverage/lcov-report/index.html"
+    "test-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 \n open coverage/lcov-report/index.html",
+    "docs": "jsdoc -c conf.json"
   },
   "repository": {
     "type": "git",
