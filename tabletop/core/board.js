@@ -1,14 +1,18 @@
-Component = require("./component.js");
-    inherits = require('util').inherits;
+var Component = require("./component.js");
+var inherits = require('util').inherits;
 
 /**
  * The Board class
  * @constructor
+ * @extends {Component}
 */
 function Board() {
+  Component.call(this);
   this.tiles = [];
   this.tokens = [];
 }
+
+inherits(Board, Component);
 
 Board.prototype.getTile = function(idx) { 
   return this.tiles[idx];

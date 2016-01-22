@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ArrayBoard</title>
+    <title>JSDoc: Class: GridBoard</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ArrayBoard</h1>
+    <h1 class="page-title">Class: GridBoard</h1>
 
     
 
@@ -29,7 +29,7 @@
 <header>
     
         <h2>
-        ArrayBoard
+        GridBoard
         </h2>
         
     
@@ -42,14 +42,14 @@
 
     
 
-    <h4 class="name" id="ArrayBoard"><span class="type-signature"></span>new ArrayBoard<span class="signature">(width, height)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="GridBoard"><span class="type-signature"></span>new GridBoard<span class="signature">(width, height)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    The ArrayBoard class
+    Grid Board (i.e. Checkers)
 </div>
 
 
@@ -101,7 +101,7 @@
 
             
 
-            <td class="description last">Number of tiles across the board</td>
+            <td class="description last">width of the board</td>
         </tr>
 
     
@@ -124,7 +124,7 @@
 
             
 
-            <td class="description last">Number of tiles down the board</td>
+            <td class="description last">height of the board</td>
         </tr>
 
     
@@ -165,7 +165,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="array_board.js.html">array_board.js</a>, <a href="array_board.js.html#line11">line 11</a>
+        <a href="grid_board.js.html">grid_board.js</a>, <a href="grid_board.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -225,14 +225,14 @@
 
     
 
-    <h4 class="name" id="getTile"><span class="type-signature"></span>getTile<span class="signature">(index)</span><span class="type-signature"> &rarr; {Tile}</span></h4>
+    <h4 class="name" id="getTile"><span class="type-signature"></span>getTile<span class="signature">(x, y)</span><span class="type-signature"> &rarr; {Tile}</span></h4>
 
     
 
 
 
 <div class="description">
-    Method to get the tile at the given index
+    Get a Tile from the board
 </div>
 
 
@@ -268,7 +268,7 @@
 
         <tr>
             
-                <td class="name"><code>index</code></td>
+                <td class="name"><code>x</code></td>
             
 
             <td class="type">
@@ -284,7 +284,30 @@
 
             
 
-            <td class="description last">The index of the tile wanted</td>
+            <td class="description last">x coordinate of the tile</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">y coordinate of the tile</td>
         </tr>
 
     
@@ -325,7 +348,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="array_board.js.html">array_board.js</a>, <a href="array_board.js.html#line28">line 28</a>
+        <a href="grid_board.js.html">grid_board.js</a>, <a href="grid_board.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -374,14 +397,14 @@
 
     
 
-    <h4 class="name" id="getTilePosition"><span class="type-signature"></span>getTilePosition<span class="signature">(tile)</span><span class="type-signature"> &rarr; {int}</span></h4>
+    <h4 class="name" id="getTilePosition"><span class="type-signature"></span>getTilePosition<span class="signature">(tile)</span><span class="type-signature"> &rarr; {Dictionary|int}</span></h4>
 
     
 
 
 
 <div class="description">
-    Method to get the index of a Tile in the board
+    Get the position of a Tile
 </div>
 
 
@@ -433,7 +456,7 @@
 
             
 
-            <td class="description last">A board tile</td>
+            <td class="description last">The tile to find position of</td>
         </tr>
 
     
@@ -474,7 +497,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="array_board.js.html">array_board.js</a>, <a href="array_board.js.html#line37">line 37</a>
+        <a href="grid_board.js.html">grid_board.js</a>, <a href="grid_board.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -500,6 +523,10 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    {x: a, y: b}
+</div>
+
 
 
 <dl>
@@ -508,6 +535,9 @@
     </dt>
     <dd>
         
+<span class="param-type">Dictionary</span>
+|
+
 <span class="param-type">int</span>
 
 
@@ -534,13 +564,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ArrayBoard.html">ArrayBoard</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GridBoard.html">GridBoard</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Jan 21 2016 20:32:08 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Jan 21 2016 20:32:48 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>
