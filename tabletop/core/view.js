@@ -307,8 +307,10 @@ View.prototype.drawAllPlayersInfo = function() {
 View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
   
   var string = "";
+  if (player["name"]) string += player["name"] + "\n";
   for (var key in player) { 
-    string += key + " " + player[key] + "\n";
+    if (key == "name") continue; 
+    string += key + ":  " + player[key] + "\n";
   } 
   
   var info = new PIXI.Text(string, 
@@ -321,13 +323,6 @@ View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
 
   info.x = c.leftBuffer * 0.2;
   info.y = vertOffset;
-  
-  var playerColor = new PIXI.Graphics();
-  playerColor.x = c.leftBuffer * 3;
-  playerColor.y = vertOffset;
-  var color = player.color ? player.color : c.redColor; 
-  playerColor.beginFill(color);
-  playerColor.drawRect(0, 0, 20, 20);
   
   var box = new PIXI.Graphics();
   box.y = vertOffset - c.upperBuffer*.2;
@@ -345,8 +340,6 @@ View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
   infoBlock.addChild(outline);
   infoBlock.addChild(box);
   infoBlock.addChild(info);
-  infoBlock.addChild(playerColor);
-
 };
 
 
