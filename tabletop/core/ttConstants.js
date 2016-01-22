@@ -4,7 +4,7 @@ var ttConstants = new Object();
 
 // CANVAS
 // Constants defining the canvas properties
-ttConstants.canvasWidth = 1200;
+ttConstants.canvasWidth = 1500;
 ttConstants.canvasHeight = 1500;
 
 ttConstants.leftBuffer = 50;
