@@ -43,47 +43,7 @@
 
 
     <section>
-        <article><h1>TableTop.JS</h1><h2>TableTop.JS will be designed to embody the following principles:</h2><ul>
-<li>Oriented toward new developers</li>
-<li>Rapidly publishable</li>
-<li>Flexible but simple</li>
-<li>Well-documented and testable</li>
-<li>Advanced features for veteran developers</li>
-</ul>
-<h2>How to use TableTop.JS</h2><h3>Setup a new project</h3><p>Take a look at some of our example projects to get a feel for how they're setup. You can view all of our examples as well as our documentation <a href="http://andrewjmeier.github.io/TableTop.JS">here</a> or you can check out <a href="http://github.com/andrewjmeier/Monopoly">Monopoly</a> or <a href="http://github.com/andrewjmeier/Settlers">Settlers of Catan</a>. </p>
-<h4>If you're new to JavaScript and npm, try using our <a href="http://github.com/andrewjmeier/TableTopSkeleton">TableTopSkeleton</a> to get started.</h4><ul>
-<li>Click on <code>Fork</code> on the top right of the page. This will create a new repository for you to create your board game. <img src="/tutorials/images/how-to-fork.png" alt="Fork Image"></li>
-<li>Next find the link on the right side of the page under <code>HTTPS clone URL</code>. Copy this link <img src="/tutorials/images/how-to-clone.png" alt="Clone URL"></li>
-<li>Open up the <code>Terminal</code> application on your computer and paste <code>cd ~/Documents/</code>. Press Enter.</li>
-<li>Next enter <code>git clone</code> followed by the URL from above that you copied. <img src="/tutorials/images/git-clone.png" alt="clone image"></li>
-<li><code>Press Enter</code>. This will download the project to your computer and setup git which is a version control system. You can learn all about git from <a href="https://try.github.io/levels/1/challenges/1">github</a>. </li>
-<li>Then enter <code>cd TableTopSkeleton</code>. This will switch your current directory from Documents to TableTopSkeleton which you just downloaded. </li>
-<li>Now that we have the skeleton project downloaded, there are a few more things that we need to setup. </li>
-<li>To start, you'll need to have Homebrew installed on your computer. Homebrew is a great tool for managing different software packages. You can ready about it <a href="http://brew.sh">here</a> but it's not crucial that you understand what it's doing. We just need it to install some other software.</li>
-<li>To install Homebrew enter <code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code> into the terminal window and press enter.</li>
-<li>Now that that's done, we can install <a href="https://www.npmjs.com">npm</a> using Homebrew. Enter <code>brew install npm</code> into the terminal. <img src="/tutorials/images/brew-npm.png" alt="brew npm"></li>
-<li>Using npm, we'll install webpack which is a tool that compiles JavaScript together. Enter <code>npm install -g webpack</code>. <img src="/tutorials/images/npm-webpack.png" alt="webpack-install"> </li>
-<li>Now enter <code>npm install</code>. This will download some external dependencies for your project (including the TableTop framework) <img src="/tutorials/images/npm-install.png" alt="npm install"></li>
-<li>Open the <code>package.json</code> file to customize the project for your board game (you can enter <code>open .</code> in the terminal to show the folder in Finder)</li>
-<li>You'll want to edit a bunch of lines in this file: <ul>
-<li>Add the name of your game <code>&quot;name&quot;: &quot;your-game-name-here&quot;</code>  </li>
-<li>Update the description of your game <code>&quot;description&quot;: &quot;A board game using TableTop.JS&quot;</code></li>
-<li>Add the link to your github repository <code>&quot;repository&quot;: {
-&quot;type&quot;: &quot;git&quot;,
-&quot;url&quot;: &quot;git+https://github.com/your-github-user-name/your-project-name.git&quot;
-}</code></li>
-<li>Add yourself as the author of the project <code>&quot;author&quot;: &quot;FirstName LastName &lt;youremail@email.com&gt;&quot;</code></li>
-<li>Add your github repo's issues page <code>&quot;bugs&quot;: {
-&quot;url&quot;: &quot;https://github.com/your-github-user-name/your-project-name/issues&quot;
-}</code></li>
-<li>Change the homepage <code>&quot;homepage&quot;: &quot;https://github.com/your-github-user-name/your-project-name#readme&quot;</code></li>
-</ul>
-</li>
-<li>Add your code in the <code>/src</code> directory</li>
-<li>To compile your code, enter <code>npm run webpack</code> in the Terminal. This command takes all of the different JavaScript files and combines them into a single file to use on the webpage. The HTML file <code>index.html</code> has been setup to look for the compiled JavaScript file and that's how your game will run. Webpack will continue to rebuild your project automatically every time you save a new file. If you want to stop executing it, you can enter control-c <code>^c</code> in the terminal. <img src="/tutorials/images/npm-run-webpack.png" alt="running webpack"></li>
-<li>You're all set! Open the <code>index.html</code> file and check out your game!</li>
-</ul>
-<h4>If npm is nothing new to you, just use <code>npm install tabletop-boardgames</code> to get started!</h4><h1>Tutorials</h1><h3><a href="/tutorials/markdown/javascript.md">Ok, But How do I JavaScript?</a></h3><h3>Demo - <a href="/tutorials/markdown/simple_game.md">SimpleGame</a></h3><h3>Demo - <a href="/tutorials/markdown/checkers.md">Checkers</a></h3><h1>Documentation</h1><h3>Board</h3><h4>ArrayBoard</h4><h4>GridBoard</h4><h4>GraphBoard</h4><h3><a href="/out/Card.html">Card</a></h3><h3>Component</h3><h3>Constants</h3><h3><a href="/out/Deck.html">Deck</a></h3><h3><a href="/out/Game.html">Game</a></h3><h3><a href="/out/Player.html">Player</a></h3><h3>Tile</h3><h4>EdgeTile</h4><h4>VertexTile</h4><h3>Token</h3><h3>Trade</h3><h3>Turn</h3><h3>ManualTurn</h3><h3>View</h3></article>
+        <article><h1>TableTop.JS</h1><p>TableTop.JS is a JavaScript framework to help you turn your board game idea into a functioning game! You can check out our example tutorials on <a href="http://github.com/andrewjmeier/TableTop.JS">github</a> or you can read through the documentation here! </p></article>
     </section>
 
 
@@ -100,7 +60,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Jan 21 2016 20:50:25 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Jan 21 2016 20:55:21 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>

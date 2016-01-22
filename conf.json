@@ -18,7 +18,7 @@
                      "./tabletop/core/trade.js",
                      "./tabletop/core/vertex_tile.js",
                      "./tabletop/core/view.js",
-                     "./README.md"],
+                     "./DOCS.md"],
         "exclude": [ /* array of paths to exclude */ ],
         "excludePattern": "(^|\\/|\\\\)_"
     },
