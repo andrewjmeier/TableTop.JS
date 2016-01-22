@@ -14,8 +14,7 @@ function View(game, turnMap) {
   this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight, 
                                           { transparent: true });
   document.body.appendChild(this.renderer.view);
-  this.playerInfos = [];
-  this.drawAllPlayersInfo();
+  this.allPlayersInfo = this.drawAllPlayersInfo();
   
   if (game.board instanceof GridBoard) { 
     for (var i = 0; i < this.game.board.height; i++) { 
@@ -277,6 +276,7 @@ View.prototype.drawMessage = function() {
 
 View.prototype.animate = function() {
   this.updateTokens();
+  this.updateAllPlayersInfo();
   requestAnimationFrame(this.animate.bind(this));
   this.renderer.render(this.stage);
 };
@@ -300,7 +300,7 @@ View.prototype.drawAllPlayersInfo = function() {
   });
   
   this.stage.addChild(infoBlock);
-
+  return infoBlock;
 };
 
 
@@ -335,7 +335,6 @@ View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
   box.lineStyle(1, 0, 1);
   box.beginFill(0x44C0DF, 1);
   box.drawRect(0, 0, c.canvasWidth - c.boardWidth - (3 * c.leftBuffer), 140);
-  this.playerInfos.push({background: box, text: info});
   
   infoBlock.addChild(outline);
   infoBlock.addChild(box);
@@ -365,6 +364,12 @@ View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
 */
 View.prototype.getPlayersInfo = function() { 
   return null;
+};
+
+
+View.prototype.updateAllPlayersInfo = function() {
+  this.stage.removeChild(this.allPlayersInfo);
+  this.allPlayersInfo = this.drawAllPlayersInfo();
 };
 
 module.exports = View;
