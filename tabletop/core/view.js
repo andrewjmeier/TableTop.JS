@@ -343,9 +343,11 @@ View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
 };
 
 
-// todo: remove this testing code 
-// this will be overridden in subclass
-View.prototype.getPlayersInfo = function() { 
+/* 
+ should be overridden in subclass to display player info panel 
+ "name" field displays first without label
+ info should be an array of dictionaries, ie: 
+
   return [    
     { 
       name: "kc", 
@@ -359,7 +361,10 @@ View.prototype.getPlayersInfo = function() {
       skill: 1
     }
   ];
-  
+
+*/
+View.prototype.getPlayersInfo = function() { 
+  return null;
 };
 
 module.exports = View;
