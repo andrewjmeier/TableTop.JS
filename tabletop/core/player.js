@@ -6,14 +6,14 @@ var inherits = require('util').inherits;
  * @constructor
  * @extends {Component}
  * @param {string} name - The player's name.
- * @param {int} number - The player's number.
+ * @param {hex} color - A hex color for the player's tokens.
 */
-function Player(name, number) {
+function Player(name, color) {
   Component.call(this);
   this.name = name;
   this.tokens = [];
   this.position = 0;
-  this.color = number;
+  this.color = color;
 };
 
 inherits(Player, Component);

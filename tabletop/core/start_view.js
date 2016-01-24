@@ -118,7 +118,7 @@ StartView.prototype.handleButtonClick = function() {
     } else {
       playerName = document.getElementById('player' + (i+1) + 'Name').value;
     }
-    players[i] = new Player(playerName, i+1);
+    players[i] = new Player(playerName, this.game.playerColors[i]);
   }
 
   this.game.setPlayers(players);
