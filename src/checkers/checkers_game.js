@@ -1,19 +1,27 @@
 var inherits = require('util').inherits;
 var TableTop = require("../../tabletop/tabletop.js");
+var CheckerBoard = require('./checkers_board');
 
-function CheckersGame(players, board, turnMap) {
-  TableTop.Game.call(this, players, board, turnMap);
+function CheckersGame(board) {
+  TableTop.Game.call(this, board);
   this.currentPlayer = 0;
   this.moveType = TableTop.Constants.moveTypeManual;
   this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
-  board.tokens.forEach(function(token) { 
+  this.possibleNumPlayers = [2];
+  this.showNextPlayerScreen = false;
+};
+inherits(CheckersGame, TableTop.Game);
+
+CheckersGame.prototype.setPlayers = function(players) {  
+  this.players = players;
+
+  this.board.tokens.forEach(function(token) { 
     var player = token.color == TableTop.Constants.redColor ? players[0] : players[1];
     token.owner = player;
     player.tokens.push(token);
   });
 };
 
-inherits(CheckersGame, TableTop.Game);
 
 CheckersGame.prototype.executeMove = function() {  
 
@@ -35,6 +43,7 @@ CheckersGame.prototype.executeMove = function() {
   token.moveToTile(destination);
   this.proposedMove = {};
 };
+
 
 CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) { 
 

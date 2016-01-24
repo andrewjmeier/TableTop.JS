@@ -2,6 +2,7 @@ var c = require("./ttConstants.js");
 var GridBoard = require("./grid_board.js");
 var ArrayBoard = require('./array_board.js');
 var PIXI = require("../../lib/pixi/pixi.js");
+
 var Component = require("./component");
 var inherits = require('util').inherits;
 
@@ -9,38 +10,67 @@ var inherits = require('util').inherits;
  * The View class
  * @constructor
  * @param {Game} game - the game state
- * @param {TurnMap} turnMap - the state machine
  * @extends {Component}
 */
-function View(game, turnMap) {
+function View(game) {
   Component.call(this);
   this.game = game;
-  this.turnMap = turnMap;
-  this.turnMap.updateState("start");
   this.tokenViews = [];
   this.tileViews = [];
   this.boardView = new PIXI.Graphics();
   this.stage = new PIXI.Container();
+  this.viewHidden = false;
   this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight, 
                                           { transparent: true });
   document.body.appendChild(this.renderer.view);
-  
-  if (game.board instanceof GridBoard) { 
-    for (var i = 0; i < this.game.board.height; i++) { 
-      this.tileViews[i] = [];
-    } 
-  } 
 };
-
 inherits(View, Component);
+
+/**
+ * Shows the view if view hidden, otherwise draws the board
+ * @returns {void}
+*/
+View.prototype.drawView = function() { 
+  this.showView();
+  if(!this.viewHidden){
+    this.drawBoard();
+  }
+}
+
+/**
+ * Hides the view if hidden
+ * @returns {void}
+*/
+View.prototype.hideView = function() { 
+  this.stage.alpha = 0;
+  this.viewHidden = true;
+}
+
+/**
+ * Shows the board if hidden
+ * @returns {void}
+*/
+View.prototype.showView = function() { 
+  this.stage.alpha = 1;
+}
+
+/**
+ * Removes the view
+ * @returns {void}
+*/
+View.prototype.removeView = function() { 
+  this.stage.alpha = 0;
+}
+
 
 /**
  * Draw the board for the given board type
  * @returns {void}
 */
 View.prototype.drawBoard = function() { 
-  if (this.game.board instanceof GridBoard) 
+  if (this.game.board instanceof GridBoard) { 
     this.drawGridBoard();
+  }
   else if (this.game.board instanceof ArrayBoard) {
     this.drawArrayBoard();
   }
@@ -59,6 +89,9 @@ View.prototype.drawBoard = function() {
  * @returns {void}
 */
 View.prototype.drawGridBoard = function() {
+  for (var i = 0; i < this.game.board.height; i++) { 
+    this.tileViews[i] = [];
+  }   
   
   this.boardView.x = c.boardStartX;
   this.boardView.y = c.boardStartY;
