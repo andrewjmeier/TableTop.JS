@@ -24,10 +24,12 @@
   "homepage": "https://github.com/andrewjmeier/TableTop.JS#readme",
   "devDependencies": {
     "chai": "^3.3.0",
+    "css-loader": "^0.23.1",
     "eslint": "^1.5.1",
     "eslint-plugin-react": "^3.5.0",
     "istanbul": "^0.3.22",
-    "mocha": "^2.3.3"
+    "mocha": "^2.3.3",
+    "style-loader": "^0.13.0"
   },
   "dependencies": {
     "machina": "^1.1.2"
