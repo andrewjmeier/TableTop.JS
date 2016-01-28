@@ -91,7 +91,7 @@ View.prototype.drawBoard = function() {
  * @returns {void}
 */
 View.prototype.drawGridBoard = function() {
-  for (var i = 0; i < this.game.board.height; i++) { 
+  for (var i = 0; i < this.game.board.width; i++) { 
     this.tileViews[i] = [];
   }   
   
