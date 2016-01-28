@@ -1,5 +1,9 @@
 ## Using [TableTopSkeleton](http://github.com/andrewjmeier/TableTopSkeleton) to get started. 
 
+If you're using Windows, you'll need to check out our [Windows Setup Instructions](./windows_setup.md)
+
+### First you'll want to go to the [TableTopSkeleton](http://github.com/andrewjmeier/TableTopSkeleton) page: http://github.com/andrewjmeier/TableTopSkeleton
+
 * Click on `Fork` on the top right of the page. This will create a new repository for you to create your board game. ![Fork Image](/tutorials/images/how-to-fork.png)
 * Next find the link on the right side of the page under `HTTPS clone URL`. Copy this link ![Clone URL](/tutorials/images/how-to-clone.png)
 * Open up the `Terminal` application on your computer and paste `cd ~/Documents/`. Press Enter.
