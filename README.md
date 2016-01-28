@@ -55,6 +55,8 @@ Take a look at some of our example projects to get a feel for how they're setup.
 
 ### Demo - [Checkers](/tutorials/markdown/checkers.md)
 
+### Short, Raw Explanation - [Raw](/tutorials/markdown/raw.md)
+
 # Documentation
 
 ### [Board](http://andrewjmeier.github.io/TableTop.JS/out/Board.html)
