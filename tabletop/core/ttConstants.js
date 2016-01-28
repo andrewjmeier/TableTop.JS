@@ -4,7 +4,7 @@ var ttConstants = new Object();
 
 // CANVAS
 // Constants defining the canvas properties
-ttConstants.canvasWidth = 1200;
+ttConstants.canvasWidth = 1500;
 ttConstants.canvasHeight = 1500;
 
 ttConstants.leftBuffer = 50;
@@ -37,6 +37,9 @@ ttConstants.moveTypeDiceRoll = 2;
 
 // user selects a position and a token is placed there
 ttConstants.moveTypePlaceToken = 3;
+
+
+ttConstants.moveTypeCustom = 4;
 
 // MOVE EVALUATION TYPES
 
