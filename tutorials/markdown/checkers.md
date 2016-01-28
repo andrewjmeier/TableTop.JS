@@ -16,21 +16,20 @@ To begin, create a new file checkers.js in the root of your project folder. This
     var CheckerBoard = require('./checkers/checkers_board');
     var CheckerView = require('./checkers/checkers_view');
 
-    // create the players
-    var redPlayer = new TableTop.Player("Red", 1);
-    var whitePlayer = new TableTop.Player("White", 2);
-    var players = [redPlayer, whitePlayer];
-
-    // create the Board, Game, and TurnMap
+    // create the Board and Game
     var board = new CheckerBoard();
-    var checkers = new Checkers(players, board);
-    var turnMap = new TableTop.ManualTurn(checkers);
+    var checkers = new Checkers(board);
+    
+    //create our startView
+    var startView = new TableTop.StartView(checkers);
+    var view = new CheckerView(checkers);
+    var nextPlayerView = new TableTop.NextPlayerView(checkers);
+    var gameOverView = new TableTop.GameOverView(checkers);
+
+    //create the turnmap
+    var turnMap = new TableTop.ManualTurn(checkers, startView, view, gameOverView, nextPlayerView);
+
     checkers.setTurnMap(turnMap);
-
-
-    // create our view, and draw it
-    var view = new CheckerView(checkers, turnMap);
-    view.drawBoard();
 
     // this initiates the TurnMap ("Gameloop") and 
     // gets the ball rolling!
@@ -40,7 +39,7 @@ To begin, create a new file checkers.js in the root of your project folder. This
 
 This is all you need for the main game file. In general, your (game).js file should never be much longer than this -- you should offload the complicated logic to your subclasses of the five main game components (like we will do with Checkers and CheckerBoard).
 
-Before continuing, let's go over what we're doing above. First, we create two players, passing their names. We chose Red and White so we can easily refer to the players later by color to identify who's turn it is, but for other games (like our monopoly example) we'll use actual names like "John" or "KC". Then, we create our Board, Game, TurnMap and View. We pass the turnMap to our game, and tell the View to draw our board. Once we call view.drawBoard(), the view graphics loop begins it's animation loop. However, our game doesn't begin running until we update the TurnMap state to "start", which begins to run our game.
+Before continuing, let's go over what we're doing above. First, we create our Board and Game. Then we made the various views and eventually turnmap. The start view will take in player names. We set the turnMap of our game, start in the first state. The turnmap acts as the controller showing and removing the views we needed. It also begins to run our game when we update the state. 
 
 ### The Game
 
@@ -50,20 +49,18 @@ In checkers_game.js, enter the following:
 
     var inherits = require('util').inherits;
     var TableTop = require('tabletop-boardgames');
+    var CheckerBoard = require('./checkers_board');
 
-    function CheckersGame(players, board, turnMap) {
-      TableTop.Game.call(this, players, board, turnMap);
+    function CheckersGame(board) {
+      TableTop.Game.call(this, board);
       this.currentPlayer = 0;
       this.moveType = TableTop.Constants.moveTypeManual;
       this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
-      board.tokens.forEach(function(token) { 
-        var player = token.color == TableTop.Constants.redColor ? players[0] : players[1];
-        token.owner = player;
-        player.tokens.push(token);
-      });
+      this.possibleNumPlayers = [2];
+      this.showNextPlayerScreen = false;
     };
-
     inherits(CheckersGame, TableTop.Game);
+
 
     module.exports = CheckersGame;
 
@@ -72,6 +69,8 @@ This is the constructor for our game. We overwrite a few important defaults here
 First, we set the moveType to TableTop.Constants.moveTypeManual. Game defaults to using TableTop.Constants.moveTypeDiceRoll, which is useful for games like monopoly where there's only one path the follow, however we want the user to be able to control where she moves her token. This flag lets our view know that it should add click listeners to tokens and tiles in our view, and lets our game know that it should store these listener events as they arrive for later evaluation.
 
 Second, we set the moveEvaluationType to TableTop.Constants.moveEvaluationTypeGameEvaluator. This lets our game know that it will be doing to move evaluation rather than the tiles. When we set this flag, the TurnMap will call "executeMove()" on our game class to decide what the side effects of a move are. 
+
+Next, we set an array of possible number of players. Here we specify that checkers has to be played with two players. We also set showNextPlayerScreen to false. This is a useful flag to set to true if player hold information that they will not want other players to see and allows players to pass the computer. 
 
 ### The Board
 
@@ -83,7 +82,6 @@ We'll finish filling out our game class later. For now, let's move on to the che
     function CheckerBoard() { 
       TableTop.GridBoard.call(this, 8, 8);
       this.buildTiles();
-      this.buildTokens();
     }       
 
     inherits(CheckerBoard, TableTop.GridBoard);
@@ -113,8 +111,8 @@ Now let's work on our view. We need to tell the board how we want our tokens and
     var TableTop = require("tabletop-boardgames");
     var inherits = require('util').inherits;
 
-    function CheckerView(game, turnMap) {
-      TableTop.View.call(this, game, turnMap);
+    function CheckerView(game) {
+      TableTop.View.call(this, game);
     }
 
     inherits(CheckerView, TableTop.View);
@@ -143,9 +141,10 @@ Now let's work on our view. We need to tell the board how we want our tokens and
 
 That's all we need for the view for the rest of the tutorial. The rest of the logic is handled by the framework. It recognizes the board type and can draw the board and tokens accordingly. 
 
-**You should be able to load your test.html file and see a checkerboard drawn.** If not, go back and make sure you didn't miss anything. Note: even though we told the framework how we want our tokens drawn, it recognizes that we haven't added any to the board and therefor doesn't draw them.
+**You should be able to load your test.html file and see a checkerboard drawn.** If not, go back and make sure you didn't miss anything. Note: we have not told our board to build the tokens yet and therefore you will not see them
 
 Next, let's create our "tokens". Tokens are the movable, actionable objects that belong to players. In a game like checkers, they're our pieces. In a game like monopoly, it's the literal token that represents your player. 
+
 
 Add the following method to your checkers_board.js file, and call it from your constructer after this.BuildTiles():
 
@@ -179,11 +178,33 @@ Add the following method to your checkers_board.js file, and call it from your c
     };
 
 
+
+To call the buildTokens function from the constructors of the checkers_board.js file use this.buildTokens();. The constructor should now look like this:
+
+    function CheckerBoard() { 
+      TableTop.GridBoard.call(this, 8, 8);
+      this.buildTiles();
+      this.buildTokens();
+    }     
+
 That's all we need for the checkers_board.js file! 
+
+Now go back to the checkers_game.js file. We need to overwrite the setPlayers(players) method to assign token owners. Add the following code block after the constructor.
+
+  CheckersGame.prototype.setPlayers = function(players) {  
+    this.players = players;
+
+    this.board.tokens.forEach(function(token) { 
+      var player = token.color == TableTop.Constants.redColor ? players[0] : players[1];
+      token.owner = player;
+      player.tokens.push(token);
+    });
+  };
+
 
 **Reload your test.html file and you should see the tokens draw on the board.** As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and tiles. 
 
-Now, let's move back to checkers_game.js and add some of the game logic. Since we're using TableTop.Constants.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions executeMove() and isValidMove(). executeMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
+Now, let's continue with checkers_game.js and add some of the game logic. Since we're using TableTop.Constants.moveEvaluationTypeGameEvaluator, the framework expects our game to have the functions executeMove() and isValidMove(). executeMove() should perform all of the game logic necessary for a given move. Note: it doesn't need to do any graphics work: that's all handled for you!  
 
 ### Evaluating Moves
 
@@ -292,7 +313,7 @@ At this point, there's only one more thing we need to define in our game class (
 
 Anddd we're done! Congratulations on your first TableTop.js game! 
 
-**Reload your test.html file one last time!** You should be able to play checkers to your hearts content.
+**Reload your test.html file one last time!** You should be able to play checkers to your heart's content.
 
 ### Conclusion
 
