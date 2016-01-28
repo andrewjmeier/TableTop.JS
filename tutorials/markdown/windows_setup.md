@@ -13,7 +13,7 @@
 ​
 * In Git Shell, type “npm -v” to check whether NPM has been successfully installed ![](/tutorials/images/windows/check_node_npm.png)
 ​
-* Now, download [XAMPP](https://www.apachefriends.org/download.html).
+* Now, download [XAMPP](https://www.apachefriends.org/download.html).   
 ![](/tutorials/images/windows/xampp.png)
 ​
 * Install Xampp. When you install, uncheck everything as all we need is Apache ![](/tutorials/images/windows/install_xampp.png)
