@@ -1,6 +1,6 @@
 {
   "name": "tabletop-boardgames",
-  "version": "1.0.10",
+  "version": "1.0.14",
   "description": "A simple framework for making board games",
   "main": "./tabletop/tabletop.js",
   "directories": {
@@ -9,7 +9,8 @@
   "scripts": {
     "test": "make test",
     "webpack": "webpack --watch",
-    "test-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 \n open coverage/lcov-report/index.html"
+    "test-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 \n open coverage/lcov-report/index.html",
+    "docs": "jsdoc -c conf.json"
   },
   "repository": {
     "type": "git",
@@ -23,10 +24,12 @@
   "homepage": "https://github.com/andrewjmeier/TableTop.JS#readme",
   "devDependencies": {
     "chai": "^3.3.0",
+    "css-loader": "^0.23.1",
     "eslint": "^1.5.1",
     "eslint-plugin-react": "^3.5.0",
     "istanbul": "^0.3.22",
-    "mocha": "^2.3.3"
+    "mocha": "^2.3.3",
+    "style-loader": "^0.13.0"
   },
   "dependencies": {
     "machina": "^1.1.2"

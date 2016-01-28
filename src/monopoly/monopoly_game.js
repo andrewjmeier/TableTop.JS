@@ -74,7 +74,7 @@ MonopolyGame.prototype.move = function() {
   }
   this.getCurrentPlayer().move(spacesToMove);
   var player = this.getCurrentPlayer();
-  var actions = this.board.spaces[player.position].performLandingAction(this);
+  var actions = this.board.tiles[player.position].performLandingAction(this);
   actions[0] = ("You rolled a " + spacesToMove + ". ").concat(actions[0]);
   return actions;
 };

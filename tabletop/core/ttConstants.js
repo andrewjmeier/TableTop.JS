@@ -40,7 +40,7 @@ ttConstants.moveTypePlaceToken = 3;
 
 // MOVE EVALUATION TYPES
 
-// space.performLandingAction() is called 
+// tile.performLandingAction() is called 
 ttConstants.moveEvaluationTypeLandingAction = 1;
 
 // game.executeMove() is called
