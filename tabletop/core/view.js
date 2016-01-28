@@ -105,6 +105,16 @@ View.prototype.drawGraphBoard = function() {
 
 };
 
+/** 
+* This function is called by the framework to decide 
+* how your tiles will look. Should be overridden in view subclass. 
+* 
+* @param {Tile} tile The tile object to be displayed. 
+* @param {Object} size An object with defined .width and .height attributes
+*
+* @return {PIXI.Graphics() Object} A PIXI.Graphics object 
+* 
+*/
 View.prototype.drawTile = function(tile, size) { 
 
   console.log("Using default drawTile()");
@@ -112,6 +122,7 @@ View.prototype.drawTile = function(tile, size) {
   tileView.lineStyle(1, 0, 1);
   tileView.beginFill(tile.color, 1);
   tileView.drawRect(0, 0, size.width, size.height);
+  return tileView;
 
 };
 
@@ -157,8 +168,15 @@ View.prototype.drawTiles = function() {
   }
 };
 
-// draws token, puts it on appropriate tile,
-// adds it to tokenViews
+/** 
+* This function is called by the framework to decide 
+* how your tokens will look. Should be overridden in view subclass. 
+* 
+* @param {Token} token The token object to be displayed 
+* @param {Object} size An object with defined .width and .height attributes
+*
+* @return {PIXI.Graphics() Object} A PIXI.Graphics object 
+*/
 View.prototype.drawToken = function(token, size) {
 
   console.log("Using default drawToken()");
@@ -291,7 +309,7 @@ View.prototype.drawAllPlayersInfo = function() {
   infoBlock.y = c.upperBuffer;
 
   var blockSize = 150;
-  var vertOffset = .2*c.upperBuffer;
+  var vertOffset = .2 * c.upperBuffer;
   
   var view = this;
   playersInfo.forEach(function(player) { 
@@ -325,10 +343,10 @@ View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
   info.y = vertOffset;
   
   var box = new PIXI.Graphics();
-  box.y = vertOffset - c.upperBuffer*.2;
+  box.y = vertOffset - c.upperBuffer * .2;
   
   var outline = new PIXI.Graphics();
-  outline.y = vertOffset - c.upperBuffer*.2;
+  outline.y = vertOffset - c.upperBuffer * .2;
   outline.lineStyle(1, 0, 1);
   outline.drawRect(0, 0, c.canvasWidth - c.boardWidth - (3 * c.leftBuffer), 140);
   
@@ -342,25 +360,23 @@ View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
 };
 
 
-/* 
- should be overridden in subclass to display player info panel 
- "name" field displays first without label
- info should be an array of dictionaries, ie: 
-
-  return [    
-    { 
-      name: "kc", 
-      money: 234, 
-      skill: 10
-    },
-    
-    { 
-      name: "john",
-      money: 98, 
-      skill: 1
-    }
-  ];
-
+/**
+* Can be overridden in view subclass to display player info panel 
+* using the key "name" causes the field to display first without a label
+*  return [    
+*    { 
+*      name: "kc", 
+*      money: 234, 
+*      skill: 10
+*    },
+*    { 
+*      name: "john",
+*      money: 98, 
+*      skill: 1
+*    }
+*  ];
+*
+* @return {array} An array of dictionaries.
 */
 View.prototype.getPlayersInfo = function() { 
   return null;
