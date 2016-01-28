@@ -200,15 +200,15 @@ View.prototype.drawTile = function(tile, size) {
 */
 View.prototype.drawTiles = function() {
 
-  var tileWidth = c.boardWidth / this.game.board.tiles[0].length;
-  var tileHeight = c.boardHeight / this.game.board.tiles.length;
+  var tileWidth = c.boardWidth / this.game.board.tiles.length;
+  var tileHeight = c.boardHeight / this.game.board.tiles[0].length;
   var y_pos = c.boardHeight;
   var x_pos = 0;
   
-  for (var y = 0; y < this.game.board.tiles.length; y++) {
+  for (var y = 0; y < this.game.board.tiles[0].length; y++) {
     x_pos = 0;
     y_pos -= tileHeight;
-    for (var x = 0; x < this.game.board.tiles[0].length; x++) {
+    for (var x = 0; x < this.game.board.tiles.length; x++) {
 
       var tile = this.game.board.getTile(x, y);
       var tileView = this.drawTile(tile, {width: tileWidth, height:tileHeight});
@@ -219,15 +219,15 @@ View.prototype.drawTiles = function() {
         tileView.interactive = true;
         var context = this;
         tileView.click = function(mouseData) {
+          mouseData.stopPropagation();
           var selectedTile;
           for (var i = 0; i < context.tileViews.length; i++) {
-            for (var j = 0; j < context.tileViews[0].length; j++) { 
+            for (var j = 0; j < context.tileViews[0].length; j++) {
               if (context.tileViews[i][j] == this) { 
                 selectedTile = context.game.board.getTile(i, j);
               }
             }
           }
-          
           context.game.tileClicked(selectedTile);
         };
       } 
@@ -294,7 +294,8 @@ View.prototype.drawTokens = function() {
       if (this.game.moveType == c.moveTypeManual || this.game.moveType == c.moveTypePlaceToken) { 
         tokenView.interactive = true;
         var context = this;
-        tokenView.click = function(mouseData) { 
+        tokenView.click = function(mouseData) {
+          mouseData.stopPropagation(); 
           var selectedToken;
           for (var i = 0; i < context.tokenViews.length; i++) {
             if (context.tokenViews[i].view == this) { 
@@ -310,6 +311,7 @@ View.prototype.drawTokens = function() {
     }
   }
 };
+
 
 /**
  * Update the token view if the token moved
