@@ -23,6 +23,8 @@ function View(game) {
   this.renderer = PIXI.autoDetectRenderer(c.canvasWidth, c.canvasHeight, 
                                           { transparent: true });
   document.body.appendChild(this.renderer.view);
+  this.allPlayersInfo = this.drawAllPlayersInfo();
+  
 };
 inherits(View, Component);
 
@@ -77,9 +79,9 @@ View.prototype.drawBoard = function() {
   /* todo: 
 
    else if (this.game.board instanceof GraphBoard)
-     this.drawGraphBoard();
+   this.drawGraphBoard();
    else 
-     do nothing and defer drawing to user? 
+   do nothing and defer drawing to user? 
 
    */
 };
@@ -179,7 +181,7 @@ View.prototype.drawGraphBoard = function() {
  * Override this method in your subclass to customize the board
  * @param {Tile} tile - the tile model object
  * @param {Dictionary} size - The width and height for the tile
- * @returns {PIXI.Graphics} tileView
+ * @returns {PIXI.Graphics} PIXI.Graphics objects describing how the tile should look
 */
 View.prototype.drawTile = function(tile, size) { 
 
@@ -189,6 +191,7 @@ View.prototype.drawTile = function(tile, size) {
   tileView.beginFill(tile.color, 1);
   tileView.drawRect(0, 0, size.width, size.height);
   return tileView;
+
 };
 
 /**
@@ -237,13 +240,12 @@ View.prototype.drawTiles = function() {
   }
 };
 
-// draws token, puts it on appropriate tile,
-// adds it to tokenViews
 /** 
- * Draw a tokens
+ * Draw a token
  * Override this method in subclass to customize token drawing
  * @param {Token} token - token model data
  * @param {Dictionary} size - width and height of token
+ * @returns {PIXI.Graphics} PIXI.Graphics objects describing how the tile should look
 */
 View.prototype.drawToken = function(token, size) {
 
@@ -387,9 +389,98 @@ View.prototype.drawMessage = function() {
 
 View.prototype.animate = function() {
   this.updateTokens();
+  this.updateAllPlayersInfo();
   requestAnimationFrame(this.animate.bind(this));
   this.renderer.render(this.stage);
 };
 
+View.prototype.drawAllPlayersInfo = function() {
+
+  var playersInfo = this.getPlayersInfo();
+  if (!playersInfo) return;
+
+  var infoBlock = new PIXI.Graphics();
+  infoBlock.x = c.boardWidth + c.leftBuffer * 2;
+  infoBlock.y = c.upperBuffer;
+
+  var blockSize = 150;
+  var vertOffset = .2 * c.upperBuffer;
+  
+  var view = this;
+  playersInfo.forEach(function(player) { 
+    view.drawPlayerInfo(player, vertOffset, infoBlock);
+    vertOffset += blockSize;
+  });
+  
+  this.stage.addChild(infoBlock);
+  return infoBlock;
+};
+
+
+View.prototype.drawPlayerInfo = function(player, vertOffset, infoBlock) {
+  
+  var string = "";
+  if (player["name"]) string += player["name"] + "\n";
+  for (var key in player) { 
+    if (key == "name") continue; 
+    string += key + ":  " + player[key] + "\n";
+  } 
+  
+  var info = new PIXI.Text(string, 
+                           {font: '20px Arial',
+                            align : 'left',
+                            wordWrap : true,
+                            strokeThickness : .25,
+                            wordWrapWidth : c.canvasWidth - c.boardWidth - (4 * c.leftBuffer)
+                           });
+
+  info.x = c.leftBuffer * 0.2;
+  info.y = vertOffset;
+  
+  var box = new PIXI.Graphics();
+  box.y = vertOffset - c.upperBuffer * .2;
+  
+  var outline = new PIXI.Graphics();
+  outline.y = vertOffset - c.upperBuffer * .2;
+  outline.lineStyle(1, 0, 1);
+  outline.drawRect(0, 0, c.canvasWidth - c.boardWidth - (3 * c.leftBuffer), 140);
+  
+  box.lineStyle(1, 0, 1);
+  box.beginFill(0x44C0DF, 1);
+  box.drawRect(0, 0, c.canvasWidth - c.boardWidth - (3 * c.leftBuffer), 140);
+  
+  infoBlock.addChild(outline);
+  infoBlock.addChild(box);
+  infoBlock.addChild(info);
+};
+
+
+/**
+* Can be overridden in view subclass to display player info panel 
+* using the key "name" causes the field to display first without a label
+*  return [    
+*    { 
+*      name: "kc", 
+*      money: 234, 
+*      skill: 10
+*    },
+*    { 
+*      name: "john",
+*      money: 98, 
+*      skill: 1
+*    }
+*  ];
+*
+* @return {array} An array of dictionaries.
+*/
+View.prototype.getPlayersInfo = function() { 
+  return null;
+};
+
+
+View.prototype.updateAllPlayersInfo = function() {
+  this.stage.removeChild(this.allPlayersInfo);
+  this.allPlayersInfo = this.drawAllPlayersInfo();
+};
 
 module.exports = View;
