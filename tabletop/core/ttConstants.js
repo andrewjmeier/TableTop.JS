@@ -38,6 +38,9 @@ ttConstants.moveTypeDiceRoll = 2;
 // user selects a position and a token is placed there
 ttConstants.moveTypePlaceToken = 3;
 
+
+ttConstants.moveTypeCustom = 4;
+
 // MOVE EVALUATION TYPES
 
 // tile.performLandingAction() is called 
