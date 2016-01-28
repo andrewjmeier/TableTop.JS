@@ -24,11 +24,11 @@ The game class will be home to all of your game logic. Check our demos for the o
 
 ### Move Types 
 
-There are two main move types right now in the framework. 
+There are three main move types right now in the framework. 
 
 ##### moveTypeManual
 
-First, there's moveTypeManual. This move type is meant for games that involve players alternation turns by moving tokens around the board (specifically, by clicking on a token and then a space)  a control scheme of clicking on a token and then clicking on a space to move it to (ie. checkers, chess, etc). In fact, the framework will only listen to token clicks if you've set this flag -- otherwise its ignored. With this flag, the general workflow by the framework is as such: 
+First, there's moveTypeManual. This move type is meant for games that involve players taking turns moving tokens around the board (specifically, by clicking on a token and then a space - ie. checkers, chess, etc.). With this flag, the general workflow by the framework is as such: 
 
 If the user clicks a token and then a space, and is in the state "waitingForMove", store the token and space in game.proposedMove
 If isValidMove() then executeMove()
@@ -57,6 +57,10 @@ Secondly, you'll need to override tileClicked and tokenClicked to fit your needs
 ## The View 
 
 Your view class can be simple, but very powerful. There's two main functions you should override: `drawTile(tile, size)` and `drawToken(token, size)`. In these functions, you need to create a new Pixi.Graphics objects (using `new Pixi.Graphics()`). You should then edit the object to look how you want it to. In checkers, we fill the tokens/tiles with the appropriate colors (by checking the .color variables on the param objects tile and token), and drawing a rectangle/circle depending on what we want. However, you can place images on your objects and customize them in many ways - check out the pixi documentation for cool stuff you can do using their [library](http://pixijs.github.io/docs/PIXI.Graphics.html).
+
+## The TurnMap
+
+To make a custom turnmap other than ManualTurn, refer to the [Machina docs](http://machina-js.org/). Check out our MonopolyTurn to see how you could implement a dice rolling game. 
 
 ## Constants 
 
