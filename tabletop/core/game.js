@@ -188,7 +188,10 @@ Game.prototype.hasValidMove = function() {
   } 
 
   var token = this.proposedMove.token;
-  var tile = token ? token.tile : null;
+  var tile = null;
+  if (token != null) {
+    tile = this.board.findTileForToken(token);
+  }
   var destination = this.proposedMove.destination;
 
   return this.isValidMove(token, 

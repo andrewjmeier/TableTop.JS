@@ -1,16 +1,20 @@
 require("../boardConstants");
+var inherits = require('util').inherits;
+var TableTop = require("../../../../tabletop/tabletop.js");
 
-function Space(name) {
-  this.name = name;
-  this.occupier = null;
-}
+function MonopolyTile(name) {
+  TableTop.Tile.call(this, {name: name})
+};
+
+inherits(MonopolyTile, TableTop.Tile);
+
 // every space needs a landing action
-Space.prototype.performLandingAction = function(game){
+MonopolyTile.prototype.performLandingAction = function(game){
   return ["You landed on " + this.name + ". \n", POST_TURN];
 };
 
-Space.prototype.isProperty = function() { 
+MonopolyTile.prototype.isProperty = function() { 
   return false;
 };
 
-module.exports = Space;
+module.exports = MonopolyTile;

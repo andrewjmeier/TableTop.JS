@@ -30,7 +30,8 @@ CheckersGame.prototype.executeMove = function() {
   var destination = this.proposedMove.destination;
 
   // get positions of current token tile and the destination
-  var oldPosition = this.board.getTilePosition(token.tile);
+  var tile = this.board.findTileForToken(token);
+  var oldPosition = this.board.getTilePosition(tile);
   var newPosition = this.board.getTilePosition(destination);
 
   // check if we jumped a token, and remove it if so 
@@ -40,7 +41,7 @@ CheckersGame.prototype.executeMove = function() {
     jumpedToken.destroy();
 
   // move the token to the new tile and clear proposedMove
-  token.moveToTile(destination);
+  this.board.moveTokenToTile(token, destination);
   this.proposedMove = {};
 };
 
@@ -53,14 +54,14 @@ CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) {
   // grab the occupier of the tile that we jumped
   // if we didn't jump anything, this will return null - that's what we want!
   if (newPos.x > oldPos.x)
-    return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).occupier;
+    return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).tokens[0];
   else  
-    return this.board.getTile(oldPos.x - 1, oldPos.y + yModifier).occupier;
+    return this.board.getTile(oldPos.x - 1, oldPos.y + yModifier).tokens[0];
 
 };
 
 CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) { 
-
+  console.log(token, oldTile, newTile);
   var oldPos = this.board.getTilePosition(oldTile);
   var newPos = this.board.getTilePosition(newTile);
 
@@ -74,11 +75,11 @@ CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) {
    */
   if (token.owner != player || 
       newTile.color == TableTop.Constants.redColor || 
-      newTile.occupier) 
+      newTile.tokens[0]) 
     return false;
 
   return this.validNormalMove(token, oldPos, newPos, 1) || 
-    this.validJumpMove(token, oldPos, newPos);  
+    this.validJumpMove(token, oldPos, newPos);
 };
 
 CheckersGame.prototype.validNormalMove = function(token, oldPos, newPos, moveLen) { 

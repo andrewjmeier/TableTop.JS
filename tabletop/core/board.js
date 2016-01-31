@@ -20,8 +20,16 @@ Board.prototype.getTile = function(idx) {
 
 // TODO, maybe pass the token or the token class to this method?
 Board.prototype.buildTokenForTile = function(token, tile) { 
-  tile.addOccupier(token);
+  tile.addToken(token);
   this.tokens.push(token);
+};
+
+Board.prototype.findTileForToken = function(token) {
+  // override
+}
+
+Board.prototype.moveTokenToTile = function(token, tile) {
+  // override in subclass!
 };
 
 module.exports = Board;
