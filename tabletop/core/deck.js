@@ -1,16 +1,24 @@
 var Utils = require("./utils");
+var Component = require("./component.js");
+var inherits = require('util').inherits;
+
 /**
  * The Deck class
  * Should probably be subclassed to create the cards for the deck in the constructor
  * @constructor
+ * @extends {Component}
 */
 function Deck() {
+  Component.call(this);
   this.cards = [];
   this.currentPosition = 0;
 };
 
+inherits(Deck, Component);
+
 /**
- * Shuffle the deck
+ * Shuffle the deck in place
+ * @returns {void}
 */
 Deck.prototype.shuffle = function() {
   Utils.shuffle(this.cards);

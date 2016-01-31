@@ -1,19 +1,22 @@
-Component = require("./component.js");
-    inherits = require('util').inherits;
+var Component = require("./component.js");
+var inherits = require('util').inherits;
 
 /**
  * A Player class
  * @constructor
+ * @extends {Component}
  * @param {string} name - The player's name.
- * @param {int} number - The player's number.
+ * @param {hex} color - A hex color for the player's tokens.
 */
-function Player(name, number) {
+function Player(name, color) {
+  Component.call(this);
   this.name = name;
-  // TODO - this should be refactored to be an array of tokens for the player
   this.tokens = [];
   this.position = 0;
-  this.color = number;
+  this.color = color;
 };
+
+inherits(Player, Component);
 
 /**
  * Represents a Player.

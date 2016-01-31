@@ -26,18 +26,38 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>var c = require("./ttConstants");
+var ManualTurn = require("./manual_turn.js");
+var Component = require("./component.js");
+var inherits = require('util').inherits;
+
+/**
  * The Game class
  * @constructor
+ * @extends {Component}
  * @param {Player|Array} players - A list of players
  * @param {Board} board - The game board
 */
-function Game(players, board, turnMap) {
+function Game(players, board) {
+  Component.call(this);
   this.players = players,
-  this.currentPlayer = 0;
   this.board = board;
   this.dice = [];
   this.randomizeCurrentPlayer();
+  this.turnMap = null;
+  this.moveType = c.moveTypeDice; // manual movement or dicerolls
+  this.proposedMove = {}; // for c.moveTypeManual
+  this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
+};
+
+inherits(Game, Component);
+
+/**
+ * Method to set turnMap of the game once it is created
+ * This is required!
+ * @param {Turn} turnMap - A turn object to be used by the game
+*/
+Game.prototype.setTurn = function(turnMap) {
   this.turnMap = turnMap;
 };
 
@@ -47,6 +67,55 @@ function Game(players, board, turnMap) {
 */
 Game.prototype.updateState = function(message) {
   this.turnMap.updateState(message, this);
+};
+
+/**
+ * Set the game's state machine
+ * @param {TurnMap} turnMap - the game's state machine
+*/
+Game.prototype.setTurnMap = function(turnMap) { 
+  this.turnMap = turnMap;
+};
+
+/**
+ * Set the move type for this game
+ * @param {string} moveType - The move type. See ttConstants
+*/
+Game.prototype.setMoveType = function(moveType) { 
+  this.moveType = moveType;
+  if (moveType == c.moveTypeManual) { 
+    this.proposedMove = {};
+  } 
+};
+
+/**
+ * Callback method from the view when a token is clicked
+ * To be overridden by the subclass
+ * @abstract
+ * @parram {Token} token - The token object that was clicked
+*/
+Game.prototype.tokenClicked = function(token) {
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
+ * Callback method from the view when a tile is clicked
+ * To be overridden by the subclass
+ * @abstract
+ * @param {Tile} tile - the tile object that was clicked in the view
+*/
+Game.prototype.tileClicked = function(tile) {
+  throw new Error('must be implemented by subclass!');
+};
+
+/**
+ * Check the Game State to see if a player has won the game
+ * @abstract
+ * @return {boolean}
+*/
+Game.prototype.isGameOver = function() {
+  // TODO - check this method every transition in the state machine
+  throw new Error('must be implemented by subclass!');
 };
 
 /**
@@ -68,10 +137,14 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     sides = 6;
   }
   this.dice = [];
-  for (i = 0; i &lt; numberOfDice; i++) {
-    roll = Math.floor(Math.random() * sides) + 1;
+  var message = "You rolled a ";
+  for (var i = 0; i &lt; numberOfDice; i++) {
+    var roll = Math.floor(Math.random() * sides) + 1;
     this.dice.push(roll);
+    message = message.concat(roll + ", ");
   }
+
+  this.sendMessage(message);
 };
 
 /**
@@ -90,8 +163,138 @@ Game.prototype.getCurrentPlayer = function() {
   return this.players[this.currentPlayer];
 };
 
-module.exports = Game;
-</code></pre>
+/**
+ * Sets the last moved token for later reference
+ * @param {Token} token - Last moved token
+ * @returns {void}
+*/
+Game.prototype.submitMove = function(token) { 
+  this.lastMovedToken = token;
+};
+
+/**
+ * Switch to the next player
+ * Override to provide more logic on determining the next player
+ * @returns {void}
+*/
+Game.prototype.nextPlayer = function() { 
+  this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+};
+
+/**
+ * Set the destination for a proposed move
+ * @param {Tile} tile - the tile to move to
+ * @returns {void}
+*/
+Game.prototype.setProposedMoveDestination = function(tile) { 
+  this.proposedMove.destination = tile;
+};
+
+/**
+ * Set the token for a proposed move
+ * @param {Token} token - the token to move
+ * @returns {void}
+*/
+Game.prototype.setProposedMoveToken = function(token) { 
+  this.proposedMove.token = token;
+};
+
+/**
+ * A proposed move exists and it is valid
+ * @returns {boolean}
+*/
+Game.prototype.hasValidMove = function() { 
+  
+  if (this.moveType == c.moveTypeManual &amp;&amp;  (!this.proposedMove.token || !this.proposedMove.destination)) {
+    return false;
+  }
+  else if (this.moveType == c.moveTypePlaceToken &amp;&amp; !this.proposedMove.destination) {
+    return false;
+  } 
+
+  var token = this.proposedMove.token;
+  var tile = token ? token.tile : null;
+  var destination = this.proposedMove.destination;
+
+  return this.isValidMove(token, 
+                          tile, 
+                          destination);
+}; 
+
+/**
+ * Determines if it is valid to move the given token to the new tile
+ * @param {Token} token - token to place or move
+ * @param {Tile} oldTile - the previous token location (could be null if token not on board yet)
+ * @param {Tile} newTile - the new token location
+ * @abstract 
+ * @returns {boolean}
+*/
+Game.prototype.isValidMove = function(token, oldTile, newTile) { 
+  console.warn("isValidMove should be implemented by the subclass");
+  return true;
+};
+
+/**
+ * Evaluates the current state of the game and determines if a player won
+ * @param {Player} player - the current player
+ * @abstract
+ * @returns {boolean}
+*/
+Game.prototype.playerDidWin = function(player) {
+  console.warn("playerDidWin should be implemented by the subclass");
+  return false;
+};
+
+/** 
+ * Execute the proposed move made by the player
+ * @param {Player} player - the current player
+ * @abstract
+ * @returns {void}
+*/
+Game.prototype.executeMove = function(player) {
+  throw new Error('executeMove must be implemented by the subclass!');
+};
+
+/**
+ * Event for when a token is clicked on
+ * @param {Token} token - the token that was clicked
+ * @returns {void}
+*/
+Game.prototype.tokenClicked = function(token) { 
+  if (this.moveType == c.moveTypeManual &amp;&amp;
+      this.turnMap.getCurrentState() == "waitingForMove") { 
+    this.setProposedMoveToken(token);
+  }
+};
+
+/**
+ * Event for when a tile is clicked on
+ * @param {Tile} tile - the tile that was clicked
+ * @returns {void}
+*/
+Game.prototype.tileClicked = function(tile) { 
+  /* make sure we're in the right state, 
+   a token has been pressed, 
+   and we're not a tile with a token on it (if we have > 0
+   children, then this click was meant for a token... */
+  if (this.moveType == c.moveTypeManual &amp;&amp; 
+      this.turnMap.getCurrentState() == "waitingForMove" &amp;&amp; 
+      this.proposedMove.token &amp;&amp; 
+      this.proposedMove.token.tile != tile) { 
+
+    this.setProposedMoveDestination(tile);
+    this.turnMap.updateState("makeMove");
+
+  } else if (this.moveType == c.moveTypePlaceToken &amp;&amp;
+      this.turnMap.getCurrentState() == "waitingForMove") {
+
+    this.setProposedMoveDestination(tile);
+    this.turnMap.updateState("makeMove");
+  }
+};
+
+
+module.exports = Game;</code></pre>
         </article>
     </section>
 
@@ -101,13 +304,13 @@ module.exports = Game;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Game.html">Game</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ArrayBoard.html">ArrayBoard</a></li><li><a href="Board.html">Board</a></li><li><a href="Card.html">Card</a></li><li><a href="Component.html">Component</a></li><li><a href="Deck.html">Deck</a></li><li><a href="EdgeTile.html">EdgeTile</a></li><li><a href="Game.html">Game</a></li><li><a href="GridBoard.html">GridBoard</a></li><li><a href="Player.html">Player</a></li><li><a href="Tile.html">Tile</a></li><li><a href="Token.html">Token</a></li><li><a href="Trade.html">Trade</a></li><li><a href="VertexTile.html">VertexTile</a></li><li><a href="View.html">View</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Fri Nov 13 2015 13:02:49 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Jan 21 2016 20:55:21 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>
