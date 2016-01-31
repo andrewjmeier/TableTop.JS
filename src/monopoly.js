@@ -5,7 +5,7 @@ var Card = require("../tabletop/core/card.js");
 var Game = require("./monopoly/monopoly_game.js");
 var Board = require("./monopoly/board_utils.js");
 var Turn = require("./monopoly/monopoly_turn.js");
-var MonopolyView = require("./monopoly/view/monopoly_view.js");
+var MonopolyView = require("./monopoly/view/monopoly_view.v2.js");
 
 
 var john = new Player("Andrew", 1);
@@ -34,5 +34,3 @@ var turn = new Turn(monopoly);
 monopoly.setTurn(turn);
 
 var view = new MonopolyView(monopoly);
-
-view.drawBoard();
