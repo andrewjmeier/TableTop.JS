@@ -265,7 +265,8 @@ View.prototype.drawToken = function(token, size) {
  * @returns {PIXI.Graphics} tileView
 */
 View.prototype.getTileViewForToken = function(token) {
-  var position = this.game.board.getTilePosition(token.tile);
+  var tile = this.game.board.findTileForToken(token);
+  var position = this.game.board.getTilePosition(tile);
   var tileView = null;
   if (this.game.board instanceof ArrayBoard) {
     tileView = this.tileViews[position];

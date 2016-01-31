@@ -9,7 +9,6 @@ function CheckerBoard() {
 
 inherits(CheckerBoard, TableTop.GridBoard);
 
-
 CheckerBoard.prototype.buildTiles = function() { 
   var tileColor = TableTop.Constants.redColor;
   var tile;
@@ -22,7 +21,6 @@ CheckerBoard.prototype.buildTiles = function() {
     }
   } 
 };
-
 
 CheckerBoard.prototype.buildTokens = function() { 
 
@@ -48,8 +46,8 @@ CheckerBoard.prototype.buildTokens = function() {
 // adds it to the tile, 
 // and appends it to our list of tokens
 CheckerBoard.prototype.buildTokenForTile = function(tile, color) { 
-  var token = new TableTop.Token(null, tile, color);
-  tile.addOccupier(token);
+  var token = new TableTop.Token(color);
+  tile.addToken(token);
   this.tokens.push(token);
 };
 

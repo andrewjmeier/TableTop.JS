@@ -1,5 +1,6 @@
 var Component = require("./component.js");
 var inherits = require('util').inherits;
+var _ = require('lodash');
 
 /**
  * A Player class
@@ -34,6 +35,14 @@ Player.prototype.moveTo = function(position) {
 */
 Player.prototype.addItems = function(items) {
   throw new Error('must be implemented by subclass!');
+};
+
+Player.prototype.destroyToken = function(token) {
+  _.remove(this.tokens, function(t) {
+    return t == token;
+  });
+
+  token.isDead = true;
 };
 
 module.exports = Player;

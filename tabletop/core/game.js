@@ -2,6 +2,7 @@ var c = require("./ttConstants");
 var ManualTurn = require("./manual_turn.js");
 var Component = require("./component.js");
 var inherits = require('util').inherits;
+var _ = require('lodash');
 
 /**
  * The Game class
@@ -188,13 +189,27 @@ Game.prototype.hasValidMove = function() {
   } 
 
   var token = this.proposedMove.token;
-  var tile = token ? token.tile : null;
+  var tile = null;
+  if (token != null) {
+    tile = this.board.findTileForToken(token);
+  }
   var destination = this.proposedMove.destination;
 
   return this.isValidMove(token, 
                           tile, 
                           destination);
 }; 
+
+Game.prototype.getPlayerForToken = function(token) {
+  for (var i = 0; i < this.players.length; i++) {
+    var t = _.find(this.players[i].tokens, function(playerToken) {
+      return playerToken === token;
+    });
+    if (t != null) {
+      return this.players[i];
+    }
+  }
+};
 
 /**
  * Determines if it is valid to move the given token to the new tile
@@ -268,5 +283,11 @@ Game.prototype.tileClicked = function(tile) {
   }
 };
 
+Game.prototype.destroyToken = function(token) {
+  _.forEach(this.players, function(player) {
+    player.destroyToken(token);
+  });
+  this.board.destroyToken(token);
+};
 
 module.exports = Game;

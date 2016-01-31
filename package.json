@@ -1,6 +1,6 @@
 {
   "name": "tabletop-boardgames",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A simple framework for making board games",
   "main": "./tabletop/tabletop.js",
   "directories": {
@@ -32,6 +32,7 @@
     "style-loader": "^0.13.0"
   },
   "dependencies": {
+    "lodash": "^4.1.0",
     "machina": "^1.1.2"
   }
 }

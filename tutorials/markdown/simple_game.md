@@ -110,7 +110,7 @@ We have a helpful method `buildTokenForTile` that makes a new token and adds it 
 ```
 SimpleBoard.prototype.buildTokenForTile = function(tile, color) { 
   var token = new TableTop.Token(null, tile, color);
-  tile.addOccupier(token);
+  tile.addToken(token);
   this.tokens.push(token);
 };
 ```
