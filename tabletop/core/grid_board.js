@@ -66,4 +66,9 @@ GridBoard.prototype.moveTokenToTile = function(token, tile) {
   tile.addToken(token);
 };
 
+GridBoard.prototype.destroyToken = function(token) {
+  var tile = this.findTileForToken(token);
+  tile.removeToken(token);
+};
+
 module.exports = GridBoard;

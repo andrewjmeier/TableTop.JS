@@ -32,4 +32,8 @@ Board.prototype.moveTokenToTile = function(token, tile) {
   // override in subclass!
 };
 
+Board.prototype.destroyToken = function(token) {
+// override in subclass!
+};
+
 module.exports = Board;

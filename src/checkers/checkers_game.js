@@ -17,11 +17,9 @@ CheckersGame.prototype.setPlayers = function(players) {
 
   this.board.tokens.forEach(function(token) { 
     var player = token.color == TableTop.Constants.redColor ? players[0] : players[1];
-    token.owner = player;
     player.tokens.push(token);
   });
 };
-
 
 CheckersGame.prototype.executeMove = function() {  
 
@@ -37,14 +35,14 @@ CheckersGame.prototype.executeMove = function() {
   // check if we jumped a token, and remove it if so 
   var jumpedToken = this.getJumpedToken(token, oldPosition, newPosition);
 
-  if (jumpedToken)
-    jumpedToken.destroy();
-
+  if (jumpedToken) {
+    this.destroyToken(jumpedToken);
+  }
+  console.log(JSON.stringify(this.board));
   // move the token to the new tile and clear proposedMove
   this.board.moveTokenToTile(token, destination);
   this.proposedMove = {};
 };
-
 
 CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) { 
 
@@ -61,22 +59,29 @@ CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) {
 };
 
 CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) { 
-  console.log(token, oldTile, newTile);
   var oldPos = this.board.getTilePosition(oldTile);
   var newPos = this.board.getTilePosition(newTile);
 
   var player = this.getCurrentPlayer();
 
+
+  console.log("checking valid move", player, oldPos, newPos);
   /* 
    If we don't own the piece or
    the destination is a red tile or 
    the destination is occupied 
    it's not a valid move! 
    */
-  if (token.owner != player || 
+
+   var p = this.getPlayerForToken(token);
+   console.log("players", p != player, p, player);
+
+  if (this.getPlayerForToken(token) != player || 
       newTile.color == TableTop.Constants.redColor || 
       newTile.tokens[0]) 
     return false;
+
+  console.log("getting here");
 
   return this.validNormalMove(token, oldPos, newPos, 1) || 
     this.validJumpMove(token, oldPos, newPos);
