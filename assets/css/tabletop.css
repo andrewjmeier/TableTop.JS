@@ -1,0 +1,105 @@
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    font-family: "museo-sans-1","museo-sans-2", "Humanst521 BT", sans-serif;
+}
+
+.game-table {
+    width: 100%;
+}
+
+.board {
+    width: 66em;
+    margin: 0 auto;
+}
+
+.tile-list {
+    list-style: none;
+    width: 66em;
+    height: 66em;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    background-color: #B6D8D5;
+    position: relative;
+}
+
+.tile {
+    box-sizing: border-box;
+    display: block;
+    width: 6em;
+    height: 6em;
+    overflow: hidden;
+    background-color: #B6D8D5;
+    /*border: .1em solid #AAC4C1;*/
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    box-sizing: border-box;
+}
+
+.left.container {
+    width: 6em;
+    height: 60em;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    flex-direction: column-reverse;
+}
+
+.top.container {
+    width: 60em;
+    height: 6em;
+    left: 0;
+    top: 0;
+    position: absolute;
+    flex-direction: row;
+}
+
+.right.container {
+    width: 6em;
+    height: 60em;
+    top: 0;
+    right: 0;
+    position: absolute;
+    flex-direction: column;
+}
+
+.bottom.container {
+    width: 60em;
+    height: 6em;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    flex-direction: row-reverse;
+}
+
+.tile:hover > .overlay {
+    box-sizing: border-box;
+    width:6em;
+    height:6em;
+    position:absolute;
+    background-color:#000;
+    opacity:0.3;
+}
+
+.test-container {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.token {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    border-radius: 50%;
+    background: red;
+}
+
+.tile-name {
+    font-size: 75%;
+    text-align: center;
+}
