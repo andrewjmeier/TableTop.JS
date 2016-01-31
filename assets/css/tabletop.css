@@ -5,18 +5,21 @@ html {
 }
 
 .game-table {
-    width: 100%;
+    margin: 0 auto;
+    width: 60em;
+    height: 60em;
 }
 
 .board {
-    width: 66em;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
 }
 
 .tile-list {
     list-style: none;
-    width: 66em;
-    height: 66em;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     margin: 0 auto;
     padding: 0;
@@ -28,22 +31,29 @@ html {
 .tile {
     box-sizing: border-box;
     display: block;
-    width: 6em;
-    height: 6em;
     overflow: hidden;
     background-color: #B6D8D5;
     /*border: .1em solid #AAC4C1;*/
     margin: 0;
 }
 
+.left, .right > .tile {
+    width: 100%;
+    height: 10%;
+}
+
+.top, .bottom > .tile {
+    width: 10%;
+    height: 100%;
+}
 .container {
     display: flex;
     box-sizing: border-box;
 }
 
 .left.container {
-    width: 6em;
-    height: 60em;
+    width: 9%;
+    height: 91%;
     left: 0;
     bottom: 0;
     position: absolute;
@@ -51,8 +61,8 @@ html {
 }
 
 .top.container {
-    width: 60em;
-    height: 6em;
+    width: 91%;
+    height: 9%;
     left: 0;
     top: 0;
     position: absolute;
@@ -60,8 +70,8 @@ html {
 }
 
 .right.container {
-    width: 6em;
-    height: 60em;
+    width: 9%;
+    height: 91%;
     top: 0;
     right: 0;
     position: absolute;
@@ -69,8 +79,8 @@ html {
 }
 
 .bottom.container {
-    width: 60em;
-    height: 6em;
+    width: 91%;
+    height: 9%;
     bottom: 0;
     right: 0;
     position: absolute;
@@ -79,8 +89,8 @@ html {
 
 .tile:hover > .overlay {
     box-sizing: border-box;
-    width:6em;
-    height:6em;
+    width:100%;
+    height:100%;
     position:absolute;
     background-color:#000;
     opacity:0.3;
