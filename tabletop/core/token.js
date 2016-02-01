@@ -17,4 +17,17 @@ function Token(color) {
 
 inherits(Token, Component);
 
+Token.prototype.getJSONString = function() {
+
+  return {
+    color: this.color,
+    isDead: this.isDead
+  }
+};
+
+Token.prototype.createFromJSONString = function(data) {
+  this.color = data.color;
+  this.isDead = data.isDead;
+};
+
 module.exports = Token;

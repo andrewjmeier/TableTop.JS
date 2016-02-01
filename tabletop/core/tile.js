@@ -52,4 +52,30 @@ Tile.prototype.hasToken = function(token) {
   });
 };
 
+Tile.prototype.getJSONString = function() {
+
+  var tokenArray = [];
+  for (var i = 0; i < this.tokens.length; i++) {
+    var tokenText = this.tokens[i].getJSONString();
+    tokenArray.push(tokenText);
+  }
+
+  return {
+    name: this.name,
+    color: this.color,
+    tokens: tokenArray
+  }
+};
+
+Tile.prototype.createFromJSONString = function(data) {
+  this.name = data.name;
+  this.color = data.color;
+
+  for (var i = 0; i < data.tokens.length; i++) {
+    var token = new Token();
+    token.createFromJSONString(data.tokens[i]);
+    this.tokens.push(token);
+  }
+};
+
 module.exports = Tile;

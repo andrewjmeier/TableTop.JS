@@ -86,6 +86,9 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
               this.transition("waitingForMove");
             }
           }
+        },
+        _onExit : function() {
+          game.sendData();
         } 
       },
 
