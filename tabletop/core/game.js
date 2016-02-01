@@ -21,6 +21,7 @@ function Game(board) {
   this.possibleNumPlayers = [2, 3, 4, 5];
   this.showNextPlayerScreen = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
+  this.currentPlayer = 0;
 };
 
 inherits(Game, Component);

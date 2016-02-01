@@ -27,7 +27,7 @@ function MonopolyTurn(game) {
 
             waitingOnRoll: {
                 _onEnter: function() {
-                    this.game.message = this.game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
+                    this.game.message = this.game.players[this.game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
                 },
 
                 yes_continue : function() {
