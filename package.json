@@ -1,6 +1,6 @@
 {
   "name": "tabletop-boardgames",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A simple framework for making board games",
   "main": "./tabletop/tabletop.js",
   "directories": {
@@ -35,6 +35,7 @@
     "jquery": "^2.2.0",
     "jsdom": "^7.2.2",
     "machina": "^1.1.2",
-    "webpack": "^1.12.11"
+    "webpack": "^1.12.11",
+    "lodash": "^4.1.0"
   }
 }

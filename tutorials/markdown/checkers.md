@@ -173,7 +173,7 @@ Add the following method to your checkers_board.js file, and call it from your c
     // and appends it to our list of tokens
     CheckerBoard.prototype.buildTokenForTile = function(tile, color) { 
         var token = new TableTop.Token(null, tile, color);
-        tile.addOccupier(token);
+        tile.addToken(token);
         this.tokens.push(token);
     };
 
@@ -236,12 +236,12 @@ Lets write our executeMove() function. This function should assume that there's 
         // are we moving up or down? 
         var yModifier = token.color == TableTop.Constants.redColor ? 1 : -1;
   
-        // grab the occupier of the tile that we jumped
+        // grab the token of the tile that we jumped
         // if we didn't jump anything, this will return null - that's what we want!
         if (newPos.x > oldPos.x)
-            return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).occupier;
+            return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).tokens[0];
         else  
-            return this.board.getTile(oldPos.x - 1, oldPos.y + yModifier).occupier;
+            return this.board.getTile(oldPos.x - 1, oldPos.y + yModifier).tokens[0];
     
     };
 
@@ -250,7 +250,6 @@ Now, refresh your test.html and you should be able to move tokens around. Notice
 For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one tile diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
 
     CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) { 
-  
         var oldPos = this.board.getTilePosition(oldTile);
         var newPos = this.board.getTilePosition(newTile);
   
@@ -264,7 +263,7 @@ For checkers, there's two types of valid moves (that we're concerned about for t
         */
         if (token.owner != player || 
            newTile.color == TableTop.Constants.redColor || 
-           newTile.occupier) 
+           newTile.tokens[0]) 
          return false;
 
         return this.validNormalMove(token, oldPos, newPos, 1) || 
