@@ -7,7 +7,6 @@ var Board = require("./monopoly/board_utils.js");
 var Turn = require("./monopoly/monopoly_turn.js");
 var MonopolyView = require("./monopoly/view/monopoly_view.v2.js");
 
-
 var john = new Player("Andrew", 1);
 
 var steve = new Player("Quinn", 2);
@@ -23,12 +22,13 @@ var players = [john, steve, sam, mike, jimmy];
 var board = new Board();
 
 var monopoly = new Game(board);
+
 monopoly.setPlayers(players);
 
-monopoly.subscribe(function(message) {
-    var div = document.getElementById("messages");
-    div.innerHTML = div.innerHTML.concat("<br>" + message);
-});
+// monopoly.subscribe(function(message) {
+//     var div = document.getElementById("messages");
+//     div.innerHTML = div.innerHTML.concat("<br>" + message);
+// });
 
 var turn = new Turn(monopoly);
 

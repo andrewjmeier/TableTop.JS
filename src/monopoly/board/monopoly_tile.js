@@ -1,6 +1,6 @@
-require("../boardConstants");
+require("./boardConstants");
 var inherits = require('util').inherits;
-var TableTop = require("../../../../tabletop/tabletop.js");
+var TableTop = require("../../../tabletop/tabletop.js");
 
 function MonopolyTile(name) {
   TableTop.Tile.call(this, {name: name})

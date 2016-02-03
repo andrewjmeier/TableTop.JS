@@ -1,6 +1,7 @@
 var Component = require("./component.js");
 var inherits = require('util').inherits;
 
+idCounter = 0;
 /**
  * A Token class
  * @constructor
@@ -11,6 +12,7 @@ var inherits = require('util').inherits;
 */
 function Token(color) {
   Component.call(this);
+  this.uniqueId = "token" + idCounter++;
   this.color = color;
   this.isDead = false;
 };

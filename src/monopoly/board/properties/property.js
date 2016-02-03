@@ -1,16 +1,16 @@
 require ("../boardConstants");
-var Space = require('../board/space'),
+var MonopolyTile = require('../monopoly_tile'),
     inherits = require('util').inherits;
 
 function Property(name, cost, propertyGroup) {
-  Space.call(this, name);
+  MonopolyTile.call(this, name);
   this.cost = cost;
   this.mortage = .5*cost;
   this.propertyGroup = propertyGroup; // see PG_X constants
   this.owner = null;
 }
 
-inherits(Property, Space);
+inherits(Property, MonopolyTile);
 
 Property.prototype.performLandingAction = function(game) {
   

@@ -1,11 +1,11 @@
-var Space = require('../board/space'),
+var MonopolyTile = require('../monopoly_tile'),
     inherits = require('util').inherits;
 
 function CommunityChest() {
-    this.name = "Community Chest";
+    MonopolyTile.call(this, "Community Chest");
 };
 
-inherits(CommunityChest, Space);
+inherits(CommunityChest, MonopolyTile);
 
 CommunityChest.prototype.performLandingAction = function(game) {
   var spaceActions = CommunityChest.super_.prototype.performLandingAction.call(this, game);

@@ -1,11 +1,12 @@
-var Space = require('../board/space'),
+var MonopolyTile = require('../monopoly_tile'),
     inherits = require('util').inherits;
 
-function Tax() {
-  this.taxAmount = 0; // give default value of 0, should be overridden
+function Tax(name, amount) {
+  MonopolyTile.call(this, name);
+  this.taxAmount = amount; // give default value of 0, should be overridden
 }
 
-inherits(Tax, Space);
+inherits(Tax, MonopolyTile);
 
 Tax.prototype.performLandingAction = function(game) {
   // should probably refactor this into a fn

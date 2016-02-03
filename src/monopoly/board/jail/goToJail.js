@@ -1,11 +1,11 @@
-var Space = require('../board/space'),
+var MonopolyTile = require('../monopoly_tile'),
     inherits = require('util').inherits;
 
 function GoToJail() {
-  this.name = "Go to Jail";
+  MonopolyTile.call(this, "Go to Jail");
 };
 
-inherits(GoToJail, Space);
+inherits(GoToJail, MonopolyTile);
 
 GoToJail.prototype.performLandingAction = function(game) {
   game.getCurrentPlayer().sendToJail();

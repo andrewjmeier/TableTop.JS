@@ -41,3 +41,21 @@
     color: #faebd7;
     background-color: #3471AE;
 }
+
+.myButton {
+    background-color:#44c767;
+    border-radius:1em;
+    border:.15em solid #18ab29;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    padding:.75em 1.5em;
+}
+
+.myButton:hover {
+    background-color:#18ab29;
+}
+.myButton:active {
+    position:relative;
+    top:1px;
+}

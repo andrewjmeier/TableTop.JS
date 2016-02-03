@@ -1,14 +1,12 @@
 var ChanceDeck = require("./cards/chanceDeck");
 var CommunityChestDeck = require("./cards/communityChestDeck");
 var inherits = require('util').inherits;
-// var Game = require("../../tabletop/core/game.js");
 var Trade = require("./monopoly_trade.js");
 var TableTop = require('../../tabletop/tabletop');
+var _ = require('lodash');
 
-
-function MonopolyGame(players, board, turnMap) {
-  TableTop.Game.call(this, players, board, turnMap);
-  this.turnMap = turnMap;
+function MonopolyGame(board) {
+  TableTop.Game.call(this, board);
   this.chanceCards = new ChanceDeck();
   this.communityChestCards = new CommunityChestDeck();
   this.shuffleCards();
@@ -19,6 +17,13 @@ function MonopolyGame(players, board, turnMap) {
 };
 
 inherits(MonopolyGame, TableTop.Game);
+
+MonopolyGame.prototype.setPlayers = function(players) { 
+  this.players = players;
+  for (var i = players.length - 1; i >= 0; i--) {
+    this.board.buildTokenForTile(players[i].tokens[0], this.board.tiles[0]);
+  };
+};
 
 MonopolyGame.prototype.shuffleCards = function() {
   this.chanceCards.shuffle();
@@ -43,38 +48,43 @@ MonopolyGame.prototype.drawCommunityChestCard = function() {
 
 MonopolyGame.prototype.rollAndMovePlayer = function() {
   this.rollDice(2);
-  return this.movePlayer();
-};
-
-MonopolyGame.prototype.movePlayer = function() {
-
+  player = this.getCurrentPlayer();
   // if we're not in jail, just move
-  if (!this.getCurrentPlayer().inJail)
-    return this.move();
+  if (!player.inJail)
+    return this.movePlayer(player);
 
   // otherwise increment turnsInJail, then handle
   // various circumstances surrounding getting out of
   // jail or staying in
-  this.getCurrentPlayer().turnsInJail += 1;
+  player.turnsInJail += 1;
   if (this.isDoubles(this.dice)) {
-    this.getCurrentPlayer().releaseFromJail();
-  } else if (this.getCurrentPlayer().turnsInJail === 3) {
-    this.getCurrentPlayer().payBail();
+    this.player.releaseFromJail();
+  } else if (this.player.turnsInJail === 3) {
+    this.player.payBail();
   } else {
-    return [this.getCurrentPlayer().name + " is serving a turn in jail. ", POST_TURN];
+    return [player.name + " is serving a turn in jail. ", POST_TURN];
   }
 
-  return this.move();
+  return this.movePlayer(player);
 };
 
-MonopolyGame.prototype.move = function() {
+MonopolyGame.prototype.movePlayer = function(player) {
   var spacesToMove = 0;
+  var token = player.tokens[0];
+
   for (var index in this.dice) {
     spacesToMove += this.dice[index];
   }
-  this.getCurrentPlayer().move(spacesToMove);
-  var player = this.getCurrentPlayer();
-  var actions = this.board.tiles[player.position].performLandingAction(this);
+
+  var oldTile = this.board.findTileForToken(player.tokens[0]);
+  var oldIndex = this.board.tiles.indexOf(oldTile);
+  var new_index = (oldIndex + spacesToMove) % 39;
+  if (oldIndex > new_index) {
+    player.makeDeposit(200);
+  }
+  this.board.moveTokenToTile(token, this.board.getTile(new_index));
+
+  var actions = this.board.getTile(new_index).performLandingAction(this);
   actions[0] = ("You rolled a " + spacesToMove + ". ").concat(actions[0]);
   return actions;
 };
@@ -101,7 +111,7 @@ MonopolyGame.prototype.clearActiveCard = function() {
 MonopolyGame.prototype.cancelTrade = function() {
   this.trade.cancelTrade();
   this.clearTrade();
-}
+};
 
 MonopolyGame.prototype.clearTrade = function() {
   this.trade = null;
