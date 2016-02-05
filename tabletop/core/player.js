@@ -45,4 +45,32 @@ Player.prototype.destroyToken = function(token) {
   token.isDead = true;
 };
 
+Player.prototype.getJSONString = function() {
+
+  var tokenArray = [];
+  for (var i = 0; i < this.tokens.length; i++) {
+    var tokenText = this.tokens[i].getJSONString();
+    tokenArray.push(tokenText);
+  }
+
+  return {
+    name: JSON.stringify(this.name),
+    position: JSON.stringify(this.position),
+    color: JSON.stringify(this.color),
+    tokens: tokenArray
+  }
+};
+
+Player.prototype.createFromJSONString = function(data) {
+  this.name = data.name;
+  this.position = data.position;
+  this.color = data.color;
+
+  for (var i = 0; i < data.tokens.length; i++) {
+    var token = new Token();
+    token.createFromJSONString(data.tokens[i]);
+    this.tokens.push(token);
+  }
+};
+
 module.exports = Player;

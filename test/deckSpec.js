@@ -1,5 +1,5 @@
 var should = require('chai').should();
-var Deck = require('../src/deck');
+var Deck = require('../tabletop/core/deck.js');
 
 describe('Deck Tests', function() {
   var deck;
