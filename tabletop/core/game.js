@@ -290,4 +290,30 @@ Game.prototype.destroyToken = function(token) {
   this.board.destroyToken(token);
 };
 
+
+Game.prototype.pickAImove = function(player, board, game) { 
+
+  var moves = this.getListOfMoves();
+ 
+  // make the move, recurse this function using a copy of the board 
+  // for each move 
+  //    if (isValidMove) call executeMove on the copy of board/game 
+  
+
+  // evaluate based on difficulty 
+  // novice: choose random move
+  // amateur: choose best move with 50%, 2nd best 25%, random 25% 
+  // master: always choose best 
+};
+
+Game.prototype.getListOfMoves = function(player) { 
+
+  if (this.gameType == gameTypePlaceToken) { 
+    // simulate every valid move for this gametype 
+    // and then return the list 
+  } 
+
+} 
+
+
 module.exports = Game;

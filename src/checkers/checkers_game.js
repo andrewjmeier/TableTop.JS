@@ -117,4 +117,31 @@ CheckersGame.prototype.playerDidWin = function(player) {
 };
 
 
+
+// takes in a player 
+// returns the score for the board based on the player passed in (ie. if the player 
+// has won it should return 10, if he loses should return -10) 
+CheckersGame.prototype.scoreBoard = function(player) { 
+
+  // (optional: probably do this after you've done everything below) 
+  // award 2 points for a board with 2 x's or o's in same row/column/diag
+
+  // needed: 
+  // award 10 points for win 
+  // subtract 10 points for loss 
+  // you could call "playerDidWin" to evaluate this
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = CheckersGame;
