@@ -9,7 +9,6 @@ function MonopolyTurn(game) {
 
     this.turnMap = new TableTop.Turn({
         initialize: function( options ) {
-            console.log("tests");
         },
 
         game : game,

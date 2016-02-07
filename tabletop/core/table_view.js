@@ -12,8 +12,7 @@ function TableView(game, turnMap) {
     });
 
     this.game.subscribe( function(message) {
-        console.log("hello");
-        if (message == "refreshView") {
+        if (message.text == "refreshView") {
             context.refreshView();
         }
     });
@@ -37,4 +36,16 @@ TableView.prototype.addTokenToTile = function(token, tile_idx) {
     }).appendTo("#tile" + tile_idx);
 };
 
+TableView.prototype.subscribeMessageModule = function() {
+    context = this;
+
+    this.game.subscribe( function(message) {
+        if (message.type == "console") {
+            $("<div/>", {
+                class: 'message' + message.cssClass,
+                text: message.text
+            }).appendTo(".game-messages");
+        }
+    })
+};
 module.exports = TableView;

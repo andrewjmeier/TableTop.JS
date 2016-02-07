@@ -22,9 +22,8 @@ MonopolyBoard.prototype.findTileForToken = function(token) {
 
 MonopolyBoard.prototype.moveTokenToTile = function(token, tile) {
     var oldTile = this.findTileForToken(token);
-    console.log(oldTile);
     if (oldTile != undefined) {
-        oldTile.tokens.splice(this.tiles.indexOf(oldTile), 1);
+        oldTile.tokens.splice(this.tiles.indexOf(token), 1);
     }
 
     tile.addToken(token);

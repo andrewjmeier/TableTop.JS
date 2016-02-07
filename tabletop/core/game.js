@@ -125,7 +125,7 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     message = message.concat(roll + ", ");
   }
 
-  this.sendMessage(message);
+  this.sendMessage(message, "console");
 };
 
 /**

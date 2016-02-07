@@ -16,6 +16,11 @@ html {
     margin: 0 auto;
 }
 
+.console {
+    position: relative;
+    top: 9%;
+    left: 9%;
+}
 .tile-list {
     list-style: none;
     width: 100%;
@@ -116,4 +121,31 @@ html {
 .tile-name {
     font-size: 75%;
     text-align: center;
+}
+
+.game-messages {
+    border: 1em solid #000000;
+}
+
+.myButton {
+    background-color:#44c767;
+    border-radius:1em;
+    border:.15em solid #18ab29;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    padding:.75em 1.5em;
+}
+
+.myButton:hover {
+    background-color:#18ab29;
+}
+
+.myButton:active {
+    position:relative;
+    top:1px;
+}
+
+.myButton.hidden {
+    display: none;
 }

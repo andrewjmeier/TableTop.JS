@@ -42,20 +42,34 @@
     background-color: #3471AE;
 }
 
-.myButton {
-    background-color:#44c767;
-    border-radius:1em;
-    border:.15em solid #18ab29;
-    display:inline-block;
-    cursor:pointer;
-    color:#ffffff;
-    padding:.75em 1.5em;
+.dog {
+    background-color: #f4a460;
 }
 
-.myButton:hover {
-    background-color:#18ab29;
+.hat {
+    background-color: #00ff00;
 }
-.myButton:active {
-    position:relative;
-    top:1px;
+
+.battleship {
+    background-color: #ffa500;
+}
+
+.thimble {
+    background-color: #696969;
+}
+
+.wheelbarrow {
+    background-color: #FF69B4;
+}
+
+.shoe {
+    background-color: #551A8B;
+}
+
+.iron {
+    background-color: #000000;
+}
+
+.racecar {
+    background-color: #999900;
 }
