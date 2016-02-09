@@ -2,9 +2,8 @@
  * The Component class
  * All game components should inherit from this class
  * @constructor
- * @param {int} type - the type of messages that the component subscribes to 
 */
-function Component(type) {
+function Component() {
     this.subscribers = [];
 }
 
@@ -13,27 +12,19 @@ Standard message emitter functions for model tabletop model components
 The message passing implementation is inspired by machina.js event emitters.
 */
 
-function Message(message_text, type) {
-    this.text = message_text;
-    if (!type) {
-        this.type
-    }
-}
-
 /**
  * Method to broadcast a message out to the other components
  * @param {string} message - Message to send
  * @returns {void}
 */
-Component.prototype.sendMessage = function(message, type) {
-    if (type == null) {
-        type = "standard";
-    }
+Component.prototype.sendMessage = function(message, type, sender) {
+    type = type || "standard";
+    sender = sender || this;
 
     messageObj = {
         type: type,
         text: message,
-        sender: this
+        sender: sender
     };
 
     for (var i = 0; i < this.subscribers.length; i++) {
@@ -56,8 +47,8 @@ Component.prototype.subscribe = function(callback) {
  * @return {void}
 */
 Component.prototype.propagate = function(child) {
-    child.subscribe(function(message) {
-        this.sendMessage(message);
+    child.subscribe(function(messageObj) {
+        this.sendMessage(messageObj.text, messageObj.type, messageObj.sender);
     });
 }
 

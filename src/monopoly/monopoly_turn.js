@@ -5,6 +5,7 @@ var TableTop = require('../../tabletop/tabletop');
 var inherits = require('util').inherits;
 
 function MonopolyTurn(game) {
+    TableTop.Component.call(this);
     this.game = game;
 
     this.turnMap = new TableTop.Turn({
@@ -142,7 +143,15 @@ function MonopolyTurn(game) {
             }
         }
     });
+
+    var context = this;
+    this.turnMap.on("transition", function() {
+        context.sendMessage("refreshView");
+    });
+
 };
+
+inherits(MonopolyTurn, Component);
 
 MonopolyTurn.prototype.updateState = function(click) {
     this.turnMap.handle(click);

@@ -20,6 +20,8 @@ html {
     position: relative;
     top: 9%;
     left: 9%;
+    width: 100%;
+    height: 100%;
 }
 .tile-list {
     list-style: none;
@@ -124,7 +126,10 @@ html {
 }
 
 .game-messages {
-    border: 1em solid #000000;
+    border: .5em solid #7F9795;
+    width: 35%;
+    height: 45%;
+    overflow: auto;
 }
 
 .myButton {

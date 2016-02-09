@@ -34,10 +34,7 @@ inherits(Game, Component);
 */
 Game.prototype.setTurnMap = function(turnMap) {
   this.turnMap = turnMap;
-  var context = this;
-  this.turnMap.turnMap.on("transition", function() {
-    context.sendMessage("refreshView");
-  });
+  this.propagate(turnMap);
 };
 
 /**
