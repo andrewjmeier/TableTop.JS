@@ -20,8 +20,8 @@ html {
     position: relative;
     top: 9%;
     left: 9%;
-    width: 100%;
-    height: 100%;
+    width: 82%;
+    height: 82%;
 }
 .tile-list {
     list-style: none;
@@ -126,13 +126,25 @@ html {
 }
 
 .game-messages {
+    box-sizing: border-box;
     border: .5em solid #7F9795;
-    width: 35%;
+    width: 50%;
     height: 45%;
     overflow: auto;
+    border-right: none;
 }
 
-.myButton {
+.player-box {
+    position: absolute;
+    box-sizing: border-box;
+    left: 50%;
+    top: 0%;
+    width: 50%;
+    height: 100%;
+    border: .5em solid #7F9795;
+}
+
+.control-button {
     background-color:#44c767;
     border-radius:1em;
     border:.15em solid #18ab29;
@@ -142,15 +154,14 @@ html {
     padding:.75em 1.5em;
 }
 
-.myButton:hover {
+.control-button:hover {
     background-color:#18ab29;
 }
 
-.myButton:active {
-    position:relative;
-    top:1px;
+.control-button:active {
+    position:absolute;
 }
 
-.myButton.hidden {
+.control-button.hidden {
     display: none;
 }

@@ -7,7 +7,7 @@ function TableView(game, turnMap) {
 
     var context = this;
 
-    $(".myButton").click( function() {
+    $(".control-button").click( function() {
         context.game.updateState("yes_continue");
     });
 
