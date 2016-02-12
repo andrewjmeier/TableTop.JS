@@ -146,15 +146,14 @@ function MonopolyTurn(game) {
 
     var context = this;
     this.turnMap.on("transition", function() {
-        context.sendMessage("refreshView");
+        context.sendMessage("refreshView", "view");
     });
-
 };
 
 inherits(MonopolyTurn, Component);
 
-MonopolyTurn.prototype.updateState = function(click) {
-    this.turnMap.handle(click);
+MonopolyTurn.prototype.updateState = function(message) {
+    this.turnMap.handle(message);
 };
 
 MonopolyTurn.prototype.getCurrentState = function() {

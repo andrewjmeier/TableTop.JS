@@ -77,6 +77,9 @@ function buildSpaces(board) {
     propertyForIndex(BOARDWALK, props),
 
   ];
+
+  board.propagate(board.tiles[7]);
+  board.tiles[7].sendMessage("Hello");
 }
 
 // indices correlate to order in below function propertiesList()

@@ -33,6 +33,7 @@ inherits(Game, Component);
  * @param {Turn} turnMap - A turn object to be used by the game
 */
 Game.prototype.setTurnMap = function(turnMap) {
+  context = this;
   this.turnMap = turnMap;
   this.propagate(turnMap);
 };
@@ -122,7 +123,7 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     message = message.concat(roll + ", ");
   }
 
-  this.sendMessage(message, "console");
+  this.sendMessage(message);
 };
 
 /**

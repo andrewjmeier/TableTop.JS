@@ -7,6 +7,7 @@ var _ = require('lodash');
 
 function MonopolyGame(board) {
   TableTop.Game.call(this, board);
+  this.propagate(this.board);
   this.chanceCards = new ChanceDeck();
   this.communityChestCards = new CommunityChestDeck();
   this.shuffleCards();

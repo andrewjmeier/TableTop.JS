@@ -12,7 +12,7 @@ function TableView(game, turnMap) {
     });
 
     this.game.subscribe( function(message) {
-        if (message.text == "refreshView") {
+        if (message.type == "view") {
             context.refreshView();
         }
     });
@@ -37,10 +37,10 @@ TableView.prototype.addTokenToTile = function(token, tile_idx) {
 };
 
 TableView.prototype.subscribeMessageModule = function() {
-    context = this;
+    var context = this;
 
     this.game.subscribe( function(message) {
-        if (message.type == "console") {
+        if (message.type == "standard") {
             $("<div/>", {
                 class: 'message' + message.cssClass,
                 text: message.text

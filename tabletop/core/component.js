@@ -28,7 +28,7 @@ Component.prototype.sendMessage = function(message, type, sender) {
     };
 
     for (var i = 0; i < this.subscribers.length; i++) {
-        this.subscribers[i].call(this, messageObj);       
+        this.subscribers[i].call(this, messageObj);
     }
 };
 
@@ -47,8 +47,9 @@ Component.prototype.subscribe = function(callback) {
  * @return {void}
 */
 Component.prototype.propagate = function(child) {
+    var context = this;
     child.subscribe(function(messageObj) {
-        this.sendMessage(messageObj.text, messageObj.type, messageObj.sender);
+        context.sendMessage(messageObj.text, messageObj.type, messageObj.sender);
     });
 }
 

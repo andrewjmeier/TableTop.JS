@@ -11,13 +11,14 @@ html {
 }
 
 .board {
+    position: relative;
     width: 100%;
     height: 100%;
     margin: 0 auto;
 }
 
 .console {
-    position: relative;
+    position: absolute;
     top: 9%;
     left: 9%;
     width: 82%;
@@ -125,13 +126,20 @@ html {
     text-align: center;
 }
 
-.game-messages {
+.messenger {
+    position: relative;
     box-sizing: border-box;
     border: .5em solid #7F9795;
+    border-right: none;
+    text-align: center;
     width: 50%;
     height: 45%;
     overflow: auto;
-    border-right: none;
+}
+.game-messages {
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
 }
 
 .player-box {
@@ -142,6 +150,11 @@ html {
     width: 50%;
     height: 100%;
     border: .5em solid #7F9795;
+    text-align: center;
+}
+
+.controls {
+    margin: 0 auto;
 }
 
 .control-button {
@@ -152,6 +165,7 @@ html {
     cursor:pointer;
     color:#ffffff;
     padding:.75em 1.5em;
+    margin: 0 auto;
 }
 
 .control-button:hover {
@@ -159,7 +173,6 @@ html {
 }
 
 .control-button:active {
-    position:absolute;
 }
 
 .control-button.hidden {
