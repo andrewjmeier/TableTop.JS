@@ -5,11 +5,11 @@ var TableTop = require('../../tabletop/tabletop');
 var inherits = require('util').inherits;
 
 function MonopolyTurn(game) {
+    TableTop.Component.call(this);
     this.game = game;
 
     this.turnMap = new TableTop.Turn({
         initialize: function( options ) {
-            console.log("tests");
         },
 
         game : game,
@@ -27,7 +27,7 @@ function MonopolyTurn(game) {
 
             waitingOnRoll: {
                 _onEnter: function() {
-                    this.game.message = this.game.players[game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
+                    this.game.message = this.game.players[this.game.currentPlayer].name + ": Click 'Continue' to roll dice.";;
                 },
 
                 yes_continue : function() {
@@ -143,10 +143,17 @@ function MonopolyTurn(game) {
             }
         }
     });
+
+    var context = this;
+    this.turnMap.on("transition", function() {
+        context.sendMessage("refreshView", "view");
+    });
 };
 
-MonopolyTurn.prototype.updateState = function(click) {
-    this.turnMap.handle(click);
+inherits(MonopolyTurn, Component);
+
+MonopolyTurn.prototype.updateState = function(message) {
+    this.turnMap.handle(message);
 };
 
 MonopolyTurn.prototype.getCurrentState = function() {

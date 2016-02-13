@@ -12,7 +12,7 @@ var Turn = machina.Fsm.extend({
         namespace: 'test',
 
         states: {
-            setup: {
+            uninitialized: {
                 '_onEnter': function() {
                 }
             }

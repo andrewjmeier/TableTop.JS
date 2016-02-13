@@ -2,6 +2,7 @@ var should = require('chai').should();
 var Game = require('../tabletop/core/game');
 var Player = require('../tabletop/core/player');
 var Board = require('../tabletop/core/board');
+var Turn = require('../tabletop/core/turn');
 var c = require('../tabletop/core/ttConstants');
 
 describe('Game Tests', function() {
@@ -14,7 +15,8 @@ describe('Game Tests', function() {
 
   describe('#setTurnMap', function() {
     it('set the games turn map', function() {
-      game.setTurnMap(5);
+      var turnMap = new Turn();
+      game.setTurnMap(turnMap);
       game.turnMap.should.eq(5);
     });
   });

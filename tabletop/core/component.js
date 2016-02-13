@@ -2,9 +2,8 @@
  * The Component class
  * All game components should inherit from this class
  * @constructor
- * @param {int} type - the type of messages that the component subscribes to 
 */
-function Component(type) {
+function Component() {
     this.subscribers = [];
 }
 
@@ -18,20 +17,40 @@ The message passing implementation is inspired by machina.js event emitters.
  * @param {string} message - Message to send
  * @returns {void}
 */
-Component.prototype.sendMessage = function(message) {
+Component.prototype.sendMessage = function(message, type, sender) {
+    type = type || "standard";
+    sender = sender || this;
+
+    messageObj = {
+        type: type,
+        text: message,
+        sender: sender
+    };
+
     for (var i = 0; i < this.subscribers.length; i++) {
-        console.log(this.subscribers[i]);
-        this.subscribers[i].call(this, message);       
+        this.subscribers[i].call(this, messageObj);
     }
 };
 
 /**
  * Method to subscribe to messages
- * @param {func} callback - A callback method to pass the message to
+ * @param {func(message)} callback - A callback method to pass the message to
  * @returns {void}
 */
 Component.prototype.subscribe = function(callback) {
     this.subscribers.push(callback);
 };
 
-module.exports = Component; 
+/**
+ * Method to propagate the message of a child element to the next level of the model
+ * @param {component} child - Child to forward messages
+ * @return {void}
+*/
+Component.prototype.propagate = function(child) {
+    var context = this;
+    child.subscribe(function(messageObj) {
+        context.sendMessage(messageObj.text, messageObj.type, messageObj.sender);
+    });
+}
+
+module.exports = Component;

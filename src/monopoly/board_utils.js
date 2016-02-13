@@ -11,7 +11,7 @@ var Go = require('./board/other/go'),
     UtilityProperty = require('./board/properties/utilityProperty'),
     HousingProperty = require('./board/properties/housingProperty'),
     RailroadProperty = require('./board/properties/railroadProperty'),
-    Board = require('./board/board/board'); // looks ugly, maybe think of better naming pattern
+    MonopolyBoard = require('./board/monopoly_board'); // looks ugly, maybe think of better naming pattern
 
 // end of space class definitions
 
@@ -19,7 +19,7 @@ var Go = require('./board/other/go'),
 // now let's build the board
 var board;
 function buildBoard() {
-  board = new Board();
+  board = new MonopolyBoard();
   buildSpaces(board);
   return board;
 }
@@ -77,6 +77,9 @@ function buildSpaces(board) {
     propertyForIndex(BOARDWALK, props),
 
   ];
+
+  board.propagate(board.tiles[7]);
+  board.tiles[7].sendMessage("Hello");
 }
 
 // indices correlate to order in below function propertiesList()

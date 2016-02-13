@@ -21,6 +21,7 @@ var core = Object.assign({
     Turn: require('./turn'),
     Utils: require('./utils'),
     VertexTile: require('./vertex_tile'),
+    TableView: require('./table_view'),
     View: require('./view')
 
 });
