@@ -84,7 +84,10 @@ function MonopolyTurn(game) {
                 no_trade_clear : function() {
                     //btn is trade in this case
                     this.transition("proposeTrade")
-                }
+                },
+                _onExit: function() {
+                    game.sendData();
+                } 
             },
 
             proposeTrade: {

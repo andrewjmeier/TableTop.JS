@@ -35,3 +35,8 @@ var turn = new Turn(monopoly);
 monopoly.setTurnMap(turn);
 
 var view = new MonopolyView(monopoly);
+
+socket.on('move made', function(msg) {
+  console.log("a move was made and client received it");
+  monopoly.createFromJSONString(msg);
+});

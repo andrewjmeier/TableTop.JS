@@ -40,4 +40,23 @@ MonopolyBoard.prototype.destroyToken = function(token) {
   }
 };
 
+MonopolyBoard.prototype.getJSONString = function() {
+  var tiles = [];
+
+  for (var i = 0; i < this.tiles.length; i++){
+      var tileText = this.tiles[i].getJSONString();
+      tiles.push(tileText);
+  }
+  return tiles;
+};
+
+MonopolyBoard.prototype.createFromJSONString = function(data) {
+  console.log(data, this.tiles);
+  for (var i = 0; i < this.tiles.length; i++) {
+    var tile = this.tiles[i];
+    console.log("building tile", i, data[i]);
+    tile.createFromJSONString(data[i]);
+  }
+};
+
 module.exports = MonopolyBoard;

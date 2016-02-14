@@ -19,6 +19,46 @@ function MonopolyGame(board) {
 
 inherits(MonopolyGame, TableTop.Game);
 
+MonopolyGame.prototype.sendData = function() {
+  var text = JSON.stringify(this.getJSONString());
+  console.log("this thing now", text);
+  socket.emit('move made', text);
+};
+
+MonopolyGame.prototype.getJSONString = function() {
+
+  var playersArray = [];
+  for (var i = 0; i < this.players.length; i++) {
+    var playerText = this.players[i].getJSONString();
+    playersArray.push(playerText);
+  }
+
+
+
+  return {
+    players: playersArray,
+    currentPlayer: this.currentPlayer,
+    board: this.board.getJSONString()
+  }
+
+};
+
+MonopolyGame.prototype.createFromJSONString = function(data) {
+  var dic = JSON.parse(data);
+  console.log("data", dic);
+  this.currentPlayer = dic.currentPlayer;
+  for (var i = 0; i < dic.players.length; i++) {
+    var player = new TableTop.Player();
+    player.createFromJSONString(dic.players[i]);
+    this.players.push(player);
+  }
+  this.board.createFromJSONString(dic.board);
+
+  console.log("the board", this.board);
+  this.sendMessage("refreshView", "view");
+
+};
+
 MonopolyGame.prototype.setPlayers = function(players) { 
   this.players = players;
   for (var i = players.length - 1; i >= 0; i--) {
