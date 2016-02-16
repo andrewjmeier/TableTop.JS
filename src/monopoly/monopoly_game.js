@@ -15,11 +15,17 @@ function MonopolyGame(board) {
   this.message = "";
   this.activeCard = null;
   this.trade = null;
+  this.hasMadeGame = false;
+  console.log("game init");
 };
 
 inherits(MonopolyGame, TableTop.Game);
 
 MonopolyGame.prototype.sendData = function() {
+  if (!this.hasMadeGame) {
+    socket.emit('create game', "making a game yo");
+    this.hasMadeGame = true;
+  }
   var text = JSON.stringify(this.getJSONString());
   console.log("this thing now", text);
   socket.emit('move made', text);
@@ -32,8 +38,6 @@ MonopolyGame.prototype.getJSONString = function() {
     var playerText = this.players[i].getJSONString();
     playersArray.push(playerText);
   }
-
-
 
   return {
     players: playersArray,
@@ -112,14 +116,15 @@ MonopolyGame.prototype.rollAndMovePlayer = function() {
 MonopolyGame.prototype.movePlayer = function(player) {
   var spacesToMove = 0;
   var token = player.tokens[0];
+  console.log("token", token);
 
   for (var index in this.dice) {
     spacesToMove += this.dice[index];
   }
 
-  var oldTile = this.board.findTileForToken(player.tokens[0]);
+  var oldTile = this.board.findTileForToken(token);
   var oldIndex = this.board.tiles.indexOf(oldTile);
-  var new_index = (oldIndex + spacesToMove) % 39;
+  var new_index = (oldIndex + spacesToMove) % 40;
   if (oldIndex > new_index) {
     player.makeDeposit(200);
   }
@@ -127,6 +132,7 @@ MonopolyGame.prototype.movePlayer = function(player) {
 
   var actions = this.board.getTile(new_index).performLandingAction(this);
   actions[0] = ("You rolled a " + spacesToMove + ". ").concat(actions[0]);
+  console.log("moved player", oldIndex, new_index, this.currentPlayer);
   return actions;
 };
 
@@ -143,6 +149,7 @@ MonopolyGame.prototype.nextPlayer = function() {
       this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
     }
   }
+  this.sendMessage(this.currentPlayer, "standard");
 };
 
 MonopolyGame.prototype.clearActiveCard = function() {

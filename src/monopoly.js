@@ -1,10 +1,10 @@
-require("./monopoly/board/boardConstants.js");
-
+var TableTop = require("../tabletop/tabletop");
 var Player = require("./monopoly/monopoly_player.js");
 var Card = require("../tabletop/core/card.js");
 var Game = require("./monopoly/monopoly_game.js");
 var Board = require("./monopoly/board_utils.js");
 var Turn = require("./monopoly/monopoly_turn.js");
+var MonopolyToken = require("./monopoly/monopoly_token.js");
 var MonopolyView = require("./monopoly/view/monopoly_view.v2.js");
 
 var john = new Player("Andrew", 1);
@@ -40,3 +40,18 @@ socket.on('move made', function(msg) {
   console.log("a move was made and client received it");
   monopoly.createFromJSONString(msg);
 });
+
+socket.on('game created', function(msg) {
+  console.log("game created", msg);
+});
+
+TokenFactory = function(type){
+  switch(type) {
+    case "Token":
+      return new TableTop.Token();
+    case "MonopolyToken":
+      return new MonopolyToken();
+    default:
+      return new TableTop.Token();
+  }
+}

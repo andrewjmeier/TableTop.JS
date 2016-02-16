@@ -63,7 +63,7 @@ Tile.prototype.getJSONString = function() {
 
   return {
     name: this.name,
-    color: this.color,
+    color: this.color, 
     tokens: tokenArray
   }
 };
@@ -73,7 +73,8 @@ Tile.prototype.createFromJSONString = function(data) {
   this.color = data.color;
   this.tokens = [];
   for (var i = 0; i < data.tokens.length; i++) {
-    var token = new Token();
+    var token = TokenFactory(data.tokens[i].type);
+    // var token = new Token();
     token.createFromJSONString(data.tokens[i]);
     this.tokens.push(token);
   }

@@ -8,13 +8,19 @@ var inherits = require('util').inherits;
 function MonopolyBoard() {
     TableTop.Board.call(this);
     this.tiles = [];
+    console.log("boarding");
 }
 
 inherits(MonopolyBoard, TableTop.Board);
 
 MonopolyBoard.prototype.findTileForToken = function(token) {
     var tile = _.find(this.tiles, function (n) {
-        return (n.tokens.indexOf(token) != -1);
+        var other = _.find(n.tokens, function(other) {
+          return other.uniqueId === token.uniqueId;
+        });
+        if (other !== null) {
+          return true; 
+        }
     });
 
     return tile;
@@ -51,10 +57,8 @@ MonopolyBoard.prototype.getJSONString = function() {
 };
 
 MonopolyBoard.prototype.createFromJSONString = function(data) {
-  console.log(data, this.tiles);
   for (var i = 0; i < this.tiles.length; i++) {
     var tile = this.tiles[i];
-    console.log("building tile", i, data[i]);
     tile.createFromJSONString(data[i]);
   }
 };

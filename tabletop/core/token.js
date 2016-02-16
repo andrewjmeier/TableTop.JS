@@ -24,7 +24,8 @@ Token.prototype.getJSONString = function() {
 
   return {
     color: this.color,
-    isDead: this.isDead
+    isDead: this.isDead,
+    type: "Token"
   }
 };
 
