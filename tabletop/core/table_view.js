@@ -7,8 +7,17 @@ function TableView(game, turnMap) {
 
     var context = this;
 
-    $(".control-button").click( function() {
+    $(".game-button").click( function() {
         context.game.updateState("yes_continue");
+    });
+
+    $(".joingame-button").click(function() {
+        var id = $(".joingame-id").val();
+        console.log("joining", id);
+    });
+
+    $(".newgame-button").click(function() {
+        console.log("creating new game");
     });
 
     this.game.subscribe( function(message) {
