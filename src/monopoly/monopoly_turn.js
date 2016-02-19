@@ -46,7 +46,8 @@ function MonopolyTurn(game) {
             buyPrompt: {
                 _onEnter : function() {
                     var player = this.game.getCurrentPlayer();
-                    var property = this.game.board.tiles[player.position];
+                    var token = player.tokens[0];
+                    var property = this.game.board.findTileForToken(token);
                     if (player.canBuy(property)) {
                         this.game.message = this.game.message.concat("Do you want to buy it?");
                     } else {

@@ -4,6 +4,10 @@ html {
     font-family: "museo-sans-1","museo-sans-2", "Humanst521 BT", sans-serif;
 }
 
+/*body {
+    background-image: url("http://images1.fanpop.com/images/image_uploads/Monopoly-Wallpaper-board-games-1087813_1024_768.jpg");
+}*/
+
 .game-table {
     margin: 0 auto;
     width: 60em;

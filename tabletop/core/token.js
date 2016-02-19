@@ -25,6 +25,7 @@ Token.prototype.getJSONString = function() {
   return {
     color: this.color,
     isDead: this.isDead,
+    uniqueId: this.uniqueId,
     type: "Token"
   }
 };
@@ -32,6 +33,7 @@ Token.prototype.getJSONString = function() {
 Token.prototype.createFromJSONString = function(data) {
   this.color = data.color;
   this.isDead = data.isDead;
+  this.uniqueId = data.uniqueId;
 };
 
 

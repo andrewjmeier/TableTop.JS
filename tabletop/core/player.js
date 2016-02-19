@@ -14,7 +14,6 @@ function Player(name, color) {
   Component.call(this);
   this.name = name;
   this.tokens = [];
-  this.position = 0;
   this.color = color;
 };
 
@@ -41,6 +40,7 @@ Player.prototype.destroyToken = function(token) {
 Player.prototype.getJSONString = function() {
 
   var tokenArray = [];
+  console.log("player");
   for (var i = 0; i < this.tokens.length; i++) {
     var tokenText = this.tokens[i].getJSONString();
     tokenArray.push(tokenText);
@@ -48,7 +48,6 @@ Player.prototype.getJSONString = function() {
 
   return {
     name: this.name,
-    position: this.position,
     color: this.color,
     tokens: tokenArray
   }
@@ -56,7 +55,6 @@ Player.prototype.getJSONString = function() {
 
 Player.prototype.createFromJSONString = function(data) {
   this.name = data.name;
-  this.position = data.position;
   this.color = data.color;
 
   for (var i = 0; i < data.tokens.length; i++) {
