@@ -47,9 +47,9 @@ Player.prototype.getJSONString = function() {
   }
 
   return {
-    name: JSON.stringify(this.name),
-    position: JSON.stringify(this.position),
-    color: JSON.stringify(this.color),
+    name: this.name,
+    position: this.position,
+    color: this.color,
     tokens: tokenArray
   }
 };

@@ -40,6 +40,12 @@ TableView.prototype.refreshView = function() {
     }
 
     $(".gamecode").html("Game Code: " + this.game.gameID);
+    this.updatePlayerModule(this.game.players);
+};
+
+
+TableView.prototype.updatePlayerModule = function(players) {
+
 };
 
 TableView.prototype.addTokenToTile = function(token, tile_idx) {
