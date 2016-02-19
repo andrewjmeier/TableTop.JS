@@ -39,6 +39,7 @@ Game.prototype.joinGame = function(gameID) {
 Game.prototype.gameCreated = function(msg) {
   this.gameID = msg;
   console.log("game created", this.gameID);
+  this.sendMessage("refreshView", "view");
 };
 
 /**

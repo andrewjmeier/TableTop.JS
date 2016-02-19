@@ -41,13 +41,19 @@ MonopolyGame.prototype.getJSONString = function() {
   return {
     players: playersArray,
     currentPlayer: this.currentPlayer,
-    board: this.board.getJSONString()
+    board: this.board.getJSONString(),
+    gameID: this.gameID
   }
 
 };
 
 MonopolyGame.prototype.createFromJSONString = function(data) {
   var dic = JSON.parse(data);
+  
+  // only update if it's this game
+  if (this.gameID !== dic.gameID) {
+    return;
+  }
   console.log("data", dic);
   this.currentPlayer = dic.currentPlayer;
   for (var i = 0; i < dic.players.length; i++) {
