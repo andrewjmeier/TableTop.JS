@@ -14,10 +14,12 @@ function TableView(game, turnMap) {
     $(".joingame-button").click(function() {
         var id = $(".joingame-id").val();
         console.log("joining", id);
+        context.game.joinGame(id);
     });
 
     $(".newgame-button").click(function() {
         console.log("creating new game");
+        context.game.createGame();
     });
 
     this.game.subscribe( function(message) {
@@ -36,6 +38,8 @@ TableView.prototype.refreshView = function() {
             this.addTokenToTile(tile.tokens[j], i);
         }
     }
+
+    $(".gamecode").html("Game Code: " + this.game.gameID);
 };
 
 TableView.prototype.addTokenToTile = function(token, tile_idx) {

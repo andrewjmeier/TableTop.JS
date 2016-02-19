@@ -23,9 +23,23 @@ function Game(board) {
   this.showNextPlayerScreen = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
+  this.gameID = null;
 };
 
 inherits(Game, Component);
+
+Game.prototype.createGame = function() {
+  socket.emit('create game', null);
+};
+
+Game.prototype.joinGame = function(gameID) {
+  socket.emit('join game', gameID);
+};
+
+Game.prototype.gameCreated = function(msg) {
+  this.gameID = msg;
+  console.log("game created", this.gameID);
+};
 
 /**
  * Method to set turnMap of the game once it is created

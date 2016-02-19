@@ -34,11 +34,13 @@ io.on('connection', function(socket) {
     games[uuid] = [];
     games[uuid].push(clientID);
     socket.emit('game created', uuid);
+    console.log(games);
   });
 
   socket.on('join game', function(msg) {
     // add client id to list of clients for game id
     games[msg].push(clientID);
+    socket.emit('game created', msg);
   });
 
 });
@@ -47,10 +49,10 @@ function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
-      .substring(1);
+      .substring(1)
+      .toUpperCase();
   }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return s4();
 }
 
 http.listen(3000, function() {

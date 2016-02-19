@@ -42,7 +42,7 @@ socket.on('move made', function(msg) {
 });
 
 socket.on('game created', function(msg) {
-  console.log("game created", msg);
+  monopoly.gameCreated(msg);
 });
 
 TokenFactory = function(type){

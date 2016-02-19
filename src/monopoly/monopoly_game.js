@@ -23,7 +23,6 @@ inherits(MonopolyGame, TableTop.Game);
 
 MonopolyGame.prototype.sendData = function() {
   if (!this.hasMadeGame) {
-    socket.emit('create game', "making a game yo");
     this.hasMadeGame = true;
   }
   var text = JSON.stringify(this.getJSONString());
