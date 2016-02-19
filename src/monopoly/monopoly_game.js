@@ -3,6 +3,7 @@ var CommunityChestDeck = require("./cards/communityChestDeck");
 var inherits = require('util').inherits;
 var Trade = require("./monopoly_trade.js");
 var TableTop = require('../../tabletop/tabletop');
+var Player = require('./monopoly_player.js');
 var _ = require('lodash');
 
 function MonopolyGame(board) {
@@ -49,7 +50,7 @@ MonopolyGame.prototype.getJSONString = function() {
 
 MonopolyGame.prototype.createFromJSONString = function(data) {
   var dic = JSON.parse(data);
-  
+
   // only update if it's this game
   if (this.gameID !== dic.gameID) {
     return;
@@ -57,9 +58,9 @@ MonopolyGame.prototype.createFromJSONString = function(data) {
   console.log("data", dic);
   this.currentPlayer = dic.currentPlayer;
   for (var i = 0; i < dic.players.length; i++) {
-    var player = new TableTop.Player();
+    var player = new Player();
     player.createFromJSONString(dic.players[i]);
-    this.players.push(player);
+    this.players[i] = player;
   }
   this.board.createFromJSONString(dic.board);
 
@@ -140,6 +141,23 @@ MonopolyGame.prototype.movePlayer = function(player) {
   console.log("moved player", oldIndex, new_index, this.currentPlayer);
   return actions;
 };
+
+MonopolyGame.prototype.moveTo = function(tileIndex, player) {
+  var tile = this.board.getTile(tileIndex);
+  var token = player.tokens[0];
+  this.board.moveTokenToTile(token, tile);
+};
+
+MonopolyGame.prototype.move = function(spacesToMove, player) {
+  var token = player.tokens[0];
+  var oldTile = this.board.findTileForToken(token);
+  var oldIndex = this.board.tiles.indexOf(oldTile);
+  var newIndex = (oldIndex + spacesToMove) % 40;
+  if (oldIndex > newIndex) {
+    player.makeDeposit(200);
+  }
+  this.board.moveTokenToTile(token, this.board.getTile(newIndex));
+}
 
 MonopolyGame.prototype.nextPlayer = function() {
   if (!this.isDoubles(this.dice)) {

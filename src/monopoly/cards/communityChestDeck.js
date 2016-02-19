@@ -14,7 +14,8 @@ inherits(CommunityChestDeck, TableTop.Deck);
 var buildCommunityChestDeck = function() {
 
   var card1 = new TableTop.Card("Advance to Go (Collect $200)", function(game) {
-    game.getCurrentPlayer().moveTo(0);
+    var player = game.getCurrentPlayer();
+    game.moveTo(0, player);
     return game.board.tiles[0].performLandingAction(game);
   });
 

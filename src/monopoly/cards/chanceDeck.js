@@ -13,12 +13,14 @@ inherits(ChanceDeck, TableTop.Deck);
 var buildChanceDeck = function() {
 
   var chance1 = new TableTop.Card("Advance to Go (Collect $200)", function(game) {
-    game.getCurrentPlayer().moveTo(0);
+    var player = game.getCurrentPlayer();
+    game.moveTo(0, player);
     return game.board.tiles[0].performLandingAction(game);
   });
 
   var chance2 = new TableTop.Card("Advance to North Mass.", function(game) {
-    game.getCurrentPlayer().moveTo(24);
+    var player = game.getCurrentPlayer();
+    game.moveTo(24, player);
     return game.board.tiles[24].performLandingAction(game);
   });
 
@@ -26,11 +28,11 @@ var buildChanceDeck = function() {
     var player = game.getCurrentPlayer();
     if (player.position > 11 && player.position < 28) {
       // move to water works
-      player.moveTo(28);
+      game.moveTo(28, player);
       return game.board.tiles[28].performLandingAction(game);
     } else {
       // move to electric company
-      player.moveTo(12);
+      game.moveTo(12, player);
       return game.board.tiles[12].performLandingAction(game);
     }
 
@@ -54,13 +56,14 @@ var buildChanceDeck = function() {
       space = 15;
     }
 
-    player.moveTo(space);
+    game.moveTo(space, player);
     return game.board.tiles[space].performLandingAction(game);
     // TODO - pay owner twice rent
   });
 
   var chance6 = new TableTop.Card("Advance to Gile Hall - if you pass Go, collect $200", function(game) {
-    game.getCurrentPlayer().moveTo(11);
+    var player = game.getCurrentPlayer();
+    game.moveTo(11, player);
     return game.board.tiles[11].performLandingAction(game);
   });
 
@@ -77,10 +80,10 @@ var buildChanceDeck = function() {
   var chance9 = new TableTop.Card("Go back 3 spaces", function(game) {
     var player = game.getCurrentPlayer();
     if (player.position < 3) {
-      player.move(40 - 3);
+      game.move(40 - 3, player);
       return game.board.tiles[player.position].performLandingAction(game);
     } else {
-      player.move(-3);
+      game.move(-3, player);
       return game.board.tiles[player.position].performLandingAction(game);   
     }
   });
@@ -116,12 +119,14 @@ var buildChanceDeck = function() {
   });
 
   var chance13 = new TableTop.Card("Take a trip to the Hop. Advance to the Courtyard Cafe - if you pass Go collect $200", function(game) {
-    game.getCurrentPlayer().moveTo(5);
+    var player = game.getCurrentPlayer();
+    game.moveTo(5, player);
     return game.board.tiles[5].performLandingAction(game);   
   });
 
   var chance14 = new TableTop.Card("Take a walk down Tuck Drive - advance token to McLane", function(game) {
-    game.getCurrentPlayer().moveTo(39);
+    var player = game.getCurrentPlayer();
+    game.moveTo(39, player);
     return game.board.tiles[39].performLandingAction(game);   
   });
 
