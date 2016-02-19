@@ -20,14 +20,6 @@ function Player(name, color) {
 inherits(Player, Component);
 
 /**
- * Represents a Player.
- * @param {int} position - The new position (index on the board) to move the player to
-*/
-Player.prototype.moveTo = function(position) {
-  this.position = position;
-};
-
-/**
  * Add items to a player
  * This is used by the trade (but could be used elsewhere as well)
  * @abstract

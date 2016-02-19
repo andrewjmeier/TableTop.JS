@@ -1,11 +1,15 @@
 var inherits = require('util').inherits;
 // var Player = require("../../tabletop/core/player.js");
 var TableTop = require('../../tabletop/tabletop');
+var MonopolyToken = require('./monopoly_token');
+var TokenTypes = require('./token_types');
+var _ = require('lodash');
 
 function MonopolyPlayer(name, number) {
   TableTop.Player.call(this, name, number);
   this.money = 1500;
   this.properties = [];
+  this.tokens.push(this.createRandomUniqueToken());
   this.getOutOfJailFreeCards = 0;
   this.inJail = false;
   this.turnsInJail = 0;
@@ -62,29 +66,6 @@ MonopolyPlayer.prototype.makeDeposit = function(amount) {
   this.money += amount;
 };
 
-MonopolyPlayer.prototype.moveTo = function(position) {
-  var previousPosition = this.position;
-
-  // passed go collecting $200
-  if (previousPosition > position) {
-    this.money += 200;
-  }
-
-  MonopolyPlayer.super_.prototype.moveTo.call(this, position);
-};
-
-MonopolyPlayer.prototype.move = function(spacesToMove) {
-  var nextPosition = this.position + spacesToMove;
-
-  // passed go
-  if (nextPosition >= 40) {
-    nextPosition = nextPosition % 40;
-    this.money += 200;
-  }
-  this.position = nextPosition;
-};
-
-
 MonopolyPlayer.prototype.canBuy = function(property) {
   return (this.money > property.cost) && !property.owner;
 };
@@ -114,6 +95,18 @@ MonopolyPlayer.prototype.assets = function() {
   }
 
   return assets;
+};
+
+MonopolyPlayer.prototype.createRandomUniqueToken = function() {
+  var cssClass = _.sample(TokenTypes.playerTokens);
+
+  _.remove(TokenTypes.playerTokens, function(n) {
+    return n == cssClass;
+  });
+
+  token = new MonopolyToken(cssClass);
+
+  return token;
 };
 
 //used in trading

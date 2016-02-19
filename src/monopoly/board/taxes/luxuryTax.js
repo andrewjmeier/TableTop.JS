@@ -2,8 +2,7 @@ var Tax = require('./tax'),
     inherits = require('util').inherits;
 
 function LuxuryTax() {
-  this.name = "Luxury Tax";
-  this.taxAmount = 75;
+  Tax.call(this, "LuxuryTax", 75);
 };
 
 inherits(LuxuryTax, Tax);

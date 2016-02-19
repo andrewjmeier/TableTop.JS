@@ -22,6 +22,7 @@ function Game(board) {
   this.possibleNumPlayers = [2, 3, 4, 5];
   this.showNextPlayerScreen = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
+  this.currentPlayer = 0;
 };
 
 inherits(Game, Component);
@@ -32,7 +33,9 @@ inherits(Game, Component);
  * @param {Turn} turnMap - A turn object to be used by the game
 */
 Game.prototype.setTurnMap = function(turnMap) {
+  context = this;
   this.turnMap = turnMap;
+  this.propagate(turnMap);
 };
 
 /**

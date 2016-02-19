@@ -1,11 +1,11 @@
-var Space = require('../board/space'),
+var MonopolyTile = require('../monopoly_tile'),
     inherits = require('util').inherits;
 
 function FreeParking() {
-    this.name = "Free Parking";
+    MonopolyTile.call(this, "Free Parking");
 };
 
-inherits(FreeParking, Space);
+inherits(FreeParking, MonopolyTile);
 
 FreeParking.prototype.performLandingAction = function(game) {
   return FreeParking.super_.prototype.performLandingAction.call(this, game);
