@@ -12,12 +12,16 @@
           var socket = io();
         </script>
         <script src="/bundle.js"></script>
-        Enter ID to join a game:<br>
-        <input type="text" name="firstname" value="Game ID" class="joingame-id"><br>
-        <div href="#" class="control-button joingame-button">Join Game</div><br>
-        Or Create a New Game<br>
-        <div href="#" class="control-button newgame-button">New Game</div>
-        <div class="gamecode">Game Code: </div>
+        <div class="game-setup">
+            Enter ID to join a game:<br>
+            <input type="text" name="gameID" placeholder="Game ID" class="joingame-id"><br>
+            Enter a name for your player:<br>
+            <input type="text" name="playerName" placeholder="John Smith" class="player-name"><br>
+            <div href="#" class="control-button joingame-button">Join Game</div><br>
+            Or Create a New Game<br>
+            <div href="#" class="control-button newgame-button">New Game</div>
+            <div class="gamecode">Game Code: </div>
+        </div>
         <div class="game-table">
             <div class="board">
                 <div class="tile-list">

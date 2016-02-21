@@ -24,23 +24,39 @@ io.on('connection', function(socket) {
   socket.on('move made', function(msg) {
     console.log(msg);
     console.log(clientID, "client ID");
-    io.sockets.emit('move made', msg);
+    var dic = JSON.parse(msg);
+    var game = games[dic.gameID];
+    // io.sockets.emit('move made', msg);
+    for (var i = 0; i < game.length; i++) {
+      io.sockets.connected[game[i]].emit('move made', msg);
+    }
   });
 
-  socket.on('create game', function(msg) {
+  socket.on('create game', function(player) {
+    var playerObj = JSON.parse(player);
     console.log("creating game");
     // create a uuid for the game, create a new list of clients, send back the uuid
     var uuid = guid();
     games[uuid] = [];
     games[uuid].push(clientID);
-    socket.emit('game created', uuid);
-    console.log(games);
+    var dic = JSON.stringify({
+      gameID: uuid,
+      player: playerObj
+    });
+    console.log("This thing here", dic);
+    socket.emit('game created', dic);
   });
 
   socket.on('join game', function(msg) {
     // add client id to list of clients for game id
-    games[msg].push(clientID);
-    socket.emit('game created', msg);
+    var dic = JSON.parse(msg);
+    console.log("joining game", msg);
+    var game = games[dic.gameID];
+    game.push(clientID);
+    for (var i = 0; i < game.length; i++) {
+      // for each connected player, send the gameID and player to them
+      io.sockets.connected[game[i]].emit('game created', msg);
+    }
   });
 
 });

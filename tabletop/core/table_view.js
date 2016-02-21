@@ -7,6 +7,10 @@ function TableView(game, turnMap) {
 
     var context = this;
 
+    var getPlayerName = function() {
+        return $(".player-name").val();
+    }
+
     $(".game-button").click( function() {
         context.game.updateState("yes_continue");
     });
@@ -14,12 +18,14 @@ function TableView(game, turnMap) {
     $(".joingame-button").click(function() {
         var id = $(".joingame-id").val();
         console.log("joining", id);
-        context.game.joinGame(id);
+        var name = getPlayerName();
+        context.game.joinGame(id, name);
     });
 
     $(".newgame-button").click(function() {
         console.log("creating new game");
-        context.game.createGame();
+        var name = getPlayerName();
+        context.game.createGame(name);
     });
 
     this.game.subscribe( function(message) {

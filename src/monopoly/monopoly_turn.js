@@ -14,13 +14,19 @@ function MonopolyTurn(game) {
 
         game : game,
 
-        initialState: "waitingOnRoll",
+        initialState: "setup",
 
         namespace: "test",
 
         states: {
             uninitialized: {
                 start : function() {
+                    this.transition("setup");
+                }
+            },
+
+            setup: {
+                yes_continue: function() {
                     this.transition("waitingOnRoll");
                 }
             },

@@ -22,6 +22,11 @@ function MonopolyGame(board) {
 
 inherits(MonopolyGame, TableTop.Game);
 
+MonopolyGame.prototype.createPlayer = function(name) {
+  var player = new Player(name, 0); // TODO: remove this number field?
+  return player;
+}
+
 MonopolyGame.prototype.sendData = function() {
   if (!this.hasMadeGame) {
     this.hasMadeGame = true;

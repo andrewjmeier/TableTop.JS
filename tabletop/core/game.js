@@ -28,19 +28,35 @@ function Game(board) {
 
 inherits(Game, Component);
 
-Game.prototype.createGame = function() {
-  socket.emit('create game', null);
+Game.prototype.createGame = function(name) {
+  var player = this.createPlayer(name).getJSONString();
+  socket.emit('create game', JSON.stringify(player));
 };
 
-Game.prototype.joinGame = function(gameID) {
-  socket.emit('join game', gameID);
+Game.prototype.joinGame = function(gameID, name) {
+  var player = this.createPlayer(name).getJSONString();
+  var data = {
+    gameID: gameID,
+    player: player
+  };
+  socket.emit('join game', JSON.stringify(data));
 };
 
 Game.prototype.gameCreated = function(msg) {
-  this.gameID = msg;
+  dic = JSON.parse(msg);
+  this.gameID = dic.gameID;
+  var player = this.createPlayer();
+  player.createFromJSONString(dic.player);
+  this.players.push(player);  
   console.log("game created", this.gameID);
   this.sendMessage("refreshView", "view");
 };
+
+// OVERRIDE IN SUBCLASS! 
+// FACTORY? 
+Game.prototype.createPlayer = function(name) {
+
+}
 
 /**
  * Method to set turnMap of the game once it is created
