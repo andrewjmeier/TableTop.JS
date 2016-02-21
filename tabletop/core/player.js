@@ -9,12 +9,14 @@ var _ = require('lodash');
  * @extends {Component}
  * @param {string} name - The player's name.
  * @param {hex} color - A hex color for the player's tokens.
+ * @param {int} id - Player ID from server (can ignore for local games)
 */
-function Player(name, color) {
+function Player(name, color, id) {
   Component.call(this);
   this.name = name;
   this.tokens = [];
   this.color = color;
+  this.id = id;
 };
 
 inherits(Player, Component);
@@ -49,6 +51,7 @@ Player.prototype.getJSONString = function() {
   return {
     name: this.name,
     color: this.color,
+    id: this.id,
     tokens: tokenArray
   }
 };
@@ -56,6 +59,7 @@ Player.prototype.getJSONString = function() {
 Player.prototype.createFromJSONString = function(data) {
   this.name = data.name;
   this.color = data.color;
+  this.id = data.id;
 
   for (var i = 0; i < data.tokens.length; i++) {
     var token = new Token();

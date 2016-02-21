@@ -161,7 +161,7 @@ html {
     margin: 0 auto;
 }
 
-.control-button {
+.button {
     background-color:#44c767;
     border-radius:1em;
     border:.15em solid #18ab29;
@@ -172,13 +172,13 @@ html {
     margin: 0 auto;
 }
 
-.control-button:hover {
+.button:hover {
     background-color:#18ab29;
 }
 
-.control-button:active {
+.button:active {
 }
 
-.control-button.hidden {
+.button.hidden {
     display: none;
 }

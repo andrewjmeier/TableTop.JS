@@ -23,9 +23,13 @@ function MonopolyGame(board) {
 inherits(MonopolyGame, TableTop.Game);
 
 MonopolyGame.prototype.createPlayer = function(name) {
-  var player = new Player(name, 0); // TODO: remove this number field?
+  var player = new Player(name, 0, 0); // TODO: remove this number field?
   return player;
-}
+};
+
+MonopolyGame.prototype.updateToStartState = function() {
+  this.updateState("waitingOnRoll");
+};
 
 MonopolyGame.prototype.sendData = function() {
   if (!this.hasMadeGame) {

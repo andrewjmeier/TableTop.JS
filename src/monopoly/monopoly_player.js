@@ -5,8 +5,8 @@ var MonopolyToken = require('./monopoly_token');
 var TokenTypes = require('./token_types');
 var _ = require('lodash');
 
-function MonopolyPlayer(name, number) {
-  TableTop.Player.call(this, name, number);
+function MonopolyPlayer(name, number, id) {
+  TableTop.Player.call(this, name, number, id);
   this.money = 1500;
   this.properties = [];
   this.tokens.push(this.createRandomUniqueToken());

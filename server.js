@@ -16,9 +16,19 @@ io.on('connection', function(socket) {
 
   var clientID = socket.id;
 
-  console.log('a user connected');
+  console.log('a user connected', games);
   socket.on('disconnect', function() {
-    console.log('user disconnected');
+    for (var key in games) {
+      if (games.hasOwnProperty(key)) {
+        var game = games[key];
+        for (var i = 0; i < game.length; i++) {
+          if (game[i] == clientID) {
+            game.splice(i, 1);
+          }
+        }
+      }
+    }
+    console.log('user disconnected', games);
   });
 
   socket.on('move made', function(msg) {
@@ -34,6 +44,7 @@ io.on('connection', function(socket) {
 
   socket.on('create game', function(player) {
     var playerObj = JSON.parse(player);
+    playerObj.id = 0;
     console.log("creating game");
     // create a uuid for the game, create a new list of clients, send back the uuid
     var uuid = guid();
@@ -52,6 +63,8 @@ io.on('connection', function(socket) {
     var dic = JSON.parse(msg);
     console.log("joining game", msg);
     var game = games[dic.gameID];
+    dic.player.id = game.length - 1;
+    msg = JSON.stringify(dic);
     game.push(clientID);
     for (var i = 0; i < game.length; i++) {
       // for each connected player, send the gameID and player to them

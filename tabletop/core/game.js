@@ -33,6 +33,11 @@ Game.prototype.createGame = function(name) {
   socket.emit('create game', JSON.stringify(player));
 };
 
+Game.prototype.startGame = function() {
+  this.sendData();
+  this.updateToStartState();
+}
+
 Game.prototype.joinGame = function(gameID, name) {
   var player = this.createPlayer(name).getJSONString();
   var data = {

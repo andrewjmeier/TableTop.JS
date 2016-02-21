@@ -11,22 +11,27 @@ function TableView(game, turnMap) {
         return $(".player-name").val();
     }
 
-    $(".game-button").click( function() {
+    $(".game").click( function() {
         context.game.updateState("yes_continue");
     });
 
-    $(".joingame-button").click(function() {
+    $(".join-game").click(function() {
         var id = $(".joingame-id").val();
         console.log("joining", id);
         var name = getPlayerName();
         context.game.joinGame(id, name);
     });
 
-    $(".newgame-button").click(function() {
+    $(".new-game").click(function() {
         console.log("creating new game");
         var name = getPlayerName();
         context.game.createGame(name);
     });
+
+    $(".start-game").click(function() {
+        console.log("starting game");
+        context.game.startGame();
+    })
 
     this.game.subscribe( function(message) {
         if (message.type == "view") {

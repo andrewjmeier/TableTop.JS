@@ -14,7 +14,7 @@ MonopolyTableView.prototype.updatePlayerModule = function(players) {
   for (var i = 0; i < players.length; i++) {
     var player = players[i];
     var div = document.createElement("div");
-    div.innerHTML = player.name + ": $" + player.money;
+    div.innerHTML = player.name + ": $" + player.money + " " + player.id;
     $(".player-box").append(div);
   }
 };
