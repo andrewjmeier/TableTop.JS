@@ -58,13 +58,24 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       waitingForMove: { 
         _onEnter: function() { 
           view.drawView();
-          console.log(this.game.getCurrentPlayer().name + ": Make your move.");
+          if (this.game.getCurrentPlayer().name == "AI") { 
+            var AIMove = this.game.pickAImove(this.game.getCurrentPlayer(), this.game);
+            game.proposedMove = AIMove;
+            this.handle("makeMove");
+          } else { 
+            console.log(this.game.getCurrentPlayer().name + ": Make your move.");
+          }
         },
         
         makeMove : function() { 
           if (game.hasValidMove()) { 
             game.executeMove();
+/*            if (this.game.getCurrentPlayer().name == "AI") { 
+              var turnMap = this;
+              setTimeout(function() { turnMap.transition("postTurn"); }, 50000);
+            } else { */
             this.transition("postTurn");
+            
           } else { 
             console.log("Invalid move. Try again.");
           } 

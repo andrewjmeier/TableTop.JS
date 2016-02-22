@@ -3,6 +3,7 @@ var ManualTurn = require("./manual_turn.js");
 var Component = require("./component.js");
 var inherits = require('util').inherits;
 var _ = require('lodash');
+var $ = require('jquery');
 
 /**
  * The Game class
@@ -23,6 +24,7 @@ function Game(board) {
   this.showNextPlayerScreen = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
+  this.enableAI = false;
 };
 
 inherits(Game, Component);
@@ -161,6 +163,15 @@ Game.prototype.nextPlayer = function() {
 };
 
 /**
+ * Returns the next player, but does not switch
+ * Override to provide more logic on determining the next player
+ * @returns {void}
+*/
+Game.prototype.getNextPlayer = function() { 
+  return (this.currentPlayer + 1) % this.players.length;
+};
+
+/**
  * Set the destination for a proposed move
  * @param {Tile} tile - the tile to move to
  * @returns {void}
@@ -294,29 +305,90 @@ Game.prototype.destroyToken = function(token) {
 };
 
 
-Game.prototype.pickAImove = function(player, board, game) { 
+Game.prototype.pickAImove = function(player, game) { 
 
-  var moves = this.getListOfMoves();
- 
-  // make the move, recurse this function using a copy of the board 
-  // for each move 
-  //    if (isValidMove) call executeMove on the copy of board/game 
+  var moves = this.getValidMoves(player);
+  return {token: moves.tokens[0], tile: moves.tiles[0], destination: moves.destinationTiles[0][0]};
+
+  var results = [];
+  for (var i = 0; i < moves.tokens.length; i++) {
+    var token = moves.tokens[i];
+    var tile = moves.tiles[i];
+    moves.destinationTiles[i].forEach(function(dest) { 
+      var gameCopy = this.smartClone(this);
+      gameCopy.proposedMove = {token: token, tile: tile, destination: dest};
+      gameCopy.executeMove();
+      var score = gameCopy.scoreBoard(player);
+      results.push({score: score, token: token, tile: tile, destination: dest});
+    }, this);
+  }
   
-
-  // evaluate based on difficulty 
-  // novice: choose random move
-  // amateur: choose best move with 50%, 2nd best 25%, random 25% 
-  // master: always choose best 
+  var bestResult = results[0];
+  var bestScore = 0;
+  
+  results.forEach(function(result) { 
+    if (result.score > bestScore) 
+      bestResult = result; 
+  });
+  
+  return bestResult;
 };
 
-Game.prototype.getListOfMoves = function(player) { 
+Game.prototype.getValidMoves = function(player) { 
 
-  if (this.gameType == gameTypePlaceToken) { 
-    // simulate every valid move for this gametype 
-    // and then return the list 
+  var legalMoves = {};
+  legalMoves.tokens = [];
+  legalMoves.tiles = [];
+  legalMoves.destinationTiles = [];
+  if (this.moveType == c.moveTypeManual) { 
+    
+    player.tokens.forEach(function(token) { 
+      var tile = this.board.findTileForToken(token);
+      var destinationTiles = [];
+      // since this.board is a double array we need to double loop
+      this.board.tiles.forEach(function(destinationRow) { 
+        destinationRow.forEach(function(destination) { 
+          if (this.isValidMove(token, tile, destination))
+            destinationTiles.push(destination);
+        }, this);
+      }, this);
+      
+      if (destinationTiles.length > 0) { 
+        legalMoves.tokens.push(token);
+        legalMoves.tiles.push(tile);
+        legalMoves.destinationTiles.push(destinationTiles);
+      }
+    }, this);
+    
   } 
+  
+  return legalMoves;
+};
+/*
+Game.prototype.smartClone = function(object)
+{
+  
+  console.log("yes!");
+  if (Object.prototype.toString.call(object) === '[object Array]')
+  {
+    var clone = [];
+    for (var i=0; i<object.length; i++)
+      clone[i] = this.smartClone(object[i]);
 
-} 
+    return clone;
+  } 
+  else if (typeof(object)=="object")
+  {
+    var clone = {};
+    for (var prop in object)
+      if (object.hasOwnProperty(prop))
+        clone[prop] = this.smartClone(object[prop]);
 
+    return clone;
+  }
+  else
+    return object;
+};
+*/
 
 module.exports = Game;
