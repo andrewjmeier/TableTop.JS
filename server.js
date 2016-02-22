@@ -8,7 +8,6 @@ var games = {};
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-  console.log(__dirname);
   res.sendFile(__dirname + '/public/index.html');
 });
 
@@ -32,8 +31,6 @@ io.on('connection', function(socket) {
   });
 
   socket.on('move made', function(msg) {
-    console.log(msg);
-    console.log(clientID, "client ID");
     var dic = JSON.parse(msg);
     var game = games[dic.gameID];
     // io.sockets.emit('move made', msg);
@@ -54,7 +51,6 @@ io.on('connection', function(socket) {
       gameID: uuid,
       player: playerObj
     });
-    console.log("This thing here", dic);
     socket.emit('game created', dic);
   });
 
@@ -63,9 +59,9 @@ io.on('connection', function(socket) {
     var dic = JSON.parse(msg);
     console.log("joining game", msg);
     var game = games[dic.gameID];
+    game.push(clientID);
     dic.player.id = game.length - 1;
     msg = JSON.stringify(dic);
-    game.push(clientID);
     for (var i = 0; i < game.length; i++) {
       // for each connected player, send the gameID and player to them
       io.sockets.connected[game[i]].emit('game created', msg);

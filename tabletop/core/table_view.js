@@ -17,19 +17,16 @@ function TableView(game, turnMap) {
 
     $(".join-game").click(function() {
         var id = $(".joingame-id").val();
-        console.log("joining", id);
         var name = getPlayerName();
         context.game.joinGame(id, name);
     });
 
     $(".new-game").click(function() {
-        console.log("creating new game");
         var name = getPlayerName();
         context.game.createGame(name);
     });
 
     $(".start-game").click(function() {
-        console.log("starting game");
         context.game.startGame();
     })
 
@@ -50,6 +47,12 @@ TableView.prototype.refreshView = function() {
         }
     }
 
+    if(this.game.clientPlayerID !== 0) {
+        $(".start-game").addClass("hidden");
+    } else {
+        $(".start-game").removeClass("hidden");
+    }
+
     $(".gamecode").html("Game Code: " + this.game.gameID);
     this.updatePlayerModule(this.game.players);
 };
@@ -61,7 +64,7 @@ TableView.prototype.updatePlayerModule = function(players) {
 
 TableView.prototype.addTokenToTile = function(token, tile_idx) {
     $("<div/>", {
-        id: token.uniqueId,
+        id: token.id,
         class: 'token ' + token.cssClass,
     }).appendTo("#tile" + tile_idx);
 };

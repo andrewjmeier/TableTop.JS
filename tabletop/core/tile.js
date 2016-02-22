@@ -74,7 +74,6 @@ Tile.prototype.createFromJSONString = function(data) {
   this.tokens = [];
   for (var i = 0; i < data.tokens.length; i++) {
     var token = TokenFactory(data.tokens[i].type);
-    // var token = new Token();
     token.createFromJSONString(data.tokens[i]);
     this.tokens.push(token);
   }

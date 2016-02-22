@@ -7,51 +7,45 @@ var Turn = require("./monopoly/monopoly_turn.js");
 var MonopolyToken = require("./monopoly/monopoly_token.js");
 var MonopolyView = require("./monopoly/view/monopoly_view.v2.js");
 
-// var john = new Player("Andrew", 1);
+// Wait for page to fully load (otherwise called twice)
+window.onload = function () { 
 
-// var steve = new Player("Quinn", 2);
+  var board = new Board();
 
-// var sam = new Player("James", 3);
+  var monopoly = new Game(board);
 
-// var mike = new Player("Kevin", 4);
+  var turn = new Turn(monopoly);
 
-// var jimmy = new Player("KC", 5);
+  monopoly.setTurnMap(turn);
 
-// var players = [john, steve, sam, mike, jimmy];
+  var view = new MonopolyView(monopoly);
 
-var board = new Board();
+  socket.on('move made', function(msg) {
+    monopoly.createFromJSONString(msg);
+  });
 
-var monopoly = new Game(board);
+  socket.on('game created', function(msg) {
+    monopoly.gameCreated(msg);
+  });
 
-// monopoly.setPlayers(players);
+  TokenFactory = function(type){
+    switch(type) {
+      case "Token":
+        return new TableTop.Token();
+      case "MonopolyToken":
+        return new MonopolyToken();
+      default:
+        return new TableTop.Token();
+    }
+  }
 
-// monopoly.subscribe(function(message) {
-//     var div = document.getElementById("messages");
-//     div.innerHTML = div.innerHTML.concat("<br>" + message);
-// });
+  PlayerFactory = function(type) {
+    switch(type) {
 
-var turn = new Turn(monopoly);
-
-monopoly.setTurnMap(turn);
-
-var view = new MonopolyView(monopoly);
-
-socket.on('move made', function(msg) {
-  console.log("a move was made and client received it");
-  monopoly.createFromJSONString(msg);
-});
-
-socket.on('game created', function(msg) {
-  monopoly.gameCreated(msg);
-});
-
-TokenFactory = function(type){
-  switch(type) {
-    case "Token":
-      return new TableTop.Token();
-    case "MonopolyToken":
-      return new MonopolyToken();
-    default:
-      return new TableTop.Token();
+      default:
+        return new Player();
+    }
   }
 }
+
+

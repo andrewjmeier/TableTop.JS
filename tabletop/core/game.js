@@ -24,6 +24,7 @@ function Game(board) {
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
   this.gameID = null;
+  this.clientPlayerID = -1;    // id of the player of THIS client
 };
 
 inherits(Game, Component);
@@ -50,10 +51,14 @@ Game.prototype.joinGame = function(gameID, name) {
 Game.prototype.gameCreated = function(msg) {
   dic = JSON.parse(msg);
   this.gameID = dic.gameID;
-  var player = this.createPlayer();
+  var player = PlayerFactory();
   player.createFromJSONString(dic.player);
   this.players.push(player);  
-  console.log("game created", this.gameID);
+
+  if (this.clientPlayerID === -1) {
+    this.clientPlayerID = dic.player.id;
+  }
+
   this.sendMessage("refreshView", "view");
 };
 
@@ -69,7 +74,7 @@ Game.prototype.createPlayer = function(name) {
  * @param {Turn} turnMap - A turn object to be used by the game
 */
 Game.prototype.setTurnMap = function(turnMap) {
-  context = this;
+  // context = this;
   this.turnMap = turnMap;
   this.propagate(turnMap);
 };
@@ -158,7 +163,7 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     this.dice.push(roll);
     message = message.concat(roll + ", ");
   }
-
+  this.dice = [3, 4];
   this.sendMessage(message);
 };
 

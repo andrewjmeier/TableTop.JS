@@ -145,7 +145,8 @@ var buildChanceDeck = function() {
     return ["", POST_TURN];
   });
 
-  return [chance1, chance2, chance3, chance4, chance4, chance6, chance7, chance8, chance9, chance10, chance11, chance12, chance13, chance14, chance15, chance16, chance17];
+  return [chance4];
+  // return [chance1, chance2, chance3, chance4, chance4, chance6, chance7, chance8, chance9, chance10, chance11, chance12, chance13, chance14, chance15, chance16, chance17];
 };
 
 module.exports = ChanceDeck;

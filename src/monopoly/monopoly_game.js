@@ -17,13 +17,16 @@ function MonopolyGame(board) {
   this.activeCard = null;
   this.trade = null;
   this.hasMadeGame = false;
-  console.log("game init");
 };
 
 inherits(MonopolyGame, TableTop.Game);
 
 MonopolyGame.prototype.createPlayer = function(name) {
   var player = new Player(name, 0, 0); // TODO: remove this number field?
+  var token = player.tokens[0];
+  var tile = this.board.tiles[0];
+  tile.tokens.push(token);
+  // this.board.tiles[0].tokens.push(player.tokens[0]);
   return player;
 };
 
@@ -36,7 +39,6 @@ MonopolyGame.prototype.sendData = function() {
     this.hasMadeGame = true;
   }
   var text = JSON.stringify(this.getJSONString());
-  console.log("this thing now", text);
   socket.emit('move made', text);
 };
 
@@ -64,7 +66,6 @@ MonopolyGame.prototype.createFromJSONString = function(data) {
   if (this.gameID !== dic.gameID) {
     return;
   }
-  console.log("data", dic);
   this.currentPlayer = dic.currentPlayer;
   for (var i = 0; i < dic.players.length; i++) {
     var player = new Player();
@@ -73,7 +74,6 @@ MonopolyGame.prototype.createFromJSONString = function(data) {
   }
   this.board.createFromJSONString(dic.board);
 
-  console.log("the board", this.board);
   this.sendMessage("refreshView", "view");
 
 };
@@ -92,6 +92,7 @@ MonopolyGame.prototype.shuffleCards = function() {
 
 MonopolyGame.prototype.drawChanceCard = function() {
   var card = this.chanceCards.drawCard(true);
+  this.sendMessage(card.text);
   this.activeCard = card;
   console.log("chance card drawn ", card);
   var actions = card.action(this);
@@ -131,13 +132,15 @@ MonopolyGame.prototype.rollAndMovePlayer = function() {
 MonopolyGame.prototype.movePlayer = function(player) {
   var spacesToMove = 0;
   var token = player.tokens[0];
-  console.log("token", token);
 
   for (var index in this.dice) {
     spacesToMove += this.dice[index];
   }
 
   var oldTile = this.board.findTileForToken(token);
+
+  console.log("moving player", player, oldTile, token, this.board);
+
   var oldIndex = this.board.tiles.indexOf(oldTile);
   var new_index = (oldIndex + spacesToMove) % 40;
   if (oldIndex > new_index) {

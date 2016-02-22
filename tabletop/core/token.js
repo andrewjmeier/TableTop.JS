@@ -12,7 +12,7 @@ idCounter = 0;
 */
 function Token(color) {
   Component.call(this);
-  this.uniqueId = "token" + idCounter++;
+  this.id = "token" + idCounter++;
   this.color = color;
   this.isDead = false;
 };
@@ -25,15 +25,16 @@ Token.prototype.getJSONString = function() {
   return {
     color: this.color,
     isDead: this.isDead,
-    uniqueId: this.uniqueId,
+    id: this.id,
     type: "Token"
   }
 };
 
 Token.prototype.createFromJSONString = function(data) {
+  console.log(data, "creating from JSON STRING", this);
   this.color = data.color;
   this.isDead = data.isDead;
-  this.uniqueId = data.uniqueId;
+  this.id = data.id;
 };
 
 

@@ -9,7 +9,8 @@ function MonopolyPlayer(name, number, id) {
   TableTop.Player.call(this, name, number, id);
   this.money = 1500;
   this.properties = [];
-  this.tokens.push(this.createRandomUniqueToken());
+  var token = this.createRandomUniqueToken();
+  this.tokens.push(token);
   this.getOutOfJailFreeCards = 0;
   this.inJail = false;
   this.turnsInJail = 0;
@@ -105,6 +106,8 @@ MonopolyPlayer.prototype.createRandomUniqueToken = function() {
   });
 
   token = new MonopolyToken(cssClass);
+
+  this.sendMessage(token, "token-created");
 
   return token;
 };

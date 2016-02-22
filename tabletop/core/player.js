@@ -42,7 +42,6 @@ Player.prototype.destroyToken = function(token) {
 Player.prototype.getJSONString = function() {
 
   var tokenArray = [];
-  console.log("player");
   for (var i = 0; i < this.tokens.length; i++) {
     var tokenText = this.tokens[i].getJSONString();
     tokenArray.push(tokenText);
@@ -60,9 +59,10 @@ Player.prototype.createFromJSONString = function(data) {
   this.name = data.name;
   this.color = data.color;
   this.id = data.id;
+  this.tokens = [];
 
   for (var i = 0; i < data.tokens.length; i++) {
-    var token = new Token();
+    var token = TokenFactory(data.tokens[i].type);
     token.createFromJSONString(data.tokens[i]);
     this.tokens.push(token);
   }

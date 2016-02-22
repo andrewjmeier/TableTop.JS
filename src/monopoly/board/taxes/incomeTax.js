@@ -9,7 +9,6 @@ function IncomeTax() {
 inherits(IncomeTax, Tax);
 
 IncomeTax.prototype.performLandingAction = function(game) {
-  console.log(game.getCurrentPlayer(), "player assets");  
   this.taxAmount = Math.min(200, game.getCurrentPlayer().assets()*.10);
   return IncomeTax.super_.prototype.performLandingAction.call(this, game);
 };

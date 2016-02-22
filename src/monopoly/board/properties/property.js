@@ -18,7 +18,6 @@ Property.prototype.performLandingAction = function(game) {
   var actions = Property.super_.prototype.performLandingAction.call(this, game);
   
   var player = game.getCurrentPlayer();
-  console.log("player", player);
   if (this.owner === player) { 
     actions[0] = actions[0].concat(" You own it!");
   } else if (player.owesRent(this)) { 

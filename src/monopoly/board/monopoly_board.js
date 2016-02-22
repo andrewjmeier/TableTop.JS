@@ -8,30 +8,32 @@ var inherits = require('util').inherits;
 function MonopolyBoard() {
     TableTop.Board.call(this);
     this.tiles = [];
-    console.log("boarding");
 }
 
 inherits(MonopolyBoard, TableTop.Board);
 
 MonopolyBoard.prototype.findTileForToken = function(token) {
     var tile = _.find(this.tiles, function (n) {
-        var other = _.find(n.tokens, function(other) {
-          return other.uniqueId === token.uniqueId;
+        var found = _.find(n.tokens, function(other) {
+          return other.id === token.id;
         });
-        if (other !== null) {
+        if (undefined != found) {
           return true; 
         }
     });
+
+    if (undefined == tile) {
+      console.log(tile, "UNDEFINED!!");
+    }
 
     return tile;
 };
 
 MonopolyBoard.prototype.moveTokenToTile = function(token, tile) {
     var oldTile = this.findTileForToken(token);
-    if (oldTile != undefined) {
+    if (undefined != oldTile) {
         oldTile.tokens.splice(this.tiles.indexOf(token), 1);
     }
-
     tile.addToken(token);
 };
 

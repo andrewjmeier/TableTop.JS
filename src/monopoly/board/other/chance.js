@@ -10,6 +10,7 @@ inherits(Chance, MonopolyTile);
 Chance.prototype.performLandingAction = function(game) {
   var spaceActions = Chance.super_.prototype.performLandingAction.call(this, game);
   var chanceActions = game.drawChanceCard();
+  console.log("drew chance card", chanceActions);
   this.sendMessage(chanceActions[0]);
   var actions = [];
   actions[0] = spaceActions[0].concat(chanceActions[0]);
