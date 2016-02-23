@@ -28,7 +28,6 @@ function Game(board) {
   this.showNextPlayerScreen = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
-  this.enableAI = false;
 };
 
 inherits(Game, Component);
