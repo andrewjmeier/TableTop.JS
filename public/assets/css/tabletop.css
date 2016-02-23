@@ -157,6 +157,16 @@ html {
     text-align: center;
 }
 
+.player-info {
+    background-color: #8bc1bc;
+    box-sizing: border-box;
+    border: .2em solid #7F9795;
+    min-height: 7em;
+    margin-left: .75em;
+    margin-right: .75em;
+    padding: .25em;
+}
+
 .controls {
     margin: 0 auto;
 }

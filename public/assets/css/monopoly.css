@@ -73,3 +73,11 @@
 .racecar {
     background-color: #999900;
 }
+
+.player-property {
+    font-size: .75em;
+    width: 6em;
+    height: 6em;
+    margin: .5em;
+    float: left;
+}
