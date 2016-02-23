@@ -55,6 +55,8 @@ TableView.prototype.refreshView = function() {
 
     $(".gamecode").html("Game Code: " + this.game.gameID);
     this.updatePlayerModule(this.game.players);
+
+    $(".game-messages").animate({scrollTop:$(".game-messages")[0].scrollHeight}, 1000);
 };
 
 
