@@ -4,6 +4,10 @@ var Component = require("./component.js");
 var inherits = require('util').inherits;
 var _ = require('lodash');
 var $ = require('jquery');
+var Tile = require('./tile.js');
+var Token = require('./token.js');
+var Player = require('./player.js');
+var Gridboard = require('./grid_board.js');
 
 /**
  * The Game class
@@ -308,18 +312,50 @@ Game.prototype.destroyToken = function(token) {
 Game.prototype.pickAImove = function(player, game) { 
 
   var moves = this.getValidMoves(player);
-  return {token: moves.tokens[0], tile: moves.tiles[0], destination: moves.destinationTiles[0][0]};
-
   var results = [];
+
+  // for each token, grab the appropriate objects from the game copy object
+  // (since getValidMoves will return actual game objects and we want 
+  // the copies). Then execute the move and score it.
   for (var i = 0; i < moves.tokens.length; i++) {
-    var token = moves.tokens[i];
-    var tile = moves.tiles[i];
+
+    var tokenIdx = this.board.tokens.indexOf(moves.tokens[i]);
+    var tilePos = this.board.getTilePosition(moves.tiles[i]);
+    
     moves.destinationTiles[i].forEach(function(dest) { 
-      var gameCopy = this.smartClone(this);
-      gameCopy.proposedMove = {token: token, tile: tile, destination: dest};
+      var destPos = this.board.getTilePosition(dest);
+
+      var gameCopy = this.copyGameStatus(this);
+
+      var tokenCp = gameCopy.board.tokens[tokenIdx];
+      var tileCp, destCp;
+      if (game.board instanceof Gridboard) { 
+        tileCp = gameCopy.board.tiles[tilePos.x][tilePos.y];
+        destCp = gameCopy.board.tiles[destPos.x][destPos.y];
+      } else { 
+        tileCp = gameCopy.board.tiles[tilePos];
+        destCp = gameCopy.board.tiles[destPos];
+      } 
+        
+      gameCopy.proposedMove = {
+        token: tokenCp,
+        tile: tileCp,
+        destination: destCp,
+        tokenIdx: tokenIdx, 
+        tilePos: tilePos, 
+        destPos: destPos
+      };
+      
       gameCopy.executeMove();
-      var score = gameCopy.scoreBoard(player);
-      results.push({score: score, token: token, tile: tile, destination: dest});
+      results.push({
+        score: gameCopy.scoreBoard(player), 
+        token: tokenCp, 
+        tile: tileCp, 
+        destination: destCp,
+        tokenIdx: tokenIdx, 
+        tilePos: tilePos, 
+        destPos: destPos
+      });
     }, this);
   }
   
@@ -327,11 +363,33 @@ Game.prototype.pickAImove = function(player, game) {
   var bestScore = 0;
   
   results.forEach(function(result) { 
-    if (result.score > bestScore) 
+    if (result.score > bestScore) { 
       bestResult = result; 
+      bestScore = result.score;
+    }
   });
+
   
-  return bestResult;
+  var actualToken = this.board.tokens[bestResult.tokenIdx];
+  // actualTile should be same as this.board.tile[tilePos], but we 
+  // use this cause it generalizes to all board types 
+  var actualTile = this.board.findTileForToken(actualToken);
+
+  var actualDest;
+  if (this.board instanceof Gridboard) { 
+    actualDest = this.board.getTile(bestResult.destPos.x, bestResult.destPos.y);
+  } else { 
+    actualDest = this.board.getTile(bestResult.destPos);
+  } 
+  
+  var actualBestMove = 
+        { 
+          token: actualToken,
+          tile: actualTile,
+          destination: actualDest
+        };
+  
+  return actualBestMove;
 };
 
 Game.prototype.getValidMoves = function(player) { 
@@ -364,31 +422,72 @@ Game.prototype.getValidMoves = function(player) {
   
   return legalMoves;
 };
-/*
-Game.prototype.smartClone = function(object)
-{
+
+// Create copy of game and manually copy over 
+// tiles/tokens to remove references
+Game.prototype.copyGameStatus = function(game) {
+
+  //var newGame = $.extend(true, {}, game);
+  var newGame = Object.create(this);
+  newGame.board = Object.create(this.board);
+  newGame.board.tokens = [];
+  newGame.board.tiles = [];
+  newGame.players = [];
+  var i, j = 0;
   
-  console.log("yes!");
-  if (Object.prototype.toString.call(object) === '[object Array]')
-  {
-    var clone = [];
-    for (var i=0; i<object.length; i++)
-      clone[i] = this.smartClone(object[i]);
-
-    return clone;
+  // copy players, clear token arrays
+  for (i = 0; i < game.players.length; i++) { 
+    newGame.players.push(new Player());
+    Object.assign(newGame.players[i], game.players[i]);
+    newGame.players[i].tokens = [];
   } 
-  else if (typeof(object)=="object")
-  {
-    var clone = {};
-    for (var prop in object)
-      if (object.hasOwnProperty(prop))
-        clone[prop] = this.smartClone(object[prop]);
+  
+  // copy tiles, clear token arrays
+  if (game.board instanceof Gridboard) { 
+    for (i = 0; i < game.board.tiles.length; i++) { 
+      newGame.board.tiles.push([]);
+      for (j = 0; j < game.board.tiles[i].length; j++)  {
+        newGame.board.tiles[i].push(new Tile({}));
+        Object.assign(newGame.board.tiles[i][j], game.board.tiles[i][j]);
+        newGame.board.tiles[i][j].clearTokens();
+      }
+    } 
+  } else { 
+    for (i = 0; i < game.board.tiles.length; i++) { 
+      newGame.board.tiles.push(new Tile({}));
+      Object.assign(newGame.board.tiles[i], game.board.tiles[i]);
+      newGame.board.tiles[i].clearTokens();
+    } 
+  } 
+  
+  // copy tokens, and assign to proper tile and player
+  for (i = 0; i < game.board.tokens.length; i++) { 
+    var token = game.board.tokens[i];
+    newGame.board.tokens.push(new Token());
+    var newToken = newGame.board.tokens[i];
+    Object.assign(newToken, token);
+    
+    // assign tile to proper player if it's owned, or do nothing
+    for (j = 0; j < game.players.length; j++) { 
+      if (game.players[j].tokens.indexOf(token) >= 0) { 
+        newGame.players[j].tokens.push(newToken);
+      }
+    } 
 
-    return clone;
+    // if a token is on a tile, add it to the tile's list of tokens
+    var tile = game.board.findTileForToken(token);
+    var tilePos = game.board.getTilePosition(tile);
+    if (!tile || !tilePos) continue;
+    
+    if (game.board instanceof Gridboard)
+      newGame.board.tiles[tilePos.x][tilePos.y].addToken(newGame.board.tokens[i]);
+    else  
+      newGame.board.tiles[tilePos].addToken(newGame.board.tokens[i]);
+    
   }
-  else
-    return object;
+  
+  return newGame;
 };
-*/
+
 
 module.exports = Game;
