@@ -10,16 +10,14 @@ function MonopolyToken(cssClass) {
 inherits(MonopolyToken, TableTop.Token);
 
 MonopolyToken.prototype.getJSONString = function() {
-  var others = TableTop.Token.prototype.getJSONString.call(this);
+  var others = MonopolyToken.super_.prototype.getJSONString.call(this);
   others.cssClass = this.cssClass;
   others.type = "MonopolyToken";
   return others;
-
 };
 
 MonopolyToken.prototype.createFromJSONString = function(data) {
-  TableTop.Token.prototype.createFromJSONString.call(this, data);
-  console.log("just called super", this);
+  MonopolyToken.super_.prototype.createFromJSONString.call(this, data);
   this.cssClass = data.cssClass;
 };
 

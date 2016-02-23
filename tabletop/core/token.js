@@ -31,7 +31,6 @@ Token.prototype.getJSONString = function() {
 };
 
 Token.prototype.createFromJSONString = function(data) {
-  console.log(data, "creating from JSON STRING", this);
   this.color = data.color;
   this.isDead = data.isDead;
   this.id = data.id;

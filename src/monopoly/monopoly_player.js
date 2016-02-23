@@ -18,11 +18,6 @@ function MonopolyPlayer(name, number, id) {
 
 inherits(MonopolyPlayer, TableTop.Player);
 
-MonopolyPlayer.prototype.sendToJail = function() {
-  this.position = 10;
-  this.inJail = true;
-};
-
 MonopolyPlayer.prototype.payBail = function() {
   this.releaseFromJail();
   this.money -= 50;
@@ -80,6 +75,7 @@ MonopolyPlayer.prototype.owns = function(property) {
 };
 
 MonopolyPlayer.prototype.buy = function(property) {
+  console.log("buying", property);
   this.makePayment(property.cost);
   this.properties.push(property);
   property.owner = this;
@@ -119,7 +115,10 @@ MonopolyPlayer.prototype.removeProperty = function(property) {
   if(index > -1){
     this.properties.splice(index, 1);
   }
+};
 
+MonopolyPlayer.prototype.getToken = function() {
+  return this.tokens[0];
 };
 
 MonopolyPlayer.prototype.addItems = function(items) {
@@ -128,6 +127,28 @@ MonopolyPlayer.prototype.addItems = function(items) {
     items.property[i].owner = this;
   }
   this.money += items.money;
+};
+
+MonopolyPlayer.prototype.getJSONString = function() {
+
+  var playerStuff = MonopolyPlayer.super_.prototype.getJSONString.call(this);
+
+  playerStuff.money = this.money;
+  playerStuff.getOutOfJailFreeCards = this.getOutOfJailFreeCards;
+  playerStuff.inJail = this.inJail;
+  playerStuff.turnsInJail = this.turnsInJail;
+
+  return playerStuff;
+};
+
+MonopolyPlayer.prototype.createFromJSONString = function(data) {
+  MonopolyPlayer.super_.prototype.createFromJSONString.call(this, data);
+  
+  this.money = data.money;
+  this.getOutOfJailFreeCards = data.getOutOfJailFreeCards;
+  this.inJail = data.inJail;
+  this.turnsInJail = data.turnsInJail;
+
 };
 
 module.exports = MonopolyPlayer;

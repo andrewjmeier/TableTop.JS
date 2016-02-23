@@ -107,9 +107,15 @@ MonopolyGame.prototype.drawCommunityChestCard = function() {
   return [actions[0], actions[1]];
 };
 
+MonopolyGame.prototype.sendToJail = function(player) {
+  player.inJail = true;
+  player.turnsInJail = 0;
+  this.moveTo(10, player, false);
+};
+
 MonopolyGame.prototype.rollAndMovePlayer = function() {
   this.rollDice(2);
-  player = this.getCurrentPlayer();
+  var player = this.getCurrentPlayer();
   // if we're not in jail, just move
   if (!player.inJail)
     return this.movePlayer(player);
@@ -119,9 +125,9 @@ MonopolyGame.prototype.rollAndMovePlayer = function() {
   // jail or staying in
   player.turnsInJail += 1;
   if (this.isDoubles(this.dice)) {
-    this.player.releaseFromJail();
-  } else if (this.player.turnsInJail === 3) {
-    this.player.payBail();
+    player.releaseFromJail();
+  } else if (player.turnsInJail === 3) {
+    player.payBail();
   } else {
     return [player.name + " is serving a turn in jail. ", POST_TURN];
   }
@@ -131,45 +137,44 @@ MonopolyGame.prototype.rollAndMovePlayer = function() {
 
 MonopolyGame.prototype.movePlayer = function(player) {
   var spacesToMove = 0;
-  var token = player.tokens[0];
 
   for (var index in this.dice) {
     spacesToMove += this.dice[index];
   }
 
+  return this.move(spacesToMove, player);
+};
+
+MonopolyGame.prototype.move = function(amount, player, canPassGo) {
+  var token = player.getToken();
+  var oldIndex = this.board.getTileIndexForToken(token);
+  var newIndex = (oldIndex + amount) % 40;
+
+  return this.moveTo(newIndex, player, canPassGo);
+};
+
+MonopolyGame.prototype.moveTo = function(tileIndex, player, canPassGo) {
+  if (undefined == canPassGo) {
+    canPassGo = true;
+  }
+  
+  var token = player.getToken();
+
   var oldTile = this.board.findTileForToken(token);
-
-  console.log("moving player", player, oldTile, token, this.board);
-
   var oldIndex = this.board.tiles.indexOf(oldTile);
-  var new_index = (oldIndex + spacesToMove) % 40;
-  if (oldIndex > new_index) {
+
+  if (oldIndex > tileIndex && canPassGo) {
+    console.log("making deposit", oldIndex, tileIndex);
     player.makeDeposit(200);
   }
-  this.board.moveTokenToTile(token, this.board.getTile(new_index));
 
-  var actions = this.board.getTile(new_index).performLandingAction(this);
-  actions[0] = ("You rolled a " + spacesToMove + ". ").concat(actions[0]);
-  console.log("moved player", oldIndex, new_index, this.currentPlayer);
+  var tile = this.board.getTile(tileIndex);
+  this.board.moveTokenToTile(token, tile);
+
+  var actions = this.board.getTile(tileIndex).performLandingAction(this);
+  actions[0] = ("You moved.").concat(actions[0]);
   return actions;
 };
-
-MonopolyGame.prototype.moveTo = function(tileIndex, player) {
-  var tile = this.board.getTile(tileIndex);
-  var token = player.tokens[0];
-  this.board.moveTokenToTile(token, tile);
-};
-
-MonopolyGame.prototype.move = function(spacesToMove, player) {
-  var token = player.tokens[0];
-  var oldTile = this.board.findTileForToken(token);
-  var oldIndex = this.board.tiles.indexOf(oldTile);
-  var newIndex = (oldIndex + spacesToMove) % 40;
-  if (oldIndex > newIndex) {
-    player.makeDeposit(200);
-  }
-  this.board.moveTokenToTile(token, this.board.getTile(newIndex));
-}
 
 MonopolyGame.prototype.nextPlayer = function() {
   if (!this.isDoubles(this.dice)) {

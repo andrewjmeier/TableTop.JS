@@ -1,6 +1,4 @@
 var inherits = require('util').inherits;
-// var Deck = require("../../../tabletop/core/deck.js");
-// var Card = require("../../../tabletop/core/card.js");
 var TableTop = require('../../../tabletop/tabletop');
 
 

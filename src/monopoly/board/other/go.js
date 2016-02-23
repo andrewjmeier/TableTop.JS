@@ -8,7 +8,7 @@ function Go() {
 inherits(Go, MonopolyTile);
 
 Go.prototype.performLandingAction = function(game) {
-  return Go.super_.prototype.performLandingAction.call(this, game);
+  return MonopolyTile.prototype.performLandingAction.call(this, game);
 };
 
 module.exports = Go;

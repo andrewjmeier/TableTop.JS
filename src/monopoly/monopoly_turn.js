@@ -64,7 +64,8 @@ function MonopolyTurn(game) {
 
                 yes_continue : function() {
                     var player = this.game.getCurrentPlayer();
-                    var property = this.game.board.tiles[player.position];
+                    var token = player.tokens[0];
+                    var property = this.game.board.findTileForToken(token);
                     player.buy(property);
                     this.game.message = "You bought " + property.name + ". ";
                     this.transition("postTurn");
@@ -72,8 +73,9 @@ function MonopolyTurn(game) {
 
                 no_trade_clear : function() {
                     //btn is no in this case
-                    var player = this.game.getCurrentPlayer();       
-                    var property = this.game.board.tiles[player.position];
+                    var player = this.game.getCurrentPlayer();
+                    var token = player.tokens[0];       
+                    var property = this.game.board.findTileForToken(token);
                     this.game.message = "You didn't buy " + property.name + ". ";
                     this.transition("postTurn");
                 }
@@ -147,6 +149,7 @@ function MonopolyTurn(game) {
                     this.game.nextPlayer();
                     this.transition("waitingOnRoll");
                     game.sendData();
+                    console.log(this.game.getCurrentPlayer());
                 }
             }
         }

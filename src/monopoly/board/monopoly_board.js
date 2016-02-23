@@ -29,6 +29,11 @@ MonopolyBoard.prototype.findTileForToken = function(token) {
     return tile;
 };
 
+MonopolyBoard.prototype.getTileIndexForToken = function(token) {
+  var tile = this.findTileForToken(token);
+  return this.tiles.indexOf(tile);
+};
+
 MonopolyBoard.prototype.moveTokenToTile = function(token, tile) {
     var oldTile = this.findTileForToken(token);
     if (undefined != oldTile) {
