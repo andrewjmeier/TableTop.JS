@@ -13,20 +13,16 @@ function MonopolyBoard() {
 inherits(MonopolyBoard, TableTop.Board);
 
 MonopolyBoard.prototype.findTileForToken = function(token) {
-    var tile = _.find(this.tiles, function (n) {
-        var found = _.find(n.tokens, function(other) {
-          return other.cssClass == token.cssClass;
-        });
-        if (undefined != found) {
-          return true; 
-        } 
-    });
+  var tile = _.find(this.tiles, function (n) {
+      var found = _.find(n.tokens, function(other) {
+        return other.id == token.id;
+      });
+      if (undefined != found) {
+        return true; 
+      } 
+  });
 
-    if (undefined == tile) {
-      console.log(tile, "UNDEFINED!!");
-    }
-
-    return tile;
+  return tile;
 };
 
 MonopolyBoard.prototype.getTileIndexForToken = function(token) {
@@ -37,7 +33,12 @@ MonopolyBoard.prototype.getTileIndexForToken = function(token) {
 MonopolyBoard.prototype.moveTokenToTile = function(token, tile) {
     var oldTile = this.findTileForToken(token);
     if (undefined != oldTile) {
-        oldTile.tokens.splice(this.tiles.indexOf(token), 1);
+      for (var i = 0; i < oldTile.tokens.length; i++) {
+        if (token.id === oldTile.tokens[i].id) {
+          oldTile.tokens.splice(i, 1);
+          break;
+        }
+      }
     }
     tile.addToken(token);
 };

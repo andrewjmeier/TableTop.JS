@@ -162,8 +162,7 @@ html {
     box-sizing: border-box;
     border: .2em solid #7F9795;
     min-height: 7em;
-    margin-left: .75em;
-    margin-right: .75em;
+    margin: .75em;
     padding: .25em;
 }
 

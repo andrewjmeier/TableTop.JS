@@ -9,8 +9,7 @@ function guid() {
       .toString(16)
       .substring(1);
   }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return s4();
 }
 
 /**
@@ -23,7 +22,7 @@ function guid() {
 */
 function Token(color) {
   Component.call(this);
-  this.id = "token" + idCounter;
+  this.id = guid(); //"token" + idCounter;
   this.color = color;
   this.isDead = false;
 };

@@ -5,6 +5,7 @@ var Trade = require("./monopoly_trade.js");
 var TableTop = require('../../tabletop/tabletop');
 var Player = require('./monopoly_player.js');
 var _ = require('lodash');
+var $ = require("jquery");
 
 function MonopolyGame(board) {
   TableTop.Game.call(this, board);
@@ -96,7 +97,6 @@ MonopolyGame.prototype.drawChanceCard = function() {
   var card = this.chanceCards.drawCard(true);
   this.sendMessage(card.text);
   this.activeCard = card;
-  console.log("chance card drawn ", card);
   var actions = card.action(this);
   return [actions[0], actions[1]];
 };
@@ -105,7 +105,6 @@ MonopolyGame.prototype.drawCommunityChestCard = function() {
   var card = this.communityChestCards.drawCard(true);
   this.sendMessage(card.text);
   this.activeCard = card;
-  console.log("community chest card drawn ", card);
   var actions = card.action(this);
   return [actions[0], actions[1]];
 };
@@ -181,7 +180,9 @@ MonopolyGame.prototype.moveTo = function(tileIndex, player, canPassGo) {
   }
 
   var tile = this.board.getTile(tileIndex);
+
   this.board.moveTokenToTile(token, tile);
+
 
   var actions = this.board.getTile(tileIndex).performLandingAction(this);
   return actions;
