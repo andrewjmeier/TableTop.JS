@@ -8,6 +8,8 @@ function MonopolyTurn(game) {
     TableTop.Component.call(this);
     this.game = game;
 
+    var context = this;
+
     this.turnMap = new TableTop.Turn({
         initialize: function( options ) {
         },
@@ -44,6 +46,7 @@ function MonopolyTurn(game) {
             rolled: {
                 _onEnter : function() {
                     var actions = this.game.rollAndMovePlayer();
+                    context.sendMessage(actions[0]);
                     this.game.message = actions[0];
                     this.transition(actions[1]);
                 }
@@ -155,7 +158,6 @@ function MonopolyTurn(game) {
         }
     });
 
-    var context = this;
     this.turnMap.on("transition", function() {
         context.sendMessage("refreshView", "view");
     });

@@ -32,9 +32,13 @@ var buildCommunityChestDeck = function() {
     return ["", POST_TURN];
   });
 
-  var card5 = new TableTop.Card("Go to jail - go directly to jail - Do not pass Go, do not collect $200", function(game) {
-    game.getCurrentPlayer().sendToJail();
-    return ["", POST_TURN];
+  var card5 = new TableTop.Card("Go directly to Hpo - do not pass Go, do not collect $200", function(game) {
+    var player = game.getCurrentPlayer();
+    game.sendToJail(player);
+
+    var token = player.getToken();
+    var position = game.board.getTileIndexForToken(token);
+    return game.board.tiles[position].performLandingAction(game);  
   });
 
   var card6 = new TableTop.Card("It is your birthday Collect $10 from each player", function(game) {
