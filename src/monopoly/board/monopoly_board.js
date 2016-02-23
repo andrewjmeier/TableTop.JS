@@ -15,11 +15,11 @@ inherits(MonopolyBoard, TableTop.Board);
 MonopolyBoard.prototype.findTileForToken = function(token) {
     var tile = _.find(this.tiles, function (n) {
         var found = _.find(n.tokens, function(other) {
-          return other.id === token.id;
+          return other.cssClass == token.cssClass;
         });
         if (undefined != found) {
           return true; 
-        }
+        } 
     });
 
     if (undefined == tile) {

@@ -33,4 +33,16 @@ UtilityProperty.prototype.getRent = function(game) {
   return utilityCount === 2 ? diceRoll * 10 : diceRoll * 4;
 };
 
+UtilityProperty.prototype.getJSONString = function() {
+  var propertyData = UtilityProperty.super_.prototype.getJSONString.call(this);
+
+  propertyData.type = "UtilityProperty";
+
+  return propertyData;
+};
+
+UtilityProperty.prototype.createFromJSONString = function(data) {
+  UtilityProperty.super_.prototype.createFromJSONString.call(this, data);
+};
+
 module.exports = UtilityProperty;

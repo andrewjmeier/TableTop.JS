@@ -2,6 +2,17 @@ var Component = require("./component.js");
 var inherits = require('util').inherits;
 
 idCounter = 0;
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 /**
  * A Token class
  * @constructor
@@ -12,7 +23,7 @@ idCounter = 0;
 */
 function Token(color) {
   Component.call(this);
-  this.id = "token" + idCounter++;
+  this.id = "token" + idCounter;
   this.color = color;
   this.isDead = false;
 };

@@ -17,6 +17,9 @@ function Player(name, color, id) {
   this.tokens = [];
   this.color = color;
   this.id = id;
+  if (this.name == "") {
+    this.name = "Player";
+  }
 };
 
 inherits(Player, Component);

@@ -58,10 +58,12 @@ Game.prototype.gameCreated = function(msg) {
   if (this.clientPlayerID === -1) {
     this.clientPlayerID = dic.player.id;
   } else {
-    var token = player.tokens[0];
-    var tile = this.board.tiles[0];
-    tile.tokens.push(token);
+
   }
+  var token = player.tokens[0];
+  var tile = this.board.tiles[0];
+  tile.tokens.push(token);
+  console.log(tile.tokens);
 
   this.sendMessage("refreshView", "view");
 };
@@ -161,7 +163,8 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     sides = 6;
   }
   this.dice = [];
-  var message = "You rolled a ";
+  var player = this.getCurrentPlayer();
+  var message = player.name + " rolled a ";
   for (var i = 0; i < numberOfDice; i++) {
     var roll = Math.floor(Math.random() * sides) + 1;
     this.dice.push(roll);

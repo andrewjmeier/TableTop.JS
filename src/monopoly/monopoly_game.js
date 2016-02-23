@@ -23,9 +23,10 @@ inherits(MonopolyGame, TableTop.Game);
 
 MonopolyGame.prototype.createPlayer = function(name) {
   var player = new Player(name, 0, 0); // TODO: remove this number field?
-  var token = player.tokens[0];
-  var tile = this.board.tiles[0];
-  tile.tokens.push(token);
+  this.propagate(player);
+  // var token = player.tokens[0];
+  // var tile = this.board.tiles[0];
+  // tile.tokens.push(token);
   // this.board.tiles[0].tokens.push(player.tokens[0]);
   return player;
 };
@@ -69,6 +70,7 @@ MonopolyGame.prototype.createFromJSONString = function(data) {
   this.currentPlayer = dic.currentPlayer;
   for (var i = 0; i < dic.players.length; i++) {
     var player = new Player();
+    this.propagate(player);
     player.createFromJSONString(dic.players[i]);
     this.players[i] = player;
   }
@@ -106,6 +108,15 @@ MonopolyGame.prototype.drawCommunityChestCard = function() {
   console.log("community chest card drawn ", card);
   var actions = card.action(this);
   return [actions[0], actions[1]];
+};
+
+MonopolyGame.prototype.getOwnerForProperty = function(property) {
+  return _.find(this.players, function(player) {
+    var property = _.find(player.properties, function(prop) {
+      return (prop.name == property.name);
+    });
+    return (undefined != property);
+  });
 };
 
 MonopolyGame.prototype.sendToJail = function(player) {
@@ -173,7 +184,6 @@ MonopolyGame.prototype.moveTo = function(tileIndex, player, canPassGo) {
   this.board.moveTokenToTile(token, tile);
 
   var actions = this.board.getTile(tileIndex).performLandingAction(this);
-  actions[0] = ("You moved.").concat(actions[0]);
   return actions;
 };
 

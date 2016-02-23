@@ -148,7 +148,7 @@ var buildChanceDeck = function() {
     return ["", POST_TURN];
   });
 
-  var chance17 = new TableTop.Card("You have won IM Hockey - collection $100", function(game) {
+  var chance17 = new TableTop.Card("You have won IM Hockey - collect $100", function(game) {
     game.getCurrentPlayer().makeDeposit(100);
     return ["", POST_TURN];
   });
