@@ -44,7 +44,7 @@ io.on('connection', function(socket) {
     playerObj.id = 0;
     console.log("creating game");
     // create a uuid for the game, create a new list of clients, send back the uuid
-    var uuid = guid();
+    var uuid = getID();
     games[uuid] = [];
     games[uuid].push(clientID);
     var dic = JSON.stringify({
@@ -70,7 +70,7 @@ io.on('connection', function(socket) {
 
 });
 
-function guid() {
+function getID() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)

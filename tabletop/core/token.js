@@ -1,15 +1,14 @@
 var Component = require("./component.js");
 var inherits = require('util').inherits;
 
-idCounter = 0;
-
-function guid() {
+function getID() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
       .substring(1);
   }
-  return s4();
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
 }
 
 /**
@@ -22,7 +21,7 @@ function guid() {
 */
 function Token(color) {
   Component.call(this);
-  this.id = guid(); //"token" + idCounter;
+  this.id = getID();
   this.color = color;
   this.isDead = false;
 };
