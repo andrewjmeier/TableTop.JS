@@ -16,13 +16,14 @@ MonopolyTableView.prototype.updatePlayerModule = function(players) {
     var div = document.createElement("div");
     div.className = "player-info";
     div.innerHTML = player.name + ": $" + player.money;
-    var br = document.createElement("br");
-    div.appendChild(br);
+    var propertyContainer = document.createElement("div");
+    propertyContainer.className = "property-container";
+    div.appendChild(propertyContainer);
     for (var j = 0; j < player.properties.length; j++) {
       var propDiv = document.createElement("div");
       propDiv.className = "player-property " + this.getCssClassForGroupNumber(player.properties[j].propertyGroup);
       propDiv.innerHTML = player.properties[j].name;
-      div.appendChild(propDiv);
+      propertyContainer.appendChild(propDiv);
     }
     $(".player-box").append(div);
   }
@@ -47,7 +48,7 @@ MonopolyTableView.prototype.getCssClassForGroupNumber = function(num) {
     case 7:
       return "blue-group";
     default:
-      return "";
+      return "other-group";
   }
 }
 
