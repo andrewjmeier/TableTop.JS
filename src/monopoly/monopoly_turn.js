@@ -8,19 +8,27 @@ function MonopolyTurn(game) {
     TableTop.Component.call(this);
     this.game = game;
 
+    var context = this;
+
     this.turnMap = new TableTop.Turn({
         initialize: function( options ) {
         },
 
         game : game,
 
-        initialState: "waitingOnRoll",
+        initialState: "setup",
 
         namespace: "test",
 
         states: {
             uninitialized: {
                 start : function() {
+                    this.transition("setup");
+                }
+            },
+
+            setup: {
+                yes_continue: function() {
                     this.transition("waitingOnRoll");
                 }
             },
@@ -38,6 +46,7 @@ function MonopolyTurn(game) {
             rolled: {
                 _onEnter : function() {
                     var actions = this.game.rollAndMovePlayer();
+                    context.sendMessage(actions[0]);
                     this.game.message = actions[0];
                     this.transition(actions[1]);
                 }
@@ -46,7 +55,8 @@ function MonopolyTurn(game) {
             buyPrompt: {
                 _onEnter : function() {
                     var player = this.game.getCurrentPlayer();
-                    var property = this.game.board.tiles[player.position];
+                    var token = player.tokens[0];
+                    var property = this.game.board.findTileForToken(token);
                     if (player.canBuy(property)) {
                         this.game.message = this.game.message.concat("Do you want to buy it?");
                     } else {
@@ -57,7 +67,8 @@ function MonopolyTurn(game) {
 
                 yes_continue : function() {
                     var player = this.game.getCurrentPlayer();
-                    var property = this.game.board.tiles[player.position];
+                    var token = player.tokens[0];
+                    var property = this.game.board.findTileForToken(token);
                     player.buy(property);
                     this.game.message = "You bought " + property.name + ". ";
                     this.transition("postTurn");
@@ -65,8 +76,9 @@ function MonopolyTurn(game) {
 
                 no_trade_clear : function() {
                     //btn is no in this case
-                    var player = this.game.getCurrentPlayer();       
-                    var property = this.game.board.tiles[player.position];
+                    var player = this.game.getCurrentPlayer();
+                    var token = player.tokens[0];       
+                    var property = this.game.board.findTileForToken(token);
                     this.game.message = "You didn't buy " + property.name + ". ";
                     this.transition("postTurn");
                 }
@@ -139,12 +151,13 @@ function MonopolyTurn(game) {
                     this.game.clearActiveCard();
                     this.game.nextPlayer();
                     this.transition("waitingOnRoll");
+                    game.sendData();
+                    console.log(this.game.getCurrentPlayer());
                 }
             }
         }
     });
 
-    var context = this;
     this.turnMap.on("transition", function() {
         context.sendMessage("refreshView", "view");
     });

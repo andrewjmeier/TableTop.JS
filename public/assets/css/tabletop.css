@@ -4,6 +4,10 @@ html {
     font-family: "museo-sans-1","museo-sans-2", "Humanst521 BT", sans-serif;
 }
 
+/*body {
+    background-image: url("http://images1.fanpop.com/images/image_uploads/Monopoly-Wallpaper-board-games-1087813_1024_768.jpg");
+}*/
+
 .game-table {
     margin: 0 auto;
     width: 60em;
@@ -153,11 +157,20 @@ html {
     text-align: center;
 }
 
+.player-info {
+    background-color: #8bc1bc;
+    box-sizing: border-box;
+    border: .2em solid #7F9795;
+    min-height: 7em;
+    margin: .75em;
+    padding: .25em;
+}
+
 .controls {
     margin: 0 auto;
 }
 
-.control-button {
+.button {
     background-color:#44c767;
     border-radius:1em;
     border:.15em solid #18ab29;
@@ -168,13 +181,13 @@ html {
     margin: 0 auto;
 }
 
-.control-button:hover {
+.button:hover {
     background-color:#18ab29;
 }
 
-.control-button:active {
+.button:active {
 }
 
-.control-button.hidden {
+.button.hidden {
     display: none;
 }

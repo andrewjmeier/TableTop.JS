@@ -42,6 +42,10 @@
     background-color: #3471AE;
 }
 
+.other-group {
+    background-color: #deedec;
+}
+
 .dog {
     background-color: #f4a460;
 }
@@ -72,4 +76,18 @@
 
 .racecar {
     background-color: #999900;
+}
+
+.player-info > .property-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.player-property {
+    font-size: 9px;
+    width: 20%;
+    min-height: 5em;
+    margin: .5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

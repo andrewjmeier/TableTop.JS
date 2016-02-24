@@ -7,9 +7,28 @@ function TableView(game, turnMap) {
 
     var context = this;
 
-    $(".control-button").click( function() {
+    var getPlayerName = function() {
+        return $(".player-name").val();
+    }
+
+    $(".game").click( function() {
         context.game.updateState("yes_continue");
     });
+
+    $(".join-game").click(function() {
+        var id = $(".joingame-id").val();
+        var name = getPlayerName();
+        context.game.joinGame(id, name);
+    });
+
+    $(".new-game").click(function() {
+        var name = getPlayerName();
+        context.game.createGame(name);
+    });
+
+    $(".start-game").click(function() {
+        context.game.startGame();
+    })
 
     this.game.subscribe( function(message) {
         if (message.type == "view") {
@@ -27,11 +46,28 @@ TableView.prototype.refreshView = function() {
             this.addTokenToTile(tile.tokens[j], i);
         }
     }
+
+    if(this.game.clientPlayerID !== 0) {
+        $(".start-game").addClass("hidden");
+    } else {
+        $(".start-game").removeClass("hidden");
+    }
+
+    $(".gamecode").html("Game Code: " + this.game.gameID);
+    this.updatePlayerModule(this.game.players);
+
+    // scroll messenger to the bottom
+    $(".messenger").scrollTop($(".messenger")[0].scrollHeight);
+};
+
+
+TableView.prototype.updatePlayerModule = function(players) {
+
 };
 
 TableView.prototype.addTokenToTile = function(token, tile_idx) {
     $("<div/>", {
-        id: token.uniqueId,
+        id: token.id,
         class: 'token ' + token.cssClass,
     }).appendTo("#tile" + tile_idx);
 };

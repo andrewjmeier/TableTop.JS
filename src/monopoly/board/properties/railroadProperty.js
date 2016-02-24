@@ -33,4 +33,20 @@ RailroadProperty.prototype.getRent = function(game) {
   return this.rent[rrCount - 1];
 };
 
+RailroadProperty.prototype.getJSONString = function() {
+  var propertyData = RailroadProperty.super_.prototype.getJSONString.call(this);
+
+  propertyData.rent = this.rent;
+
+  propertyData.type = "RailroadProperty";
+
+  return propertyData;
+};
+
+RailroadProperty.prototype.createFromJSONString = function(data) {
+  RailroadProperty.super_.prototype.createFromJSONString.call(this, data);
+
+  this.rent = data.rent;  
+};
+
 module.exports = RailroadProperty;

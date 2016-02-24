@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="./assets/css/tabletop.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/monopoly.css">
+        <title> Monopoly v.2 </title>
+    </head>
+    <body>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+          var socket = io();
+        </script>
+        <script src="/bundle.js"></script>
+        <div class="game-setup">
+            Enter ID to join a game:<br>
+            <input type="text" name="gameID" placeholder="Game ID" class="joingame-id"><br>
+            Enter a name for your player:<br>
+            <input type="text" name="playerName" placeholder="John Smith" class="player-name"><br>
+            <div href="#" class="button join-game">Join Game</div><br>
+            Or Create a New Game<br>
+            <div href="#" class="button new-game">New Game</div>
+            <div class="gamecode">Game Code: </div>
+            <div href="#" class="button start-game">Start Game</div>
+        </div>
+        <div class="game-table">
+            <div class="board">
+                <div class="tile-list">
+                    <div class="left container">
+                        <div class="tile corner bottom left" id="tile0"> 
+                            <div class="tile-name"> Go </div>
+                            <div class="overlay"></div>
+                        </div>
+
+                        <!-- Left Row of Properties -->
+                        <div class="tile left brown-group" id="tile1"> 
+                            <div class="tile-name"> French Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left" id="tile2"> 
+                            <div class="tile-name"> Community Chest </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left brown-group" id="tile3"> 
+                            <div class="tile-name"> Judge Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left" id="tile4"> 
+                            <div class="tile-name"> Income Tax </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left" id="tile5">  
+                            <div class="tile-name"> Novack </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left light-blue-group" id="tile6"> 
+                            <div class="tile-name"> Ripley Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left" id="tile7"> 
+                            <div class="tile-name"> Chance </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left light-blue-group" id="tile8"> 
+                            <div class="tile-name"> Woodward Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile left light-blue-group" id="tile9"> 
+                            <div class="tile-name"> Smith Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                    </div>
+
+                    <div class="top container">
+                        <div class="tile corner top left" id="tile10"> 
+                            <div class="tile-name"> Hanover Police </div>
+                            <div class="overlay"></div>
+                        </div>
+
+                        <!-- Top Row of Properties -->
+                        <div class="tile top magenta-group" id="tile11"> 
+                            <div class="tile-name"> Gile Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top" id="tile12"> 
+                            <div class="tile-name"> ORL </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top magenta-group" id="tile13"> 
+                            <div class="tile-name"> Streeter Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top magenta-group" id="tile14"> 
+                            <div class="tile-name"> Lord Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top" id="tile15"> 
+                            <div class="tile-name"> Collis Cafe </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top orange-group" id="tile16"> 
+                            <div class="tile-name"> South Fayerweather Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top" id="tile17"> 
+                            <div class="tile-name"> Community Chest </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top orange-group" id="tile18"> 
+                            <div class="tile-name"> Fayerweather Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile top orange-group" id="tile19"> 
+                            <div class="tile-name"> North Fayerweather Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                    </div>
+
+                    <div class="right container">
+                        <div class="tile corner top right" id="tile20"> 
+                            <div class="tile-name"> Free Parking </div>
+                            <div class="overlay"></div>
+                        </div>
+
+                        <!-- Right Row of Properties -->
+                        <div class="tile right red-group" id="tile21"> 
+                            <div class="tile-name"> South Massachusetts Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right" id="tile22"> 
+                            <div class="tile-name"> Chance </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right red-group" id="tile23"> 
+                            <div class="tile-name"> Massachusetts Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right red-group" id="tile24"> 
+                            <div class="tile-name"> North Massachusetts Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right" id="tile25"> 
+                            <div class="tile-name"> Courtyard Cafe </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right yellow-group" id="tile26"> 
+                            <div class="tile-name"> Berry Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right yellow-group" id="tile27"> 
+                            <div class="tile-name"> Bildner Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right" id="tile28"> 
+                            <div class="tile-name"> FO&amp;M </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile right yellow-group" id="tile29"> 
+                            <div class="tile-name"> Rauner Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                    </div>
+
+                    <div class="bottom container">
+                        <div class="tile corner bottom right" id="tile30"> 
+                            <div class="tile-name"> Get Good Sammed </div>
+                            <div class="overlay"></div>
+                        </div>
+
+                        <!-- Bottom Row of Properties -->
+                        <div class="tile bottom green-group" id="tile31"> 
+                            <div class="tile-name"> Andres Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom green-group" id="tile32"> 
+                            <div class="tile-name"> Zimmerman Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom" id="tile33"> 
+                            <div class="tile-name"> Community Chest </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom green-group" id="tile34"> 
+                            <div class="tile-name"> Morton Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom" id="tile35"> 
+                            <div class="tile-name"> 1953 Commons </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom" id="tile36"> 
+                            <div class="tile-name"> Chance </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom blue-group" id="tile37"> 
+                            <div class="tile-name"> Fahey Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom" id="tile38"> 
+                            <div class="tile-name"> Luxury Tax </div>
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="tile bottom blue-group" id="tile39"> 
+                            <div class="tile-name"> McClane Hall </div>
+                            <div class="overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="console">
+                    <div class="messenger">
+                        <h2> Game Messages </h2>
+                        <div class="game-messages"></div>
+                    </div>
+                    <div class="player-box">
+                        <h2> Players </h2>
+                    </div>
+                    <div class="controls">
+                        <div href="#" class="button game">roll</div>
+                        <div href="#" class="button game">continue</div>
+                        <div href="#" class="button game">stop</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <script type="text/javascript" src="bundle.js"></script>
+    </footer>
+</html>

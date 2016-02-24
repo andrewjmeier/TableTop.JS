@@ -7,7 +7,7 @@ function Property(name, cost, propertyGroup) {
   this.cost = cost;
   this.mortage = .5*cost;
   this.propertyGroup = propertyGroup; // see PG_X constants
-  this.owner = null;
+  // this.owner = null;
 }
 
 inherits(Property, MonopolyTile);
@@ -18,23 +18,27 @@ Property.prototype.performLandingAction = function(game) {
   var actions = Property.super_.prototype.performLandingAction.call(this, game);
   
   var player = game.getCurrentPlayer();
-  if (this.owner === player) { 
-    actions[0] = actions[0].concat(" You own it!");
+  var message = "";
+  if (player.owns(this)) { 
+    message = player.name + " already owns it!";
   } else if (player.owesRent(this)) { 
     var rent = this.getRent(game);
-    player.payPlayer(rent, this.owner);
-    actions[0] = actions[0].concat(" You payed $" + rent + " to " + this.owner.name + ". ");
-  } else if (!this.owner) { 
-    actions[0] = actions[0].concat(" It is unowned. ");
+    var owner = game.getOwnerForProperty(this);
+    player.payPlayer(rent, owner);
+    message = player.name + " payed $" + rent + " to " + owner.name + ".";
+  } else { 
+    message = "It is unowned.";
     actions[1] = BUY_PROMPT;
   } 
+
+  this.sendMessage(message);
 
   return actions;
 };
 
 
 // overridden in subclasses
-Property.prototype.getRent = function(player) {
+Property.prototype.getRent = function(game) {
   return 0;
 };
 
@@ -46,6 +50,26 @@ Property.prototype.hasHotel = function(player) {
 
 Property.prototype.isProperty = function() { 
   return true;
+};
+
+Property.prototype.getJSONString = function() {
+  var propertyData = Property.super_.prototype.getJSONString.call(this);
+
+  propertyData.cost = this.cost;
+  propertyData.mortage = this.mortage;
+  propertyData.propertyGroup = this.propertyGroup;
+
+  propertyData.type = "Property";
+
+  return propertyData;
+};
+
+Property.prototype.createFromJSONString = function(data) {
+  Property.super_.prototype.createFromJSONString.call(this, data);
+  
+  this.cost = data.cost;
+  this.mortage = data.mortage;
+  this.propertyGroup = data.propertyGroup;
 };
 
 
