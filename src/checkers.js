@@ -10,6 +10,7 @@ var CheckerView = require('./checkers/checkers_view');
 var board = new CheckerBoard();
 var checkers = new Checkers(board);
 
+var view = new TableTop.GridView(checkers);
 //create our startView
 // var startView = new TableTop.StartView(checkers); 
 

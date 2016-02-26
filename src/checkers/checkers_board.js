@@ -35,10 +35,10 @@ CheckerBoard.prototype.buildTokens = function() {
   for (var i = 0; i < redX.length; i++) { 
 
     tile = this.getTile(redX[i], redY[i]);
-    this.buildTokenForTile(tile, TableTop.Constants.redColor);
+    this.buildTokenForTile(tile, "black");
 
     tile = this.getTile(whiteX[i], whiteY[i]);
-    this.buildTokenForTile(tile, TableTop.Constants.whiteColor);
+    this.buildTokenForTile(tile, "white");
   }
 };
 
@@ -47,6 +47,7 @@ CheckerBoard.prototype.buildTokens = function() {
 // and appends it to our list of tokens
 CheckerBoard.prototype.buildTokenForTile = function(tile, color) { 
   var token = new TableTop.Token(color);
+  token.cssClass = color;
   tile.addToken(token);
   this.tokens.push(token);
 };

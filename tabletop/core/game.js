@@ -300,7 +300,8 @@ Game.prototype.executeMove = function(player) {
  * @param {Token} token - the token that was clicked
  * @returns {void}
 */
-Game.prototype.tokenClicked = function(token) { 
+Game.prototype.tokenClicked = function(token) {
+  console.log("token clicked");
   if (this.moveType == c.moveTypeManual &&
       this.turnMap.getCurrentState() == "waitingForMove") { 
     this.setProposedMoveToken(token);
@@ -313,6 +314,7 @@ Game.prototype.tokenClicked = function(token) {
  * @returns {void}
 */
 Game.prototype.tileClicked = function(tile) { 
+  console.log("tile clicked");
   /* make sure we're in the right state, 
    a token has been pressed, 
    and we're not a tile with a token on it (if we have > 0

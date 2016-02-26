@@ -12,16 +12,11 @@
         <script>
           var socket = io();
         </script>
-        <script src="/bundle.js"></script>
         <div class="game-setup">
-            Enter ID to join a game:<br>
-            <input type="text" name="gameID" placeholder="Game ID" class="joingame-id"><br>
-            Enter a name for your player:<br>
-            <input type="text" name="playerName" placeholder="John Smith" class="player-name"><br>
-            <div href="#" class="button join-game">Join Game</div><br>
-            Or Create a New Game<br>
-            <div href="#" class="button new-game">New Game</div>
-            <div class="gamecode">Game Code: </div>
+            Enter player1's name:<br>
+            <input type="text" name="player1Name" placeholder="John Smith" class="player1-name"><br>
+            Enter player2's name:<br>
+            <input type="text" name="player2Name" placeholder="John Smith" class="player2-name"><br>
             <div href="#" class="button start-game">Start Game</div>
         </div>
         <div class="game-table">
@@ -29,221 +24,160 @@
                 <div class="tile-list">
                     <div class="row container">
                         <div class="tile red" id="tile0"> 
-                            <div class="overlay"></div>
                         </div>
                         <div class="tile black" id="tile1"> 
-                            <div class="overlay"></div>
                         </div>
                         <div class="tile red" id="tile2"> 
-                            <div class="overlay"></div>
                         </div>
                         <div class="tile black" id="tile3"> 
-                            <div class="overlay"></div>
                         </div>
                         <div class="tile red" id="tile4"> 
-                            <div class="overlay"></div>
                         </div>
                         <div class="tile black" id="tile5">  
-                            <div class="overlay"></div>
                         </div>
                         <div class="tile red" id="tile6"> 
-                            <div class="overlay"></div>
                         </div>
                         <div class="tile black" id="tile7"> 
-                            <div class="overlay"></div>
                         </div>
                     </div>
 
                     <div class="row container">
-                        <div class="tile black" id="tile0"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile8"> 
                         </div>
-                        <div class="tile red" id="tile1"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile9"> 
                         </div>
-                        <div class="tile black" id="tile2"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile10"> 
                         </div>
-                        <div class="tile red" id="tile3"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile11"> 
                         </div>
-                        <div class="tile black" id="tile4"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile12"> 
                         </div>
-                        <div class="tile red" id="tile5">  
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile13">  
                         </div>
-                        <div class="tile black" id="tile6"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile14"> 
                         </div>
-                        <div class="tile red" id="tile7"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile15"> 
                         </div>
                     </div>
 
                    <div class="row container">
-                        <div class="tile red" id="tile0"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile16"> 
                         </div>
-                        <div class="tile black" id="tile1"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile17"> 
                         </div>
-                        <div class="tile red" id="tile2"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile18"> 
                         </div>
-                        <div class="tile black" id="tile3"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile19"> 
                         </div>
-                        <div class="tile red" id="tile4"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile20"> 
                         </div>
-                        <div class="tile black" id="tile5">  
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile21">  
                         </div>
-                        <div class="tile red" id="tile6"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile22"> 
                         </div>
-                        <div class="tile black" id="tile7"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile23"> 
                         </div>
                     </div>
 
                     <div class="row container">
-                        <div class="tile black" id="tile0"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile24"> 
                         </div>
-                        <div class="tile red" id="tile1"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile25"> 
                         </div>
-                        <div class="tile black" id="tile2"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile26"> 
                         </div>
-                        <div class="tile red" id="tile3"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile27"> 
                         </div>
-                        <div class="tile black" id="tile4"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile28"> 
                         </div>
-                        <div class="tile red" id="tile5">  
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile29">  
                         </div>
-                        <div class="tile black" id="tile6"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile30"> 
                         </div>
-                        <div class="tile red" id="tile7"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile31"> 
                         </div>
                     </div>
 
                     <div class="row container">
-                        <div class="tile red" id="tile0"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile32"> 
                         </div>
-                        <div class="tile black" id="tile1"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile33"> 
                         </div>
-                        <div class="tile red" id="tile2"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile34"> 
                         </div>
-                        <div class="tile black" id="tile3"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile35"> 
                         </div>
-                        <div class="tile red" id="tile4"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile36"> 
                         </div>
-                        <div class="tile black" id="tile5">  
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile37">  
                         </div>
-                        <div class="tile red" id="tile6"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile38"> 
                         </div>
-                        <div class="tile black" id="tile7"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile39"> 
                         </div>
                     </div>
 
                     <div class="row container">
-                        <div class="tile black" id="tile0"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile40"> 
                         </div>
-                        <div class="tile red" id="tile1"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile41"> 
                         </div>
-                        <div class="tile black" id="tile2"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile42"> 
                         </div>
-                        <div class="tile red" id="tile3"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile43"> 
                         </div>
-                        <div class="tile black" id="tile4"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile44"> 
                         </div>
-                        <div class="tile red" id="tile5">  
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile45">  
                         </div>
-                        <div class="tile black" id="tile6"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile46"> 
                         </div>
-                        <div class="tile red" id="tile7"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile47"> 
                         </div>
                     </div>
 
                     <div class="row container">
-                        <div class="tile red" id="tile0"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile48"> 
                         </div>
-                        <div class="tile black" id="tile1"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile49"> 
                         </div>
-                        <div class="tile red" id="tile2"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile50"> 
                         </div>
-                        <div class="tile black" id="tile3"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile51"> 
                         </div>
-                        <div class="tile red" id="tile4"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile52"> 
                         </div>
-                        <div class="tile black" id="tile5">  
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile53">  
                         </div>
-                        <div class="tile red" id="tile6"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile54"> 
                         </div>
-                        <div class="tile black" id="tile7"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile55"> 
                         </div>
                     </div>
 
                     <div class="row container">
-                        <div class="tile black" id="tile0"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile56"> 
                         </div>
-                        <div class="tile red" id="tile1"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile57"> 
                         </div>
-                        <div class="tile black" id="tile2"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile58"> 
                         </div>
-                        <div class="tile red" id="tile3"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile59"> 
                         </div>
-                        <div class="tile black" id="tile4"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile60"> 
                         </div>
-                        <div class="tile red" id="tile5">  
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile61">  
                         </div>
-                        <div class="tile black" id="tile6"> 
-                            <div class="overlay"></div>
+                        <div class="tile black" id="tile62"> 
                         </div>
-                        <div class="tile red" id="tile7"> 
-                            <div class="overlay"></div>
+                        <div class="tile red" id="tile63"> 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </body>
+    <footer>
+        <script type="text/javascript" src="/bundle.js"></script>
+    </footer>
 </html>

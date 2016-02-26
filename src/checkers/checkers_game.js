@@ -12,6 +12,15 @@ function CheckersGame(board) {
 };
 inherits(CheckersGame, TableTop.Game);
 
+CheckersGame.prototype.startGame = function(player1, player2) {
+  var p1 = new TableTop.Player(player1, 0xFF0000);
+
+  var p2 = new TableTop.Player(player2, 0x000000);
+
+  this.setPlayers([p1, p2]);
+
+};
+
 CheckersGame.prototype.setPlayers = function(players) {  
   this.players = players;
 
