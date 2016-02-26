@@ -1,13 +1,13 @@
 var Turn = require("./turn.js");
 var inherits = require('util').inherits;
 
-function ManualTurn(game, startView, view, gameOverView, nextPlayerView) { 
+function ManualTurn(game) { 
   
   this.game = game;
-  this.startView = startView;
-  this.view = view;
-  this.nextPlayerView = nextPlayerView;
-  this.gameOverView = gameOverView;
+  // this.startView = startView;
+  // this.view = view;
+  // this.nextPlayerView = nextPlayerView;
+  // this.gameOverView = gameOverView;
 
   this.turnMap = new Turn({ 
     initialize: function( options ) {},
@@ -23,7 +23,7 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       // 1
       uninitialized: { 
         start : function() { 
-          this.transition("startScreen");
+          this.transition("waitingForMove");
           
         } 
       },
@@ -31,10 +31,10 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       // 1a
       startScreen:{
         _onEnter: function() { 
-          startView.drawView();
+          // startView.drawView();
         },
         play : function() { 
-          startView.removeView();
+          // startView.removeView();
           if(game.showNextPlayerScreen){
             this.transition("nextPlayerScreen");
           } else {
@@ -46,10 +46,10 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       // 1b
       nextPlayerScreen:{
         _onEnter: function() { 
-          nextPlayerView.drawView();
+          // nextPlayerView.drawView();
         },
         goToTurn : function() { 
-          nextPlayerView.removeView();
+          // nextPlayerView.removeView();
           this.transition("waitingForMove");
         } 
       },
@@ -57,8 +57,8 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
-          view.drawView();
-          console.log(this.game.getCurrentPlayer().name + ": Make your move.");
+          // view.drawView();
+          // console.log(this.game.getCurrentPlayer().name + ": Make your move.");
         },
         
         makeMove : function() { 
@@ -75,12 +75,12 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       postTurn: { 
         _onEnter : function() { 
           if (this.game.playerDidWin(game.getCurrentPlayer())) { 
-            view.removeView();
+            // view.removeView();
             this.transition("gameOver");
           } else { 
             this.game.nextPlayer();
             if(game.showNextPlayerScreen){
-              view.hideView();
+              // view.hideView();
               this.transition("nextPlayerScreen");
             } else {
               this.transition("waitingForMove");
@@ -92,7 +92,7 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       // 4
       gameOver : { 
         _onEnter : function() { 
-          gameOverView.drawView();
+          // gameOverView.drawView();
           console.log(this.game.getCurrentPlayer().name + " has won.");
         }
       } 

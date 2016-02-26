@@ -82,7 +82,7 @@ Game.prototype.createPlayer = function(name) {
 Game.prototype.setTurnMap = function(turnMap) {
   // context = this;
   this.turnMap = turnMap;
-  this.propagate(turnMap);
+  // this.propagate(turnMap);
 };
 
 /**
