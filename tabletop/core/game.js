@@ -230,7 +230,7 @@ Game.prototype.setProposedMoveToken = function(token) {
  * @returns {boolean}
 */
 Game.prototype.hasValidMove = function() { 
-  
+  console.log("here", this.proposedMove);
   if (this.moveType == c.moveTypeManual &&  (!this.proposedMove.token || !this.proposedMove.destination)) {
     return false;
   }

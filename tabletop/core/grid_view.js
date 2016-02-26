@@ -24,24 +24,12 @@ function GridView(game, turnMap) {
     context.game.tileClicked(tile);
   });
 
-  $(".token").click(function(event) {
-    var tile = $(event.currentTarget).parent();
-    var tileID = tile.attr("id");
-    var id = tileID.substring(4,6);
-    var x = id % 8;
-    var y = Math.floor(id / 8);
-    var tile = context.game.board.getTile(x, y);
-    var token = tile.tokens[0];
-    context.game.tokenClicked(token);
-    event.stopPropagation();
-  });
-
   this.game.subscribe( function(message) {
     if (message.type == "view") {
       context.refreshView();
     }
   });
-}
+};
 
 GridView.prototype.refreshView = function() {
   $(".token").remove();
@@ -56,6 +44,22 @@ GridView.prototype.refreshView = function() {
       }
     }
   }
+
+  var context = this;
+
+  $(".token").click(function(event) {
+    console.log("token clicked here");
+    var tile = $(event.currentTarget).parent();
+    var tileID = tile.attr("id");
+    var id = tileID.substring(4,6);
+    var x = id % 8;
+    var y = Math.floor(id / 8);
+    var tile = context.game.board.getTile(x, y);
+    var token = tile.tokens[0];
+    context.game.tokenClicked(token);
+    event.stopPropagation();
+  });
+
 };
 
 GridView.prototype.addTokenToTile = function(token, tile_idx) {

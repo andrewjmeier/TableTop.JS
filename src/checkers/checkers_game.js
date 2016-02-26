@@ -25,7 +25,7 @@ CheckersGame.prototype.setPlayers = function(players) {
   this.players = players;
 
   this.board.tokens.forEach(function(token) { 
-    var player = token.color == TableTop.Constants.redColor ? players[0] : players[1];
+    var player = token.cssClass == "white" ? players[0] : players[1];
     player.tokens.push(token);
   });
 };
@@ -47,10 +47,12 @@ CheckersGame.prototype.executeMove = function() {
   if (jumpedToken) {
     this.destroyToken(jumpedToken);
   }
-  console.log(JSON.stringify(this.board));
+
   // move the token to the new tile and clear proposedMove
   this.board.moveTokenToTile(token, destination);
   this.proposedMove = {};
+
+  this.sendMessage("refreshView", "view");
 };
 
 CheckersGame.prototype.getJumpedToken = function(token, oldPos, newPos) { 
@@ -85,6 +87,7 @@ CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) {
    var p = this.getPlayerForToken(token);
    console.log("players", p != player, p, player);
 
+   console.log(this.getPlayerForToken(token), player);
   if (this.getPlayerForToken(token) != player || 
       newTile.color == TableTop.Constants.redColor || 
       newTile.tokens[0]) 
@@ -99,7 +102,7 @@ CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) {
 CheckersGame.prototype.validNormalMove = function(token, oldPos, newPos, moveLen) { 
 
   // are we moving up or down? 
-  var yModifier = token.color == TableTop.Constants.redColor ? moveLen : -moveLen;
+  var yModifier = token.cssClass == "black" ? moveLen : -moveLen;
   return oldPos.y + yModifier == newPos.y && Math.abs(oldPos.x - newPos.x) == moveLen;
 
 };
