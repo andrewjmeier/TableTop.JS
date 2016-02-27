@@ -27,13 +27,14 @@ function MonopolyTurn(game) {
             },
 
             setup: {
-                yes_continue: function() {
+                continue: function() {
                     this.transition("waitingOnRoll");
                 }
             },
 
             waitingOnRoll: {
                 _onEnter: function() {
+                    console.log("waiting for roll");
                     this.game.message = this.game.players[this.game.currentPlayer].name + ": Click 'Continue' to roll dice.";
                     var context = this;
                     var buttons = [ {
@@ -249,6 +250,7 @@ function MonopolyTurn(game) {
 inherits(MonopolyTurn, Component);
 
 MonopolyTurn.prototype.updateState = function(message) {
+    console.log(message);
     this.turnMap.handle(message);
 };
 

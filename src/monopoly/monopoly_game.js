@@ -33,7 +33,7 @@ MonopolyGame.prototype.createPlayer = function(name) {
 };
 
 MonopolyGame.prototype.updateToStartState = function() {
-  this.updateState("waitingOnRoll");
+  this.updateState("continue");
 };
 
 MonopolyGame.prototype.sendData = function() {

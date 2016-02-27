@@ -171,8 +171,6 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     message = message.concat(roll + ", ");
   }
 
-  this.dice = [3, 4];
-
   this.sendMessage(message);
 };
 
