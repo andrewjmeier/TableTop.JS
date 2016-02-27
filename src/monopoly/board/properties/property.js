@@ -15,7 +15,7 @@ inherits(Property, MonopolyTile);
 Property.prototype.performLandingAction = function(game) {
   
     // todo  - finish hashing this out
-  var actions = Property.super_.prototype.performLandingAction.call(this, game);
+  var nextState = Property.super_.prototype.performLandingAction.call(this, game);
   
   var player = game.getCurrentPlayer();
   var message = "";
@@ -28,12 +28,12 @@ Property.prototype.performLandingAction = function(game) {
     message = player.name + " payed $" + rent + " to " + owner.name + ".";
   } else { 
     message = "It is unowned.";
-    actions[1] = BUY_PROMPT;
+    nextState = BUY_PROMPT;
   } 
 
   this.sendMessage(message);
 
-  return actions;
+  return nextState;
 };
 
 

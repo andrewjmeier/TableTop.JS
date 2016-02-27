@@ -35,7 +35,28 @@ function TableView(game, turnMap) {
             context.refreshView();
         }
     });
-}
+
+    this.game.subscribe( function(message) {
+        if (message.type == "set buttons") {
+            context.refreshButtons(message);
+        }
+    });
+};
+
+TableView.prototype.refreshButtons = function(msg) {
+    console.log(msg);
+    var buttons = msg.text;
+    var container = $(".controls");
+    container.empty();
+    for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        container.append('<div class="button game ' + button.text + '">' + button.text + "</div>");
+        $("." + button.text).click( function() {
+            console.log("clicked");
+            button.onClick();
+        });
+    }
+};
 
 TableView.prototype.refreshView = function() {
     $(".token").remove();

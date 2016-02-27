@@ -12,10 +12,10 @@ Tax.prototype.performLandingAction = function(game) {
   // should probably refactor this into a fn
   // that checks balance, prompts player to mortage/sell
   // before declaring him bankrupt
-  var actions = Tax.super_.prototype.performLandingAction.call(this, game);
-  actions[0] = actions[0].concat(" You payed a tax of $" + this.taxAmount + ". ");
+  var nextState = Tax.super_.prototype.performLandingAction.call(this, game);
+  this.sendMessage("You payed a tax of $" + this.taxAmount + ".", "standard");
   game.getCurrentPlayer().makePayment(this.taxAmount);
-  return actions;
+  return nextState;
 };
 
 module.exports = Tax;

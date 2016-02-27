@@ -14,14 +14,14 @@ var buildChanceDeck = function() {
 
   var chance1 = new TableTop.Card("Advance to Go (Collect $200)", function(game) {
     var player = game.getCurrentPlayer();
-    game.moveTo(0, player);
-    return game.board.tiles[0].performLandingAction(game);
+    return game.moveTo(0, player);
+    // return game.board.tiles[0].performLandingAction(game);
   });
 
   var chance2 = new TableTop.Card("Advance to North Mass.", function(game) {
     var player = game.getCurrentPlayer();
-    game.moveTo(24, player);
-    return game.board.tiles[24].performLandingAction(game);
+    return game.moveTo(24, player);
+    // return game.board.tiles[24].performLandingAction(game);
   });
 
   var chance3 = new TableTop.Card("Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total of ten times the amount thrown.", function(game) {
@@ -30,12 +30,12 @@ var buildChanceDeck = function() {
     var position = game.board.getTileIndexForToken(token);
     if (position > 11 && position < 28) {
       // move to water works
-      game.moveTo(28, player);
-      return game.board.tiles[28].performLandingAction(game);
+      return game.moveTo(28, player);
+      // return game.board.tiles[28].performLandingAction(game);
     } else {
       // move to electric company
-      game.moveTo(12, player);
-      return game.board.tiles[12].performLandingAction(game);
+      return game.moveTo(12, player);
+      // return game.board.tiles[12].performLandingAction(game);
     }
 
     // TODO - pay owner 10x dice
@@ -60,25 +60,25 @@ var buildChanceDeck = function() {
       space = 15;
     }
 
-    game.moveTo(space, player);
-    return game.board.tiles[space].performLandingAction(game);
+    return game.moveTo(space, player);
+    // return game.board.tiles[space].performLandingAction(game);
     // TODO - pay owner twice rent
   });
 
   var chance6 = new TableTop.Card("Advance to Gile Hall - if you pass Go, collect $200", function(game) {
     var player = game.getCurrentPlayer();
-    game.moveTo(11, player);
-    return game.board.tiles[11].performLandingAction(game);
+    return game.moveTo(11, player);
+    // return game.board.tiles[11].performLandingAction(game);
   });
 
   var chance7 = new TableTop.Card("Financial aid office pays you dividend of $50", function(game) {
     game.getCurrentPlayer().makeDeposit(50);
-    return ["", POST_TURN];
+    return POST_TURN;
   });
 
   var chance8 = new TableTop.Card("Get out of Hpo free - this card may be kept until needed, or traded/sold", function(game) {
     game.getCurrentPlayer().getOutOfJailFreeCards += 1;
-    return ["", POST_TURN];
+    return POST_TURN;
   });
 
   var chance9 = new TableTop.Card("Go back 3 spaces", function(game) {
@@ -94,11 +94,11 @@ var buildChanceDeck = function() {
 
   var chance10 = new TableTop.Card("Go directly to Hpo - do not pass Go, do not collect $200", function(game) {
     var player = game.getCurrentPlayer();
-    game.sendToJail(player);
+    return game.sendToJail(player);
 
-    var token = player.getToken();
-    var position = game.board.getTileIndexForToken(token);
-    return game.board.tiles[position].performLandingAction(game);   
+    // var token = player.getToken();
+    // var position = game.board.getTileIndexForToken(token);
+    // return game.board.tiles[position].performLandingAction(game);   
   });
 
   var chance11 = new TableTop.Card("Make general repairs on all your residence halls - for each house pay $25 - for each hotel $100", function(game) {
@@ -118,42 +118,42 @@ var buildChanceDeck = function() {
 
     // TODO - update this for correct value
     player.makePayment(total);
-    return ["", POST_TURN];
+    return POST_TURN;
   });
 
   var chance12 = new TableTop.Card("Get late night at East Wheelock snack bar. Pay $15", function(game) {
     game.getCurrentPlayer().makePayment(15);
-    return ["", POST_TURN];
+    return POST_TURN;
   });
 
   var chance13 = new TableTop.Card("Grab a bite to eat. Advance to the Novack Cafe - if you pass Go collect $200", function(game) {
     var player = game.getCurrentPlayer();
-    game.moveTo(5, player);
-    return game.board.tiles[5].performLandingAction(game);   
+    return game.moveTo(5, player);
+    // return game.board.tiles[5].performLandingAction(game);   
   });
 
   var chance14 = new TableTop.Card("Take a walk down Tuck Drive - advance token to McLane", function(game) {
     var player = game.getCurrentPlayer();
-    game.moveTo(39, player);
-    return game.board.tiles[39].performLandingAction(game);   
+    return game.moveTo(39, player);
+    // return game.board.tiles[39].performLandingAction(game);   
   });
 
   var chance15 = new TableTop.Card("You have been elected to Student Assembly - pay each player $50 (for the Patagonias).", function(game) {
     game.getCurrentPlayer().payPlayers(50, game.players);
-    return ["", POST_TURN];
+    return POST_TURN;
   });
 
   var chance16 = new TableTop.Card("Your building loan matures - collect $150", function(game) {
     game.getCurrentPlayer().makeDeposit(150);
-    return ["", POST_TURN];
+    return POST_TURN;
   });
 
   var chance17 = new TableTop.Card("You have won IM Hockey - collect $100", function(game) {
     game.getCurrentPlayer().makeDeposit(100);
-    return ["", POST_TURN];
+    return POST_TURN;
   });
 
-  return [chance17];
+  return [chance3];
   // return [chance1, chance2, chance3, chance4, chance4, chance6, chance7, chance8, chance9, chance10, chance11, chance12, chance13, chance14, chance15, chance16, chance17];
 };
 

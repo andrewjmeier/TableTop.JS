@@ -167,7 +167,12 @@ html {
 }
 
 .controls {
-    margin: 0 auto;
+    box-sizing: border-box;
+    border: .5em solid #7F9795;
+    border-right: none;
+    border-top: none;
+    text-align: center;
+    width: 50%;
 }
 
 .button {
