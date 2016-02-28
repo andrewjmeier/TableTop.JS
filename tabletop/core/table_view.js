@@ -16,6 +16,18 @@ function TableView(game, turnMap) {
             context.refreshView();
         }
     });
+
+    $(".tile").click( function(event) {
+        $(".chance.card").fadeIn(350);
+    });
+
+    $(document).click(function(event) {
+        if (!$(event.target).closest(".chance.card").length && !$(event.target).is(".overlay")) {
+            if($(".chance.card").is(":visible")) {
+                $(".chance.card").fadeOut(350);
+            };
+        };
+    });
 }
 
 TableView.prototype.refreshView = function() {
