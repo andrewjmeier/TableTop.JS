@@ -58,6 +58,37 @@ TableView.prototype.refreshView = function() {
 
     // scroll messenger to the bottom
     $(".messenger").scrollTop($(".messenger")[0].scrollHeight);
+
+    // if the game has dice, draw them 
+    var dice = this.game.dice;
+
+    for (var i = 0; i < dice.length; i++) {
+        var die = dice[i];
+        var id = "#die-" + (i + 1);
+        var div = $(id);
+        div.removeClass();
+        div.addClass("die " + this.getClassForDie(die));
+    }
+
+};
+
+TableView.prototype.getClassForDie = function(die) {
+    switch(die) {
+        case 1:
+            return "one";
+        case 2:
+            return "two";
+        case 3:
+            return "three";
+        case 4:
+            return "four";
+        case 5:
+            return "five";
+        case 6:
+            return "six";
+        default:
+            return "";
+    }
 };
 
 
