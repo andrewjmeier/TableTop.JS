@@ -12,7 +12,7 @@ function TableView(game, turnMap) {
     }
 
     $(".game").click( function() {
-        context.game.updateState("yes_continue");
+        context.game.continueGame();
     });
 
     $(".join-game").click(function() {

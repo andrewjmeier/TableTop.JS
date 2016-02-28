@@ -36,6 +36,14 @@ MonopolyGame.prototype.updateToStartState = function() {
   this.updateState("waitingOnRoll");
 };
 
+MonopolyGame.prototype.continueGame = function() {
+  if (this.currentPlayer === this.clientPlayerID) {
+    this.updateState("yes_continue");    
+  } else {
+    alert("Please wait until it is your turn to play");
+  }
+};
+
 MonopolyGame.prototype.sendData = function() {
   if (!this.hasMadeGame) {
     this.hasMadeGame = true;
