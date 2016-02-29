@@ -131,7 +131,7 @@ function MonopolyTurn(game) {
                         }
                     },
                     {
-                        text: "Continue",
+                        text: "End Turn",
                         onClick: function() {
                             context.handle("continue");
                         }
