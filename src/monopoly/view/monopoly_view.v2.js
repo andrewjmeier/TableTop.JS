@@ -6,6 +6,17 @@ function MonopolyTableView(game, turnMap) {
   this.subscribeMessageModule();
 
   this.subscribeSoundModule();
+  var context = this;
+  
+  this.game.subscribe( function(message) {
+    if (message.type == "show chance") {
+      context.showCard(message.text, "chance");
+    }
+
+    if (message.type == "show community chest") {
+      context.showCard(message.text, "community-chest");
+    }
+  });
 };
 
 inherits(MonopolyTableView, TableTop.TableView);
@@ -66,6 +77,24 @@ MonopolyTableView.prototype.getSoundForToken = function(token) {
       return null;
   }
 }
+
+MonopolyTableView.prototype.showCard = function(message, cardType) {
+    var cardDiv = $("<div/>", {
+        class: 'card ' + cardType,
+        text: message
+    });
+
+    cardDiv.appendTo('.board')
+    cardDiv.fadeIn(350, function(event) {
+      $(document).click(function(event) {
+        if (!$(event.target).closest("." + cardType + ".card").length) {
+          cardDiv.fadeOut(350, function() {
+            cardDiv.remove();
+          });
+        };
+      });
+    });
+};
 
 MonopolyTableView.prototype.getCssClassForGroupNumber = function(num) {
   switch(num) {
