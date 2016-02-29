@@ -58,8 +58,8 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       waitingForMove: { 
         _onEnter: function() { 
           view.drawView();
-          if (this.game.getCurrentPlayer().name == "AI") { 
-            var AIMove = this.game.pickAImove(this.game.getCurrentPlayer(), this.game);
+          if (this.game.getCurrentPlayer().isAI()) {
+            var AIMove = this.getCurrentPlayer().pickAImove(this.game);
             game.proposedMove = AIMove;
             this.handle("makeMove");
           } else { 

@@ -3,7 +3,6 @@ var ManualTurn = require("./manual_turn.js");
 var Component = require("./component.js");
 var inherits = require('util').inherits;
 var _ = require('lodash');
-var $ = require('jquery');
 var Tile = require('./tile.js');
 var Token = require('./token.js');
 var Player = require('./player.js');
@@ -166,9 +165,9 @@ Game.prototype.nextPlayer = function() {
 };
 
 /**
- * Returns the next player, but does not switch
+ * Returns the next player, but does not switch like nextPlayer does
  * Override to provide more logic on determining the next player
- * @returns {void}
+ * @returns {int} The index of the next player.
 */
 Game.prototype.getNextPlayer = function() { 
   return (this.currentPlayer + 1) % this.players.length;
@@ -360,6 +359,7 @@ Game.prototype.pickAImove = function(player, game) {
   
   var bestResult = results[0];
   var bestScore = 0;
+
   
   results.forEach(function(result) { 
     if (result.score > bestScore) { 

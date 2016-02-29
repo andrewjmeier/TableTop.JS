@@ -37,4 +37,8 @@ Player.prototype.destroyToken = function(token) {
   token.isDead = true;
 };
 
+Player.prototype.isAI = function() { 
+  return false;
+};
+
 module.exports = Player;
