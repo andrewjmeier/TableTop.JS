@@ -55,35 +55,51 @@
 }
 
 .dog {
-    background-color: #f4a460;
+    background-image: url("/assets/icons/dog.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0.5);
 }
 
 .hat {
-    background-color: #00ff00;
+    background-image: url("/assets/icons/hat.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
 }
 
 .battleship {
-    background-color: #ffa500;
+    background-image: url("/assets/icons/battleship.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
 }
 
 .thimble {
-    background-color: #696969;
+    background-image: url("/assets/icons/thimble.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
 }
 
 .wheelbarrow {
-    background-color: #FF69B4;
+    background-image: url("/assets/icons/wheelbarrow.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
 }
 
 .shoe {
-    background-color: #551A8B;
+    background-image: url("/assets/icons/shoe.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
 }
 
 .iron {
-    background-color: #000000;
+    background-image: url("/assets/icons/iron.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
 }
 
 .racecar {
-    background-color: #999900;
+    background-image: url("/assets/icons/racecar.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
 }
 
 .player-info > .property-container {
