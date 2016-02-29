@@ -39,7 +39,15 @@ Game.prototype.messageReceived = function(msg) {
 
   console.log(msg, message);
   this.sendMessage(message.text, message.type, this, message.clientID);
-}
+};
+
+Game.prototype.sendData = function() {
+  if (!this.hasMadeGame) {
+    this.hasMadeGame = true;
+  }
+  var text = JSON.stringify(this.getJSONString());
+  socket.emit('move made', text);
+};
 
 Game.prototype.createGame = function(name) {
   var player = this.createPlayer(name).getJSONString();
@@ -49,6 +57,7 @@ Game.prototype.createGame = function(name) {
 Game.prototype.startGame = function() {
   this.sendData();
   this.updateToStartState();
+  this.sendMessage("", "hide start view");
 }
 
 Game.prototype.joinGame = function(gameID, name) {
@@ -57,6 +66,7 @@ Game.prototype.joinGame = function(gameID, name) {
     gameID: gameID,
     player: player
   };
+  this.sendMessage("", "hide start view");
   socket.emit('join game', JSON.stringify(data));
 };
 
@@ -75,7 +85,10 @@ Game.prototype.gameCreated = function(msg) {
   var token = player.tokens[0];
   var tile = this.board.tiles[0];
   tile.tokens.push(token);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 00407ccec2daba0cc9cf2d2adbe42ce8185f35d8
   this.sendMessage("refreshView", "view");
 
   var context = this;
