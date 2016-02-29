@@ -41,6 +41,12 @@ function TableView(game, turnMap) {
             context.refreshButtons(message);
         }
     });
+
+    this.game.subscribe( function(message) {
+        if (message.type == "show-chance") {
+            context.showChanceCard(message.text);
+        }
+    });
 };
 
 TableView.prototype.refreshButtons = function(msg) {
