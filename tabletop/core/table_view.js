@@ -35,7 +35,38 @@ function TableView(game, turnMap) {
             context.refreshView();
         }
     });
-}
+
+    this.game.subscribe( function(message) {
+        if (message.type == "set buttons") {
+            context.refreshButtons(message);
+        }
+    });
+};
+
+TableView.prototype.refreshButtons = function(msg) {
+    var buttons = msg.text;
+    var container = $(".controls");
+    container.empty();
+    for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+
+        var div = $("<div/>", {
+                    class: 'button game ' + button.id,
+                    text: button.text
+            });
+        container.append(div);
+        var selectedDiv = $(".button.game." + button.id);
+        var context = this;
+        selectedDiv.click( context.buttonClicked( button ));
+    }
+
+};
+
+TableView.prototype.buttonClicked = function(button) {
+    return function() {
+        button.onClick();
+    }
+};
 
 TableView.prototype.refreshView = function() {
     $(".token").remove();

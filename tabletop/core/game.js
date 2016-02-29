@@ -170,6 +170,7 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     this.dice.push(roll);
     message = message.concat(roll + ", ");
   }
+
   this.sendMessage(message);
 };
 
