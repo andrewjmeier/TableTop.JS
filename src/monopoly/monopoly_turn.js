@@ -39,6 +39,7 @@ function MonopolyTurn(game) {
                     var context = this;
                     var buttons = [ {
                         text: "Roll",
+                        id: "roll",
                         onClick: function() {
                             context.handle("roll");
                         }
@@ -74,12 +75,14 @@ function MonopolyTurn(game) {
                         var context = this;
                         var buttons = [ {
                             text: "Yes",
+                            id: "yes",
                             onClick: function() {
                                 context.handle("yes");
                             }
                         }, 
                         {
                             text: "No",
+                            id: "no",
                             onClick: function() {
                                 context.handle("no");
                             }
@@ -120,18 +123,21 @@ function MonopolyTurn(game) {
                     var context = this;
                     var buttons = [ {
                         text: "Trade",
+                        id: "trade",
                         onClick: function() {
                             context.handle("trade");
                         }
                     }, 
                     {
                         text: "Buy Houses",
+                        id: "buy-houses",
                         onClick: function() {
                             context.handle("buy_houses");
                         }
                     },
                     {
                         text: "End Turn",
+                        id: "end-turn",
                         onClick: function() {
                             context.handle("continue");
                         }
@@ -152,7 +158,7 @@ function MonopolyTurn(game) {
 
                 buy_houses: function() {
                     alert("can't buy houses right now");
-                    this.transition("endedTurn");
+                    // this.transition("endedTurn");
                 }
             },
 
@@ -163,12 +169,14 @@ function MonopolyTurn(game) {
                     var context = this;
                     var buttons = [ {
                         text: "Continue",
+                        id: "continue",
                         onClick: function() {
                             context.handle("offer_trade");
                         }
                     }, 
                     {
                         text: "Cancel",
+                        id: "cancel",
                         onClick: function() {
                             context.handle("cancel");
                         }
@@ -200,12 +208,14 @@ function MonopolyTurn(game) {
                     var context = this;
                     var buttons = [ {
                         text: "Yes",
+                        id: "yes",
                         onClick: function() {
                             context.handle("yes");
                         }
                     }, 
                     {
                         text: "No",
+                        id: "no",
                         onClick: function() {
                             context.handle("No");
                         }
@@ -242,7 +252,7 @@ function MonopolyTurn(game) {
         }
     });
 
-    this.turnMap.on("transition", function() {
+    this.turnMap.on("transition", function(event) {
         context.sendMessage("refreshView", "view");
     });
 };

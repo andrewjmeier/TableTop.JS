@@ -44,18 +44,27 @@ function TableView(game, turnMap) {
 };
 
 TableView.prototype.refreshButtons = function(msg) {
-    console.log(msg);
     var buttons = msg.text;
     var container = $(".controls");
     container.empty();
     for (var i = 0; i < buttons.length; i++) {
         var button = buttons[i];
-        var div = $('<div class="button game">' + button.text + "</div>");
+
+        var div = $("<div/>", {
+                    class: 'button game ' + button.id,
+                    text: button.text
+            });
         container.append(div);
-        div.click( function() {
-            console.log("clicked");
-            button.onClick();
-        });
+        var selectedDiv = $(".button.game." + button.id);
+        var context = this;
+        selectedDiv.click( context.buttonClicked( button ));
+    }
+
+};
+
+TableView.prototype.buttonClicked = function(button) {
+    return function() {
+        button.onClick();
     }
 };
 
