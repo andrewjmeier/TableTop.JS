@@ -29,6 +29,18 @@ function Game(board) {
 
 inherits(Game, Component);
 
+Game.prototype.messageReceived = function(msg) {
+  var message = JSON.parse(msg);
+
+  // don't re-send message that we sent
+  if (message.clientID === this.clientPlayerID) {
+    return;
+  }
+
+  console.log(msg, message);
+  this.sendMessage(message.text, message.type, this, message.clientID);
+}
+
 Game.prototype.createGame = function(name) {
   var player = this.createPlayer(name).getJSONString();
   socket.emit('create game', JSON.stringify(player));
@@ -63,9 +75,23 @@ Game.prototype.gameCreated = function(msg) {
   var token = player.tokens[0];
   var tile = this.board.tiles[0];
   tile.tokens.push(token);
-  console.log(tile.tokens);
 
   this.sendMessage("refreshView", "view");
+
+  var context = this;
+  this.subscribe(function(message) {
+    // don't send a message to the server w/ client id b/c it was already sent
+    if (message.clientID !== -1) {
+      return;
+    }
+    var msg = {
+      text: message.text,
+      type: message.type,
+      gameID: context.gameID,
+      clientID: context.clientPlayerID
+    };
+    socket.emit('message sent', JSON.stringify(msg));
+  });
 };
 
 // OVERRIDE IN SUBCLASS! 

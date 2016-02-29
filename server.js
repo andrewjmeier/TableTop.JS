@@ -39,10 +39,18 @@ io.on('connection', function(socket) {
     }
   });
 
+  socket.on('message sent', function(msg) {
+    var dic = JSON.parse(msg);
+    var game = games[dic.gameID];
+
+    for (var i = 0; i < game.length; i++) {
+      io.sockets.connected[game[i]].emit('message received', msg);
+    }
+  });
+
   socket.on('create game', function(player) {
     var playerObj = JSON.parse(player);
     playerObj.id = 0;
-    console.log("creating game");
     // create a uuid for the game, create a new list of clients, send back the uuid
     var uuid = getID();
     games[uuid] = [];
@@ -51,6 +59,7 @@ io.on('connection', function(socket) {
       gameID: uuid,
       player: playerObj
     });
+    console.log("creating game", games, uuid, clientID);
     socket.emit('game created', dic);
   });
 
