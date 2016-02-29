@@ -4,6 +4,8 @@ var $ = require("jquery");
 function MonopolyTableView(game, turnMap) {
   TableTop.TableView.call(this, game, turnMap);
   this.subscribeMessageModule();
+
+  this.subscribeSoundModule();
 };
 
 inherits(MonopolyTableView, TableTop.TableView);
@@ -28,6 +30,42 @@ MonopolyTableView.prototype.updatePlayerModule = function(players) {
     $(".player-box").append(div);
   }
 };
+
+MonopolyTableView.prototype.subscribeSoundModule = function() {
+  var context = this;
+  this.game.subscribe( function(message) {
+    if (message.type == "play sound") {
+      context.playSound(message);
+    }
+  });
+};
+
+MonopolyTableView.prototype.playSound = function(msg) {
+  this.getSoundForToken(msg.text).play();
+};
+
+MonopolyTableView.prototype.getSoundForToken = function(token) {
+  switch(token.cssClass) {
+    case "dog":
+      return new Audio('/assets/sounds/dog.wav');
+    case "hat":
+      return new Audio('/assets/sounds/hat.wav');
+    case "battleship":
+      return new Audio('/assets/sounds/battleship.wav');
+    case "thimble":
+      return new Audio('/assets/sounds/thimble.wav');
+    case "wheelbarrow":
+      return new Audio('/assets/sounds/wheelbarrow.wav');
+    case "shoe":
+      return new Audio('/assets/sounds/shoe.wav');
+    case "iron":
+      return new Audio('/assets/sounds/iron.mp3');
+    case "racecar":
+      return new Audio('/assets/sounds/car.wav');
+    default:
+      return null;
+  }
+}
 
 MonopolyTableView.prototype.getCssClassForGroupNumber = function(num) {
   switch(num) {

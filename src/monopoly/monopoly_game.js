@@ -181,6 +181,8 @@ MonopolyGame.prototype.moveTo = function(tileIndex, player, canPassGo) {
 
   this.board.moveTokenToTile(token, tile);
 
+  this.sendMessage(token, "play sound");
+
   return this.board.getTile(tileIndex).performLandingAction(this);
 };
 
