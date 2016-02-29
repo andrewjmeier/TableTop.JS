@@ -18,6 +18,7 @@ The message passing implementation is inspired by machina.js event emitters.
  * @returns {void}
 */
 Component.prototype.sendMessage = function(message, type, sender) {
+    
     type = type || "standard";
     sender = sender || this;
 

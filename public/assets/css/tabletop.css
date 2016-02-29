@@ -14,6 +14,60 @@ html {
     height: 60em;
 }
 
+.game-setup {
+    text-align: center;
+    position: absolute;
+    background-color: #7ab8b3;
+    top: 50%;
+    left: 50%;
+    border:.15em solid #7F9795;
+    width: 20%;
+    z-index: 1;
+    transform:translate(-50%, -50%);
+    padding: 2em;
+    min-height: 8em;
+}
+
+.init-modal > .gamecode {
+    text-transform: uppercase;
+    margin: 2em;
+    color: #455453;
+    font-weight: bold;
+}
+
+.init-input {
+    background: #B6D8D5;
+    width: 90%;
+    padding: 10px;
+    line-height: 1;
+    border-radius: 0.75em;
+    border: .15em solid #7F9795;
+    text-align: center;
+    font-size: 1.5em;
+    color: gray;
+}
+
+input::-webkit-input-placeholder {
+    color: rgba(1,1,1,.35);
+}
+input::-moz-placeholder {
+    color: rgba(1,1,1,.35);
+}
+input:-moz-placeholder {   /* Older versions of Firefox */
+    color: rgba(1,1,1,.35);
+}
+input:-ms-input-placeholder { 
+    color: rgba(1,1,1,.35);
+}
+
+.init-modal > .button {
+    display: block;
+}
+
+.init-modal > div {
+    margin: 0.5em;
+}
+
 .board {
     position: relative;
     width: 100%;
@@ -204,6 +258,10 @@ html {
 }
 
 .button.hidden {
+    display: none;
+}
+
+.hidden {
     display: none;
 }
 

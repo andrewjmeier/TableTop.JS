@@ -36,14 +36,6 @@ MonopolyGame.prototype.updateToStartState = function() {
   this.updateState("continue");
 };
 
-MonopolyGame.prototype.sendData = function() {
-  if (!this.hasMadeGame) {
-    this.hasMadeGame = true;
-  }
-  var text = JSON.stringify(this.getJSONString());
-  socket.emit('move made', text);
-};
-
 MonopolyGame.prototype.getJSONString = function() {
 
   var playersArray = [];
@@ -68,7 +60,9 @@ MonopolyGame.prototype.createFromJSONString = function(data) {
   if (this.gameID !== dic.gameID) {
     return;
   }
+
   this.currentPlayer = dic.currentPlayer;
+  
   for (var i = 0; i < dic.players.length; i++) {
     var player = new Player();
     this.propagate(player);
