@@ -13,7 +13,7 @@ MonopolyTile.prototype.performLandingAction = function(game){
   var player = game.getCurrentPlayer();
   var message = player.name + " landed on " + this.name;
   this.sendMessage(message);
-  return ["", POST_TURN];
+  return POST_TURN;
 };
 
 MonopolyTile.prototype.isProperty = function() { 

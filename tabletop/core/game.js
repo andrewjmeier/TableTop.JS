@@ -29,6 +29,14 @@ function Game(board) {
 
 inherits(Game, Component);
 
+Game.prototype.sendData = function() {
+  if (!this.hasMadeGame) {
+    this.hasMadeGame = true;
+  }
+  var text = JSON.stringify(this.getJSONString());
+  socket.emit('move made', text);
+};
+
 Game.prototype.createGame = function(name) {
   var player = this.createPlayer(name).getJSONString();
   socket.emit('create game', JSON.stringify(player));
@@ -37,6 +45,7 @@ Game.prototype.createGame = function(name) {
 Game.prototype.startGame = function() {
   this.sendData();
   this.updateToStartState();
+  this.sendMessage("", "hide start view");
 }
 
 Game.prototype.joinGame = function(gameID, name) {
@@ -45,6 +54,7 @@ Game.prototype.joinGame = function(gameID, name) {
     gameID: gameID,
     player: player
   };
+  this.sendMessage("", "hide start view");
   socket.emit('join game', JSON.stringify(data));
 };
 
@@ -63,8 +73,6 @@ Game.prototype.gameCreated = function(msg) {
   var token = player.tokens[0];
   var tile = this.board.tiles[0];
   tile.tokens.push(token);
-  console.log(tile.tokens);
-
   this.sendMessage("refreshView", "view");
 };
 
@@ -170,6 +178,7 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     this.dice.push(roll);
     message = message.concat(roll + ", ");
   }
+
   this.sendMessage(message);
 };
 

@@ -1,0 +1,77 @@
+/* CSS Dice: An Experiment by Jonathan Sampson - @jonathansampson http://sampsonblog.com/289/of-dice-dabblet-and-css */
+.die.one .dot { 
+  box-shadow: 0 .2em 0 #FFF 
+}
+.die.two .dot { 
+  background: transparent;
+  box-shadow: -2.3em -2.3em 0 #345, 
+         2.3em  2.3em 0 #345, 
+        -2.3em -2.3em 0 #FFF, 
+         2.3em  2.4em 0 #FFF 
+}
+.die.three .dot { 
+  box-shadow: -2.3em -2.3em 0 #345, 
+         2.3em  2.3em 0 #345, 
+        -2.3em -2.3em 0 #FFF, 
+         2.3em  2.4em 0 #FFF, 
+             0   .2em 0 #FFF 
+}
+.die.four .dot { 
+  background: transparent;
+        box-shadow: -2.3em -2.3em 0 #345, 
+               2.3em  2.3em 0 #345, 
+              -2.3em  2.3em 0 #345, 
+               2.3em -2.3em 0 #345, 
+              -2.3em -2.3em 0 #FFF, 
+               2.3em  2.4em 0 #FFF, 
+              -2.3em  2.4em 0 #FFF, 
+               2.3em -2.3em 0 #FFF 
+}
+.die.five .dot { 
+  box-shadow: -2.3em -2.3em 0 #345, 
+         2.3em  2.3em 0 #345, 
+        -2.3em  2.3em 0 #345, 
+         2.3em -2.3em 0 #345, 
+        -2.3em -2.2em 0 #FFF, 
+         2.3em -2.2em 0 #FFF, 
+         2.3em  2.4em 0 #FFF, 
+        -2.3em  2.4em 0 #FFF,
+             0   .2em 0 #FFF 
+}
+.die.six .dot {
+  background: transparent;
+  box-shadow: -2.3em -2.3em 0 #345,
+        -2.3em      0 0 #345,
+        -2.3em  2.3em 0 #345,
+         2.3em -2.3em 0 #345,
+         2.3em      0 0 #345,
+         2.3em  2.3em 0 #345,
+        -2.3em -2.1em 0 #FFF,
+        -2.3em   .2em 0 #FFF,
+        -2.3em  2.4em 0 #FFF,
+         2.3em  2.4em 0 #FFF,
+         2.3em   .2em 0 #FFF,
+         2.3em -2.1em 0 #FFF
+}
+.die {
+  border-top: 1px solid #f1f1f1;
+  width: 50px; height: 50px;
+  border-radius: 10px;
+  position: relative;
+  margin: 10px;
+  font-size: 6px;
+  display: inline-block;
+  box-shadow: 0px 5px 0 #CCC, 0 6px 3px #444, 0 10px 5px #999;
+  background-image: linear-gradient(top, #fefefe, #f1f1f1 80%)
+}
+.dot {
+  width: 20%; 
+  height: 20%; 
+  left: 50%; 
+  top: 50%;
+  margin: -10%;
+  background: #345;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+}
