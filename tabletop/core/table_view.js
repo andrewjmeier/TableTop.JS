@@ -50,8 +50,9 @@ TableView.prototype.refreshButtons = function(msg) {
     container.empty();
     for (var i = 0; i < buttons.length; i++) {
         var button = buttons[i];
-        container.append('<div class="button game ' + button.text + '">' + button.text + "</div>");
-        $("." + button.text).click( function() {
+        var div = $('<div class="button game">' + button.text + "</div>");
+        container.append(div);
+        div.click( function() {
             console.log("clicked");
             button.onClick();
         });
