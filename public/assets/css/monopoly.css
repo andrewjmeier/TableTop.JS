@@ -57,7 +57,7 @@
 .dog {
     background-image: url("/assets/icons/dog.png");
     background-size: contain;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0);
 }
 
 .hat {
