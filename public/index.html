@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="./assets/css/tabletop.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/monopoly.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/dice.css">
         <title> Monopoly v.2 </title>
     </head>
     <body>
@@ -11,7 +12,6 @@
         <script>
           var socket = io();
         </script>
-        <script src="/bundle.js"></script>
         <div class="game-setup">
             Enter ID to join a game:<br>
             <input type="text" name="gameID" placeholder="Game ID" class="joingame-id"><br>
@@ -214,10 +214,11 @@
                     <div class="player-box">
                         <h2> Players </h2>
                     </div>
+                    <div class="dice">
+                        <div class="die one" id="die-1">  <span class="dot"></span></div>
+                        <div class="die two" id="die-2">  <span class="dot"></span></div>
+                    </div>
                     <div class="controls">
-                        <div href="#" class="button game">roll</div>
-                        <div href="#" class="button game">continue</div>
-                        <div href="#" class="button game">stop</div>
                     </div>
                 </div>
             </div>
