@@ -8,13 +8,11 @@ function MonopolyTableView(game, turnMap) {
   var context = this;
   
   this.game.subscribe( function(message) {
-    console.log(message.type);
     if (message.type == "show chance") {
       context.showCard(message.text, "chance");
     }
 
     if (message.type == "show community chest") {
-      console.log("here", message);
       context.showCard(message.text, "community-chest");
     }
   });

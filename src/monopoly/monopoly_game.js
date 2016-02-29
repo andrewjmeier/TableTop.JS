@@ -175,7 +175,6 @@ MonopolyGame.prototype.moveTo = function(tileIndex, player, canPassGo) {
   var oldIndex = this.board.tiles.indexOf(oldTile);
 
   if (oldIndex > tileIndex && canPassGo) {
-    console.log("making deposit", oldIndex, tileIndex);
     player.makeDeposit(200);
   }
 
