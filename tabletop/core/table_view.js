@@ -11,8 +11,16 @@ function TableView(game, turnMap) {
         return $(".player-name").val();
     }
 
-    $(".game").click( function() {
-        context.game.updateState("yes_continue");
+    $(".show-join-game").click(function() {
+        $(".game-start.init-modal").fadeOut(200, function(event) {
+            $(".join-start.init-modal").fadeIn(200);
+        }); 
+    });
+
+    $(".show-new-game").click(function() {
+        $(".game-start.init-modal").fadeOut(200, function(event) {
+            $(".create-start.init-modal").fadeIn(200);
+        }); 
     });
 
     $(".join-game").click(function() {
@@ -24,6 +32,10 @@ function TableView(game, turnMap) {
     $(".new-game").click(function() {
         var name = getPlayerName();
         context.game.createGame(name);
+
+        $(".create-start.init-modal").fadeOut(200, function(event) {
+            $(".created-start.init-modal").fadeIn(200);
+        }); 
     });
 
     $(".start-game").click(function() {
@@ -39,6 +51,12 @@ function TableView(game, turnMap) {
     this.game.subscribe( function(message) {
         if (message.type == "set buttons") {
             context.refreshButtons(message);
+        }
+    });
+
+    this.game.subscribe( function(message) {
+        if (message.type == "hide start view") {
+            $(".game-setup").fadeOut(350);
         }
     });
 };
