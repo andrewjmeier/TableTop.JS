@@ -3,7 +3,9 @@ var CommunityChestDeck = require("./cards/communityChestDeck");
 var inherits = require('util').inherits;
 var Trade = require("./monopoly_trade.js");
 var TableTop = require('../../tabletop/tabletop');
+var Player = require('./monopoly_player.js');
 var _ = require('lodash');
+var $ = require("jquery");
 
 function MonopolyGame(board) {
   TableTop.Game.call(this, board);
@@ -15,9 +17,69 @@ function MonopolyGame(board) {
   this.message = "";
   this.activeCard = null;
   this.trade = null;
+  this.hasMadeGame = false;
 };
 
 inherits(MonopolyGame, TableTop.Game);
+
+MonopolyGame.prototype.createPlayer = function(name) {
+  var player = new Player(name, 0, 0); // TODO: remove this number field?
+  this.propagate(player);
+  // var token = player.tokens[0];
+  // var tile = this.board.tiles[0];
+  // tile.tokens.push(token);
+  // this.board.tiles[0].tokens.push(player.tokens[0]);
+  return player;
+};
+
+MonopolyGame.prototype.updateToStartState = function() {
+  this.updateState("continue");
+};
+
+MonopolyGame.prototype.sendData = function() {
+  if (!this.hasMadeGame) {
+    this.hasMadeGame = true;
+  }
+  var text = JSON.stringify(this.getJSONString());
+  socket.emit('move made', text);
+};
+
+MonopolyGame.prototype.getJSONString = function() {
+
+  var playersArray = [];
+  for (var i = 0; i < this.players.length; i++) {
+    var playerText = this.players[i].getJSONString();
+    playersArray.push(playerText);
+  }
+
+  return {
+    players: playersArray,
+    currentPlayer: this.currentPlayer,
+    board: this.board.getJSONString(),
+    gameID: this.gameID
+  }
+
+};
+
+MonopolyGame.prototype.createFromJSONString = function(data) {
+  var dic = JSON.parse(data);
+
+  // only update if it's this game
+  if (this.gameID !== dic.gameID) {
+    return;
+  }
+  this.currentPlayer = dic.currentPlayer;
+  for (var i = 0; i < dic.players.length; i++) {
+    var player = new Player();
+    this.propagate(player);
+    player.createFromJSONString(dic.players[i]);
+    this.players[i] = player;
+  }
+  this.board.createFromJSONString(dic.board);
+
+  this.sendMessage("refreshView", "view");
+
+};
 
 MonopolyGame.prototype.setPlayers = function(players) { 
   this.players = players;
@@ -33,23 +95,38 @@ MonopolyGame.prototype.shuffleCards = function() {
 
 MonopolyGame.prototype.drawChanceCard = function() {
   var card = this.chanceCards.drawCard(true);
+  this.sendMessage(card.text);
+  this.sendMessage(card.text, "show chance");
   this.activeCard = card;
-  console.log("chance card drawn ", card);
-  var actions = card.action(this);
-  return [actions[0], actions[1]];
+  return card.action(this);
 };
 
 MonopolyGame.prototype.drawCommunityChestCard = function() {
   var card = this.communityChestCards.drawCard(true);
+  this.sendMessage(card.text);
+  this.sendMessage(card.text, "show community chest");
   this.activeCard = card;
-  console.log("community chest card drawn ", card);
-  var actions = card.action(this);
-  return [actions[0], actions[1]];
+  return card.action(this);
+};
+
+MonopolyGame.prototype.getOwnerForProperty = function(property) {
+  return _.find(this.players, function(player) {
+    var property = _.find(player.properties, function(prop) {
+      return (prop.name == property.name);
+    });
+    return (undefined != property);
+  });
+};
+
+MonopolyGame.prototype.sendToJail = function(player) {
+  player.inJail = true;
+  player.turnsInJail = 0;
+  return this.moveTo(10, player, false);
 };
 
 MonopolyGame.prototype.rollAndMovePlayer = function() {
   this.rollDice(2);
-  player = this.getCurrentPlayer();
+  var player = this.getCurrentPlayer();
   // if we're not in jail, just move
   if (!player.inJail)
     return this.movePlayer(player);
@@ -59,11 +136,11 @@ MonopolyGame.prototype.rollAndMovePlayer = function() {
   // jail or staying in
   player.turnsInJail += 1;
   if (this.isDoubles(this.dice)) {
-    this.player.releaseFromJail();
-  } else if (this.player.turnsInJail === 3) {
-    this.player.payBail();
+    player.releaseFromJail();
+  } else if (player.turnsInJail === 3) {
+    player.payBail();
   } else {
-    return [player.name + " is serving a turn in jail. ", POST_TURN];
+    return POST_TURN;
   }
 
   return this.movePlayer(player);
@@ -71,23 +148,42 @@ MonopolyGame.prototype.rollAndMovePlayer = function() {
 
 MonopolyGame.prototype.movePlayer = function(player) {
   var spacesToMove = 0;
-  var token = player.tokens[0];
 
   for (var index in this.dice) {
     spacesToMove += this.dice[index];
   }
 
-  var oldTile = this.board.findTileForToken(player.tokens[0]);
+  return this.move(spacesToMove, player);
+};
+
+MonopolyGame.prototype.move = function(amount, player, canPassGo) {
+  var token = player.getToken();
+  var oldIndex = this.board.getTileIndexForToken(token);
+  var newIndex = (oldIndex + amount) % 40;
+
+  return this.moveTo(newIndex, player, canPassGo);
+};
+
+MonopolyGame.prototype.moveTo = function(tileIndex, player, canPassGo) {
+  if (undefined == canPassGo) {
+    canPassGo = true;
+  }
+
+  var token = player.getToken();
+
+  var oldTile = this.board.findTileForToken(token);
   var oldIndex = this.board.tiles.indexOf(oldTile);
-  var new_index = (oldIndex + spacesToMove) % 39;
-  if (oldIndex > new_index) {
+
+  if (oldIndex > tileIndex && canPassGo) {
+    console.log("making deposit", oldIndex, tileIndex);
     player.makeDeposit(200);
   }
-  this.board.moveTokenToTile(token, this.board.getTile(new_index));
 
-  var actions = this.board.getTile(new_index).performLandingAction(this);
-  actions[0] = ("You rolled a " + spacesToMove + ". ").concat(actions[0]);
-  return actions;
+  var tile = this.board.getTile(tileIndex);
+
+  this.board.moveTokenToTile(token, tile);
+
+  return this.board.getTile(tileIndex).performLandingAction(this);
 };
 
 MonopolyGame.prototype.nextPlayer = function() {

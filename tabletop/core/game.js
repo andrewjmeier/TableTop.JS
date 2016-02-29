@@ -23,9 +23,56 @@ function Game(board) {
   this.showNextPlayerScreen = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
+  this.gameID = null;
+  this.clientPlayerID = -1;    // id of the player of THIS client
 };
 
 inherits(Game, Component);
+
+Game.prototype.createGame = function(name) {
+  var player = this.createPlayer(name).getJSONString();
+  socket.emit('create game', JSON.stringify(player));
+};
+
+Game.prototype.startGame = function() {
+  this.sendData();
+  this.updateToStartState();
+}
+
+Game.prototype.joinGame = function(gameID, name) {
+  var player = this.createPlayer(name).getJSONString();
+  var data = {
+    gameID: gameID,
+    player: player
+  };
+  socket.emit('join game', JSON.stringify(data));
+};
+
+Game.prototype.gameCreated = function(msg) {
+  dic = JSON.parse(msg);
+  this.gameID = dic.gameID;
+  var player = PlayerFactory();
+  player.createFromJSONString(dic.player);
+  this.players.push(player);  
+
+  if (this.clientPlayerID === -1) {
+    this.clientPlayerID = dic.player.id;
+  } else {
+
+  }
+  var token = player.tokens[0];
+  var tile = this.board.tiles[0];
+  tile.tokens.push(token);
+  console.log(tile.tokens);
+
+  this.sendMessage("refreshView", "view");
+};
+
+// OVERRIDE IN SUBCLASS! 
+// FACTORY? 
+Game.prototype.createPlayer = function(name) {
+
+}
 
 /**
  * Method to set turnMap of the game once it is created
@@ -33,7 +80,7 @@ inherits(Game, Component);
  * @param {Turn} turnMap - A turn object to be used by the game
 */
 Game.prototype.setTurnMap = function(turnMap) {
-  context = this;
+  // context = this;
   this.turnMap = turnMap;
   this.propagate(turnMap);
 };
@@ -116,7 +163,8 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     sides = 6;
   }
   this.dice = [];
-  var message = "You rolled a ";
+  var player = this.getCurrentPlayer();
+  var message = player.name + " rolled a ";
   for (var i = 0; i < numberOfDice; i++) {
     var roll = Math.floor(Math.random() * sides) + 1;
     this.dice.push(roll);

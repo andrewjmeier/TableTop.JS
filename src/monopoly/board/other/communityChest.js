@@ -9,11 +9,8 @@ inherits(CommunityChest, MonopolyTile);
 
 CommunityChest.prototype.performLandingAction = function(game) {
   var spaceActions = CommunityChest.super_.prototype.performLandingAction.call(this, game);
-  var ccActions = game.drawCommunityChestCard();
-  var actions = [];
-  actions[0] = spaceActions[0].concat(ccActions[0]);
-  actions[1] = ccActions[1];
-  return actions;
+  var nextState = game.drawCommunityChestCard();
+  return nextState;
 };
 
 module.exports = CommunityChest;

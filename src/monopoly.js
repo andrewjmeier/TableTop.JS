@@ -1,37 +1,69 @@
-require("./monopoly/board/boardConstants.js");
-
+var TableTop = require("../tabletop/tabletop");
 var Player = require("./monopoly/monopoly_player.js");
 var Card = require("../tabletop/core/card.js");
 var Game = require("./monopoly/monopoly_game.js");
 var Board = require("./monopoly/board_utils.js");
 var Turn = require("./monopoly/monopoly_turn.js");
+var MonopolyToken = require("./monopoly/monopoly_token.js");
 var MonopolyView = require("./monopoly/view/monopoly_view.v2.js");
+var HousingProperty = require("./monopoly/board/properties/housingProperty.js");
+var Property = require("./monopoly/board/properties/property.js");
+var RailroadProperty = require("./monopoly/board/properties/railroadProperty.js");
+var UtilityProperty = require("./monopoly/board/properties/utilityProperty.js");
 
-var john = new Player("Andrew", 1);
 
-var steve = new Player("Quinn", 2);
+// Wait for page to fully load (otherwise called twice)
+window.onload = function () { 
 
-var sam = new Player("James", 3);
+  var board = new Board();
 
-var mike = new Player("Kevin", 4);
+  var monopoly = new Game(board);
 
-var jimmy = new Player("KC", 5);
+  var turn = new Turn(monopoly);
 
-var players = [john, steve, sam, mike, jimmy];
+  monopoly.setTurnMap(turn);
 
-var board = new Board();
+  var view = new MonopolyView(monopoly);
 
-var monopoly = new Game(board);
+  socket.on('move made', function(msg) {
+    monopoly.createFromJSONString(msg);
+  });
 
-monopoly.setPlayers(players);
+  socket.on('game created', function(msg) {
+    monopoly.gameCreated(msg);
+  });
 
-// monopoly.subscribe(function(message) {
-//     var div = document.getElementById("messages");
-//     div.innerHTML = div.innerHTML.concat("<br>" + message);
-// });
+  TokenFactory = function(type){
+    switch(type) {
+      case "Token":
+        return new TableTop.Token();
+      case "MonopolyToken":
+        return new MonopolyToken();
+      default:
+        return new TableTop.Token();
+    }
+  }
 
-var turn = new Turn(monopoly);
+  PlayerFactory = function(type) {
+    switch(type) {
 
-monopoly.setTurnMap(turn);
+      default:
+        return new Player();
+    }
+  }
 
-var view = new MonopolyView(monopoly);
+  PropertyFactory = function(type) {
+    switch(type) {
+      case "HousingProperty":
+        return new HousingProperty();
+      case "RailroadProperty":
+        return new RailroadProperty();
+      case "UtilityProperty":
+        return new UtilityProperty();
+      default:
+        return new Property();
+    }
+  }
+}
+
+

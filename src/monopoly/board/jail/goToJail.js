@@ -8,10 +8,12 @@ function GoToJail() {
 inherits(GoToJail, MonopolyTile);
 
 GoToJail.prototype.performLandingAction = function(game) {
-  game.getCurrentPlayer().sendToJail();
-  var actions = GoToJail.super_.prototype.performLandingAction.call(this, game);
-  actions[0] = actions[0].concat(" You've been sent to Jail");
-  return actions;
+  var player = game.getCurrentPlayer();
+  game.sendToJail(player);
+  var nextState = GoToJail.super_.prototype.performLandingAction.call(this, game);
+  var message = player.name + " has been sent to Jail";
+  this.sendMessage(message);
+  return nextState;
 };
 
 module.exports = GoToJail;

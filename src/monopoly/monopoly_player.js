@@ -5,22 +5,18 @@ var MonopolyToken = require('./monopoly_token');
 var TokenTypes = require('./token_types');
 var _ = require('lodash');
 
-function MonopolyPlayer(name, number) {
-  TableTop.Player.call(this, name, number);
+function MonopolyPlayer(name, number, id) {
+  TableTop.Player.call(this, name, number, id);
   this.money = 1500;
   this.properties = [];
-  this.tokens.push(this.createRandomUniqueToken());
+  var token = this.createRandomUniqueToken();
+  this.tokens.push(token);
   this.getOutOfJailFreeCards = 0;
   this.inJail = false;
   this.turnsInJail = 0;
 };
 
 inherits(MonopolyPlayer, TableTop.Player);
-
-MonopolyPlayer.prototype.sendToJail = function() {
-  this.position = 10;
-  this.inJail = true;
-};
 
 MonopolyPlayer.prototype.payBail = function() {
   this.releaseFromJail();
@@ -75,13 +71,15 @@ MonopolyPlayer.prototype.owesRent = function(property) {
 };
 
 MonopolyPlayer.prototype.owns = function(property) {
-  return property.owner === this;
+  return property.owner && property.owner.id === this.id;
 };
 
 MonopolyPlayer.prototype.buy = function(property) {
   this.makePayment(property.cost);
   this.properties.push(property);
   property.owner = this;
+  var message = this.name + " purchased " + property.name + " for $" + property.cost;
+  this.sendMessage(message);
 };
 
 MonopolyPlayer.prototype.assets = function() {
@@ -106,6 +104,8 @@ MonopolyPlayer.prototype.createRandomUniqueToken = function() {
 
   token = new MonopolyToken(cssClass);
 
+  this.sendMessage(token, "token-created");
+
   return token;
 };
 
@@ -116,7 +116,10 @@ MonopolyPlayer.prototype.removeProperty = function(property) {
   if(index > -1){
     this.properties.splice(index, 1);
   }
+};
 
+MonopolyPlayer.prototype.getToken = function() {
+  return this.tokens[0];
 };
 
 MonopolyPlayer.prototype.addItems = function(items) {
@@ -125,6 +128,42 @@ MonopolyPlayer.prototype.addItems = function(items) {
     items.property[i].owner = this;
   }
   this.money += items.money;
+};
+
+MonopolyPlayer.prototype.getJSONString = function() {
+
+  var playerStuff = MonopolyPlayer.super_.prototype.getJSONString.call(this);
+
+  playerStuff.money = this.money;
+  playerStuff.getOutOfJailFreeCards = this.getOutOfJailFreeCards;
+  playerStuff.inJail = this.inJail;
+  playerStuff.turnsInJail = this.turnsInJail;
+
+  var properties = [];
+  for (var i = 0; i < this.properties.length; i++) {
+    var property = this.properties[i].getJSONString();
+    properties.push(property);
+  }
+
+  playerStuff.properties = properties;
+
+  return playerStuff;
+};
+
+MonopolyPlayer.prototype.createFromJSONString = function(data) {
+  MonopolyPlayer.super_.prototype.createFromJSONString.call(this, data);
+  
+  this.money = data.money;
+  this.getOutOfJailFreeCards = data.getOutOfJailFreeCards;
+  this.inJail = data.inJail;
+  this.turnsInJail = data.turnsInJail;
+
+  this.properties = [];
+  for (var i = 0; i < data.properties.length; i++) {
+    var property = PropertyFactory(data.properties[i].type);
+    property.createFromJSONString(data.properties[i]);
+    this.properties.push(property);
+  }
 };
 
 module.exports = MonopolyPlayer;

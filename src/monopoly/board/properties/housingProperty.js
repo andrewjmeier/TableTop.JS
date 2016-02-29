@@ -49,4 +49,25 @@ HousingProperty.prototype.hasHotel = function() {
   return this.numHouses === 5;
 };
 
+HousingProperty.prototype.getJSONString = function() {
+  var propertyData = HousingProperty.super_.prototype.getJSONString.call(this);
+
+  propertyData.rent = this.rent;
+  propertyData.numHouses = this.numHouses;
+  propertyData.houseCost = propertyData.cost;
+
+  propertyData.type = "HousingProperty";
+
+  return propertyData;
+};
+
+HousingProperty.prototype.createFromJSONString = function(data) {
+  HousingProperty.super_.prototype.createFromJSONString.call(this, data);
+  
+  this.rent = data.rent;
+  this.numHouses = data.numHouses;
+  this.houseCost = data.houseCost;
+
+};
+
 module.exports = HousingProperty;

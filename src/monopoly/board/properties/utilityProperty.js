@@ -13,9 +13,7 @@ function UtilityProperty(name) {
 inherits(UtilityProperty, Property);
 
 UtilityProperty.prototype.performLandingAction = function(game) {
-
   return UtilityProperty.super_.prototype.performLandingAction.call(this, game);
-
 };
 
 UtilityProperty.prototype.getRent = function(game) {
@@ -31,6 +29,18 @@ UtilityProperty.prototype.getRent = function(game) {
 
   var diceRoll = game.dice[0] + game.dice[1];
   return utilityCount === 2 ? diceRoll * 10 : diceRoll * 4;
+};
+
+UtilityProperty.prototype.getJSONString = function() {
+  var propertyData = UtilityProperty.super_.prototype.getJSONString.call(this);
+
+  propertyData.type = "UtilityProperty";
+
+  return propertyData;
+};
+
+UtilityProperty.prototype.createFromJSONString = function(data) {
+  UtilityProperty.super_.prototype.createFromJSONString.call(this, data);
 };
 
 module.exports = UtilityProperty;
