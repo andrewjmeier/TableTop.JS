@@ -206,3 +206,15 @@ html {
 .button.hidden {
     display: none;
 }
+
+.card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+    border:.15em solid #7F9795;
+    width: 20%;
+    z-index: 1;
+    height: 14%;
+    transform:translate(-50%, -50%);
+}

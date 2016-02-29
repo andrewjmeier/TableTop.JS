@@ -2,6 +2,14 @@
     border: 0;
 }
 
+.chance {
+    background: #FFA500;
+}
+
+.community-chest {
+    background: #FFFF7F;
+}
+
 .brown-group {
     color: #faebd7;
     background: #7D5916;

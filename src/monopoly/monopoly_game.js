@@ -96,6 +96,7 @@ MonopolyGame.prototype.shuffleCards = function() {
 MonopolyGame.prototype.drawChanceCard = function() {
   var card = this.chanceCards.drawCard(true);
   this.sendMessage(card.text);
+  this.sendMessage(card.text, "show chance");
   this.activeCard = card;
   return card.action(this);
 };
@@ -103,6 +104,7 @@ MonopolyGame.prototype.drawChanceCard = function() {
 MonopolyGame.prototype.drawCommunityChestCard = function() {
   var card = this.communityChestCards.drawCard(true);
   this.sendMessage(card.text);
+  this.sendMessage(card.text, "show community chest");
   this.activeCard = card;
   return card.action(this);
 };
@@ -173,7 +175,6 @@ MonopolyGame.prototype.moveTo = function(tileIndex, player, canPassGo) {
   var oldIndex = this.board.tiles.indexOf(oldTile);
 
   if (oldIndex > tileIndex && canPassGo) {
-    console.log("making deposit", oldIndex, tileIndex);
     player.makeDeposit(200);
   }
 
