@@ -10,6 +10,7 @@ function CheckersGame(board) {
   this.possibleNumPlayers = [2];
   this.showNextPlayerScreen = false;
 };
+
 inherits(CheckersGame, TableTop.Game);
 
 CheckersGame.prototype.setPlayers = function(players) {  
@@ -38,7 +39,7 @@ CheckersGame.prototype.executeMove = function() {
   if (jumpedToken) {
     this.destroyToken(jumpedToken);
   }
-  console.log(JSON.stringify(this.board));
+
   // move the token to the new tile and clear proposedMove
   this.board.moveTokenToTile(token, destination);
   this.proposedMove = {};
@@ -65,7 +66,6 @@ CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) {
   var player = this.getCurrentPlayer();
 
 
-  console.log("checking valid move", player, oldPos, newPos);
   /* 
    If we don't own the piece or
    the destination is a red tile or 
@@ -74,14 +74,11 @@ CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) {
    */
 
    var p = this.getPlayerForToken(token);
-   console.log("players", p != player, p, player);
 
   if (this.getPlayerForToken(token) != player || 
       newTile.color == TableTop.Constants.redColor || 
       newTile.tokens[0]) 
     return false;
-
-  console.log("getting here");
 
   return this.validNormalMove(token, oldPos, newPos, 1) || 
     this.validJumpMove(token, oldPos, newPos);
@@ -114,6 +111,16 @@ CheckersGame.prototype.playerDidWin = function(player) {
   } 
   
   return true;
+};
+
+
+
+// takes in a player 
+// returns the score for the board based on the player passed in (ie. if the player 
+// has won it should return 10, if he loses should return -10) 
+CheckersGame.prototype.scoreBoard = function(player) { 
+  var otherPlayer = this.players[this.getNextPlayer()];
+  return 12 - otherPlayer.tokens.length;
 };
 
 

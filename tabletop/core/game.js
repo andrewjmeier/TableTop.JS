@@ -3,6 +3,11 @@ var ManualTurn = require("./manual_turn.js");
 var Component = require("./component.js");
 var inherits = require('util').inherits;
 var _ = require('lodash');
+var $ = require('jquery');
+var Tile = require('./tile.js');
+var Token = require('./token.js');
+var Player = require('./player.js');
+var Gridboard = require('./grid_board.js');
 
 /**
  * The Game class
@@ -217,6 +222,15 @@ Game.prototype.nextPlayer = function() {
 };
 
 /**
+ * Returns the next player, but does not switch
+ * Override to provide more logic on determining the next player
+ * @returns {void}
+*/
+Game.prototype.getNextPlayer = function() { 
+  return (this.currentPlayer + 1) % this.players.length;
+};
+
+/**
  * Set the destination for a proposed move
  * @param {Tile} tile - the tile to move to
  * @returns {void}
@@ -348,5 +362,187 @@ Game.prototype.destroyToken = function(token) {
   });
   this.board.destroyToken(token);
 };
+
+
+Game.prototype.pickAImove = function(player, game) { 
+
+  var moves = this.getValidMoves(player);
+  var results = [];
+
+  // for each token, grab the appropriate objects from the game copy object
+  // (since getValidMoves will return actual game objects and we want 
+  // the copies). Then execute the move and score it.
+  for (var i = 0; i < moves.tokens.length; i++) {
+
+    var tokenIdx = this.board.tokens.indexOf(moves.tokens[i]);
+    var tilePos = this.board.getTilePosition(moves.tiles[i]);
+    
+    moves.destinationTiles[i].forEach(function(dest) { 
+      var destPos = this.board.getTilePosition(dest);
+
+      var gameCopy = this.copyGameStatus(this);
+
+      var tokenCp = gameCopy.board.tokens[tokenIdx];
+      var tileCp, destCp;
+      if (game.board instanceof Gridboard) { 
+        tileCp = gameCopy.board.tiles[tilePos.x][tilePos.y];
+        destCp = gameCopy.board.tiles[destPos.x][destPos.y];
+      } else { 
+        tileCp = gameCopy.board.tiles[tilePos];
+        destCp = gameCopy.board.tiles[destPos];
+      } 
+        
+      gameCopy.proposedMove = {
+        token: tokenCp,
+        tile: tileCp,
+        destination: destCp,
+        tokenIdx: tokenIdx, 
+        tilePos: tilePos, 
+        destPos: destPos
+      };
+      
+      gameCopy.executeMove();
+      results.push({
+        score: gameCopy.scoreBoard(player), 
+        token: tokenCp, 
+        tile: tileCp, 
+        destination: destCp,
+        tokenIdx: tokenIdx, 
+        tilePos: tilePos, 
+        destPos: destPos
+      });
+    }, this);
+  }
+  
+  var bestResult = results[0];
+  var bestScore = 0;
+  
+  results.forEach(function(result) { 
+    if (result.score > bestScore) { 
+      bestResult = result; 
+      bestScore = result.score;
+    }
+  });
+
+  
+  var actualToken = this.board.tokens[bestResult.tokenIdx];
+  // actualTile should be same as this.board.tile[tilePos], but we 
+  // use this cause it generalizes to all board types 
+  var actualTile = this.board.findTileForToken(actualToken);
+
+  var actualDest;
+  if (this.board instanceof Gridboard) { 
+    actualDest = this.board.getTile(bestResult.destPos.x, bestResult.destPos.y);
+  } else { 
+    actualDest = this.board.getTile(bestResult.destPos);
+  } 
+  
+  var actualBestMove = 
+        { 
+          token: actualToken,
+          tile: actualTile,
+          destination: actualDest
+        };
+  
+  return actualBestMove;
+};
+
+Game.prototype.getValidMoves = function(player) { 
+
+  var legalMoves = {};
+  legalMoves.tokens = [];
+  legalMoves.tiles = [];
+  legalMoves.destinationTiles = [];
+  if (this.moveType == c.moveTypeManual) { 
+    
+    player.tokens.forEach(function(token) { 
+      var tile = this.board.findTileForToken(token);
+      var destinationTiles = [];
+      // since this.board is a double array we need to double loop
+      this.board.tiles.forEach(function(destinationRow) { 
+        destinationRow.forEach(function(destination) { 
+          if (this.isValidMove(token, tile, destination))
+            destinationTiles.push(destination);
+        }, this);
+      }, this);
+      
+      if (destinationTiles.length > 0) { 
+        legalMoves.tokens.push(token);
+        legalMoves.tiles.push(tile);
+        legalMoves.destinationTiles.push(destinationTiles);
+      }
+    }, this);
+    
+  } 
+  
+  return legalMoves;
+};
+
+// Create copy of game and manually copy over 
+// tiles/tokens to remove references
+Game.prototype.copyGameStatus = function(game) {
+
+  //var newGame = $.extend(true, {}, game);
+  var newGame = Object.create(this);
+  newGame.board = Object.create(this.board);
+  newGame.board.tokens = [];
+  newGame.board.tiles = [];
+  newGame.players = [];
+  var i, j = 0;
+  
+  // copy players, clear token arrays
+  for (i = 0; i < game.players.length; i++) { 
+    newGame.players.push(new Player());
+    Object.assign(newGame.players[i], game.players[i]);
+    newGame.players[i].tokens = [];
+  } 
+  
+  // copy tiles, clear token arrays
+  if (game.board instanceof Gridboard) { 
+    for (i = 0; i < game.board.tiles.length; i++) { 
+      newGame.board.tiles.push([]);
+      for (j = 0; j < game.board.tiles[i].length; j++)  {
+        newGame.board.tiles[i].push(new Tile({}));
+        Object.assign(newGame.board.tiles[i][j], game.board.tiles[i][j]);
+        newGame.board.tiles[i][j].clearTokens();
+      }
+    } 
+  } else { 
+    for (i = 0; i < game.board.tiles.length; i++) { 
+      newGame.board.tiles.push(new Tile({}));
+      Object.assign(newGame.board.tiles[i], game.board.tiles[i]);
+      newGame.board.tiles[i].clearTokens();
+    } 
+  } 
+  
+  // copy tokens, and assign to proper tile and player
+  for (i = 0; i < game.board.tokens.length; i++) { 
+    var token = game.board.tokens[i];
+    newGame.board.tokens.push(new Token());
+    var newToken = newGame.board.tokens[i];
+    Object.assign(newToken, token);
+    
+    // assign tile to proper player if it's owned, or do nothing
+    for (j = 0; j < game.players.length; j++) { 
+      if (game.players[j].tokens.indexOf(token) >= 0) { 
+        newGame.players[j].tokens.push(newToken);
+      }
+    } 
+
+    // if a token is on a tile, add it to the tile's list of tokens
+    var tile = game.board.findTileForToken(token);
+    var tilePos = game.board.getTilePosition(tile);
+    if (!tile || !tilePos) continue;
+    
+    if (game.board instanceof Gridboard)
+      newGame.board.tiles[tilePos.x][tilePos.y].addToken(newGame.board.tokens[i]);
+    else  
+      newGame.board.tiles[tilePos].addToken(newGame.board.tokens[i]);
+    
+  }
+  
+  return newGame;
+};
+
 
 module.exports = Game;
