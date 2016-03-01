@@ -33,6 +33,14 @@ window.onload = function () {
     monopoly.gameCreated(msg);
   });
 
+  socket.on('message received', function(msg) {
+    monopoly.messageReceived(msg);
+  });
+
+  socket.on('game initiated', function(msg) {
+    monopoly.initiated();
+  });
+
   TokenFactory = function(type){
     switch(type) {
       case "Token":

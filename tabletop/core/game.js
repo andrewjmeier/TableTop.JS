@@ -29,6 +29,35 @@ function Game(board) {
 
 inherits(Game, Component);
 
+Game.prototype.messageReceived = function(msg) {
+  var message = JSON.parse(msg);
+
+  // don't re-send message that we sent
+  if (message.clientID === this.clientPlayerID) {
+    return;
+  }
+
+  if (message.type === "state-machine" && message.text === this.turnMap.turnMap.compositeState()) {
+    return;
+  }
+
+
+  if (message.type === "state-machine") {
+    this.turnMap.transitionTo(message.text);
+    return;
+  }
+
+  this.sendMessage(message.text, message.type, this, message.clientID);
+};
+
+Game.prototype.sendState = function(state) {
+  // if it's waiting for roll, it's the next players turn so still send it
+  if (this.clientPlayerID === this.currentPlayer || (state === "waitingOnRoll")) {
+    this.sendData();
+    this.sendMessage(state, "state-machine");
+  }
+};
+
 Game.prototype.sendData = function() {
   if (!this.hasMadeGame) {
     this.hasMadeGame = true;
@@ -43,10 +72,34 @@ Game.prototype.createGame = function(name) {
 };
 
 Game.prototype.startGame = function() {
-  this.sendData();
-  this.updateToStartState();
   this.sendMessage("", "hide start view");
-}
+
+  socket.emit('initiate game', this.gameID);
+
+  this.sendData();
+};
+
+Game.prototype.initiated = function() {
+  var context = this;
+
+  this.subscribe(function(message) {
+    // don't send a message to the server w/ client id b/c it was already sent
+    if (message.clientID !== -1 || !(message.type === "standard" || message.type === "state-machine")) {
+      return;
+    }
+
+    var msg = {
+      text: message.text,
+      type: message.type,
+      gameID: context.gameID,
+      clientID: context.clientPlayerID
+    };
+
+    socket.emit('message sent', JSON.stringify(msg));
+  });
+
+  this.updateToStartState();
+};
 
 Game.prototype.joinGame = function(gameID, name) {
   var player = this.createPlayer(name).getJSONString();
@@ -73,6 +126,7 @@ Game.prototype.gameCreated = function(msg) {
   var token = player.tokens[0];
   var tile = this.board.tiles[0];
   tile.tokens.push(token);
+
   this.sendMessage("refreshView", "view");
 };
 
