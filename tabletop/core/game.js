@@ -89,8 +89,6 @@ Game.prototype.startGame = function() {
       clientID: context.clientPlayerID
     };
 
-    console.log(message);
-
     socket.emit('message sent', JSON.stringify(msg));
   });
 }
@@ -106,7 +104,6 @@ Game.prototype.joinGame = function(gameID, name) {
 };
 
 Game.prototype.gameCreated = function(msg) {
-  console.log("game created");
   dic = JSON.parse(msg);
   this.gameID = dic.gameID;
   var player = PlayerFactory();

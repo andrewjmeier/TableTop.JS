@@ -44,7 +44,6 @@ io.on('connection', function(socket) {
     var game = games[dic.gameID];
 
     for (var i = 0; i < game.length; i++) {
-      console.log("sending message", msg, game[i]);
       io.sockets.connected[game[i]].emit('message received', msg);
     }
   });
