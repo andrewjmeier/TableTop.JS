@@ -4,7 +4,7 @@ module.exports = {
     entry: "./src/checkers.js",
     output: {
         path: __dirname,
-        filename: "bundle.js"
+        filename: "/public/bundle.js"
     },
     plugins: [
     new webpack.DefinePlugin({

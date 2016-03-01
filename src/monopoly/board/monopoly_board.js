@@ -13,19 +13,33 @@ function MonopolyBoard() {
 inherits(MonopolyBoard, TableTop.Board);
 
 MonopolyBoard.prototype.findTileForToken = function(token) {
-    var tile = _.find(this.tiles, function (n) {
-        return (n.tokens.indexOf(token) != -1);
-    });
+  var tile = _.find(this.tiles, function (n) {
+      var found = _.find(n.tokens, function(other) {
+        return other.id == token.id;
+      });
+      if (undefined != found) {
+        return true; 
+      } 
+  });
 
-    return tile;
+  return tile;
+};
+
+MonopolyBoard.prototype.getTileIndexForToken = function(token) {
+  var tile = this.findTileForToken(token);
+  return this.tiles.indexOf(tile);
 };
 
 MonopolyBoard.prototype.moveTokenToTile = function(token, tile) {
     var oldTile = this.findTileForToken(token);
-    if (oldTile != undefined) {
-        oldTile.tokens.splice(this.tiles.indexOf(token), 1);
+    if (undefined != oldTile) {
+      for (var i = 0; i < oldTile.tokens.length; i++) {
+        if (token.id === oldTile.tokens[i].id) {
+          oldTile.tokens.splice(i, 1);
+          break;
+        }
+      }
     }
-
     tile.addToken(token);
 };
 
@@ -37,6 +51,23 @@ MonopolyBoard.prototype.destroyToken = function(token) {
 
   if (idx > -1) {
     this.tokens.splice(idx, 1);
+  }
+};
+
+MonopolyBoard.prototype.getJSONString = function() {
+  var tiles = [];
+
+  for (var i = 0; i < this.tiles.length; i++){
+      var tileText = this.tiles[i].getJSONString();
+      tiles.push(tileText);
+  }
+  return tiles;
+};
+
+MonopolyBoard.prototype.createFromJSONString = function(data) {
+  for (var i = 0; i < this.tiles.length; i++) {
+    var tile = this.tiles[i];
+    tile.createFromJSONString(data[i]);
   }
 };
 

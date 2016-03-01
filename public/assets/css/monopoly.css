@@ -1,0 +1,149 @@
+.tile {
+    border: 0;
+}
+
+.chance {
+    background: #FFA500;
+}
+
+.community-chest {
+    background: #FFFF7F;
+}
+
+.brown-group {
+    color: #faebd7;
+    background: #7D5916;
+}
+
+.light-blue-group {
+    color: #faebd7;
+    background-color: #7CB3C2;
+}
+
+.magenta-group {
+    color: #faebd7;
+    background: #BE7CC2;
+}
+
+.orange-group {
+    color: #faebd7;
+    background-color: #FF9D00; 
+}
+
+.red-group {
+    color: #faebd7;
+    background-color: #DE4040;
+}
+
+.yellow-group {
+    color: #faebd7;
+    background-color: #E3C230;
+}
+
+.green-group {
+    color: #faebd7;
+    background-color: #649168;
+}
+
+.blue-group {
+    color: #faebd7;
+    background-color: #3471AE;
+}
+
+.other-group {
+    background-color: #deedec;
+}
+
+.dog {
+    background-image: url("/assets/icons/dog.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.hat {
+    background-image: url("/assets/icons/hat.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.battleship {
+    background-image: url("/assets/icons/battleship.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.thimble {
+    background-image: url("/assets/icons/thimble.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.wheelbarrow {
+    background-image: url("/assets/icons/wheelbarrow.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.shoe {
+    background-image: url("/assets/icons/shoe.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.iron {
+    background-image: url("/assets/icons/iron.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.racecar {
+    background-image: url("/assets/icons/racecar.png");
+    background-size: contain;
+    background-color: rgba(0,0,0,0);
+}
+
+.player-info > .property-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.player-property {
+    font-size: 9px;
+    width: 20%;
+    min-height: 5em;
+    margin: .5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.color-bar {
+    border:.15em solid #000000;
+    padding: .25em;
+    margin-bottom: .5em;
+    text-transform: uppercase;
+}
+
+.title-deed {
+    font-size: .75em;
+    font-weight: bold;
+    margin-bottom: .5em;
+}
+
+.property-name {
+    font-weight: bold;
+}
+
+.property-modal {
+    background-color: #FFFFFF;
+}
+
+.property-modal > .property {
+    border:.15em solid #000000;
+    margin: .5em;
+    padding: .5em;
+    min-height: 15em;
+}
+
+.property-modal > .property > div {
+    margin-top: .3em;
+}

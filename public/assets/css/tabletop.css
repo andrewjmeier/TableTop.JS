@@ -4,10 +4,71 @@ html {
     font-family: "museo-sans-1","museo-sans-2", "Humanst521 BT", sans-serif;
 }
 
+/*body {
+    background-image: url("http://images1.fanpop.com/images/image_uploads/Monopoly-Wallpaper-board-games-1087813_1024_768.jpg");
+}*/
+
 .game-table {
     margin: 0 auto;
     width: 60em;
     height: 60em;
+}
+
+.game-setup {
+    background-color: #7ab8b3;
+    border:.15em solid #7F9795;
+    padding: 2em;
+    min-height: 8em;
+}
+
+.modal {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20%;
+    z-index: 1;
+    transform:translate(-50%, -50%);
+}
+
+.init-modal > .gamecode {
+    text-transform: uppercase;
+    margin: 2em;
+    color: #455453;
+    font-weight: bold;
+}
+
+.init-input {
+    background: #B6D8D5;
+    width: 90%;
+    padding: 10px;
+    line-height: 1;
+    border-radius: 0.75em;
+    border: .15em solid #7F9795;
+    text-align: center;
+    font-size: 1.5em;
+    color: gray;
+}
+
+input::-webkit-input-placeholder {
+    color: rgba(1,1,1,.35);
+}
+input::-moz-placeholder {
+    color: rgba(1,1,1,.35);
+}
+input:-moz-placeholder {   /* Older versions of Firefox */
+    color: rgba(1,1,1,.35);
+}
+input:-ms-input-placeholder { 
+    color: rgba(1,1,1,.35);
+}
+
+.init-modal > .button {
+    display: block;
+}
+
+.init-modal > div {
+    margin: 0.5em;
 }
 
 .board {
@@ -136,6 +197,16 @@ html {
     height: 45%;
     overflow: auto;
 }
+
+.dice {
+    box-sizing: border-box;
+    border: .5em solid #7F9795;
+    border-right: none;
+    border-top: none;
+    text-align: center;
+    width: 50%;
+}
+
 .game-messages {
     text-align: center;
     position: relative;
@@ -153,11 +224,25 @@ html {
     text-align: center;
 }
 
-.controls {
-    margin: 0 auto;
+.player-info {
+    background-color: #8bc1bc;
+    box-sizing: border-box;
+    border: .2em solid #7F9795;
+    min-height: 7em;
+    margin: .75em;
+    padding: .25em;
 }
 
-.control-button {
+.controls {
+    box-sizing: border-box;
+    border: .5em solid #7F9795;
+    border-right: none;
+    border-top: none;
+    text-align: center;
+    width: 50%;
+}
+
+.button {
     background-color:#44c767;
     border-radius:1em;
     border:.15em solid #18ab29;
@@ -168,13 +253,29 @@ html {
     margin: 0 auto;
 }
 
-.control-button:hover {
+.button:hover {
     background-color:#18ab29;
 }
 
-.control-button:active {
+.button:active {
 }
 
-.control-button.hidden {
+.button.hidden {
     display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+    border:.15em solid #7F9795;
+    width: 20%;
+    z-index: 1;
+    height: 14%;
+    transform:translate(-50%, -50%);
 }

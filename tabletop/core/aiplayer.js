@@ -10,8 +10,8 @@ var c = require("./ttConstants");
  * @param {string} difficulty - difficulty of AI. Should be one of the values of TableTop.Constants.validAIDifficulties.
 */
 
-function AIPlayer(name, color, difficulty) {
-  Player.call(this, name, color);
+function AIPlayer(name, color, id, difficulty) {
+  Player.call(this, name, color, id);
   
   // safety check
   if (c.validAIDifficulties.indexOf(difficulty) == -1)

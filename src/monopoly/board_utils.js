@@ -78,8 +78,10 @@ function buildSpaces(board) {
 
   ];
 
-  board.propagate(board.tiles[7]);
-  board.tiles[7].sendMessage("Hello");
+  for (var i = 0; i < board.tiles.length; i++) {
+    board.propagate(board.tiles[i]);
+  }
+
 }
 
 // indices correlate to order in below function propertiesList()

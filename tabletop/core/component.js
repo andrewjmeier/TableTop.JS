@@ -17,14 +17,20 @@ The message passing implementation is inspired by machina.js event emitters.
  * @param {string} message - Message to send
  * @returns {void}
 */
-Component.prototype.sendMessage = function(message, type, sender) {
+Component.prototype.sendMessage = function(message, type, sender, clientID) {
+
     type = type || "standard";
     sender = sender || this;
+
+    if (undefined == clientID) {
+        clientID = -1;
+    }
 
     messageObj = {
         type: type,
         text: message,
-        sender: sender
+        sender: sender,
+        clientID: clientID
     };
 
     for (var i = 0; i < this.subscribers.length; i++) {
@@ -48,9 +54,9 @@ Component.prototype.subscribe = function(callback) {
 */
 Component.prototype.propagate = function(child) {
     var context = this;
-/*    child.subscribe(function(messageObj) {
-        context.sendMessage(messageObj.text, messageObj.type, messageObj.sender);
-    }); */
+    child.subscribe(function(messageObj) {
+        context.sendMessage(messageObj.text, messageObj.type, messageObj.sender, messageObj.clientID);
+    });
 };
 
 module.exports = Component;

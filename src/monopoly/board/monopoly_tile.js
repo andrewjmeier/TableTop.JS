@@ -10,7 +10,10 @@ inherits(MonopolyTile, TableTop.Tile);
 
 // every space needs a landing action
 MonopolyTile.prototype.performLandingAction = function(game){
-  return ["You landed on " + this.name + ". \n", POST_TURN];
+  var player = game.getCurrentPlayer();
+  var message = player.name + " landed on " + this.name;
+  this.sendMessage(message);
+  return POST_TURN;
 };
 
 MonopolyTile.prototype.isProperty = function() { 

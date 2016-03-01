@@ -28,9 +28,118 @@ function Game(board) {
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
   this.AIDifficulty = c.AIDifficultyEasy;
+  this.gameID = null;
+  this.clientPlayerID = -1;    // id of the player of THIS client
 };
 
 inherits(Game, Component);
+
+Game.prototype.messageReceived = function(msg) {
+  var message = JSON.parse(msg);
+
+  // don't re-send message that we sent
+  if (message.clientID === this.clientPlayerID) {
+    return;
+  }
+
+  if (message.type === "state-machine" && message.text === this.turnMap.turnMap.compositeState()) {
+    return;
+  }
+
+
+  if (message.type === "state-machine") {
+    this.turnMap.transitionTo(message.text);
+    return;
+  }
+
+  this.sendMessage(message.text, message.type, this, message.clientID);
+};
+
+Game.prototype.sendState = function(state) {
+  // if it's waiting for roll, it's the next players turn so still send it
+  if (this.clientPlayerID === this.currentPlayer || (state === "waitingOnRoll")) {
+    this.sendData();
+    this.sendMessage(state, "state-machine");
+  }
+};
+
+Game.prototype.sendData = function() {
+  if (!this.hasMadeGame) {
+    this.hasMadeGame = true;
+  }
+  var text = JSON.stringify(this.getJSONString());
+  socket.emit('move made', text);
+};
+
+Game.prototype.createGame = function(name) {
+  var player = this.createPlayer(name).getJSONString();
+  socket.emit('create game', JSON.stringify(player));
+};
+
+Game.prototype.startGame = function() {
+  this.sendMessage("", "hide start view");
+
+  socket.emit('initiate game', this.gameID);
+
+  this.sendData();
+};
+
+Game.prototype.initiated = function() {
+  var context = this;
+
+  this.subscribe(function(message) {
+    // don't send a message to the server w/ client id b/c it was already sent
+    if (message.clientID !== -1 || !(message.type === "standard" || message.type === "state-machine")) {
+      return;
+    }
+
+    var msg = {
+      text: message.text,
+      type: message.type,
+      gameID: context.gameID,
+      clientID: context.clientPlayerID
+    };
+
+    socket.emit('message sent', JSON.stringify(msg));
+  });
+
+  this.updateToStartState();
+};
+
+Game.prototype.joinGame = function(gameID, name) {
+  var player = this.createPlayer(name).getJSONString();
+  var data = {
+    gameID: gameID,
+    player: player
+  };
+  this.sendMessage("", "hide start view");
+  socket.emit('join game', JSON.stringify(data));
+};
+
+Game.prototype.gameCreated = function(msg) {
+  dic = JSON.parse(msg);
+  this.gameID = dic.gameID;
+  var player = PlayerFactory();
+  player.createFromJSONString(dic.player);
+  this.players.push(player);  
+
+  if (this.clientPlayerID === -1) {
+    this.clientPlayerID = dic.player.id;
+  } else {
+
+  }
+  var token = player.tokens[0];
+  var tile = this.board.tiles[0];
+  tile.tokens.push(token);
+
+  this.sendMessage("refreshView", "view");
+};
+
+// OVERRIDE IN SUBCLASS! 
+// FACTORY? 
+Game.prototype.createPlayer = function(name) {
+
+}
 
 /**
  * Method to set turnMap of the game once it is created
@@ -38,7 +147,7 @@ inherits(Game, Component);
  * @param {Turn} turnMap - A turn object to be used by the game
 */
 Game.prototype.setTurnMap = function(turnMap) {
-  context = this;
+  // context = this;
   this.turnMap = turnMap;
   this.propagate(turnMap);
 };
@@ -121,7 +230,8 @@ Game.prototype.rollDice = function(numberOfDice, sides) {
     sides = 6;
   }
   this.dice = [];
-  var message = "You rolled a ";
+  var player = this.getCurrentPlayer();
+  var message = player.name + " rolled a ";
   for (var i = 0; i < numberOfDice; i++) {
     var roll = Math.floor(Math.random() * sides) + 1;
     this.dice.push(roll);

@@ -1,12 +1,55 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="./assets/css/tabletop.css">
         <link rel="stylesheet" type="text/css" href="./assets/css/monopoly.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/dice.css">
         <title> Monopoly v.2 </title>
     </head>
     <body>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+          var socket = io();
+        </script>
         <div class="game-table">
+            <div class="game-setup modal">
+                <div class="game-start init-modal">
+                    <div href="#" class="button show-join-game">Join Game</div>
+                    <div href="#" class="button show-new-game">Create Game</div>
+                </div>
+                <div class="join-start init-modal hidden">
+                    <input type="text" name="gameID" placeholder="Game ID" class="joingame-id init-input">
+                    <input type="text" name="playerName" placeholder="John Smith" class="player-name init-input"><br>
+                    <div href="#" class="button join-game">Join Game</div>
+                </div>
+                <div class="create-start init-modal hidden">
+                    <input type="text" name="playerName" placeholder="John Smith" class="player-name init-input">
+                    <div href="#" class="button new-game">Create Game</div>
+                </div>
+                <div class="created-start init-modal hidden">
+                    <div class="gamecode">Game Code: </div>
+                    <div href="#" class="button start-game">Start Game</div>
+                </div>                
+            </div>
+
+            <div class="property-modal modal" style="display: none">
+                <div class="property">
+                    <div class="color-bar">
+                        <div class="title-deed">Title Deed</div>
+                        <div class="property-name">Woodward Hall</div>
+                    </div>
+                    <div class="rent">Rent: $10</div>
+                    <div class="one-house">With 1 House: $100</div>
+                    <div class="two-houses">With 2 Houses: $150</div>
+                    <div class="three-houses">With 3 Houses: $250</div>
+                    <div class="four-houses">With 4 Houses: $400</div>
+                    <div class="hotel">With Hotel: $700</div>
+                    <div class="mortgage">Mortgage Value: $50</div>
+                    <div class="houses-cost">Houses cost $100 each</div>
+                </div>
+            </div>
+
             <div class="board">
                 <div class="tile-list">
                     <div class="left container">
@@ -196,19 +239,13 @@
                     </div>
                     <div class="player-box">
                         <h2> Players </h2>
-                        <div> Player 1 </div>
-                        <div> Player 2 </div>
-                        <div> Player 3 </div>
-                        <div> Player 5 </div>
+                    </div>
+                    <div class="dice">
+                        <div class="die one" id="die-1">  <span class="dot"></span></div>
+                        <div class="die two" id="die-2">  <span class="dot"></span></div>
                     </div>
                     <div class="controls">
-                        <div href="#" class="control-button">roll</div>
-                        <div href="#" class="control-button">continue</div>
-                        <div href="#" class="control-button">stop</div>
                     </div>
-                </div>
-                <div class="chance card">
-                    Hello, I am a chance card.
                 </div>
             </div>
         </div>

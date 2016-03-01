@@ -5,9 +5,9 @@ var MonopolyTile = require('../monopoly_tile'),
 function Property(name, cost, propertyGroup) {
   MonopolyTile.call(this, name);
   this.cost = cost;
-  this.mortage = .5*cost;
+  this.mortgage = .5*cost;
   this.propertyGroup = propertyGroup; // see PG_X constants
-  this.owner = null;
+  // this.owner = null;
 }
 
 inherits(Property, MonopolyTile);
@@ -15,26 +15,30 @@ inherits(Property, MonopolyTile);
 Property.prototype.performLandingAction = function(game) {
   
     // todo  - finish hashing this out
-  var actions = Property.super_.prototype.performLandingAction.call(this, game);
+  var nextState = Property.super_.prototype.performLandingAction.call(this, game);
   
   var player = game.getCurrentPlayer();
-  if (this.owner === player) { 
-    actions[0] = actions[0].concat(" You own it!");
+  var message = "";
+  if (player.owns(this)) { 
+    message = player.name + " already owns it!";
   } else if (player.owesRent(this)) { 
     var rent = this.getRent(game);
-    player.payPlayer(rent, this.owner);
-    actions[0] = actions[0].concat(" You payed $" + rent + " to " + this.owner.name + ". ");
-  } else if (!this.owner) { 
-    actions[0] = actions[0].concat(" It is unowned. ");
-    actions[1] = BUY_PROMPT;
+    var owner = game.getOwnerForProperty(this);
+    player.payPlayer(rent, owner);
+    message = player.name + " payed $" + rent + " to " + owner.name + ".";
+  } else { 
+    message = "It is unowned.";
+    nextState = BUY_PROMPT;
   } 
 
-  return actions;
+  this.sendMessage(message);
+
+  return nextState;
 };
 
 
 // overridden in subclasses
-Property.prototype.getRent = function(player) {
+Property.prototype.getRent = function(game) {
   return 0;
 };
 
@@ -46,6 +50,26 @@ Property.prototype.hasHotel = function(player) {
 
 Property.prototype.isProperty = function() { 
   return true;
+};
+
+Property.prototype.getJSONString = function() {
+  var propertyData = Property.super_.prototype.getJSONString.call(this);
+
+  propertyData.cost = this.cost;
+  propertyData.mortgage = this.mortgage;
+  propertyData.propertyGroup = this.propertyGroup;
+
+  propertyData.type = "Property";
+
+  return propertyData;
+};
+
+Property.prototype.createFromJSONString = function(data) {
+  Property.super_.prototype.createFromJSONString.call(this, data);
+  
+  this.cost = data.cost;
+  this.mortgage = data.mortgage;
+  this.propertyGroup = data.propertyGroup;
 };
 
 
