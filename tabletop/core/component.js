@@ -54,9 +54,13 @@ Component.prototype.subscribe = function(callback) {
 */
 Component.prototype.propagate = function(child) {
     var context = this;
-    child.subscribe(function(messageObj) {
+    if (typeof child.subscribe  == 'function') { 
+      child.subscribe(function(messageObj) {
         context.sendMessage(messageObj.text, messageObj.type, messageObj.sender, messageObj.clientID);
-    });
+      });
+    } else { 
+      console.warn("child.subscribe is not a function");
+    } 
 };
 
 module.exports = Component;
