@@ -37,6 +37,10 @@ window.onload = function () {
     monopoly.messageReceived(msg);
   });
 
+  socket.on('game initiated', function(msg) {
+    monopoly.initiated();
+  });
+
   TokenFactory = function(type){
     switch(type) {
       case "Token":

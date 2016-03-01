@@ -48,6 +48,15 @@ io.on('connection', function(socket) {
     }
   });
 
+  socket.on('initiate game', function(msg) {
+    // var dic = JSON.parse(msg);
+    var game = games[msg];
+
+    for (var i = 0; i < game.length; i++) {
+      io.sockets.connected[game[i]].emit('game initiated', msg);
+    }
+  });
+
   socket.on('create game', function(player) {
     var playerObj = JSON.parse(player);
     playerObj.id = 0;

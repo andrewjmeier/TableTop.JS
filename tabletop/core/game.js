@@ -75,6 +75,10 @@ Game.prototype.startGame = function() {
   this.updateToStartState();
   this.sendMessage("", "hide start view");
 
+  socket.emit('initiate game', this.gameID);
+};
+
+Game.prototype.initiated = function() {
   var context = this;
   this.subscribe(function(message) {
     // don't send a message to the server w/ client id b/c it was already sent
@@ -91,7 +95,7 @@ Game.prototype.startGame = function() {
 
     socket.emit('message sent', JSON.stringify(msg));
   });
-}
+};
 
 Game.prototype.joinGame = function(gameID, name) {
   var player = this.createPlayer(name).getJSONString();
