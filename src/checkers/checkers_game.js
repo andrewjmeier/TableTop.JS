@@ -9,6 +9,7 @@ function CheckersGame(board) {
   this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
   this.possibleNumPlayers = [2];
   this.showNextPlayerScreen = false;
+  this.AIDifficulty = TableTop.Constants.AIDifficultyHard;
 };
 
 inherits(CheckersGame, TableTop.Game);
@@ -114,6 +115,35 @@ CheckersGame.prototype.playerDidWin = function(player) {
 };
 
 
+
+CheckersGame.prototype.getValidMoves = function() { 
+
+  var validMoves = [];
+  
+  this.board.tokens.forEach(function(token) {     
+    
+    var tile = this.board.findTileForToken(token);
+    
+    // for each possible destination tile...
+    this.board.tiles.forEach(function(destinationRow) { 
+      destinationRow.forEach(function(destination) { 
+        
+        if (this.isValidMove(token, tile, destination)) 
+          validMoves.push({
+            token: token, 
+            tile: tile, 
+            destination: destination
+          });
+        
+
+      }, this);
+    }, this);    
+  }, this);
+
+  
+  return validMoves;
+};
+  
 
 // takes in a player 
 // returns the score for the board based on the player passed in (ie. if the player 

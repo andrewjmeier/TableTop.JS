@@ -27,6 +27,7 @@ function Game(board) {
   this.showNextPlayerScreen = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
+  this.AIDifficulty = c.AIDifficultyEasy;
 };
 
 inherits(Game, Component);
@@ -307,121 +308,6 @@ Game.prototype.destroyToken = function(token) {
 };
 
 
-Game.prototype.pickAImove = function(player, game) { 
-
-  var moves = this.getValidMoves(player);
-  var results = [];
-
-  // for each token, grab the appropriate objects from the game copy object
-  // (since getValidMoves will return actual game objects and we want 
-  // the copies). Then execute the move and score it.
-  for (var i = 0; i < moves.tokens.length; i++) {
-
-    var tokenIdx = this.board.tokens.indexOf(moves.tokens[i]);
-    var tilePos = this.board.getTilePosition(moves.tiles[i]);
-    
-    moves.destinationTiles[i].forEach(function(dest) { 
-      var destPos = this.board.getTilePosition(dest);
-
-      var gameCopy = this.copyGameStatus(this);
-
-      var tokenCp = gameCopy.board.tokens[tokenIdx];
-      var tileCp, destCp;
-      if (game.board instanceof Gridboard) { 
-        tileCp = gameCopy.board.tiles[tilePos.x][tilePos.y];
-        destCp = gameCopy.board.tiles[destPos.x][destPos.y];
-      } else { 
-        tileCp = gameCopy.board.tiles[tilePos];
-        destCp = gameCopy.board.tiles[destPos];
-      } 
-        
-      gameCopy.proposedMove = {
-        token: tokenCp,
-        tile: tileCp,
-        destination: destCp,
-        tokenIdx: tokenIdx, 
-        tilePos: tilePos, 
-        destPos: destPos
-      };
-      
-      gameCopy.executeMove();
-      results.push({
-        score: gameCopy.scoreBoard(player), 
-        token: tokenCp, 
-        tile: tileCp, 
-        destination: destCp,
-        tokenIdx: tokenIdx, 
-        tilePos: tilePos, 
-        destPos: destPos
-      });
-    }, this);
-  }
-  
-  var bestResult = results[0];
-  var bestScore = 0;
-
-  
-  results.forEach(function(result) { 
-    if (result.score > bestScore) { 
-      bestResult = result; 
-      bestScore = result.score;
-    }
-  });
-
-  
-  var actualToken = this.board.tokens[bestResult.tokenIdx];
-  // actualTile should be same as this.board.tile[tilePos], but we 
-  // use this cause it generalizes to all board types 
-  var actualTile = this.board.findTileForToken(actualToken);
-
-  var actualDest;
-  if (this.board instanceof Gridboard) { 
-    actualDest = this.board.getTile(bestResult.destPos.x, bestResult.destPos.y);
-  } else { 
-    actualDest = this.board.getTile(bestResult.destPos);
-  } 
-  
-  var actualBestMove = 
-        { 
-          token: actualToken,
-          tile: actualTile,
-          destination: actualDest
-        };
-  
-  return actualBestMove;
-};
-
-Game.prototype.getValidMoves = function(player) { 
-
-  var legalMoves = {};
-  legalMoves.tokens = [];
-  legalMoves.tiles = [];
-  legalMoves.destinationTiles = [];
-  if (this.moveType == c.moveTypeManual) { 
-    
-    player.tokens.forEach(function(token) { 
-      var tile = this.board.findTileForToken(token);
-      var destinationTiles = [];
-      // since this.board is a double array we need to double loop
-      this.board.tiles.forEach(function(destinationRow) { 
-        destinationRow.forEach(function(destination) { 
-          if (this.isValidMove(token, tile, destination))
-            destinationTiles.push(destination);
-        }, this);
-      }, this);
-      
-      if (destinationTiles.length > 0) { 
-        legalMoves.tokens.push(token);
-        legalMoves.tiles.push(tile);
-        legalMoves.destinationTiles.push(destinationTiles);
-      }
-    }, this);
-    
-  } 
-  
-  return legalMoves;
-};
-
 // Create copy of game and manually copy over 
 // tiles/tokens to remove references
 Game.prototype.copyGameStatus = function(game) {
@@ -486,6 +372,35 @@ Game.prototype.copyGameStatus = function(game) {
   }
   
   return newGame;
+};
+
+Game.prototype.copyMoveForGame = function(move, gameCopy) { 
+  
+  var newMove = {};
+  Object.keys(move).forEach(function(key) { 
+    
+    var obj = move[key]; 
+    if (obj instanceof Token) {
+      var tokenIdx = this.board.tokens.indexOf(obj);
+      var tokenCp = gameCopy.board.tokens[tokenIdx];
+      newMove[key] = tokenCp;
+    } else if (obj instanceof Tile) { 
+      var tilePos = this.board.getTilePosition(obj);
+      var tileCp;
+      if (this.board instanceof Gridboard) 
+        tileCp = gameCopy.board.tiles[tilePos.x][tilePos.y];
+      else  
+        tileCp = gameCopy.board.tiles[tilePos];
+      
+      newMove[key] = tileCp;
+    } 
+  }, this);
+  
+  return newMove;
+};
+
+Game.prototype.getValidMoves = function() { 
+  return [];
 };
 
 

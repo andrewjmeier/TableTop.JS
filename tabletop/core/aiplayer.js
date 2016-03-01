@@ -1,17 +1,22 @@
 var inherits = require('util').inherits;
 var Player = require("./Player.js");
-var Gridboard = require("./Gridboard.js");
+var Gridboard = require("./grid_board.js");
 var c = require("./ttConstants");
 
 /**
  * AI Player
  * @constructor
  * @extends {Player}
- * @param {string} difficulty - difficulty of AI 
+ * @param {string} difficulty - difficulty of AI. Should be one of the values of TableTop.Constants.validAIDifficulties.
 */
 
-function AIPlayer(difficulty) {
-  Player.call(this);
+function AIPlayer(name, color, difficulty) {
+  Player.call(this, name, color);
+  
+  // safety check
+  if (c.validAIDifficulties.indexOf(difficulty) == -1)
+    difficulty = c.AIDifficultyEasy;
+  
   this.difficulty = difficulty;
 }
 
@@ -23,120 +28,43 @@ AIPlayer.prototype.isAI = function() {
 };
 
 
-AIPlayer.prototype.pickMove = function(game) { 
+AIPlayer.prototype.generateMove = function(game) { 
 
-  var moves = this.getValidMoves();
+  var moves = game.getValidMoves();
   var results = [];
-
-  // for each token, grab the appropriate objects from the game copy object
-  // (since getValidMoves will return actual game objects and we want 
-  // the copies). Then execute the move and score it.
-  for (var i = 0; i < moves.tokens.length; i++) {
-
-    var tokenIdx = this.board.tokens.indexOf(moves.tokens[i]);
-    var tilePos = game.board.getTilePosition(moves.tiles[i]);
+  
+  moves.forEach(function(move) { 
     
-    moves.destinationTiles[i].forEach(function(dest) { 
-      var destPos = game.board.getTilePosition(dest);
-
-      var gameCopy = game.copyGameStatus(game);
-
-      var tokenCp = gameCopy.board.tokens[tokenIdx];
-      var tileCp, destCp;
-      if (game.board instanceof Gridboard) { 
-        tileCp = gameCopy.board.tiles[tilePos.x][tilePos.y];
-        destCp = gameCopy.board.tiles[destPos.x][destPos.y];
-      } else { 
-        tileCp = gameCopy.board.tiles[tilePos];
-        destCp = gameCopy.board.tiles[destPos];
-      } 
-        
-      gameCopy.proposedMove = {
-        token: tokenCp,
-        tile: tileCp,
-        destination: destCp,
-        tokenIdx: tokenIdx, 
-        tilePos: tilePos, 
-        destPos: destPos
-      };
-      
-      gameCopy.executeMove();
-      results.push({
-        score: gameCopy.scoreBoard(game), 
-        token: tokenCp, 
-        tile: tileCp, 
-        destination: destCp,
-        tokenIdx: tokenIdx, 
-        tilePos: tilePos, 
-        destPos: destPos
-      });
+    var gameCopy = game.copyGameStatus(game);    
+    gameCopy.proposedMove = game.copyMoveForGame(move, gameCopy); 
+    gameCopy.executeMove();
+    results.push({
+      move: move, 
+      score: gameCopy.scoreBoard(game)
     });
-  }
-  
-  var bestResult = results[0];
-  var bestScore = 0;
-
-  
-  results.forEach(function(result) { 
-    if (result.score > bestScore) { 
-      bestResult = result; 
-      bestScore = result.score;
-    }
   });
 
-  
-  var actualToken = game.board.tokens[bestResult.tokenIdx];
-  // actualTile should be same as game.board.tile[tilePos], but we 
-  // use this cause it generalizes to all board types 
-  var actualTile = game.board.findTileForToken(actualToken);
-
-  var actualDest;
-  if (game.board instanceof Gridboard) { 
-    actualDest = game.board.getTile(bestResult.destPos.x, bestResult.destPos.y);
-  } else { 
-    actualDest = game.board.getTile(bestResult.destPos);
-  } 
-  
-  var actualBestMove = 
-        { 
-          token: actualToken,
-          tile: actualTile,
-          destination: actualDest
-        };
-  
-  return actualBestMove;
+  var result = this.pickMove(results);
+  return result.move;
 };
 
-AIPlayer.prototype.getValidMoves = function(game) { 
-
-  var legalMoves = {};
-  legalMoves.tokens = [];
-  legalMoves.tiles = [];
-  legalMoves.destinationTiles = [];
-  if (game.moveType == c.moveTypeManual) { 
-    
-    game.tokens.forEach(function(token) { 
-      var tile = game.board.findTileForToken(token);
-      var destinationTiles = [];
-      // since this.board is a double array we need to double loop
-      game.board.tiles.forEach(function(destinationRow) { 
-        destinationRow.forEach(function(destination) { 
-          if (game.isValidMove(token, tile, destination))
-            destinationTiles.push(destination);
-        }, this);
-      });
-      
-      if (destinationTiles.length > 0) { 
-        legalMoves.tokens.push(token);
-        legalMoves.tiles.push(tile);
-        legalMoves.destinationTiles.push(destinationTiles);
-      }
-    });
-    
-  } 
+AIPlayer.prototype.pickMove = function(results) { 
   
-  return legalMoves;
-};
+  // sort descending based on score
+  var resultsSorted = results.sort(function(a, b) { 
+    return b.score - a.score; 
+  });
+  
+  var range; 
+  if (this.difficulty == c.AIDifficultyHard) { 
+    range = 1; 
+  } else if (this.difficulty == c.AIDifficultyMedium) { 
+    range = Math.min(results.length, 3);
+  } else if (this.difficulty == c.AIDifficultyHard) { 
+    range = Math.min(results.length, 5);
+  } 
 
+  return resultsSorted[Math.floor(Math.random()*range)];
+};
 
 module.exports = AIPlayer;

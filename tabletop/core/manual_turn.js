@@ -23,8 +23,7 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
       // 1
       uninitialized: { 
         start : function() { 
-          this.transition("startScreen");
-          
+          this.transition("startScreen");          
         } 
       },
 
@@ -59,7 +58,7 @@ function ManualTurn(game, startView, view, gameOverView, nextPlayerView) {
         _onEnter: function() { 
           view.drawView();
           if (this.game.getCurrentPlayer().isAI()) {
-            var AIMove = this.getCurrentPlayer().pickAImove(this.game);
+            var AIMove = this.game.getCurrentPlayer().generateMove(this.game);
             game.proposedMove = AIMove;
             this.handle("makeMove");
           } else { 
