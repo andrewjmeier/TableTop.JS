@@ -33,7 +33,6 @@ io.on('connection', function(socket) {
   socket.on('move made', function(msg) {
     var dic = JSON.parse(msg);
     var game = games[dic.gameID];
-    // io.sockets.emit('move made', msg);
     for (var i = 0; i < game.length; i++) {
       io.sockets.connected[game[i]].emit('move made', msg);
     }
@@ -49,7 +48,6 @@ io.on('connection', function(socket) {
   });
 
   socket.on('initiate game', function(msg) {
-    // var dic = JSON.parse(msg);
     var game = games[msg];
 
     for (var i = 0; i < game.length; i++) {
@@ -68,7 +66,6 @@ io.on('connection', function(socket) {
       gameID: uuid,
       player: playerObj
     });
-    console.log("creating game", games, uuid, clientID);
     socket.emit('game created', dic);
   });
 

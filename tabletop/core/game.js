@@ -51,7 +51,8 @@ Game.prototype.messageReceived = function(msg) {
 };
 
 Game.prototype.sendState = function(state) {
-  if (this.clientPlayerID === this.currentPlayer) {
+  // if it's waiting for roll, it's the next players turn so still send it
+  if (this.clientPlayerID === this.currentPlayer || (state === "waitingOnRoll")) {
     this.sendData();
     this.sendMessage(state, "state-machine");
   }
@@ -71,15 +72,16 @@ Game.prototype.createGame = function(name) {
 };
 
 Game.prototype.startGame = function() {
-  this.sendData();
-  this.updateToStartState();
   this.sendMessage("", "hide start view");
 
   socket.emit('initiate game', this.gameID);
+
+  this.sendData();
 };
 
 Game.prototype.initiated = function() {
   var context = this;
+
   this.subscribe(function(message) {
     // don't send a message to the server w/ client id b/c it was already sent
     if (message.clientID !== -1 || !(message.type === "standard" || message.type === "state-machine")) {
@@ -95,6 +97,8 @@ Game.prototype.initiated = function() {
 
     socket.emit('message sent', JSON.stringify(msg));
   });
+
+  this.updateToStartState();
 };
 
 Game.prototype.joinGame = function(gameID, name) {

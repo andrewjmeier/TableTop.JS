@@ -252,6 +252,7 @@ function MonopolyTurn(game) {
 
     this.turnMap.on("transition", function(event) {
         if (event.toState !== "rolled" && event.toState !== "endedTurn") {
+            console.log("sending", event.toState);
             context.game.sendState(event.toState);            
         }
         context.sendMessage("refreshView", "view");
