@@ -121,7 +121,7 @@ StartView.prototype.handleButtonClick = function() {
     }
     
     if (playerName.toUpperCase() === "AI")
-      players[i] = new AIPlayer(playerName, this.game.playerColors[i], this.game.AIDifficulty);
+      players[i] = new AIPlayer(playerName, this.game.playerColors[i], null, this.game.AIDifficulty);
     else 
       players[i] = new Player(playerName, this.game.playerColors[i]);
   }

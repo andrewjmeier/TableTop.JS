@@ -60,7 +60,7 @@ AIPlayer.prototype.pickMove = function(results) {
     range = 1; 
   } else if (this.difficulty == c.AIDifficultyMedium) { 
     range = Math.min(results.length, 3);
-  } else if (this.difficulty == c.AIDifficultyHard) { 
+  } else if (this.difficulty == c.AIDifficultyEasy) { 
     range = Math.min(results.length, 5);
   } 
 
