@@ -63,3 +63,9 @@ CheckersGame.prototype.scoreBoard = function(player) {
   return 12 - otherPlayer.tokens.length;
 };
 ```
+
+
+### Advanced 
+
+For the AI to properly work, it needs to be able to understand the objects in your proposedMove object in order to properly convert into objects that the game copies can understand. By default, the AI system copies all tokens and tiles over using their appropriate keys. If your proposed move contains objects that aren't tiles or tokens, then you'll need to override ```game.copyMoveForGame(move, gameCopy)```
+
