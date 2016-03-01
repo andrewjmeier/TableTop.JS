@@ -40,7 +40,7 @@ function TableView(game, turnMap) {
 
     $(".start-game").click(function() {
         context.game.startGame();
-    })
+    });
 
     this.game.subscribe( function(message) {
         if (message.type == "view") {

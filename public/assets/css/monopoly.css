@@ -115,3 +115,35 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.color-bar {
+    border:.15em solid #000000;
+    padding: .25em;
+    margin-bottom: .5em;
+    text-transform: uppercase;
+}
+
+.title-deed {
+    font-size: .75em;
+    font-weight: bold;
+    margin-bottom: .5em;
+}
+
+.property-name {
+    font-weight: bold;
+}
+
+.property-modal {
+    background-color: #FFFFFF;
+}
+
+.property-modal > .property {
+    border:.15em solid #000000;
+    margin: .5em;
+    padding: .5em;
+    min-height: 15em;
+}
+
+.property-modal > .property > div {
+    margin-top: .3em;
+}

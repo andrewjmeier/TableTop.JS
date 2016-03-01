@@ -13,7 +13,7 @@
           var socket = io();
         </script>
         <div class="game-table">
-            <div class="game-setup">
+            <div class="game-setup modal">
                 <div class="game-start init-modal">
                     <div href="#" class="button show-join-game">Join Game</div>
                     <div href="#" class="button show-new-game">Create Game</div>
@@ -31,6 +31,23 @@
                     <div class="gamecode">Game Code: </div>
                     <div href="#" class="button start-game">Start Game</div>
                 </div>                
+            </div>
+
+            <div class="property-modal modal" style="display: none">
+                <div class="property">
+                    <div class="color-bar">
+                        <div class="title-deed">Title Deed</div>
+                        <div class="property-name">Woodward Hall</div>
+                    </div>
+                    <div class="rent">Rent: $10</div>
+                    <div class="one-house">With 1 House: $100</div>
+                    <div class="two-houses">With 2 Houses: $150</div>
+                    <div class="three-houses">With 3 Houses: $250</div>
+                    <div class="four-houses">With 4 Houses: $400</div>
+                    <div class="hotel">With Hotel: $700</div>
+                    <div class="mortgage">Mortgage Value: $50</div>
+                    <div class="houses-cost">Houses cost $100 each</div>
+                </div>
             </div>
 
             <div class="board">

@@ -5,7 +5,7 @@ var MonopolyTile = require('../monopoly_tile'),
 function Property(name, cost, propertyGroup) {
   MonopolyTile.call(this, name);
   this.cost = cost;
-  this.mortage = .5*cost;
+  this.mortgage = .5*cost;
   this.propertyGroup = propertyGroup; // see PG_X constants
   // this.owner = null;
 }
@@ -56,7 +56,7 @@ Property.prototype.getJSONString = function() {
   var propertyData = Property.super_.prototype.getJSONString.call(this);
 
   propertyData.cost = this.cost;
-  propertyData.mortage = this.mortage;
+  propertyData.mortgage = this.mortgage;
   propertyData.propertyGroup = this.propertyGroup;
 
   propertyData.type = "Property";
@@ -68,7 +68,7 @@ Property.prototype.createFromJSONString = function(data) {
   Property.super_.prototype.createFromJSONString.call(this, data);
   
   this.cost = data.cost;
-  this.mortage = data.mortage;
+  this.mortgage = data.mortgage;
   this.propertyGroup = data.propertyGroup;
 };
 
