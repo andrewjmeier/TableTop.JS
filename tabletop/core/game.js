@@ -37,8 +37,24 @@ Game.prototype.messageReceived = function(msg) {
     return;
   }
 
-  console.log(msg, message);
+  if (message.type === "state-machine" && message.text === this.turnMap.turnMap.compositeState()) {
+    return;
+  }
+
+
+  if (message.type === "state-machine") {
+    this.turnMap.transitionTo(message.text);
+    return;
+  }
+
   this.sendMessage(message.text, message.type, this, message.clientID);
+};
+
+Game.prototype.sendState = function(state) {
+  if (this.clientPlayerID === this.currentPlayer) {
+    this.sendData();
+    this.sendMessage(state, "state-machine");
+  }
 };
 
 Game.prototype.sendData = function() {
@@ -58,6 +74,25 @@ Game.prototype.startGame = function() {
   this.sendData();
   this.updateToStartState();
   this.sendMessage("", "hide start view");
+
+  var context = this;
+  this.subscribe(function(message) {
+    // don't send a message to the server w/ client id b/c it was already sent
+    if (message.clientID !== -1 || !(message.type === "standard" || message.type === "state-machine")) {
+      return;
+    }
+
+    var msg = {
+      text: message.text,
+      type: message.type,
+      gameID: context.gameID,
+      clientID: context.clientPlayerID
+    };
+
+    console.log(message);
+
+    socket.emit('message sent', JSON.stringify(msg));
+  });
 }
 
 Game.prototype.joinGame = function(gameID, name) {
@@ -71,6 +106,7 @@ Game.prototype.joinGame = function(gameID, name) {
 };
 
 Game.prototype.gameCreated = function(msg) {
+  console.log("game created");
   dic = JSON.parse(msg);
   this.gameID = dic.gameID;
   var player = PlayerFactory();
@@ -85,26 +121,8 @@ Game.prototype.gameCreated = function(msg) {
   var token = player.tokens[0];
   var tile = this.board.tiles[0];
   tile.tokens.push(token);
-<<<<<<< HEAD
 
-=======
->>>>>>> 00407ccec2daba0cc9cf2d2adbe42ce8185f35d8
   this.sendMessage("refreshView", "view");
-
-  var context = this;
-  this.subscribe(function(message) {
-    // don't send a message to the server w/ client id b/c it was already sent
-    if (message.clientID !== -1) {
-      return;
-    }
-    var msg = {
-      text: message.text,
-      type: message.type,
-      gameID: context.gameID,
-      clientID: context.clientPlayerID
-    };
-    socket.emit('message sent', JSON.stringify(msg));
-  });
 };
 
 // OVERRIDE IN SUBCLASS! 

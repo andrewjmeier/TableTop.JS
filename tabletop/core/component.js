@@ -21,6 +21,7 @@ Component.prototype.sendMessage = function(message, type, sender, clientID) {
 
     type = type || "standard";
     sender = sender || this;
+
     if (undefined == clientID) {
         clientID = -1;
     }
