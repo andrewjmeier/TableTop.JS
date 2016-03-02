@@ -1,6 +1,6 @@
 var inherits = require('util').inherits;
-// var Trade = require("../../tabletop/core/trade.js");
 var TableTop = require('../../tabletop/tabletop');
+var _ = require("lodash");
 
 function MonopolyTrade(proposingPlayer) {
   TableTop.Trade.call(this, proposingPlayer, null, {property: [], money: 0}, {property: [], money: 0});
@@ -8,41 +8,54 @@ function MonopolyTrade(proposingPlayer) {
 
 inherits(MonopolyTrade, TableTop.Trade);
 
-MonopolyTrade.prototype.addOrRemoveProperty = function(property) {
-  if ((this.proposingPlayerItems.property.indexOf(property) > -1)||(this.answeringPlayerItems.property.indexOf(property) > -1)){
+MonopolyTrade.prototype.addOrRemoveProperty = function(property, owner) {
+  console.log(property, "adding");
+
+
+  var propHas = _.findIndex(this.proposingPlayerItems, function(p) {
+    return p.name == property.name;
+  });
+
+  var ansHas = _.findIndex(this.answeringPlayerItems, function(p) {
+    return p.name == property.name;
+  });
+
+  if ((propHas > -1) || (ansHas > -1)){
     //if it is in either then remove from that list
-    this.removeProperty(property);
+    this.removeProperty(property, owner);
   }
   else{
     //if it is in neither then add to the correct one
-    this.addProperty(property);
+    this.addProperty(property, owner);
   }
 };
 
-MonopolyTrade.prototype.removeProperty = function(property) {
-  if (property.owner == this.proposingPlayer) {
+MonopolyTrade.prototype.removeProperty = function(property, owner) {
+  if (owner.id == this.proposingPlayer.id) {
     this.removePropertyFromList(property, this.proposingPlayerItems.property);
     this.proposingPlayer.properties.push(property);
   }
-  else if (property.owner == this.answeringPlayer) {
+  else if (owner.id == this.answeringPlayer.id) {
     this.removePropertyFromList(property, this.answeringPlayerItems.property);
     this.answeringPlayer.properties.push(property);
   }
 };
 
-MonopolyTrade.prototype.addProperty = function(property){
-  if(property.owner == this.proposingPlayer){
+MonopolyTrade.prototype.addProperty = function(property, owner){
+  if(owner.id == this.proposingPlayer.id){
     this.proposingPlayerItems.property.push(property);
     this.removePropertyFromList(property, this.proposingPlayer.properties);
   }
-  else if (property.owner == this.answeringPlayer){
+  else if (owner.id == this.answeringPlayer.id){
     this.answeringPlayerItems.property.push(property);
     this.removePropertyFromList(property, this.answeringPlayer.properties);
   }
 };
 
 MonopolyTrade.prototype.removePropertyFromList = function(property, propertyList) {
-  var index = propertyList.indexOf(property);
+  var index = _.findIndex(propertyList, function(p) {
+    return p.name == property.name;
+  });
   propertyList.splice(index, 1);
 };
 

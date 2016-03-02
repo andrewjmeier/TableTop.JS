@@ -1,13 +1,14 @@
 require ("../boardConstants");
 var MonopolyTile = require('../monopoly_tile'),
     inherits = require('util').inherits;
+var MonopolyPlayer = require("../../monopoly_player");
 
 function Property(name, cost, propertyGroup) {
   MonopolyTile.call(this, name);
   this.cost = cost;
   this.mortgage = .5*cost;
   this.propertyGroup = propertyGroup; // see PG_X constants
-  // this.owner = null;
+  this.owned = false;
 }
 
 inherits(Property, MonopolyTile);
@@ -19,11 +20,11 @@ Property.prototype.performLandingAction = function(game) {
   
   var player = game.getCurrentPlayer();
   var message = "";
-  if (player.owns(this)) { 
+  var owner = game.getOwnerForProperty(this);
+  if (owner && player.id == owner.id) { 
     message = player.name + " already owns it!";
-  } else if (player.owesRent(this)) { 
+  } else if (undefined != owner) { 
     var rent = this.getRent(game);
-    var owner = game.getOwnerForProperty(this);
     player.payPlayer(rent, owner);
     message = player.name + " payed $" + rent + " to " + owner.name + ".";
   } else { 
@@ -58,7 +59,7 @@ Property.prototype.getJSONString = function() {
   propertyData.cost = this.cost;
   propertyData.mortgage = this.mortgage;
   propertyData.propertyGroup = this.propertyGroup;
-
+  propertyData.owned = this.owned;
   propertyData.type = "Property";
 
   return propertyData;
@@ -70,6 +71,8 @@ Property.prototype.createFromJSONString = function(data) {
   this.cost = data.cost;
   this.mortgage = data.mortgage;
   this.propertyGroup = data.propertyGroup;
+  this.owned = data.owned;
+
 };
 
 

@@ -1,3 +1,6 @@
+var Component = require("./component");
+var inherits = require('util').inherits;
+
 /**
  * A Trade class
  * @constructor
@@ -12,6 +15,8 @@ function Trade(proposingPlayer, answeringPlayer, proposingPlayerItems, answering
   this.proposingPlayerItems = proposingPlayerItems;
   this.answeringPlayerItems = answeringPlayerItems;
 };
+
+inherits(Trade, Component);
 
 /**
  * Execute the trade and swap the players' items

@@ -63,21 +63,21 @@ MonopolyPlayer.prototype.makeDeposit = function(amount) {
 };
 
 MonopolyPlayer.prototype.canBuy = function(property) {
-  return (this.money > property.cost) && !property.owner;
+  return (this.money > property.cost) && !property.owned;
 };
 
-MonopolyPlayer.prototype.owesRent = function(property) {
-  return property.owner && !this.owns(property);
-};
+// MonopolyPlayer.prototype.owesRent = function(property) {
+//   return property.owner && !this.owns(property);
+// };
 
-MonopolyPlayer.prototype.owns = function(property) {
-  return property.owner && property.owner.id === this.id;
-};
+// MonopolyPlayer.prototype.owns = function(property) {
+//   return property.owner && property.owner.id === this.id;
+// };
 
 MonopolyPlayer.prototype.buy = function(property) {
   this.makePayment(property.cost);
   this.properties.push(property);
-  property.owner = this;
+  property.owned = true;
   var message = this.name + " purchased " + property.name + " for $" + property.cost;
   this.sendMessage(message);
 };

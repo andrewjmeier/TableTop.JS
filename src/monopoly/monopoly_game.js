@@ -103,10 +103,10 @@ MonopolyGame.prototype.drawCommunityChestCard = function() {
   return card.action(this);
 };
 
-MonopolyGame.prototype.getOwnerForProperty = function(property) {
+MonopolyGame.prototype.getOwnerForProperty = function(p) {
   return _.find(this.players, function(player) {
     var property = _.find(player.properties, function(prop) {
-      return (prop.name == property.name);
+      return (prop.name == p.name);
     });
     return (undefined != property);
   });
@@ -213,11 +213,16 @@ MonopolyGame.prototype.createTrade = function() {
 };
 
 MonopolyGame.prototype.addPropertyToTrade = function(property) {
-  this.trade.addOrRemoveProperty(property);
+  if (this.getCurrentState() == PROPOSE_TRADE) {
+    var owner = this.getOwnerForProperty(property);
+    this.trade.addOrRemoveProperty(property, owner);
+    this.sendMessage("Removed " + property.name + " from the trade");    
+    console.log(this.trade);
+  }
 };
 
 MonopolyGame.prototype.addPlayerToTrade = function(player) {
-  if (!this.trade.answeringPlayer){
+  if (this.getCurrentState() == PROPOSE_TRADE && !this.trade.answeringPlayer){
     this.trade.answeringPlayer = player;
   }
 };

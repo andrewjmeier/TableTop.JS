@@ -103,6 +103,7 @@ MonopolyTableView.prototype.updatePlayerModule = function(players) {
     var div = document.createElement("div");
     div.className = "player-info";
     div.innerHTML = player.name + ": $" + player.money;
+    div.id = i;
     var propertyContainer = document.createElement("div");
     propertyContainer.className = "property-container";
     div.appendChild(propertyContainer);
@@ -110,10 +111,32 @@ MonopolyTableView.prototype.updatePlayerModule = function(players) {
       var propDiv = document.createElement("div");
       propDiv.className = "player-property " + this.getCssClassForGroupNumber(player.properties[j].propertyGroup);
       propDiv.innerHTML = player.properties[j].name;
+      propDiv.id = i + "," + j;
       propertyContainer.appendChild(propDiv);
     }
     $(".player-box").append(div);
   }
+
+  var context = this;
+
+  $(".player-info").click(function(event) {
+    var id = $(event.currentTarget).attr("id");
+    var player = players[id];
+    context.game.addPlayerToTrade(player);
+  });
+
+  $(".player-property").click(function(event) {
+    var id = $(event.currentTarget).attr("id");
+    var split = id.split(",");
+    var playerIndex = split[0];
+    var propertyIndex = split[1];
+    var player = players[playerIndex];
+    var property = player.properties[propertyIndex];
+    context.game.addPropertyToTrade(property);
+
+    event.stopPropagation();
+  });
+
 };
 
 MonopolyTableView.prototype.subscribeSoundModule = function() {
