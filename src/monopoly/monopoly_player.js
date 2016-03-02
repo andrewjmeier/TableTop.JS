@@ -123,11 +123,19 @@ MonopolyPlayer.prototype.getToken = function() {
 };
 
 MonopolyPlayer.prototype.addItems = function(items) {
+  this.money += items.money;
+
+  if ((undefined == this.properties) || (this.properties.length < 1)) {
+    this.properties = items.property;
+    console.log("here", this.properties);
+    return;
+  }
+
   for (var i in items.property) {
     this.properties.push(items.property[i]);
-    items.property[i].owner = this;
+    items.property[i].owned = true;
+    console.log("there", this.properties);
   }
-  this.money += items.money;
 };
 
 MonopolyPlayer.prototype.getJSONString = function() {

@@ -9,8 +9,8 @@ function MonopolyTrade(proposingPlayer) {
 inherits(MonopolyTrade, TableTop.Trade);
 
 MonopolyTrade.prototype.addOrRemoveProperty = function(property, owner) {
-  console.log(property, "adding");
 
+  console.log("adding property", property, owner);
 
   var propHas = _.findIndex(this.proposingPlayerItems, function(p) {
     return p.name == property.name;
@@ -23,8 +23,7 @@ MonopolyTrade.prototype.addOrRemoveProperty = function(property, owner) {
   if ((propHas > -1) || (ansHas > -1)){
     //if it is in either then remove from that list
     this.removeProperty(property, owner);
-  }
-  else{
+  } else {
     //if it is in neither then add to the correct one
     this.addProperty(property, owner);
   }

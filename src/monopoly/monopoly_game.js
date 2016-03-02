@@ -37,7 +37,7 @@ MonopolyGame.prototype.updateToStartState = function() {
 };
 
 MonopolyGame.prototype.gameCreated = function(msg) {
-  MonopolyGame.super_.prototype.gameCreated.call(this, msg);
+  var player = MonopolyGame.super_.prototype.gameCreated.call(this, msg);
 
   var token = player.tokens[0];
   var tile = this.board.tiles[0];
@@ -226,8 +226,6 @@ MonopolyGame.prototype.addPropertyToTrade = function(property) {
   if (this.getCurrentState() == PROPOSE_TRADE) {
     var owner = this.getOwnerForProperty(property);
     this.trade.addOrRemoveProperty(property, owner);
-    this.sendMessage("Removed " + property.name + " from the trade");    
-    console.log(this.trade);
   }
 };
 

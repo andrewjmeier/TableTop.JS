@@ -180,6 +180,7 @@ function MonopolyTurn(game) {
                     ];
 
                     this.game.sendMessage(buttons, "set buttons");
+                    this.game.sendMessage("refreshView", "view");
                 },
 
                 offer_trade: function() {
@@ -200,7 +201,8 @@ function MonopolyTurn(game) {
             tradeAnswer: {
                 _onEnter : function() {
                     // this.game.sendMessage(this.game.trade.answeringPlayer.name + ", do you want to trade with " + this.game.trade.proposingPlayer.name + "?" + "\nThey are " + this.game.trade.itemsToString());
-                
+                    console.log(this.game.trade.answeringPlayer.name + ", do you want to trade with " + this.game.trade.proposingPlayer.name + "?" + "\nThey are " + this.game.trade.itemsToString());
+
                     var context = this;
                     var buttons = [ {
                         text: "Yes",
@@ -234,6 +236,10 @@ function MonopolyTurn(game) {
                     this.game.cancelTrade();
                     this.transition("postTurn");
 
+                },
+
+                _onExit: function() {
+                    this.game.sendMessage("refreshView", "view");
                 }
             },
 

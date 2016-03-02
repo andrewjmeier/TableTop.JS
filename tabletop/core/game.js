@@ -81,6 +81,9 @@ Game.prototype.startGame = function() {
 };
 
 Game.prototype.initiated = function() {
+
+  console.log(this.players[0].name, this.players[1].name);
+
   var context = this;
 
   this.subscribe(function(message) {
@@ -126,6 +129,8 @@ Game.prototype.gameCreated = function(msg) {
   }
   
   this.sendMessage("refreshView", "view");
+
+  return player;
 };
 
 // OVERRIDE IN SUBCLASS! 

@@ -33,6 +33,53 @@ function MonopolyTableView(game, turnMap) {
 
 inherits(MonopolyTableView, TableTop.TableView);
 
+MonopolyTableView.prototype.updateTrade = function() {
+
+  var trade = this.game.trade;
+
+  if (undefined == trade) {
+    return;
+  }
+
+  var div = document.createElement("div");
+  div.className = "player-info";
+  
+  var playerName = document.createElement("div");
+  playerName.innerHTML = trade.proposingPlayer.name;
+  div.appendChild(playerName);
+
+  var propertyContainer = document.createElement("div");
+  propertyContainer.className = "property-container";
+  div.appendChild(propertyContainer);
+  for (var j = 0; j < trade.proposingPlayerItems.property.length; j++) {
+    var propDiv = document.createElement("div");
+    propDiv.className = "player-property " + this.getCssClassForGroupNumber(trade.proposingPlayerItems.property[j].propertyGroup);
+    propDiv.innerHTML = trade.proposingPlayerItems.property[j].name;
+    propertyContainer.appendChild(propDiv);
+  }
+
+  var player2Name = document.createElement("div");
+  if (trade.answeringPlayer) {
+    player2Name.innerHTML = trade.answeringPlayer.name;
+  }
+  div.appendChild(player2Name);
+
+  var propertyContainer2 = document.createElement("div");
+  propertyContainer2.className = "property-container";
+  div.appendChild(propertyContainer2);
+
+  for (var j = 0; j < trade.answeringPlayerItems.property.length; j++) {
+    var propDiv = document.createElement("div");
+    propDiv.className = "player-property " + this.getCssClassForGroupNumber(trade.answeringPlayerItems.property[j].propertyGroup);
+    propDiv.innerHTML = trade.answeringPlayerItems.property[j].name;
+    propertyContainer2.appendChild(propDiv);
+  }
+
+  $(".player-box").append(div);
+
+
+};
+
 MonopolyTableView.prototype.setupModalForProperty = function(property) {
   if (! (property instanceof Property)) {
     return;
@@ -123,6 +170,7 @@ MonopolyTableView.prototype.updatePlayerModule = function(players) {
     var id = $(event.currentTarget).attr("id");
     var player = players[id];
     context.game.addPlayerToTrade(player);
+    context.refreshView();
   });
 
   $(".player-property").click(function(event) {
@@ -133,8 +181,8 @@ MonopolyTableView.prototype.updatePlayerModule = function(players) {
     var player = players[playerIndex];
     var property = player.properties[propertyIndex];
     context.game.addPropertyToTrade(property);
-
     event.stopPropagation();
+    context.refreshView();
   });
 
 };

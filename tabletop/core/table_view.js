@@ -115,6 +115,11 @@ TableView.prototype.refreshView = function() {
         div.addClass("die " + this.getClassForDie(die));
     }
 
+    this.updateTrade();
+};
+
+TableView.prototype.updateTrade = function() {
+
 };
 
 TableView.prototype.getClassForDie = function(die) {
@@ -157,6 +162,7 @@ TableView.prototype.subscribeMessageModule = function() {
                 class: 'message' + message.cssClass,
                 text: message.text
             }).appendTo(".game-messages");
+            context.refreshView();
         }
     })
 };
