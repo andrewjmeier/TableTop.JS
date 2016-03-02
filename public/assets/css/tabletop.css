@@ -38,6 +38,13 @@ html {
     font-weight: bold;
 }
 
+.init-modal > .waiting {
+    text-transform: uppercase;
+    margin: 2em;
+    color: #455453;
+    font-weight: bold;
+}
+
 .init-input {
     background: #B6D8D5;
     width: 90%;
