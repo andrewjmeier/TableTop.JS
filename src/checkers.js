@@ -10,20 +10,21 @@ var CheckerView = require('./checkers/checkers_view');
 var board = new CheckerBoard();
 var checkers = new Checkers(board);
 
+var view = new TableTop.GridView(checkers);
 //create our startView
-var startView = new TableTop.StartView(checkers); 
+// var startView = new TableTop.StartView(checkers); 
 
 // create our game view
-var view = new CheckerView(checkers);
+// var view = new CheckerView(checkers);
 
 // create our next player view
-var nextPlayerView = new TableTop.NextPlayerView(checkers);
+// var nextPlayerView = new TableTop.NextPlayerView(checkers);
 
 // create our game over view
-var gameOverView = new TableTop.GameOverView(checkers);
+// var gameOverView = new TableTop.GameOverView(checkers);
 
 //create the turnmap
-var turnMap = new TableTop.ManualTurn(checkers, startView, view, gameOverView, nextPlayerView);
+var turnMap = new TableTop.ManualTurn(checkers);
 
 checkers.setTurnMap(turnMap);
 
