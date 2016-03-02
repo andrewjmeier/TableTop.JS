@@ -66,6 +66,7 @@ function ManualTurn(game) {
             game.executeMove();
             this.transition("postTurn");
           } else { 
+            alert("Invalid move. Try again.");
             console.log("Invalid move. Try again.");
           } 
         } 

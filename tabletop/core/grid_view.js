@@ -1,7 +1,6 @@
 var $ = require("jquery");
 
 function GridView(game, turnMap) {
-  console.log("this");
   this.game = game;
 
   this.refreshView();
@@ -51,12 +50,6 @@ function GridView(game, turnMap) {
             context.refreshView();
         }
     });
-
-    // this.game.subscribe( function(message) {
-    //     if (message.type == "set buttons") {
-    //         context.refreshButtons(message);
-    //     }
-    // });
 
     this.game.subscribe( function(message) {
         if (message.type == "hide start view") {

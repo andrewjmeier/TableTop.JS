@@ -34,7 +34,6 @@ Game.prototype.sendData = function() {
     this.hasMadeGame = true;
   }
   var text = JSON.stringify(this.getJSONString());
-  console.log("sending data");
   socket.emit('move made', text);
 };
 
@@ -47,7 +46,6 @@ Game.prototype.createGame = function(name) {
 Game.prototype.startGame = function() {
   this.sendData();
   this.updateToStartState();
-  console.log("Hiding start view");
   this.sendMessage("", "hide start view");
 }
 

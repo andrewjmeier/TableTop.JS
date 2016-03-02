@@ -29,13 +29,10 @@ var turnMap = new TableTop.ManualTurn(checkers);
 checkers.setTurnMap(turnMap);
 
 socket.on('move made', function(msg) {
-  console.log("move made received");
-  //checkers.moveMadeReceived();
   checkers.createFromJSONString(msg);
 });
 
 socket.on('game created', function(msg) {
-  console.log("game created received");
   checkers.gameCreated(msg);
 });
 
@@ -58,6 +55,3 @@ TokenFactory = function(type){
   }
 }
 
-// this initiates the TurnMap ("Gameloop") and 
-// gets the ball rolling!
-// checkers.updateState("start");
