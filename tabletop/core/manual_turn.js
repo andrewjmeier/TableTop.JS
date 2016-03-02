@@ -86,6 +86,7 @@ function ManualTurn(game) {
               this.transition("waitingForMove");
             }
           }
+          game.sendData();
         } 
       },
 

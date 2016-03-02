@@ -12,14 +12,30 @@
         <script>
           var socket = io();
         </script>
-        <div class="game-setup">
-            Enter player1's name:<br>
-            <input type="text" name="player1Name" placeholder="John Smith" class="player1-name"><br>
-            Enter player2's name:<br>
-            <input type="text" name="player2Name" placeholder="John Smith" class="player2-name"><br>
-            <div href="#" class="button start-game">Start Game</div>
-        </div>
         <div class="game-table">
+            <div class="game-setup">
+                <div class="game-start init-modal">
+                    <div href="#" class="button show-join-game">Join Game</div>
+                    <div href="#" class="button show-new-game">Create Game</div>
+                </div>
+                <div class="join-start init-modal hidden">
+                    <input type="text" name="gameID" placeholder="Game ID" class="joingame-id init-input">
+                    <input type="text" name="playerName" placeholder="John Smith" class="player-name init-input"><br>
+                    <div href="#" class="button join-game">Join Game</div>
+                </div>
+                <div class="create-start init-modal hidden">
+                    <input type="text" name="playerName" placeholder="John Smith" class="player-name init-input">
+                    <div href="#" class="button new-game">Create Game</div>
+                </div>
+                <div class="created-start init-modal hidden">
+                    <div class="gamecode">Game Code: </div>
+                    <div href="#" class="button start-game">Start Game</div>
+                </div>   
+                <div class="waiting-to-start init-modal hidden">
+                    <div class="waiting">Waiting for the other player </div>
+                </div>               
+            </div>
+
             <div class="board">
                 <div class="tile-list">
                     <div class="row container">

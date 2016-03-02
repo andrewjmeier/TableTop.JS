@@ -36,6 +36,16 @@ MonopolyGame.prototype.updateToStartState = function() {
   this.updateState("continue");
 };
 
+MonopolyGame.prototype.gameCreated = function(msg) {
+  MonopolyGame.super_.prototype.gameCreated.call(this, msg);
+
+  var token = player.tokens[0];
+  var tile = this.board.tiles[0];
+  tile.tokens.push(token);
+
+  this.sendMessage("refreshView", "view");
+};
+
 MonopolyGame.prototype.getJSONString = function() {
 
   var playersArray = [];

@@ -34,6 +34,7 @@ Game.prototype.sendData = function() {
     this.hasMadeGame = true;
   }
   var text = JSON.stringify(this.getJSONString());
+  console.log("sending data");
   socket.emit('move made', text);
 };
 
@@ -42,9 +43,11 @@ Game.prototype.createGame = function(name) {
   socket.emit('create game', JSON.stringify(player));
 };
 
+
 Game.prototype.startGame = function() {
   this.sendData();
   this.updateToStartState();
+  console.log("Hiding start view");
   this.sendMessage("", "hide start view");
 }
 
@@ -70,9 +73,8 @@ Game.prototype.gameCreated = function(msg) {
   } else {
 
   }
-  var token = player.tokens[0];
-  var tile = this.board.tiles[0];
-  tile.tokens.push(token);
+
+  
   this.sendMessage("refreshView", "view");
 };
 
@@ -239,7 +241,7 @@ Game.prototype.setProposedMoveToken = function(token) {
  * @returns {boolean}
 */
 Game.prototype.hasValidMove = function() { 
-  console.log("here", this.proposedMove);
+  // console.log("here", this.proposedMove);
   if (this.moveType == c.moveTypeManual &&  (!this.proposedMove.token || !this.proposedMove.destination)) {
     return false;
   }
