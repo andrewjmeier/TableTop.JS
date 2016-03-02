@@ -10,6 +10,7 @@ var core = Object.assign({
     Game: require('./game'),
     GameOverView: require('./game_over_view'),
     GridBoard: require('./grid_board'),
+    GridView: require('./grid_view'),
     ManualTurn: require('./manual_turn'),
     NextPlayerView: require('./next_player_view'),
     Player: require('./player'),
