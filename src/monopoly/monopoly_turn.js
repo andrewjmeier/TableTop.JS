@@ -245,13 +245,16 @@ function MonopolyTurn(game) {
                     this.game.clearActiveCard();
                     this.game.nextPlayer();
                     this.transition("waitingOnRoll");
-                    game.sendData();
                 }
             }
         }
     });
 
     this.turnMap.on("transition", function(event) {
+        if (event.toState !== "rolled" && event.toState !== "endedTurn") {
+            console.log("sending", event.toState);
+            context.game.sendState(event.toState);            
+        }
         context.sendMessage("refreshView", "view");
     });
 };
@@ -260,6 +263,10 @@ inherits(MonopolyTurn, Component);
 
 MonopolyTurn.prototype.updateState = function(message) {
     this.turnMap.handle(message);
+};
+
+MonopolyTurn.prototype.transitionTo = function(state) {
+    this.turnMap.transition(state);
 };
 
 MonopolyTurn.prototype.getCurrentState = function() {

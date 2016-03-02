@@ -7,10 +7,6 @@ function TableView(game, turnMap) {
 
     var context = this;
 
-    var getPlayerName = function() {
-        return $(".player-name").val();
-    }
-
     $(".show-join-game").click(function() {
         $(".game-start.init-modal").fadeOut(200, function(event) {
             $(".join-start.init-modal").fadeIn(200);
@@ -25,12 +21,12 @@ function TableView(game, turnMap) {
 
     $(".join-game").click(function() {
         var id = $(".joingame-id").val();
-        var name = getPlayerName();
+        var name = $(".player-name-join").val();
         context.game.joinGame(id, name);
     });
 
     $(".new-game").click(function() {
-        var name = getPlayerName();
+        var name = $(".player-name-create").val();
         context.game.createGame(name);
 
         $(".create-start.init-modal").fadeOut(200, function(event) {
@@ -40,7 +36,7 @@ function TableView(game, turnMap) {
 
     $(".start-game").click(function() {
         context.game.startGame();
-    })
+    });
 
     this.game.subscribe( function(message) {
         if (message.type == "view") {

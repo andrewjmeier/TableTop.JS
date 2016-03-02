@@ -33,16 +33,31 @@ io.on('connection', function(socket) {
   socket.on('move made', function(msg) {
     var dic = JSON.parse(msg);
     var game = games[dic.gameID];
-    // io.sockets.emit('move made', msg);
     for (var i = 0; i < game.length; i++) {
       io.sockets.connected[game[i]].emit('move made', msg);
+    }
+  });
+
+  socket.on('message sent', function(msg) {
+    var dic = JSON.parse(msg);
+    var game = games[dic.gameID];
+
+    for (var i = 0; i < game.length; i++) {
+      io.sockets.connected[game[i]].emit('message received', msg);
+    }
+  });
+
+  socket.on('initiate game', function(msg) {
+    var game = games[msg];
+
+    for (var i = 0; i < game.length; i++) {
+      io.sockets.connected[game[i]].emit('game initiated', msg);
     }
   });
 
   socket.on('create game', function(player) {
     var playerObj = JSON.parse(player);
     playerObj.id = 0;
-    console.log("creating game");
     // create a uuid for the game, create a new list of clients, send back the uuid
     var uuid = getID();
     games[uuid] = [];
