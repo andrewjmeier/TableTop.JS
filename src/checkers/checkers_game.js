@@ -115,7 +115,7 @@ CheckersGame.prototype.playerDidWin = function(player) {
 };
 
 
-
+// returns all possible valid moves
 CheckersGame.prototype.getValidMoves = function() { 
 
   var validMoves = [];
@@ -128,13 +128,13 @@ CheckersGame.prototype.getValidMoves = function() {
     this.board.tiles.forEach(function(destinationRow) { 
       destinationRow.forEach(function(destination) { 
         
-        if (this.isValidMove(token, tile, destination)) 
+        if (this.isValidMove(token, tile, destination)) {
           validMoves.push({
             token: token, 
             tile: tile, 
             destination: destination
           });
-        
+        }
 
       }, this);
     }, this);    
@@ -148,7 +148,7 @@ CheckersGame.prototype.getValidMoves = function() {
 // takes in a player 
 // returns the score for the board based on the player passed in (ie. if the player 
 // has won it should return 10, if he loses should return -10) 
-CheckersGame.prototype.scoreBoard = function(player) { 
+CheckersGame.prototype.scoreBoard = function() { 
   var otherPlayer = this.players[this.getNextPlayer()];
   return 12 - otherPlayer.tokens.length;
 };

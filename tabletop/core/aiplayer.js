@@ -40,7 +40,7 @@ AIPlayer.prototype.generateMove = function(game) {
     gameCopy.executeMove();
     results.push({
       move: move, 
-      score: gameCopy.scoreBoard(game)
+      score: gameCopy.scoreBoard()
     });
   });
 
