@@ -13,7 +13,7 @@ function GridBoard(width, height) {
   Board.call(this);
   for (var i = 0; i < width; i++) { 
     this.tiles[i] = Array(this.height);
-  }
+ }
 
   this.width = width;
   this.height = height;
@@ -69,6 +69,7 @@ GridBoard.prototype.moveTokenToTile = function(token, tile) {
 GridBoard.prototype.destroyToken = function(token) {
   var tile = this.findTileForToken(token);
   tile.removeToken(token);
+  token.isDead = true;
 };
 
 module.exports = GridBoard;

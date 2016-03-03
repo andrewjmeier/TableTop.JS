@@ -42,6 +42,10 @@ Player.prototype.destroyToken = function(token) {
   token.isDead = true;
 };
 
+Player.prototype.isAI = function() { 
+  return false;
+};
+
 Player.prototype.getJSONString = function() {
 
   var tokenArray = [];
@@ -55,7 +59,7 @@ Player.prototype.getJSONString = function() {
     color: this.color,
     id: this.id,
     tokens: tokenArray
-  }
+  };
 };
 
 Player.prototype.createFromJSONString = function(data) {

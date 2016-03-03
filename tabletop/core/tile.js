@@ -24,7 +24,7 @@ inherits(Tile, Component);
  * @returns {void}
 */
 Tile.prototype.clearTokens = function() { 
-  this.tokens = null;
+  this.tokens = [];
 };
 
 /**
