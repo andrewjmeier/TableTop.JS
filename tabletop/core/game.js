@@ -82,8 +82,6 @@ Game.prototype.startGame = function() {
 
 Game.prototype.initiated = function() {
 
-  console.log(this.players[0].name, this.players[1].name);
-
   var context = this;
 
   this.subscribe(function(message) {
