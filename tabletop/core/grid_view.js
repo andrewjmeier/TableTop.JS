@@ -28,14 +28,13 @@ function GridView(game, turnMap) {
       var name = getPlayerName();
       context.game.joinGame(id, name);
       $(".join-start.init-modal").fadeOut(200, function(event) {
-          $(".waiting-to-start.init-modal").fadeIn(200);
+          $(".waiting-for-start.init-modal").fadeIn(200);
       }); 
   });
 
   $(".new-game").click(function() {
       var name = getPlayerName();
       context.game.createGame(name);
-
       $(".create-start.init-modal").fadeOut(200, function(event) {
           $(".created-start.init-modal").fadeIn(200);
       }); 
@@ -91,7 +90,6 @@ GridView.prototype.refreshView = function() {
   var context = this;
 
   $(".token").click(function(event) {
-    console.log("token clicked here");
     var tile = $(event.currentTarget).parent();
     var tileID = tile.attr("id");
     var id = tileID.substring(4,6);

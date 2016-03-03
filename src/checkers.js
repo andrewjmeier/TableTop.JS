@@ -26,6 +26,14 @@ socket.on('game created', function(msg) {
   checkers.gameCreated(msg);
 });
 
+socket.on('message received', function(msg) {
+  checkers.messageReceived(msg);
+});
+
+socket.on('game initiated', function(msg) {
+  checkers.initiated();
+});
+
 
 
 PlayerFactory = function(type) {
