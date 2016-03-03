@@ -10,23 +10,38 @@ var CheckerView = require('./checkers/checkers_view');
 var board = new CheckerBoard();
 var checkers = new Checkers(board);
 
-//create our startView
-var startView = new TableTop.StartView(checkers); 
-
-// create our game view
-var view = new CheckerView(checkers);
-
-// create our next player view
-var nextPlayerView = new TableTop.NextPlayerView(checkers);
-
-// create our game over view
-var gameOverView = new TableTop.GameOverView(checkers);
+//create our view
+var view = new TableTop.GridView(checkers);
 
 //create the turnmap
-var turnMap = new TableTop.ManualTurn(checkers, startView, view, gameOverView, nextPlayerView);
+var turnMap = new TableTop.ManualTurn(checkers);
 
 checkers.setTurnMap(turnMap);
 
-// this initiates the TurnMap ("Gameloop") and 
-// gets the ball rolling!
-checkers.updateState("start");
+socket.on('move made', function(msg) {
+  checkers.createFromJSONString(msg);
+});
+
+socket.on('game created', function(msg) {
+  checkers.gameCreated(msg);
+});
+
+
+
+PlayerFactory = function(type) {
+  switch(type) {
+
+    default:
+      return new TableTop.Player();
+  }
+}
+
+TokenFactory = function(type){
+  switch(type) {
+    case "Token":
+      return new TableTop.Token();
+    default:
+      return new TableTop.Token();
+  }
+}
+
