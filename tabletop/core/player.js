@@ -2,6 +2,7 @@ var Component = require("./component.js");
 var inherits = require('util').inherits;
 var Token = require("./token.js");
 var _ = require('lodash');
+var c = require("./ttConstants");
 
 /**
  * A Player class
@@ -20,6 +21,7 @@ function Player(name, color, id) {
   if (this.name == "") {
     this.name = "Player";
   }
+  // console.log("creating player", name);
 };
 
 inherits(Player, Component);
@@ -43,7 +45,8 @@ Player.prototype.destroyToken = function(token) {
 };
 
 Player.prototype.isAI = function() { 
-  return false;
+  return this.name == "AI";
+  // return false;
 };
 
 Player.prototype.getJSONString = function() {
@@ -53,12 +56,19 @@ Player.prototype.getJSONString = function() {
     var tokenText = this.tokens[i].getJSONString();
     tokenArray.push(tokenText);
   }
+  var type = "Human";
+  //if(this instanceof TableTop.AIPlayer){
+  if(this.isAI()){
+    type = "AI"
+  }
+  // console.log("type", type);
 
   return {
     name: this.name,
     color: this.color,
     id: this.id,
-    tokens: tokenArray
+    tokens: tokenArray,
+    type: type
   };
 };
 
@@ -73,6 +83,50 @@ Player.prototype.createFromJSONString = function(data) {
     token.createFromJSONString(data.tokens[i]);
     this.tokens.push(token);
   }
+};
+
+Player.prototype.generateMove = function(game) { 
+
+  var moves = game.getValidMoves();
+  var results = [];
+  // console.log("got all valid moves", moves);
+  moves.forEach(function(move) { 
+    
+    var gameCopy = game.copyGameStatus(game);    
+    gameCopy.proposedMove = game.copyMoveForGame(move, gameCopy); 
+    gameCopy.executeMove();
+    results.push({
+      move: move, 
+      score: gameCopy.scoreBoard()
+    });
+  });
+
+  // console.log("results", results)
+  var result = this.pickMove(results);
+  // console.log("result", result)
+  return result.move;
+};
+
+Player.prototype.pickMove = function(results) { 
+  
+  // sort descending based on score
+  var resultsSorted = results.sort(function(a, b) { 
+    return b.score - a.score; 
+  });
+  
+  // console.log("resultsSorted", resultsSorted);
+// console.log("this.difficulty", this.difficulty);
+
+  var range = 1; 
+  if (this.difficulty == c.AIDifficultyHard) { 
+    range = 1; 
+  } else if (this.difficulty == c.AIDifficultyMedium) { 
+    range = Math.min(results.length, 3);
+  } else if (this.difficulty == c.AIDifficultyEasy) { 
+    range = Math.min(results.length, 5);
+  }
+
+  return resultsSorted[Math.floor(Math.random()*range)];
 };
 
 module.exports = Player;

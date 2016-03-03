@@ -1,5 +1,6 @@
 var core = Object.assign({
 
+    AIPlayer: require('./player'),
     ArrayBoard: require('./array_board'),
     Board: require('./board'),
     Card: require('./card'),

@@ -42,6 +42,19 @@ CheckerBoard.prototype.buildTokens = function() {
   }
 };
 
+CheckerBoard.prototype.findTileForToken = function(token) { 
+  for (var x = 0; x < this.width; x++) {
+    for (var y = 0; y < this.height; y++) {
+      if (this.tiles[x][y].tokens.length>0) {
+        if(this.tiles[x][y].tokens[0].id == token.id){
+          return this.tiles[x][y];
+        }
+      }
+    }
+  }
+  return null;
+};
+
 // creates the token for given tile and color, 
 // adds it to the tile, 
 // and appends it to our list of tokens

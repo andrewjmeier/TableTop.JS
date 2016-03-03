@@ -1,4 +1,5 @@
 var Turn = require("./turn.js");
+var AIPlayer = require("./aiplayer.js");
 var inherits = require('util').inherits;
 
 function ManualTurn(game) { 
@@ -49,7 +50,9 @@ function ManualTurn(game) {
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
+          // console.log("waitingForMove", this.game.getCurrentPlayer(), this.game.board);
           if (this.game.getCurrentPlayer().isAI()) {
+          //if (this.game.getCurrentPlayer() instanceof AIPlayer) {
             var AIMove = this.game.getCurrentPlayer().generateMove(this.game);
             game.proposedMove = AIMove;
             this.handle("makeMove");
@@ -60,6 +63,7 @@ function ManualTurn(game) {
           
           if (game.hasValidMove()) {
             if (this.game.getCurrentPlayer().isAI()) {
+            //if (this.game.getCurrentPlayer() instanceof AIPlayer) {
               var turnMap = this;
               setTimeout(function() { game.executeMove(); turnMap.transition("postTurn"); }, 500);
             } else { 
@@ -79,7 +83,9 @@ function ManualTurn(game) {
           if (this.game.playerDidWin(game.getCurrentPlayer())) { 
             this.transition("gameOver");
           } else { 
+            // console.log("this.game.players", this.game.players);
             this.game.nextPlayer();
+            // console.log("Next player");
             if(game.showNextPlayerScreen){
               this.transition("nextPlayerScreen");
             } else {

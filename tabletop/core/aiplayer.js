@@ -1,5 +1,5 @@
 var inherits = require('util').inherits;
-var Player = require("./Player.js");
+var Player = require("./player.js");
 var Gridboard = require("./grid_board.js");
 var c = require("./ttConstants");
 
@@ -13,13 +13,14 @@ var c = require("./ttConstants");
 function AIPlayer(name, color, id, difficulty) {
   Player.call(this, name, color, id);
   
+  console.log("creating AI player");
   // safety check
   if (c.validAIDifficulties.indexOf(difficulty) == -1)
     difficulty = c.AIDifficultyEasy;
   
   this.difficulty = difficulty;
-}
-
+};
+   
 inherits(AIPlayer, Player);
 
 
@@ -45,6 +46,7 @@ AIPlayer.prototype.generateMove = function(game) {
   });
 
   var result = this.pickMove(results);
+  console.log("result", result);
   return result.move;
 };
 

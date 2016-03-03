@@ -7,6 +7,7 @@ var Tile = require('./tile.js');
 var Token = require('./token.js');
 var Player = require('./player.js');
 var Gridboard = require('./grid_board.js');
+var c = require("./ttConstants");
 
 /**
  * The Game class
@@ -78,16 +79,19 @@ Game.prototype.createGame = function(name) {
 
 
 Game.prototype.startGame = function() {
+  // console.log("sending initiate game");
   socket.emit('initiate game', this.gameID);
   this.sendData();
 };
 
 Game.prototype.initiated = function() {
   var context = this;
+  // console.log("initiated");
 
   this.subscribe(function(message) {
     // don't send a message to the server w/ client id b/c it was already sent
     if (message.clientID !== -1 || !(message.type === "standard" || message.type === "state-machine")) {
+      // console.log("got it");
       return;
     }
 
@@ -113,10 +117,28 @@ Game.prototype.joinGame = function(gameID, name) {
   socket.emit('join game', JSON.stringify(data));
 };
 
+Game.prototype.createAI = function(gameID, name) {
+  // console.log("gameID", gameID, "name", name);
+  // var p = this.createAIPlayer(name);
+  // console.log("All the players", this.players);
+  if(this.players.length > 1){
+    return ;
+  }
+  var player = this.createAIPlayer(name).getJSONString();
+  // console.log("p", p, p.isAI(),player instanceof TableTop.AIPlayer, "player", player);
+  var data = {
+    gameID: gameID,
+    player: player
+  };
+  // console.log("data", data);
+  socket.emit('join game', JSON.stringify(data));
+};
+
 Game.prototype.gameCreated = function(msg) {
+  // console.log("game created");
   dic = JSON.parse(msg);
   this.gameID = dic.gameID;
-  var player = PlayerFactory();
+  var player = PlayerFactory(dic.player.type);
   player.createFromJSONString(dic.player);
   this.players.push(player);  
 
@@ -135,6 +157,9 @@ Game.prototype.createPlayer = function(name) {
 
 }
 
+Game.prototype.createAIPlayer = function(name) {
+
+}
 /**
  * Method to set turnMap of the game once it is created
  * This is required!
@@ -265,7 +290,14 @@ Game.prototype.submitMove = function(token) {
  * Override to provide more logic on determining the next player
  * @returns {void}
 */
-Game.prototype.nextPlayer = function() { 
+Game.prototype.nextPlayer = function() {
+  if(this.players.length > 2){
+    var temp1 = this.players[0];
+    var temp2 = this.players[1];
+    this.players = [];
+    this.players[0] = temp1;
+    this.players[1] = temp2
+  }
   this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
 };
 
@@ -372,8 +404,8 @@ Game.prototype.executeMove = function(player) {
  * @returns {void}
 */
 Game.prototype.tokenClicked = function(token) {
-  console.log("this.currentPlayer", this.currentPlayer);
-  console.log("this.clientPlayerID", this.clientPlayerID);
+  // console.log("this.currentPlayer", this.currentPlayer);
+  // console.log("this.clientPlayerID", this.clientPlayerID);
   if (this.currentPlayer !== this.clientPlayerID) {
     return;
   }
@@ -389,8 +421,8 @@ Game.prototype.tokenClicked = function(token) {
  * @returns {void}
 */
 Game.prototype.tileClicked = function(tile) { 
-  console.log("this.currentPlayer", this.currentPlayer);
-  console.log("this.clientPlayerID", this.clientPlayerID);
+  // console.log("this.currentPlayer", this.currentPlayer);
+  // console.log("this.clientPlayerID", this.clientPlayerID);
 
   if (this.currentPlayer !== this.clientPlayerID) {
     return;

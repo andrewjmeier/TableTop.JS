@@ -41,10 +41,14 @@ Tile.prototype.addToken = function(token) {
  * @param {Token} token - token to be remvoed
  * @returns {void}
 */
+// Tile.prototype.removeToken = function(token) { 
+//   _.remove(this.tokens, function(n) {
+//     return n === token;
+//   });
+// };
+
 Tile.prototype.removeToken = function(token) { 
-  _.remove(this.tokens, function(n) {
-    return n === token;
-  });
+  this.tokens = [];
 };
 
 Tile.prototype.hasToken = function(token) {

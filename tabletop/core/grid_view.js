@@ -11,6 +11,10 @@ function GridView(game, turnMap) {
       return $(".player-name").val();
   }
 
+  var getAIName = function() {
+      return $(".ai-name").val();
+  }
+
   $(".show-join-game").click(function() {
       $(".game-start.init-modal").fadeOut(200, function(event) {
           $(".join-start.init-modal").fadeIn(200);
@@ -22,6 +26,23 @@ function GridView(game, turnMap) {
           $(".create-start.init-modal").fadeIn(200);
       }); 
   });
+
+ $(".create-ai-player").click(function() {
+      $(".created-start.init-modal").fadeOut(200, function(event) {
+          $(".created-ai-player.init-modal").fadeIn(200);
+      }); 
+  });
+
+ $(".add-ai").click(function() {
+    var id = context.game.gameID;
+    var name = getAIName();
+    context.game.createAI(id, "AI");
+    $(".created-ai-player.init-modal").fadeOut(200, function(event) {
+        $(".created-start.init-modal").fadeIn(200);
+    });
+  });
+
+
 
   $(".join-game").click(function() {
       var id = $(".joingame-id").val();
@@ -41,6 +62,7 @@ function GridView(game, turnMap) {
   });
 
   $(".start-game").click(function() {
+      // console.log("start");
       context.game.startGame();
   })
 

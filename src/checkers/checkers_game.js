@@ -1,6 +1,7 @@
 var inherits = require('util').inherits;
 var TableTop = require("../../tabletop/tabletop.js");
 var CheckerBoard = require('./checkers_board');
+// var c = require("../../tabletop/core/ttConstants");
 
 function CheckersGame(board) {
   TableTop.Game.call(this, board);
@@ -11,13 +12,21 @@ function CheckersGame(board) {
   this.showNextPlayerScreen = false;
   this.AIDifficulty = TableTop.Constants.AIDifficultyHard;
   this.hasMadeGame = false;
-  this.firstMove = true;
 };
 
 inherits(CheckersGame, TableTop.Game);
 
 CheckersGame.prototype.createPlayer = function(name) {
   var player = new TableTop.Player(name, 0, 0); // TODO: remove this number field?
+  this.propagate(player);
+  return player;
+};
+
+CheckersGame.prototype.createAIPlayer = function(name) {
+  
+  var player = new TableTop.AIPlayer(name, 0, 0, 2); // TODO: remove this number field?
+  // console.log("AI player here", player.isAI(), player instanceof TableTop.AIPlayer);
+
   this.propagate(player);
   return player;
 };
@@ -160,8 +169,8 @@ CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) {
 };
 
 CheckersGame.prototype.validNormalMove = function(token, oldPos, newPos, moveLen) { 
-
-
+  // console.log("validNormalMove");
+  // console.log("oldPos", oldPos);
   // are we moving up or down? 
   var yModifier = token.color == "black" ? moveLen : -moveLen;
   return oldPos.y + yModifier == newPos.y && Math.abs(oldPos.x - newPos.x) == moveLen;
@@ -169,7 +178,8 @@ CheckersGame.prototype.validNormalMove = function(token, oldPos, newPos, moveLen
 };
 
 CheckersGame.prototype.validJumpMove = function(token, oldPos, newPos) { 
-
+  // console.log("validJumpMove");
+  // console.log("oldPos", oldPos);
   // make sure it's a valid normal move that's two spaces long
   if (!this.validNormalMove(token, oldPos, newPos, 2)) return false;
   // make sure we jump an enemy token 
@@ -195,9 +205,9 @@ CheckersGame.prototype.getValidMoves = function() {
   var validMoves = [];
   
   this.board.tokens.forEach(function(token) {     
-    
+    // console.log("token",token);
     var tile = this.board.findTileForToken(token);
-    
+    // console.log("tile",tile);
     // for each possible destination tile...
     this.board.tiles.forEach(function(destinationRow) { 
       destinationRow.forEach(function(destination) { 
@@ -208,13 +218,14 @@ CheckersGame.prototype.getValidMoves = function() {
             tile: tile, 
             destination: destination
           });
+          // console.log("is valid move ", destination);
         }
-
+        // console.log("testing valid move ", tile, destination);
       }, this);
     }, this);    
   }, this);
 
-  
+  // console.log("returning valid moves");
   return validMoves;
 };
   

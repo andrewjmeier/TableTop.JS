@@ -19,28 +19,37 @@ var turnMap = new TableTop.ManualTurn(checkers);
 checkers.setTurnMap(turnMap);
 
 socket.on('move made', function(msg) {
+  // console.log("move made msg rec");
   checkers.createFromJSONString(msg);
 });
 
 socket.on('game created', function(msg) {
+  // console.log("game created msg rec");
   checkers.gameCreated(msg);
 });
 
 socket.on('message received', function(msg) {
+  // console.log("msg rec msg rec");
   checkers.messageReceived(msg);
 });
 
 socket.on('game initiated', function(msg) {
+  // console.log("initiated msg rec");
   checkers.initiated();
 });
 
 
 
 PlayerFactory = function(type) {
-  switch(type) {
+  // console.log("HERERE", type);
 
+  switch(type) {
+    case "AI":
+      // console.log("HERERE");
+      return new TableTop.AIPlayer();
     default:
       return new TableTop.Player();
+
   }
 }
 
