@@ -102,7 +102,7 @@ TableView.prototype.refreshView = function() {
     this.updatePlayerModule(this.game.players);
 
     // scroll messenger to the bottom
-    $(".messenger").scrollTop($(".messenger")[0].scrollHeight);
+    // $(".messenger").scrollTop($(".messenger")[0].scrollHeight);
 
     // if the game has dice, draw them 
     var dice = this.game.dice;

@@ -80,6 +80,11 @@ Game.prototype.startGame = function() {
   this.sendData();
 };
 
+function sleepFor( sleepDuration ){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+}
+
 Game.prototype.initiated = function() {
 
   var context = this;
@@ -100,7 +105,10 @@ Game.prototype.initiated = function() {
     socket.emit('message sent', JSON.stringify(msg));
   });
 
-  this.updateToStartState();
+  if (this.clientPlayerID === 0) {
+      this.updateToStartState();
+  }
+
 };
 
 Game.prototype.joinGame = function(gameID, name) {
