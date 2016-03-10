@@ -81,9 +81,6 @@ TableView.prototype.refreshButtons = function(msg) {
 
 TableView.prototype.buttonClicked = function(button) {
     return function() {
-        // if this.game.canPlay() {
-
-        // }
         button.onClick();
     }
 };

@@ -10,7 +10,6 @@ function CheckersGame(board) {
   this.possibleNumPlayers = [2];
   this.showNextPlayerScreen = false;
   this.hasMadeGame = false;
-  this.firstMove = true;
 };
 inherits(CheckersGame, TableTop.Game);
 

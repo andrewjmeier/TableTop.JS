@@ -358,8 +358,6 @@ Game.prototype.executeMove = function(player) {
  * @returns {void}
 */
 Game.prototype.tokenClicked = function(token) {
-  console.log("this.currentPlayer", this.currentPlayer);
-  console.log("this.clientPlayerID", this.clientPlayerID);
   if (this.currentPlayer !== this.clientPlayerID) {
     return;
   }
@@ -375,9 +373,6 @@ Game.prototype.tokenClicked = function(token) {
  * @returns {void}
 */
 Game.prototype.tileClicked = function(tile) { 
-  console.log("this.currentPlayer", this.currentPlayer);
-  console.log("this.clientPlayerID", this.clientPlayerID);
-
   if (this.currentPlayer !== this.clientPlayerID) {
     return;
   }
