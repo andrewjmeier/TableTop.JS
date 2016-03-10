@@ -11,14 +11,7 @@ describe('Game Tests', function() {
 
   beforeEach(function() {
     game = new Game(board);
-  });
-
-  describe('#setTurnMap', function() {
-    it('set the games turn map', function() {
-      var turnMap = new Turn();
-      game.setTurnMap(turnMap);
-      game.turnMap.should.eq(5);
-    });
+    game.players = [{name: "joe"}];
   });
 
   describe('#setMoveType', function() {
