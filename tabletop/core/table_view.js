@@ -23,6 +23,9 @@ function TableView(game, turnMap) {
         var id = $(".joingame-id").val();
         var name = $(".player-name-join").val();
         context.game.joinGame(id, name);
+        $(".join-start.init-modal").fadeOut(200, function(event) {
+          $(".waiting-for-start.init-modal").fadeIn(200);
+      }); 
     });
 
     $(".new-game").click(function() {

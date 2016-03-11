@@ -73,10 +73,7 @@ Game.prototype.createGame = function(name) {
 
 
 Game.prototype.startGame = function() {
-  this.sendMessage("", "hide start view");
-
   socket.emit('initiate game', this.gameID);
-
   this.sendData();
 };
 
@@ -98,7 +95,7 @@ Game.prototype.initiated = function() {
 
     socket.emit('message sent', JSON.stringify(msg));
   });
-
+  this.sendMessage("", "hide start view");
   this.updateToStartState();
 };
 
@@ -108,7 +105,6 @@ Game.prototype.joinGame = function(gameID, name) {
     gameID: gameID,
     player: player
   };
-  this.sendMessage("", "hide start view");
   socket.emit('join game', JSON.stringify(data));
 };
 
@@ -362,7 +358,9 @@ Game.prototype.executeMove = function(player) {
  * @returns {void}
 */
 Game.prototype.tokenClicked = function(token) {
-  console.log("token clicked");
+  if (this.currentPlayer !== this.clientPlayerID) {
+    return;
+  }
   if (this.moveType == c.moveTypeManual &&
       this.turnMap.getCurrentState() == "waitingForMove") { 
     this.setProposedMoveToken(token);
@@ -375,7 +373,9 @@ Game.prototype.tokenClicked = function(token) {
  * @returns {void}
 */
 Game.prototype.tileClicked = function(tile) { 
-  console.log("tile clicked");
+  if (this.currentPlayer !== this.clientPlayerID) {
+    return;
+  }
   /* make sure we're in the right state, 
    a token has been pressed, 
    and we're not a tile with a token on it (if we have > 0

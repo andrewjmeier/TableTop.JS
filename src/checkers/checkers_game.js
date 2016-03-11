@@ -10,7 +10,6 @@ function CheckersGame(board) {
   this.possibleNumPlayers = [2];
   this.showNextPlayerScreen = false;
   this.hasMadeGame = false;
-  this.firstMove = true;
 };
 inherits(CheckersGame, TableTop.Game);
 
@@ -38,18 +37,6 @@ CheckersGame.prototype.gameCreated = function(msg) {
     });
   }
   this.sendMessage("refreshView", "view");
-};
-
-
-CheckersGame.prototype.joinGame = function(gameID, name) {
-  var player = this.createPlayer(name).getJSONString();
-  var data = {
-    gameID: gameID,
-    player: player
-  };
-  this.sendMessage("", "hide start view");
-  socket.emit('join game', JSON.stringify(data));
-  this.updateToStartState(); 
 };
 
 
@@ -92,15 +79,6 @@ CheckersGame.prototype.createFromJSONString = function(data) {
   this.sendMessage("refreshView", "view");
 
 };
-
-// CheckersGame.prototype.setPlayers = function(players) { //not sure this ever gets called
-
-//   this.players = players;
-//   for (var i = players.length - 1; i >= 0; i--) {
-//     this.board.buildTokenForTile(players[i].tokens[0], this.board.tiles[0]);
-//   };
-
-// };
 
 CheckersGame.prototype.executeMove = function() {  
 
