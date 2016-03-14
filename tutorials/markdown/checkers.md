@@ -283,7 +283,7 @@ Now let's work on our view. We need to create an html layout of how the board sh
           </div>
       </body>
       <footer>
-          <script type="text/javascript" src="/bundle.js"></script>
+          <script type="text/javascript" src="../public/bundle.js"></script>
       </footer>
     </html>
 ```
