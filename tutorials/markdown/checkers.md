@@ -7,7 +7,7 @@ When you create a game, there are 5 major components: the Players, Game, Board, 
 ### Checkers.js -- Your Main File
 
 To begin, create a new file checkers.js in the root of your project folder. This will be the file that the framework looks for to builds your game. Some parts of this may be confusing to you; don't worry about that right now, we'll be explaining everything shortly. 
-
+```
     // Checkers.js
     // Start creating your game here
 
@@ -29,9 +29,7 @@ To begin, create a new file checkers.js in the root of your project folder. This
     checkers.setTurnMap(turnMap);
 
     checkers.updateToStartState();
-
-
-
+```
 
 This is all you need so far for the main game file. In general, your (game).js file should never be much longer than this -- you should offload the complicated logic to your subclasses of the game components (like we will do with Checkers, CheckerBoard and CheckersView).
 
@@ -42,7 +40,7 @@ Before continuing, let's go over what we're doing above. First, we create our Bo
 At this point, you'll be getting an error that checkers/checkers_game.js and checkers/checkers_board.js don't exist - let's fix that and create those now. 
 
 In checkers_game.js, enter the following: 
-    
+```
     // checkers_game.js
     var inherits = require('util').inherits;
     var TableTop = require("../../tabletop/tabletop.js");
@@ -69,7 +67,7 @@ In checkers_game.js, enter the following:
     };
 
     module.exports = CheckersGame;
-
+```
 This is the constructor for our game. We overwrite a few important defaults here. 
 
 First, we set the moveType to TableTop.Constants.moveTypeManual. Game defaults to using TableTop.Constants.moveTypeDiceRoll, which is useful for games like monopoly where there's only one path the follow, however we want the user to be able to control where she moves her token. This flag lets our view know that it should add click listeners to tokens and tiles in our view, and lets our game know that it should store these listener events as they arrive for later evaluation.
@@ -79,7 +77,7 @@ Second, we set the moveEvaluationType to TableTop.Constants.moveEvaluationTypeGa
 ### The Board
 
 We'll finish filling out our game class later. For now, let's move on to the checkers_board class. Create the file and enter the following: 
-    
+```   
     // checkers_board.js
     var inherits = require('util').inherits;
     var TableTop = require("../../tabletop/tabletop.js");
@@ -105,17 +103,16 @@ We'll finish filling out our game class later. For now, let's move on to the che
       } 
     };
 
-
-
 module.exports = CheckerBoard;
+```
 
-First, we subclass GridBoard. PathBoard (for games like monopoly) and GraphBoard (for games like Settlers of Catan) are other options, but for Checkers we are going to need a GridBoard. Then, we build the tiles for our game. We alternate colors black and red to create the checkerboard effect. 
+First,we subclass GridBoard. PathBoard (for games like monopoly) and GraphBoard (for games like Settlers of Catan) are other options, but for Checkers we are going to need a GridBoard. Then, we build the tiles for our game. We alternate colors black and red to create the checkerboard effect. 
 
 ### The View
 
 Now let's work on our view. We need to create an html layout of how the board should look. You can copy the default GridBoard html layout and modify it slightly so that the colours alternate between black an white. After doing this, the file checkers.html should look like this: 
 
-
+```
   <!DOCTYPE html>
   <html>
       <head>
@@ -288,11 +285,11 @@ Now let's work on our view. We need to create an html layout of how the board sh
           <script type="text/javascript" src="/bundle.js"></script>
       </footer>
     </html>
-
+```
 Although the html looks intimidating, it should be easy enough to figure out how it works. 
 
 You will notice that the html reference a number of div classes from the style sheet checkers.css. This is another sheet that is very simply customised to help your tiles look however you like.
-
+```
   .red {
       background-color: #FF0000;
   }
@@ -311,7 +308,7 @@ You will notice that the html reference a number of div classes from the style s
     margin: 1em;
     z-index: 100;
   }
-
+```
 We have specified the style for a token as well as the colors used for the tiles. The token specification will be used later.
 
 **At this stage, you should be able compile your code and open the checkers.html file. You should  see the red and black checkers board on a white background.**
@@ -323,7 +320,7 @@ Note: we have not told our board to build the tokens yet and therefore you will 
 Next, let's create our "tokens". Tokens are the movable, actionable objects that belong to tiles. In a game like checkers, they're our pieces. In a game like monopoly, it's the literal token that represents your player. 
 
 Add the following method to your checkers_board.js file, and call it from your constructer after this.BuildTiles():
-    
+```    
     // function to actually build tokens
     CheckerBoard.prototype.buildTokens = function() { 
 
@@ -353,16 +350,16 @@ Add the following method to your checkers_board.js file, and call it from your c
       tile.addToken(token);
       this.tokens.push(token);
     };
-
+```
 
 To call the buildTokens function from the constructors of the checkers_board.js file use this.buildTokens();. The constructor should now look like this:
-
+```
     function CheckerBoard() { 
       TableTop.GridBoard.call(this, 8, 8);
       this.buildTiles();
       this.buildTokens();
     }     
-
+```
 Without networking, that's all we need for the checkers_board.js file! 
 
 **Reload your checkers.html file and you should see the tokens draw on the board.** As you can see, the framework can powerfully do alot of the heavy lifting if you properly define your board, tokens, and tiles. you cannot move the tiles yet, but let's change that!
@@ -372,7 +369,7 @@ Let's continue with checkers_game.js and add some of the game logic. Since we're
 ### Evaluating Moves
 
 Lets write our executeMove() function. This function should assume that there's a valid move stored in this.proposedMove (in the form of proposedMove.token and proposedMove.destination). 
-
+```
   CheckersGame.prototype.executeMove = function() {  
     // store proposedMove data for convenience
     var token = this.proposedMove.token;
@@ -408,11 +405,11 @@ Lets write our executeMove() function. This function should assume that there's 
     else  
       return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).tokens[0];
   };
-
+```
 Now, refresh your checkers.html and you should be able to move tokens around. Notice that the game has no concept of what should be a valid move or not -- players can move over each others tokens, and tokens can move an infinite amount of tiles. The console should be warning you about this on every move. Let's fix that. 
 
 For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one tile diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
-
+```
     CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) { 
       var oldPos = this.board.getTilePosition(oldTile);
       var newPos = this.board.getTilePosition(newTile);
@@ -453,7 +450,7 @@ For checkers, there's two types of valid moves (that we're concerned about for t
       return jumpedToken && jumpedToken.color != token.color;
 
     };
-
+```
 If you get an error about a function not existing - be sure that the methods are above the inheritance declaration.
 
 Notice that we could include double jumps here with a few more lines of code - after this tutorial, try it yourself!
@@ -464,7 +461,7 @@ You can refresh the game at this point to try moving around - invalid moves shou
 ### Game Over
 
 At this point, there's only one more thing we need to define in our game class to get a working game: how do we tell who won the game? The default TurnMap will call the bool function game.playerDidWin(player) to find out this information. Let's implement that now: 
-
+```
     CheckersGame.prototype.playerDidWin = function(player) { 
       var otherPlayer = (this.players[0] == player) ? this.players[1] : this.players[0];
       if(otherPlayer !== undefined){
@@ -488,7 +485,7 @@ At this point, there's only one more thing we need to define in our game class t
       }
       return null;
     };
-
+```
 
 getPlayerForToken is added as a helper method as a means of finding out whether the oposing player has any tokens left.
 
@@ -505,14 +502,14 @@ TableTop networking allows you to send the important details of the game onto an
 First we need to get our local server up and running. To do this run the "node server.js" command from your terminal. Now you should be able to load your game through the local server. It is served up on port 3000. **Go to  http://localhost:3000/checkers.html and you should be able to play your game.** 
 
 Next, we are going to add the game starting module to checkers.html. There are two elemnets that need to be added in. First is the socket.io Javascript. Add the following inside the <body> tags but below the <div class="game-table">: 
-
+```
         <script src="/socket.io/socket.io.js"></script>
         <script>
           var socket = io();
         </script>
-
+```
 The second snippet that needs to be added in the game-setup modals. These can be added just inside the <div class="game-table"> tag: 
-
+```
             <div class="game-setup modal">
                 <div class="game-start init-modal">
                     <div href="#" class="button show-join-game">Join Game</div>
@@ -535,11 +532,11 @@ The second snippet that needs to be added in the game-setup modals. These can be
                     <div href="#" class="button start-game">Start Game</div>
                 </div>               
             </div>
-
+```
 **Reload your checkers.html file** You should be able to see and interact with the game set-up modals. You will not be able to start a game yet, but let sort that out. 
 
 To start a game, we need to be listening for start (and other) messages sent ot the game. Open up checkers.js. Remove the "checkers.updateToStartState();" line as the game will now be started when the "game initiated" message is received. Add the following code at the end of the file to set-up message receivers:
-
+```
       socket.on('move made', function(msg) {
         checkers.createFromJSONString(msg);
       });
@@ -572,13 +569,13 @@ To start a game, we need to be listening for start (and other) messages sent ot 
             return new TableTop.Token();
         }
       }
-
+```
 In addition to the message receiver we also created a PlayerFactory and TokenFactory to help recreate Players and Tokens when they are sent via messages. 
 
 **Refresh your checkers.html file and you should be able to play a single game in a window** 
 
 Next in order to make the game fully networked and playable over the local server we need to add methods to turn the board and game into objects to be send via messages. In checkers_board.js, add the following: 
-
+```
   CheckerBoard.prototype.getJSONString = function() {
     var tiles = [];
     for (var y = 0; y < this.height; y++){
@@ -598,9 +595,9 @@ Next in order to make the game fully networked and playable over the local serve
       }
     }
   };
-
+```
 And then in checkers_game.js add similar methods: 
-
+```
   CheckersGame.prototype.gameCreated = function(msg) {
     CheckersGame.super_.prototype.gameCreated.call(this, msg);
     var context = this;
@@ -650,9 +647,8 @@ And then in checkers_game.js add similar methods:
     this.sendMessage("refreshView", "view");
 
   };
-
-There is an additional method in checkers_game that overwrites the gameCreated.js in game.js to help cater to some of the unique features of starting a Checkers game.   
-
+```
+There is the additional method in checkers_game that overwrites the gameCreated.js in game.js to help cater to some of the unique features of starting a Checkers game.   
 
 
 Anddd we're done! Congratulations on your first TableTop.js game! 
