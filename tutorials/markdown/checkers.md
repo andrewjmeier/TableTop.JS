@@ -53,6 +53,7 @@ In checkers_game.js, enter the following:
       this.currentPlayer = 0;
       this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
       this.networking = false;
+      this.showNextPlayerScreen;
     };
     inherits(CheckersGame, TableTop.Game);
 
@@ -406,7 +407,7 @@ Lets write our executeMove() function. This function should assume that there's 
       return this.board.getTile(oldPos.x + 1, oldPos.y + yModifier).tokens[0];
   };
 ```
-Now, refresh your checkers.html and you should be able to move tokens around. Notice that the game has no concept of what should be a valid move or not -- players can move over each others tokens, and tokens can move an infinite amount of tiles. The console should be warning you about this on every move. Let's fix that. 
+**Now, refresh your checkers.html and you should be able to move tokens around.** Notice that the game has no concept of what should be a valid move or not -- players can move over each others tokens, and tokens can move an infinite amount of tiles. The console should be warning you about this on every move. Let's fix that. 
 
 For checkers, there's two types of valid moves (that we're concerned about for this tutorial). First, it could be a normal move where we jump one tile diagonally up or down (for red and white, respectively). Or, it could be a jump move. Let's define our isValidMove() function and those helpers.
 ```
@@ -455,7 +456,7 @@ If you get an error about a function not existing - be sure that the methods are
 
 Notice that we could include double jumps here with a few more lines of code - after this tutorial, try it yourself!
 
-You can refresh the game at this point to try moving around - invalid moves should raise an error in the console, and you shouldn't be able to perform anything illegal. The console should also be warning you that playerDidWin should be implemented. Let look at that now.
+**You can refresh the game at this point to try moving around** Invalid moves should raise an error in the console, and you shouldn't be able to perform anything illegal. The console should also be warning you that playerDidWin should be implemented. Let look at that now.
 
 
 ### Game Over
@@ -572,7 +573,6 @@ To start a game, we need to be listening for start (and other) messages sent ot 
 ```
 In addition to the message receiver we also created a PlayerFactory and TokenFactory to help recreate Players and Tokens when they are sent via messages. 
 
-**Refresh your checkers.html file and you should be able to play a single game in a window** 
 
 Next in order to make the game fully networked and playable over the local server we need to add methods to turn the board and game into objects to be send via messages. In checkers_board.js, add the following: 
 ```
@@ -653,7 +653,7 @@ There is the additional method in checkers_game that overwrites the gameCreated.
 
 Anddd we're done! Congratulations on your first TableTop.js game! 
 
-**Reload your test.html file one last time!** You should be able to play checkers to your heart's content.
+**Reload your checkers.html file one last time!** You should be able to play across two open tabs to your heart's content.
 
 ### Conclusion
 
