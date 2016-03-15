@@ -25,6 +25,7 @@ function Game(board) {
   this.currentPlayer = 0;
   this.gameID = null;
   this.clientPlayerID = -1;    // id of the player of THIS client
+  this.networking = true;
 };
 
 inherits(Game, Component);
@@ -40,7 +41,6 @@ Game.prototype.messageReceived = function(msg) {
   if (message.type === "state-machine" && message.text === this.turnMap.turnMap.compositeState()) {
     return;
   }
-
 
   if (message.type === "state-machine") {
     this.turnMap.transitionTo(message.text);
@@ -62,8 +62,10 @@ Game.prototype.sendData = function() {
   if (!this.hasMadeGame) {
     this.hasMadeGame = true;
   }
-  var text = JSON.stringify(this.getJSONString());
-  socket.emit('move made', text);
+  if(this.networking){
+    var text = JSON.stringify(this.getJSONString());
+    socket.emit('move made', text);
+  }
 };
 
 Game.prototype.createGame = function(name) {
@@ -358,7 +360,7 @@ Game.prototype.executeMove = function(player) {
  * @returns {void}
 */
 Game.prototype.tokenClicked = function(token) {
-  if (this.currentPlayer !== this.clientPlayerID) {
+  if (this.currentPlayer !== this.clientPlayerID && this.networking) {
     return;
   }
   if (this.moveType == c.moveTypeManual &&
@@ -373,7 +375,7 @@ Game.prototype.tokenClicked = function(token) {
  * @returns {void}
 */
 Game.prototype.tileClicked = function(tile) { 
-  if (this.currentPlayer !== this.clientPlayerID) {
+  if (this.currentPlayer !== this.clientPlayerID && this.networking) {
     return;
   }
   /* make sure we're in the right state, 
@@ -384,7 +386,6 @@ Game.prototype.tileClicked = function(tile) {
       this.turnMap.getCurrentState() == "waitingForMove" && 
       this.proposedMove.token && 
       this.proposedMove.token.tile != tile) { 
-
     this.setProposedMoveDestination(tile);
     this.turnMap.updateState("makeMove");
 

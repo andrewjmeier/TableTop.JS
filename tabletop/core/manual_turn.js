@@ -50,7 +50,6 @@ function ManualTurn(game) {
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
-
           },
         
         makeMove : function() { 
