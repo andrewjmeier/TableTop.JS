@@ -21,6 +21,7 @@ function Game(board) {
   this.moveEvaluationType = c.moveEvaluationTypeLandingAction;
   this.possibleNumPlayers = [2, 3, 4, 5];
   this.showNextPlayerScreen = true;
+  this.networking = true;
   this.playerColors = [0xFF0000, 0x000000, 0x00FF00, 0x0000FF, 0xFF00FF];
   this.currentPlayer = 0;
   this.gameID = null;
@@ -62,8 +63,10 @@ Game.prototype.sendData = function() {
   if (!this.hasMadeGame) {
     this.hasMadeGame = true;
   }
-  var text = JSON.stringify(this.getJSONString());
-  socket.emit('move made', text);
+  if(this.networking){
+    var text = JSON.stringify(this.getJSONString());
+    socket.emit('move made', text);
+  }
 };
 
 Game.prototype.createGame = function(name) {
@@ -358,7 +361,7 @@ Game.prototype.executeMove = function(player) {
  * @returns {void}
 */
 Game.prototype.tokenClicked = function(token) {
-  if (this.currentPlayer !== this.clientPlayerID) {
+  if (this.currentPlayer !== this.clientPlayerID&& this.networking) {
     return;
   }
   if (this.moveType == c.moveTypeManual &&
@@ -373,7 +376,7 @@ Game.prototype.tokenClicked = function(token) {
  * @returns {void}
 */
 Game.prototype.tileClicked = function(tile) { 
-  if (this.currentPlayer !== this.clientPlayerID) {
+  if (this.currentPlayer !== this.clientPlayerID&& this.networking) {
     return;
   }
   /* make sure we're in the right state, 
