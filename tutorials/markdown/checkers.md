@@ -500,7 +500,7 @@ Now that move onto implementing networking for your checkers game.
 
 TableTop networking allows you to send the important details of the game onto another client so the two can play a game against each other. 
 
-First we need to get our local server up and running. To do this run the "node server.js" command from your terminal. Now you should be able to load your game through the local server. It is served up on port 3000. **Go to  http://localhost:3000/checkers.html and you should be able to play your game.** 
+First we need to get our local server up and running. To do this run the "node server.js" command from your terminal. Next, change the relative locaiton that checkers.html looks for the bundle.js. Change the path from "../public/bundle.js" to simply "/bundle.js". Now you should be able to load your game through the local server. It is served up on port 3000. **Go to  http://localhost:3000/checkers.html and you should be able to play your game.** 
 
 Next, we are going to add the game starting module to checkers.html. There are two elemnets that need to be added in. First is the socket.io Javascript. Add the following inside the <body> tags but below the <div class="game-table">: 
 ```
@@ -572,7 +572,6 @@ To start a game, we need to be listening for start (and other) messages sent ot 
       }
 ```
 In addition to the message receiver we also created a PlayerFactory and TokenFactory to help recreate Players and Tokens when they are sent via messages. 
-
 
 Next in order to make the game fully networked and playable over the local server we need to add methods to turn the board and game into objects to be send via messages. In checkers_board.js, add the following: 
 ```
