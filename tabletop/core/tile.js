@@ -10,10 +10,15 @@ var _ = require('lodash');
  * @param {Dictionary} - name {string}, color {hex}, tokens {Array | Token}
 */
 // TODO refactor parameters
-function Tile(opts) {
+function Tile(options) {
   Component.call(this);
-  this.name = opts.name;
-  this.color = opts.color;
+  if (options != null) {
+    this.name = options.name;
+    this.color = options.color;
+  } else {
+    this.name = "";
+    this.color = 0x000000;
+  }
   this.tokens = [];
 };
 
