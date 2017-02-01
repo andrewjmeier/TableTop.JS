@@ -20,7 +20,6 @@ function ManualTurn(game) {
       uninitialized: { 
         start : function() { 
           this.transition("waitingForMove");
-          
         } 
       },
 
@@ -50,20 +49,30 @@ function ManualTurn(game) {
       // 2 
       waitingForMove: { 
         _onEnter: function() { 
-
-          },
+          if (this.game.getCurrentPlayer().isAI()) {
+            var AIMove = this.game.getCurrentPlayer().generateMove(this.game);
+            game.proposedMove = AIMove;
+            this.handle("makeMove");
+          }
+        },
         
         makeMove : function() { 
-          if (game.hasValidMove()) { 
-            game.executeMove();
-            this.transition("postTurn");
+          
+          if (game.hasValidMove()) {
+            if (this.game.getCurrentPlayer().isAI()) {
+              var turnMap = this;
+              setTimeout(function() { game.executeMove(); turnMap.transition("postTurn"); }, 500);
+            } else { 
+              game.executeMove();
+              this.transition("postTurn");
+            }          
           } else { 
             alert("Invalid move. Try again.");
             console.log("Invalid move. Try again.");
           } 
         } 
       },
-
+      
       // 3
       postTurn: { 
         _onEnter : function() { 

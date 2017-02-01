@@ -15,7 +15,7 @@ var core = Object.assign({
     NextPlayerView: require('./next_player_view'),
     Player: require('./player'),
     StartView: require('./start_view'),
-    StyleSheets: require('../../src/checkers/style.css'),
+//    StyleSheets: require('../../src/checkers/style.css'),
     Tile: require('./tile'),
     Token: require('./token'),
     Trade: require('./trade'),

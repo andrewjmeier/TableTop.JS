@@ -9,8 +9,10 @@ function CheckersGame(board) {
   this.moveEvaluationType = TableTop.Constants.moveEvalationTypeGameEvaluator;
   this.possibleNumPlayers = [2];
   this.showNextPlayerScreen = false;
+  this.AIDifficulty = TableTop.Constants.AIDifficultyHard;
   this.hasMadeGame = false;
 };
+
 inherits(CheckersGame, TableTop.Game);
 
 CheckersGame.prototype.createPlayer = function(name) {
@@ -144,15 +146,14 @@ CheckersGame.prototype.isValidMove = function(token, oldTile, newTile) {
   it's not a valid move! 
   */
 
-  var p = this.getPlayerForToken(token);
-
+    var p = this.getPlayerForToken(token);
+  
   if (this.getPlayerForToken(token) != player || 
       newTile.color != TableTop.Constants.redColor || 
       newTile.tokens[0]) {
-
     return false;
   }
-
+  
   return this.validNormalMove(token, oldPos, newPos, 1) || 
     this.validJumpMove(token, oldPos, newPos);
 };
@@ -184,6 +185,45 @@ CheckersGame.prototype.playerDidWin = function(player) {
   } 
   
   return true;
+};
+
+
+// returns all possible valid moves
+CheckersGame.prototype.getValidMoves = function() { 
+
+  var validMoves = [];
+  
+  this.board.tokens.forEach(function(token) {     
+    
+    var tile = this.board.findTileForToken(token);
+    
+    // for each possible destination tile...
+    this.board.tiles.forEach(function(destinationRow) { 
+      destinationRow.forEach(function(destination) { 
+        
+        if (this.isValidMove(token, tile, destination)) {
+          validMoves.push({
+            token: token, 
+            tile: tile, 
+            destination: destination
+          });
+        }
+
+      }, this);
+    }, this);    
+  }, this);
+
+  
+  return validMoves;
+};
+  
+
+// takes in a player 
+// returns the score for the board based on the player passed in (ie. if the player 
+// has won it should return 10, if he loses should return -10) 
+CheckersGame.prototype.scoreBoard = function() { 
+  var otherPlayer = this.players[this.getNextPlayer()];
+  return 12 - otherPlayer.tokens.length;
 };
 
 

@@ -50,5 +50,17 @@ ttConstants.moveEvaluationTypeLandingAction = 1;
 // after game.isValidMove() verfies move is legal
 ttConstants.moveEvaluationTypeGameEvaluator = 2;
 
+// ai difficulties
+ttConstants.AIDifficultyEasy = 1;
+ttConstants.AIDifficultyMedium = 2;
+ttConstants.AIDifficultyHard = 3;
+ttConstants.validAIDifficulties = 
+  [
+    ttConstants.AIDifficultyEasy,
+    ttConstants.AIDifficultyMedium,
+    ttConstants.AIDifficultyHard
+  ];
+
+
 
 module.exports = ttConstants;
