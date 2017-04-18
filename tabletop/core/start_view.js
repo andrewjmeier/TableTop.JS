@@ -1,5 +1,6 @@
 var c = require("./ttConstants.js");
 var Player = require("./player.js");
+var AIPlayer = require("./aiplayer.js");
 var Component = require("./component");
 var inherits = require('util').inherits;
 
@@ -118,9 +119,13 @@ StartView.prototype.handleButtonClick = function() {
     } else {
       playerName = document.getElementById('player' + (i+1) + 'Name').value;
     }
-    players[i] = new Player(playerName, this.game.playerColors[i]);
+    
+    if (playerName.toUpperCase() === "AI")
+      players[i] = new AIPlayer(playerName, this.game.playerColors[i], null, this.game.AIDifficulty);
+    else 
+      players[i] = new Player(playerName, this.game.playerColors[i]);
   }
-
+  
   this.game.setPlayers(players);
   this.game.updateState("play");
 };
